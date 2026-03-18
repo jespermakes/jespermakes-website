@@ -81,6 +81,7 @@ export async function POST(request: Request) {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: [{ price: priceId, quantity: 1 }],
+      metadata: { sku },
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/thank-you?product=${sku}`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/shop/${sku}`,
     });
