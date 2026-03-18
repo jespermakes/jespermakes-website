@@ -20,13 +20,13 @@ const PRODUCTS: Record<
     name: "Cone Lamp Laser File",
     description:
       "SVG laser cut file for the Jesper Makes Cone Lamp. All parts included.",
-    price: 900,
+    price: 500,
   },
   "cone-lamp-3dprint": {
     name: "Cone Lamp 3D Print Files",
     description:
       "Complete 3D print file pack for the Jesper Makes Cone Lamp. STL files + PDF instruction guide.",
-    price: 900,
+    price: 500,
   },
 };
 
