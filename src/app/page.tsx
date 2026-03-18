@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { NewsletterForm } from "./newsletter-form";
 
 export default function Home() {
   return (
@@ -100,6 +101,8 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      <NewsletterForm />
     </>
   );
 }
