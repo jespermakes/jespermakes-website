@@ -1,18 +1,14 @@
-import type { Metadata } from "next";
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 import { BuyButton } from "./buy-button";
 
-export const metadata: Metadata = {
-  title: "Cone Lamp 3D Print Files — Jesper Makes",
-  description:
-    "Complete 3D print file pack for the Jesper Makes Cone Lamp. STL files for all parts plus a full PDF instruction guide.",
-};
-
 const includes = [
-  { name: "Ring XS, S, M, L, XL", desc: "All 5 blade sizes — 132 total" },
+  { name: "Blades XS, S, M, L, XL", desc: "All 5 blade sizes — 132 total" },
   { name: "Stretchers AA + BB", desc: "Structural arches, printed in 3 parts each" },
   { name: "Top & Bottom rings", desc: "Cap pieces for the frame" },
-  { name: "Spacer", desc: "Optional ring spacer for extra support" },
+  { name: "Spacer", desc: "Optional spacer for extra support between top rings" },
   { name: "3MF project file", desc: "Ready-to-open in Bambu Studio or PrusaSlicer" },
   { name: "PDF Instruction Guide", desc: "Step-by-step guide co-created with Ron" },
 ];
@@ -27,26 +23,36 @@ const images = [
 ];
 
 export default function ConeLamp3DPrint() {
+  const [activeImage, setActiveImage] = useState(0);
+
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
       <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
-        {/* Hero image */}
+        {/* Image gallery */}
         <div className="space-y-3">
           <div className="relative aspect-square rounded-xl overflow-hidden shadow-2xl shadow-wood/10">
             <Image
-              src="/images/cone-lamp-3dprint/hero-firewood.jpg"
-              alt="Cone Lamp lit up against firewood wall"
+              src={images[activeImage].src}
+              alt={images[activeImage].alt}
               fill
-              className="object-cover"
+              className="object-cover transition-opacity duration-200"
               priority
             />
           </div>
           {/* Thumbnail row */}
-          <div className="grid grid-cols-5 gap-2">
-            {images.slice(1).map((img) => (
-              <div key={img.src} className="relative aspect-square rounded-lg overflow-hidden">
-                <Image src={img.src} alt={img.alt} fill className="object-cover hover:scale-105 transition-transform" />
-              </div>
+          <div className="grid grid-cols-6 gap-2">
+            {images.map((img, i) => (
+              <button
+                key={img.src}
+                onClick={() => setActiveImage(i)}
+                className={`relative aspect-square rounded-lg overflow-hidden transition-all ${
+                  i === activeImage
+                    ? "ring-2 ring-amber"
+                    : "opacity-60 hover:opacity-100"
+                }`}
+              >
+                <Image src={img.src} alt={img.alt} fill className="object-cover" />
+              </button>
             ))}
           </div>
         </div>
