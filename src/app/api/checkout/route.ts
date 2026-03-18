@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-02-25.clover",
-});
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-02-25.clover",
+  });
+}
 
 async function getOrCreatePrice(): Promise<string> {
+  const stripe = getStripe();
   // Look for existing product by metadata
   const products = await stripe.products.list({ limit: 10, active: true });
   const existing = products.data.find(
@@ -42,6 +45,7 @@ async function getOrCreatePrice(): Promise<string> {
 
 export async function POST() {
   try {
+    const stripe = getStripe();
     const priceId = await getOrCreatePrice();
 
     const session = await stripe.checkout.sessions.create({
