@@ -11,7 +11,7 @@ export function BuyButton() {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sku: "pallet-starter-kit" }),
+        body: JSON.stringify({ sku: "cone-lamp-laser" }),
       });
       const data = await res.json();
       if (data.url) {
@@ -28,7 +28,7 @@ export function BuyButton() {
       disabled={loading}
       className="w-full sm:w-auto bg-amber hover:bg-amber-dark disabled:opacity-60 text-cream px-8 py-4 rounded-lg font-medium text-lg transition-colors"
     >
-      {loading ? "Redirecting…" : "Buy now — €35"}
+      {loading ? "Redirecting…" : "Buy now — €9"}
     </button>
   );
 }

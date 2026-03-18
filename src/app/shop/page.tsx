@@ -7,6 +7,28 @@ export const metadata: Metadata = {
   description: "Build guides and resources from Jesper's workshop.",
 };
 
+const products = [
+  {
+    href: "/shop/pallet-starter-kit",
+    image: "https://i.ytimg.com/vi/SycRO164gt8/maxresdefault.jpg",
+    title: "The Pallet Builder\u2019s Starter Kit",
+    subtitle: "5 build guides + tool recommendations",
+    price: "€35",
+  },
+  {
+    href: "/shop/cone-lamp-laser",
+    title: "Cone Lamp Laser File",
+    subtitle: "SVG laser cut file — all parts included",
+    price: "€9",
+  },
+  {
+    href: "/shop/cone-lamp-3dprint",
+    title: "Cone Lamp 3D Print Files",
+    subtitle: "STL files + PDF instruction guide",
+    price: "€9",
+  },
+];
+
 export default function Shop() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
@@ -20,24 +42,49 @@ export default function Shop() {
         </p>
       </div>
 
-      {/* Product card */}
-      <Link href="/shop/pallet-starter-kit" className="group block max-w-md">
-        <div className="relative aspect-video rounded-xl overflow-hidden mb-4 shadow-lg shadow-wood/5 group-hover:shadow-xl transition-shadow">
-          <Image
-            src="https://i.ytimg.com/vi/SycRO164gt8/maxresdefault.jpg"
-            alt="The Pallet Builder's Starter Kit"
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        </div>
-        <h2 className="font-serif text-xl text-wood group-hover:text-amber transition-colors mb-1">
-          The Pallet Builder&apos;s Starter Kit
-        </h2>
-        <p className="text-wood-light/60 text-sm mb-2">
-          5 build guides + tool recommendations
-        </p>
-        <p className="text-amber font-medium">€35</p>
-      </Link>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {products.map((product) => (
+          <Link
+            key={product.href}
+            href={product.href}
+            className="group block"
+          >
+            <div className="relative aspect-video rounded-xl overflow-hidden mb-4 shadow-lg shadow-wood/5 group-hover:shadow-xl transition-shadow bg-wood/5">
+              {product.image ? (
+                <Image
+                  src={product.image}
+                  alt={product.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <svg
+                    className="w-12 h-12 text-amber/30"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
+                    />
+                  </svg>
+                </div>
+              )}
+            </div>
+            <h2 className="font-serif text-xl text-wood group-hover:text-amber transition-colors mb-1">
+              {product.title}
+            </h2>
+            <p className="text-wood-light/60 text-sm mb-2">
+              {product.subtitle}
+            </p>
+            <p className="text-amber font-medium">{product.price}</p>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
