@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
+export const runtime = "nodejs";
+
 function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY!);
 }
@@ -86,10 +88,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: session.url });
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error("Stripe checkout error:", message);
+    console.error("Stripe checkout error:", err);
     return NextResponse.json(
-      { error: "Failed to create checkout session", detail: message, keyPrefix: process.env.STRIPE_SECRET_KEY?.slice(0, 12) },
+      { error: "Failed to create checkout session" },
       { status: 500 }
     );
   }
