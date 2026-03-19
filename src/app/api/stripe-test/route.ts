@@ -4,6 +4,7 @@ import Stripe from "stripe";
 
 export const runtime = "nodejs";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function POST(request: Request) {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) {
