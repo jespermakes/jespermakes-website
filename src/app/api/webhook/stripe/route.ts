@@ -3,11 +3,7 @@ import Stripe from "stripe";
 
 export const runtime = "nodejs";
 
-function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    httpClient: Stripe.createFetchHttpClient(),
-  });
-}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 // Resend audience ID — resolved once per cold start
 let audienceId: string | null = null;
@@ -105,7 +101,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
 // --------------- webhook handler ---------------
 
 export async function POST(request: Request) {
-  const stripe = getStripe();
+  
   const body = Buffer.from(await request.arrayBuffer());
   const sig = request.headers.get("stripe-signature");
 

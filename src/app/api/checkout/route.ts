@@ -2,12 +2,9 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 export const runtime = "nodejs";
+export const maxDuration = 15;
 
-function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    httpClient: Stripe.createFetchHttpClient(),
-  });
-}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 const PRODUCTS: Record<
   string,
@@ -33,11 +30,9 @@ const PRODUCTS: Record<
 };
 
 async function getOrCreatePrice(sku: string): Promise<string> {
-  const stripe = getStripe();
   const config = PRODUCTS[sku];
   if (!config) throw new Error(`Unknown SKU: ${sku}`);
 
-  // Look for existing product by metadata
   const products = await stripe.products.list({ limit: 30, active: true });
   const existing = products.data.find((p) => p.metadata?.sku === sku);
 
@@ -52,7 +47,6 @@ async function getOrCreatePrice(sku: string): Promise<string> {
     }
   }
 
-  // Create product and price
   const product = await stripe.products.create({
     name: config.name,
     description: config.description,
@@ -77,7 +71,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unknown product" }, { status: 400 });
     }
 
-    const stripe = getStripe();
     const priceId = await getOrCreatePrice(sku);
 
     const session = await stripe.checkout.sessions.create({
@@ -97,4 +90,3 @@ export async function POST(request: Request) {
     );
   }
 }
-// deploy: 20260319205305
