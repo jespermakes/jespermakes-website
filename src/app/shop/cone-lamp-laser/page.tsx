@@ -14,11 +14,11 @@ const images = [
 const includes = [
   { name: "Stretcher A", desc: "Main structural support piece" },
   { name: "Stretcher B", desc: "Cross support piece" },
-  { name: "Ring XS", desc: "Extra small ring" },
-  { name: "Ring S", desc: "Small ring" },
-  { name: "Ring M", desc: "Medium ring" },
-  { name: "Ring L", desc: "Large ring" },
-  { name: "Ring XL", desc: "Extra large ring" },
+  { name: "Blade XS", desc: "Extra small blade" },
+  { name: "Blade S", desc: "Small blade" },
+  { name: "Blade M", desc: "Medium blade" },
+  { name: "Blade L", desc: "Large blade" },
+  { name: "Blade XL", desc: "Extra large blade" },
   { name: "Top circle", desc: "Top closure piece" },
   { name: "Bottom circle", desc: "Bottom closure piece" },
 ];
@@ -74,7 +74,7 @@ export default function ConeLampLaser() {
 
           <p className="text-wood-light/80 leading-relaxed mb-8">
             The SVG laser cut file for the Jesper Makes Cone Lamp. Works with
-            any laser cutter. Includes all parts — stretchers A &amp; B, rings
+            any laser cutter. Includes all parts — stretchers A &amp; B, blades
             XS/S/M/L/XL, top and bottom circles.
           </p>
 
