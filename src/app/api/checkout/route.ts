@@ -4,12 +4,6 @@ import Stripe from "stripe";
 export const runtime = "nodejs";
 export const maxDuration = 15;
 
-let _stripe: Stripe | null = null;
-function getStripe() {
-  if (!_stripe) _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-  return _stripe;
-}
-
 const PRODUCTS: Record<
   string,
   { name: string; description: string; price: number }
@@ -33,53 +27,36 @@ const PRODUCTS: Record<
   },
 };
 
-async function getOrCreatePrice(sku: string): Promise<string> {
-  const config = PRODUCTS[sku];
-  if (!config) throw new Error(`Unknown SKU: ${sku}`);
-
-  const products = await getStripe().products.list({ limit: 30, active: true });
-  const existing = products.data.find((p) => p.metadata?.sku === sku);
-
-  if (existing) {
-    const prices = await getStripe().prices.list({
-      product: existing.id,
-      active: true,
-      limit: 1,
-    });
-    if (prices.data.length > 0) {
-      return prices.data[0].id;
-    }
-  }
-
-  const product = await getStripe().products.create({
-    name: config.name,
-    description: config.description,
-    metadata: { sku },
-  });
-
-  const price = await getStripe().prices.create({
-    product: product.id,
-    unit_amount: config.price,
-    currency: "eur",
-  });
-
-  return price.id;
-}
-
 export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
     const sku = (body as { sku?: string }).sku || "pallet-starter-kit";
+    const config = PRODUCTS[sku];
 
-    if (!PRODUCTS[sku]) {
+    if (!config) {
       return NextResponse.json({ error: "Unknown product" }, { status: 400 });
     }
 
-    const priceId = await getOrCreatePrice(sku);
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      httpClient: Stripe.createFetchHttpClient(),
+    });
 
-    const session = await getStripe().checkout.sessions.create({
+    const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [
+        {
+          price_data: {
+            currency: "eur",
+            unit_amount: config.price,
+            product_data: {
+              name: config.name,
+              description: config.description,
+              metadata: { sku },
+            },
+          },
+          quantity: 1,
+        },
+      ],
       metadata: { sku },
       success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/thank-you?product=${sku}`,
       cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/shop/${sku}`,
@@ -87,9 +64,14 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: session.url });
   } catch (err: unknown) {
-    const e = err as Error & { type?: string; code?: string; statusCode?: number; raw?: { message?: string } };
+    const e = err as Error & {
+      type?: string;
+      code?: string;
+      statusCode?: number;
+    };
+    console.error("Stripe checkout error:", e.message);
     return NextResponse.json(
-      { error: e.message, type: e.type, code: e.code, status: e.statusCode, raw: e.raw?.message },
+      { error: "Failed to create checkout session" },
       { status: 500 }
     );
   }
