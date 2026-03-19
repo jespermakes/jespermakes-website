@@ -4,7 +4,9 @@ import Stripe from "stripe";
 export const runtime = "nodejs";
 
 function getStripe() {
-  return new Stripe(process.env.STRIPE_SECRET_KEY!);
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    httpClient: Stripe.createFetchHttpClient(),
+  });
 }
 
 // Resend audience ID — resolved once per cold start
