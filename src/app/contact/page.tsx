@@ -125,9 +125,9 @@ export default function Contact() {
               </h2>
             </div>
             <p className="text-wood-light/70 leading-relaxed mb-4">
-              Writing an article or feature? Download logos, stats, and photos
-              from the media kit. For interviews or specific requests, reach out
-              directly.
+              Writing an article or feature? Download logos, photos, and brand
+              assets from the press kit. For interviews or specific requests,
+              reach out directly.
             </p>
             <div className="flex flex-wrap items-center gap-4">
               <a
@@ -136,11 +136,19 @@ export default function Contact() {
               >
                 hello@jespermakes.com
               </a>
+            </div>
+            <div className="flex flex-wrap gap-3 mt-4">
+              <Link
+                href="/press-kit"
+                className="inline-block border border-wood/20 hover:border-amber text-wood px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              >
+                📸 Press Kit — Photos &amp; Logos
+              </Link>
               <Link
                 href="/mediakit"
                 className="inline-block border border-wood/20 hover:border-amber text-wood px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               >
-                View Media Kit →
+                📊 Media Kit — Audience Stats
               </Link>
             </div>
           </section>
