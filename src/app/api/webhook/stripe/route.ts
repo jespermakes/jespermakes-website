@@ -57,7 +57,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
   if (sku === "cone-lamp-3dprint") {
     return {
       to,
-      from: "Jesper Makes <onboarding@resend.dev>",
+      from: "Jesper Makes <hello@jespermakes.com>",
       subject: "Your Cone Lamp 3D Print Files — Download",
       html: `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
@@ -72,7 +72,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
   if (sku === "cone-lamp-laser") {
     return {
       to,
-      from: "Jesper Makes <onboarding@resend.dev>",
+      from: "Jesper Makes <hello@jespermakes.com>",
       subject: "Your Cone Lamp Laser File — Download",
       html: `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
@@ -87,7 +87,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
   // pallet-starter-kit (and fallback)
   return {
     to,
-    from: "Jesper Makes <onboarding@resend.dev>",
+    from: "Jesper Makes <hello@jespermakes.com>",
     subject: "Your Pallet Builder Starter Kit — Coming Soon",
     html: `
       <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
