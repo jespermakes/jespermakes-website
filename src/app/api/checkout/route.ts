@@ -4,7 +4,11 @@ import Stripe from "stripe";
 export const runtime = "nodejs";
 export const maxDuration = 15;
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+let _stripe: Stripe | null = null;
+function getStripe() {
+  if (!_stripe) _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  return _stripe;
+}
 
 const PRODUCTS: Record<
   string,
@@ -33,11 +37,11 @@ async function getOrCreatePrice(sku: string): Promise<string> {
   const config = PRODUCTS[sku];
   if (!config) throw new Error(`Unknown SKU: ${sku}`);
 
-  const products = await stripe.products.list({ limit: 30, active: true });
+  const products = await getStripe().products.list({ limit: 30, active: true });
   const existing = products.data.find((p) => p.metadata?.sku === sku);
 
   if (existing) {
-    const prices = await stripe.prices.list({
+    const prices = await getStripe().prices.list({
       product: existing.id,
       active: true,
       limit: 1,
@@ -47,13 +51,13 @@ async function getOrCreatePrice(sku: string): Promise<string> {
     }
   }
 
-  const product = await stripe.products.create({
+  const product = await getStripe().products.create({
     name: config.name,
     description: config.description,
     metadata: { sku },
   });
 
-  const price = await stripe.prices.create({
+  const price = await getStripe().prices.create({
     product: product.id,
     unit_amount: config.price,
     currency: "eur",
@@ -73,7 +77,7 @@ export async function POST(request: Request) {
 
     const priceId = await getOrCreatePrice(sku);
 
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripe().checkout.sessions.create({
       mode: "payment",
       line_items: [{ price: priceId, quantity: 1 }],
       metadata: { sku },
