@@ -37,6 +37,12 @@ function Header() {
             Shop
           </Link>
           <Link
+            href="/tools"
+            className="text-wood-light hover:text-amber transition-colors"
+          >
+            Tools & Links
+          </Link>
+          <Link
             href="/about"
             className="text-wood-light hover:text-amber transition-colors"
           >
@@ -75,6 +81,9 @@ function Footer() {
           </a>
           <Link href="/shop" className="hover:text-amber transition-colors">
             Shop
+          </Link>
+          <Link href="/tools" className="hover:text-amber transition-colors">
+            Tools
           </Link>
           <Link href="/about" className="hover:text-amber transition-colors">
             About
