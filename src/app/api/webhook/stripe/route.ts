@@ -69,6 +69,22 @@ function buildEmail({ to, firstName, sku }: EmailData) {
     };
   }
 
+  if (sku === "workshop-wall-charts") {
+    return {
+      to,
+      from: "Jesper Makes <hello@jespermakes.com>",
+      subject: "Your Workshop Wall Charts — Download",
+      html: `
+        <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
+          <p>${greeting}</p>
+          <p>Thank you for your purchase! Your Workshop Wall Charts are ready to download.</p>
+          <p>Print all 8 pages on A4 (or US Letter) and pin them to your workshop wall. No more Googling the same things over and over.</p>
+          <p style="margin:28px 0">${button("Download Wall Charts (PDF)", "https://jespermakes.com/downloads/workshop-wall-charts.pdf")}</p>
+          ${footer}
+        </div>`,
+    };
+  }
+
   if (sku === "cone-lamp-laser") {
     return {
       to,

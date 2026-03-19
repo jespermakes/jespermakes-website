@@ -30,6 +30,12 @@ const PRODUCTS: Record<string, ProductConfig> = {
       "Complete 3D print file pack for the Jesper Makes Cone Lamp. STL files + PDF instruction guide.",
     price: 500,
   },
+  "workshop-wall-charts": {
+    name: "Workshop Wall Charts",
+    description:
+      "8 printable A4 reference sheets for your workshop wall. Wood species, sandpaper, joinery, screws, drill bits, conversions, angles, and safety.",
+    price: 300,
+  },
   "workshop-tee": {
     name: "Jesper Makes Workshop Tee",
     description:

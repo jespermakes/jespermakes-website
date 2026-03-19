@@ -9,6 +9,14 @@ export const metadata: Metadata = {
 
 const products = [
   {
+    href: "/shop/workshop-wall-charts",
+    image: "/images/products/wall-charts-hero.jpg",
+    title: "Workshop Wall Charts",
+    subtitle: "8 printable reference sheets for your wall",
+    price: "€3",
+    badge: "NEW",
+  },
+  {
     href: "/shop/pallet-starter-kit",
     image: "https://i.ytimg.com/vi/SycRO164gt8/maxresdefault.jpg",
     title: "The Pallet Builder\u2019s Starter Kit",
@@ -84,6 +92,13 @@ export default function Shop() {
                   <div className="absolute inset-0 bg-wood/60 flex items-center justify-center">
                     <span className="bg-amber text-cream px-4 py-2 rounded-lg font-medium text-sm">
                       Coming Soon
+                    </span>
+                  </div>
+                )}
+                {"badge" in product && (product as { badge?: string }).badge && (
+                  <div className="absolute top-3 right-3">
+                    <span className="bg-green-500 text-white px-2.5 py-1 rounded-full font-medium text-xs shadow-md">
+                      {(product as { badge?: string }).badge}
                     </span>
                   </div>
                 )}
