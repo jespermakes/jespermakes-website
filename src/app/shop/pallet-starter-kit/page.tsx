@@ -1,6 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Metadata } from "next";
-import { BuyButton } from "./buy-button";
 
 export const metadata: Metadata = {
   title: "The Pallet Builder's Starter Kit — Jesper Makes",
@@ -53,11 +53,15 @@ export default function PalletStarterKit() {
             you were standing next to me in the workshop.
           </p>
 
-          <BuyButton />
-
-          <p className="text-wood-light/50 text-xs mt-3">
-            Instant PDF download after purchase. Secure payment via Stripe.
-          </p>
+          <div className="bg-wood/10 border border-wood/20 rounded-lg px-6 py-4 text-center">
+            <p className="font-medium text-wood mb-1">Coming Soon</p>
+            <p className="text-wood-light/60 text-sm">
+              <Link href="/#newsletter" className="text-amber hover:text-amber-dark underline transition-colors">
+                Join the newsletter
+              </Link>{" "}
+              to be the first to know
+            </p>
+          </div>
         </div>
       </div>
 

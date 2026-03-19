@@ -2,6 +2,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { NewsletterForm } from "./newsletter-form";
 
+const products = [
+  {
+    href: "/shop/pallet-starter-kit",
+    image: "https://i.ytimg.com/vi/SycRO164gt8/maxresdefault.jpg",
+    title: "The Pallet Builder\u2019s Starter Kit",
+    subtitle: "5 build guides + tool recommendations",
+    comingSoon: true,
+  },
+  {
+    href: "/shop/cone-lamp-laser",
+    image: "/images/products/cone-lamp-laser-1.jpg",
+    title: "Cone Lamp Laser File",
+    subtitle: "SVG laser cut file \u2014 all parts included",
+    price: "\u20ac5",
+  },
+  {
+    href: "/shop/cone-lamp-3dprint",
+    image: "/images/cone-lamp-3dprint/hero-firewood.jpg",
+    title: "Cone Lamp 3D Print Files",
+    subtitle: "STL files + PDF instruction guide",
+    price: "\u20ac5",
+  },
+];
+
 export default function Home() {
   return (
     <>
@@ -19,10 +43,10 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
-                href="/shop/pallet-starter-kit"
+                href="/shop"
                 className="inline-block bg-amber hover:bg-amber-dark text-cream px-6 py-3 rounded-lg font-medium transition-colors"
               >
-                Get the Starter Kit — €35
+                Browse the Shop
               </Link>
               <a
                 href="https://youtube.com/@jespermakes"
@@ -46,36 +70,100 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Product */}
+      {/* Featured Products — Cone Lamps */}
       <section className="bg-wood text-cream">
-        <div className="max-w-5xl mx-auto px-6 py-20 md:py-24 grid md:grid-cols-2 gap-12 items-center">
-          <div className="relative aspect-video rounded-xl overflow-hidden order-2 md:order-1">
-            <Image
-              src="https://i.ytimg.com/vi/SycRO164gt8/maxresdefault.jpg"
-              alt="Pallet Builder's Starter Kit"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="order-1 md:order-2">
-            <p className="text-amber text-sm font-medium tracking-widest uppercase mb-3">
-              Featured
-            </p>
-            <h2 className="font-serif text-3xl md:text-4xl mb-4">
-              The Pallet Builder&apos;s Starter Kit
-            </h2>
-            <p className="text-cream/70 mb-6 leading-relaxed">
-              5 complete build guides written the way I actually build — rough
-              starting point, real measurements, honest about what goes wrong
-              and how to fix it.
-            </p>
-            <Link
-              href="/shop/pallet-starter-kit"
-              className="inline-block bg-amber hover:bg-amber-light text-wood px-6 py-3 rounded-lg font-medium transition-colors"
-            >
-              Learn more →
+        <div className="max-w-5xl mx-auto px-6 py-20 md:py-24">
+          <p className="text-amber text-sm font-medium tracking-widest uppercase mb-3">
+            Featured
+          </p>
+          <h2 className="font-serif text-3xl md:text-4xl mb-10">
+            The Cone Lamp
+          </h2>
+          <div className="grid md:grid-cols-2 gap-10">
+            <Link href="/shop/cone-lamp-laser" className="group block">
+              <div className="relative aspect-video rounded-xl overflow-hidden mb-4">
+                <Image
+                  src="/images/products/cone-lamp-laser-1.jpg"
+                  alt="Cone Lamp Laser File"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <h3 className="font-serif text-xl group-hover:text-amber transition-colors mb-1">
+                Cone Lamp Laser File
+              </h3>
+              <p className="text-cream/60 text-sm mb-2">
+                SVG laser cut file — all parts included
+              </p>
+              <p className="text-amber font-medium">€5</p>
+            </Link>
+            <Link href="/shop/cone-lamp-3dprint" className="group block">
+              <div className="relative aspect-video rounded-xl overflow-hidden mb-4">
+                <Image
+                  src="/images/cone-lamp-3dprint/hero-firewood.jpg"
+                  alt="Cone Lamp 3D Print Files"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <h3 className="font-serif text-xl group-hover:text-amber transition-colors mb-1">
+                Cone Lamp 3D Print Files
+              </h3>
+              <p className="text-cream/60 text-sm mb-2">
+                STL files + PDF instruction guide
+              </p>
+              <p className="text-amber font-medium">€5</p>
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* All Products */}
+      <section className="max-w-5xl mx-auto px-6 py-20 md:py-24">
+        <h2 className="font-serif text-3xl md:text-4xl text-wood mb-10">
+          All Products
+        </h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {products.map((product) => {
+            const content = (
+              <>
+                <div className="relative aspect-video rounded-xl overflow-hidden mb-4 shadow-lg shadow-wood/5 group-hover:shadow-xl transition-shadow bg-wood/5">
+                  <Image
+                    src={product.image}
+                    alt={product.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {product.comingSoon && (
+                    <div className="absolute inset-0 bg-wood/60 flex items-center justify-center">
+                      <span className="bg-amber text-cream px-4 py-2 rounded-lg font-medium text-sm">
+                        Coming Soon
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <h3 className="font-serif text-xl text-wood group-hover:text-amber transition-colors mb-1">
+                  {product.title}
+                </h3>
+                <p className="text-wood-light/60 text-sm mb-2">
+                  {product.subtitle}
+                </p>
+                {product.price && (
+                  <p className="text-amber font-medium">{product.price}</p>
+                )}
+              </>
+            );
+
+            return product.comingSoon ? (
+              <div key={product.href} className="group block">
+                {content}
+              </div>
+            ) : (
+              <Link key={product.href} href={product.href} className="group block">
+                {content}
+              </Link>
+            );
+          })}
         </div>
       </section>
 

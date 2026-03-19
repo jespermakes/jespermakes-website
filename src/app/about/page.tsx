@@ -60,6 +60,22 @@ export default function About() {
             >
               Watch on YouTube
             </a>
+            <a
+              href="https://instagram.com/jespermakes"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block border border-wood/20 hover:border-amber text-wood px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              Instagram
+            </a>
+            <a
+              href="https://tiktok.com/@jespermakes"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block border border-wood/20 hover:border-amber text-wood px-6 py-3 rounded-lg font-medium transition-colors"
+            >
+              TikTok
+            </a>
             <Link
               href="/shop"
               className="inline-block border border-wood/20 hover:border-amber text-wood px-6 py-3 rounded-lg font-medium transition-colors"
