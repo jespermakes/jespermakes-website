@@ -129,22 +129,105 @@ export async function POST(request: Request) {
     const firstName = name.split(" ")[0];
 
     if (email) {
-      // Send confirmation email
-      try {
-        const emailPayload = buildEmail({ to: email, firstName, sku });
-        const emailRes = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(emailPayload),
-        });
-        if (!emailRes.ok) {
-          console.error("Resend email error:", await emailRes.text());
+      // Send confirmation email (digital products)
+      if (sku !== "workshop-tee") {
+        try {
+          const emailPayload = buildEmail({ to: email, firstName, sku });
+          const emailRes = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(emailPayload),
+          });
+          if (!emailRes.ok) {
+            console.error("Resend email error:", await emailRes.text());
+          }
+        } catch (err) {
+          console.error("Failed to send confirmation email:", err);
         }
-      } catch (err) {
-        console.error("Failed to send confirmation email:", err);
+      }
+
+      // Create Printful order for physical products
+      if (sku === "workshop-tee") {
+        try {
+          const size = session.metadata?.size || "M";
+          const shipping = (session as unknown as { shipping_details?: { name?: string; address?: { line1?: string; line2?: string; city?: string; state?: string; country?: string; postal_code?: string } } }).shipping_details;
+          const address = shipping?.address;
+
+          // Map size to Printful sync variant ID
+          const sizeToVariant: Record<string, number> = {
+            S: 5239173658,
+            M: 5239173659,
+            L: 5239173660,
+            XL: 5239173661,
+            "2XL": 5239173662,
+          };
+
+          const printfulOrder = {
+            external_id: session.id,
+            recipient: {
+              name: shipping?.name || name,
+              email,
+              address1: address?.line1 || "",
+              address2: address?.line2 || "",
+              city: address?.city || "",
+              state_code: address?.state || "",
+              country_code: address?.country || "",
+              zip: address?.postal_code || "",
+            },
+            items: [
+              {
+                sync_variant_id: sizeToVariant[size] || sizeToVariant["M"],
+                quantity: 1,
+              },
+            ],
+          };
+
+          const printfulRes = await fetch(
+            "https://api.printful.com/orders",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${process.env.PRINTFUL_API_KEY}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(printfulOrder),
+            }
+          );
+
+          if (!printfulRes.ok) {
+            console.error("Printful order error:", await printfulRes.text());
+          } else {
+            console.log("Printful order created for", email, size);
+          }
+
+          // Send confirmation email for merch
+          const merchEmail = {
+            to: email,
+            from: "Jesper Makes <hello@jespermakes.com>",
+            subject: "Your Workshop Tee is on its way! 🎉",
+            html: `
+              <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
+                <p>${firstName ? `Hi ${firstName},` : "Hi there,"}</p>
+                <p>Thank you for your purchase! Your <strong>Jesper Makes Workshop Tee (${size})</strong> has been sent to print.</p>
+                <p>You'll receive shipping updates directly from our print partner once it ships. Most orders arrive within 5–10 business days.</p>
+                <p style="margin-top:32px">Jesper<br/><span style="color:#888">Jesper Makes</span></p>
+              </div>`,
+          };
+
+          await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(merchEmail),
+          });
+        } catch (err) {
+          console.error("Failed to create Printful order:", err);
+        }
       }
 
       // Add contact to audience

@@ -24,6 +24,13 @@ const products = [
     subtitle: "STL files + PDF instruction guide",
     price: "\u20ac5",
   },
+  {
+    href: "/shop/workshop-tee",
+    image: "/images/products/tshirt-mockup-front.jpg",
+    title: "Jesper Makes Workshop Tee",
+    subtitle: "Unisex black tee \u2014 printed & shipped worldwide",
+    price: "\u20ac35",
+  },
 ];
 
 export default function Home() {

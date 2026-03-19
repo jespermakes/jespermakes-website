@@ -29,6 +29,13 @@ const products = [
     subtitle: "STL files + PDF instruction guide",
     price: "€5",
   },
+  {
+    href: "/shop/workshop-tee",
+    image: "/images/products/tshirt-mockup-front.jpg",
+    title: "Jesper Makes Workshop Tee",
+    subtitle: "Unisex black tee — printed & shipped worldwide",
+    price: "€35",
+  },
 ];
 
 export default function Shop() {
