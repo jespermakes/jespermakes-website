@@ -86,10 +86,10 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (err) {
-    console.error("Stripe checkout error:", err);
+  } catch (err: unknown) {
+    const e = err as Error & { type?: string; code?: string; statusCode?: number; raw?: { message?: string } };
     return NextResponse.json(
-      { error: "Failed to create checkout session" },
+      { error: e.message, type: e.type, code: e.code, status: e.statusCode, raw: e.raw?.message },
       { status: 500 }
     );
   }
