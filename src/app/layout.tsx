@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
 import Image from "next/image";
+import { SessionProvider } from "next-auth/react";
+import { Analytics } from "@vercel/analytics/react";
+import { auth } from "@/lib/auth";
+import { SiteJsonLd } from "@/components/site-json-ld";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -20,9 +24,24 @@ export const metadata: Metadata = {
   title: "Jesper Makes — Build something real",
   description:
     "Danish woodworker and maker. Real build guides, honest measurements, no shortcuts.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [
+      { url: "/favicon-180.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  other: {
+    "impact-site-verification": "ff0ac512-8cf5-48f8-8237-3f0a69250e76",
+  },
 };
 
-function Header() {
+async function Header() {
+  const session = await auth();
+
   return (
     <header className="border-b border-wood/10">
       <nav className="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
@@ -36,11 +55,48 @@ function Header() {
           >
             Shop
           </Link>
+          {/* Desktop: dropdown, Mobile: direct link */}
           <Link
             href="/tools"
-            className="text-wood-light hover:text-amber transition-colors"
+            className="text-wood-light hover:text-amber transition-colors sm:hidden"
           >
             Tools & Links
+          </Link>
+          <div className="relative group hidden sm:block">
+            <Link
+              href="/tools"
+              className="text-wood-light hover:text-amber transition-colors"
+            >
+              Tools & Links
+            </Link>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+              <div className="bg-cream border border-wood/10 rounded-xl shadow-lg py-2 w-52">
+                {[
+                  { title: "Festool", slug: "festool", icon: "⚡" },
+                  { title: "Power Tools", slug: "power-tools", icon: "🔨" },
+                  { title: "Hand Tools", slug: "hand-tools", icon: "✋" },
+                  { title: "Finishing", slug: "finishing", icon: "🎨" },
+                  { title: "3D Printing & Laser", slug: "3d-printing-laser", icon: "🖨️" },
+                  { title: "Workshop Essentials", slug: "workshop-essentials", icon: "🔧" },
+                  { title: "Office & YouTube Gear", slug: "office-youtube", icon: "📷" },
+                ].map((cat) => (
+                  <Link
+                    key={cat.slug}
+                    href={`/tools/category/${cat.slug}`}
+                    className="flex items-center gap-2.5 px-4 py-2 text-sm text-wood-light hover:text-amber hover:bg-wood/5 transition-colors"
+                  >
+                    <span className="text-base">{cat.icon}</span>
+                    {cat.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+          <Link
+            href="/blog"
+            className="text-wood-light hover:text-amber transition-colors"
+          >
+            Blog
           </Link>
           <Link
             href="/about"
@@ -54,6 +110,21 @@ function Header() {
           >
             Contact
           </Link>
+          {session?.user ? (
+            <Link
+              href="/account"
+              className="text-amber hover:text-amber-dark transition-colors font-medium"
+            >
+              {session.user.name?.split(" ")[0] || "Account"}
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="text-wood-light hover:text-amber transition-colors"
+            >
+              Sign in
+            </Link>
+          )}
           <div className="flex items-center gap-3">
             <a href="https://youtube.com/@jespermakes" target="_blank" rel="noopener noreferrer" className="text-wood-light hover:text-amber transition-colors" aria-label="YouTube">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z"/></svg>
@@ -79,7 +150,7 @@ function Footer() {
           <Image src="/logo.png" alt="Jesper Makes Workshop" width={32} height={32} className="rounded-full opacity-60" />
           <p>&copy; {new Date().getFullYear()} Jesper Makes Workshop</p>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           <Link href="/shop" className="hover:text-amber transition-colors">
             Shop
           </Link>
@@ -91,6 +162,16 @@ function Footer() {
           </Link>
           <Link href="/contact" className="hover:text-amber transition-colors">
             Contact
+          </Link>
+          <span className="text-wood/20">·</span>
+          <Link href="/refund" className="hover:text-amber transition-colors">
+            Refund Policy
+          </Link>
+          <Link href="/privacy" className="hover:text-amber transition-colors">
+            Privacy
+          </Link>
+          <Link href="/terms" className="hover:text-amber transition-colors">
+            Terms
           </Link>
           <div className="flex items-center gap-4">
             <a href="https://youtube.com/@jespermakes" target="_blank" rel="noopener noreferrer" className="hover:text-amber transition-colors" aria-label="YouTube">
@@ -109,17 +190,23 @@ function Footer() {
   );
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="font-sans min-h-screen flex flex-col antialiased">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <SiteJsonLd />
+        <SessionProvider session={session}>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <Analytics />
+        </SessionProvider>
       </body>
     </html>
   );
