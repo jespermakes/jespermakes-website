@@ -124,6 +124,19 @@ export default function BlogPostPage({ params }: Props) {
           </div>
         </header>
 
+        {/* Featured video */}
+        {post.featuredVideo && (
+          <div className="mb-10 aspect-video rounded-xl overflow-hidden">
+            <iframe
+              src={`https://www.youtube.com/embed/${post.featuredVideo}`}
+              title={post.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+            />
+          </div>
+        )}
+
         {/* Content */}
         <div className="
           font-sans text-wood-light leading-relaxed

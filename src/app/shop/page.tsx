@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 const products = [
   {
     href: "/shop/workshop-wall-charts",
-    image: "/images/products/wall-charts-hero.jpg",
-    title: "Workshop Wall Charts",
-    subtitle: "8 printable reference sheets for your wall",
+    image: "/images/products/cheat-sheets-hero.jpg",
+    title: "Jesper's Cheat Sheets",
+    subtitle: "8 printable reference sheets for your workshop wall",
     price: "€3",
     badge: "NEW",
   },

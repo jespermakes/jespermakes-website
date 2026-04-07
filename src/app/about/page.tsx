@@ -40,7 +40,7 @@ export default function About() {
                 camera and started sharing the process on YouTube.
               </p>
               <p>
-                Six years later, 351,000 people follow along. My videos get
+                Six years later, 352,000 people follow along. My videos get
                 somewhere between 150,000 and 750,000 views. One hit 4.5
                 million. I still don&apos;t fully understand how that happened.
               </p>
@@ -131,12 +131,50 @@ export default function About() {
         </div>
       </section>
 
-      {/* Workshop photo */}
-      <section className="max-w-5xl mx-auto px-6 pb-12">
+      {/* Workshop + Latvia photos */}
+      <section className="max-w-5xl mx-auto px-6 pb-12 space-y-4">
         <div className="relative aspect-[21/9] rounded-xl overflow-hidden shadow-2xl shadow-wood/10">
           <Image
             src="/images/press/jesper-workshop-carrying.jpg"
             alt="Jesper carrying lumber in the workshop"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg shadow-wood/10">
+            <Image
+              src="/images/press/latvia/jesper-axe-timber.jpg"
+              alt="Jesper working with an axe on a timber beam in Latvia"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg shadow-wood/10">
+            <Image
+              src="/images/press/latvia/jesper-chisel-workshop.jpg"
+              alt="Jesper chiseling a mortise joint"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg shadow-wood/10">
+            <Image
+              src="/images/press/latvia/chisel-joinery-closeup.jpg"
+              alt="Closeup of hand-cut timber joinery"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Latvia barn photo */}
+      <section className="max-w-5xl mx-auto px-6 pb-12">
+        <div className="relative aspect-[21/9] rounded-xl overflow-hidden shadow-2xl shadow-wood/10">
+          <Image
+            src="/images/press/latvia/barn-evening-wide.jpg"
+            alt="Traditional timber frame barn in Latvia at dusk"
             fill
             className="object-cover"
           />
@@ -179,7 +217,7 @@ export default function About() {
         <div className="max-w-5xl mx-auto px-6 py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <p className="font-serif text-3xl md:text-4xl text-amber">351K</p>
+              <p className="font-serif text-3xl md:text-4xl text-amber">352K</p>
               <p className="text-wood-light/60 text-sm mt-1">YouTube subscribers</p>
             </div>
             <div>

@@ -11,72 +11,55 @@ export const metadata: Metadata = {
 export default function ToolsPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
-      <div className="max-w-2xl mb-16">
-        <h1 className="font-serif text-4xl md:text-5xl text-wood mb-4">
-          Tools & Links
-        </h1>
-        <p className="text-wood-light/80 text-lg">
-          Everything I actually use in my workshop. No filler, no paid
-          placements disguised as recommendations — just the tools I reach for
-          every day.
-        </p>
-        <p className="text-wood-light/60 text-sm mt-3">
-          Some links are affiliate links — they cost you nothing extra but help
-          support the channel. Items marked{" "}
-          <span className="text-amber font-medium">Ambassador</span> are from
-          brands I officially work with.
-        </p>
+      <div className="grid md:grid-cols-2 gap-10 md:gap-14 mb-16 items-center">
+        <div>
+          <h1 className="font-serif text-4xl md:text-5xl text-wood mb-4">
+            Tools & Links
+          </h1>
+          <p className="text-wood-light/80 text-lg">
+            People ask me all the time about the tools I use, so I decided to
+            put them all on the website with my comments on each one.
+          </p>
+          <p className="text-wood-light/80 text-lg mt-3">
+            I like to find places where to buy them all over the world. Some
+            links are affiliate links, some are not. If you buy something
+            using my links, thank you. It helps keeping the lights on in my
+            shop.
+          </p>
+          <p className="text-wood-light/60 text-sm mt-3">
+            Items marked{" "}
+            <span className="text-amber font-medium">Ambassador</span> are
+            from brands I officially work with.
+          </p>
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/jesper-workshop-tools.jpg"
+          alt="Jesper in the workshop"
+          className="w-full rounded-xl"
+        />
       </div>
 
-      <div className="space-y-16">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((category) => {
-          const categoryTools = getToolsByCategory(category.title);
+          const count = getToolsByCategory(category.title).length;
           return (
-            <section key={category.title}>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-2xl">{category.icon}</span>
-                <div>
-                  <h2 className="font-serif text-2xl text-wood">
-                    {category.title}
-                  </h2>
-                  <p className="text-wood-light/60 text-sm">
-                    {category.description}
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {categoryTools.map((tool) => (
-                  <Link
-                    key={tool.slug}
-                    href={`/tools/${tool.slug}`}
-                    className="group bg-white/60 rounded-xl p-5 border border-wood/5 hover:border-amber/20 transition-colors"
-                  >
-                    <div className="w-full aspect-[4/3] rounded-lg bg-wood/5 flex items-center justify-center mb-4">
-                      <span className="text-3xl opacity-40">
-                        {tool.categoryIcon}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-serif text-lg text-wood group-hover:text-amber transition-colors">
-                        {tool.name}
-                      </h3>
-                      {tool.badge && (
-                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber/10 text-amber border border-amber/20">
-                          {tool.badge}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-wood-light/70 text-sm line-clamp-2 mb-3">
-                      {tool.description}
-                    </p>
-                    <span className="text-sm font-medium text-amber group-hover:text-amber/80 transition-colors">
-                      View details &rarr;
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </section>
+            <Link
+              key={category.slug}
+              href={`/tools/category/${category.slug}`}
+              className="group bg-white/60 rounded-xl p-8 border border-wood/5 hover:border-amber/20 transition-colors flex flex-col"
+            >
+              <span className="text-4xl mb-4">{category.icon}</span>
+              <h2 className="font-serif text-xl text-wood group-hover:text-amber transition-colors mb-2">
+                {category.title}
+              </h2>
+              <p className="text-wood-light/70 text-sm mb-4 flex-1">
+                {category.description}
+              </p>
+              <span className="text-xs font-medium text-wood-light/50">
+                {count} {count === 1 ? "item" : "items"}
+              </span>
+            </Link>
           );
         })}
       </div>

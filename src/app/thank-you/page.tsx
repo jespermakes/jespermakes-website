@@ -7,24 +7,23 @@ export const metadata: Metadata = {
 
 const PRODUCT_INFO: Record<
   string,
-  { name: string; download?: { href: string; label: string } }
+  { name: string; hasDownload: boolean }
 > = {
   "pallet-starter-kit": {
     name: "Pallet Builder\u2019s Starter Kit",
+    hasDownload: false,
+  },
+  "workshop-wall-charts": {
+    name: "Jesper\u2019s Cheat Sheets",
+    hasDownload: true,
   },
   "cone-lamp-laser": {
     name: "Cone Lamp Laser File",
-    download: {
-      href: "/downloads/cone-lamp-laser.svg",
-      label: "Download SVG file",
-    },
+    hasDownload: true,
   },
   "cone-lamp-3dprint": {
     name: "Cone Lamp 3D Print Files",
-    download: {
-      href: "/downloads/cone-lamp-3dprint.zip",
-      label: "Download ZIP file",
-    },
+    hasDownload: true,
   },
 };
 
@@ -63,16 +62,10 @@ export default async function ThankYou({
             <p className="text-wood-light/80 text-lg leading-relaxed mb-2">
               Your purchase of <strong>{product.name}</strong> is complete.
             </p>
-            {product.download ? (
-              <div className="mt-6">
-                <a
-                  href={product.download.href}
-                  download
-                  className="inline-block bg-amber hover:bg-amber-dark text-cream px-8 py-4 rounded-lg font-medium text-lg transition-colors"
-                >
-                  {product.download.label}
-                </a>
-              </div>
+            {product.hasDownload ? (
+              <p className="text-wood-light/60 text-sm mt-2">
+                Sign in to your account to download your files.
+              </p>
             ) : (
               <p className="text-wood-light/60 text-sm mt-2">
                 We will email you soon with your files.
@@ -85,13 +78,35 @@ export default async function ThankYou({
               Your purchase is complete.
             </p>
             <p className="text-wood-light/60 text-sm">
-              Head back to the shop to see all available products.
+              Head to your account to download your files.
             </p>
           </>
         )}
       </div>
 
-      <div className="flex flex-wrap justify-center gap-4 mt-8">
+      {/* Account prompt */}
+      <div className="bg-wood/5 rounded-xl p-6 mt-8 mb-8 max-w-md mx-auto">
+        <p className="text-wood font-serif text-lg mb-2">Get your downloads</p>
+        <p className="text-wood-light/70 text-sm mb-4">
+          Create an account or sign in to download your files anytime.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Link
+            href="/signup"
+            className="inline-block bg-amber text-cream px-6 py-2.5 rounded-lg font-medium hover:bg-amber-dark transition-colors text-sm"
+          >
+            Create account
+          </Link>
+          <Link
+            href="/login"
+            className="inline-block bg-wood text-cream px-6 py-2.5 rounded-lg font-medium hover:bg-wood/90 transition-colors text-sm"
+          >
+            Sign in
+          </Link>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-4">
         <Link
           href="/shop"
           className="inline-block bg-amber hover:bg-amber-dark text-cream px-6 py-3 rounded-lg font-medium transition-colors"

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { tools, getToolBySlug, getToolsByCategory } from "@/data/tools";
+import { tools, getToolBySlug, getToolsByCategory, getCategoryByTitle } from "@/data/tools";
 
 type Props = {
   params: { slug: string };
@@ -37,16 +37,26 @@ export default function ToolPage({ params }: Props) {
   const relatedTools = getToolsByCategory(tool.category).filter(
     (t) => t.slug !== tool.slug
   );
+  const category = getCategoryByTitle(tool.category);
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-wood-light/60 mb-10">
         <Link href="/tools" className="hover:text-amber transition-colors">
-          Tools
+          Tools & Links
         </Link>
         <span>/</span>
-        <span className="text-wood-light/40">{tool.category}</span>
+        {category ? (
+          <Link
+            href={`/tools/category/${category.slug}`}
+            className="hover:text-amber transition-colors"
+          >
+            {tool.category}
+          </Link>
+        ) : (
+          <span className="text-wood-light/40">{tool.category}</span>
+        )}
         <span>/</span>
         <span className="text-wood">{tool.name}</span>
       </nav>
@@ -87,6 +97,96 @@ export default function ToolPage({ params }: Props) {
           </p>
         </div>
       </div>
+
+      {/* Photo Gallery */}
+      {tool.gallery && tool.gallery.length > 0 && (
+        <section className="mb-16">
+          <h2 className="font-serif text-2xl text-wood mb-6">Photos</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {tool.gallery.map((src, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={i}
+                src={src}
+                alt={`${tool.name} photo ${i + 1}`}
+                className="w-full aspect-[4/3] object-cover rounded-xl"
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Color Grid */}
+      {tool.colorGrid && tool.colorGrid.length > 0 && (
+        <section className="mb-16">
+          <h2 className="font-serif text-2xl text-wood mb-6">Color Range</h2>
+          {(() => {
+            const collections = new Set(tool.colorGrid.map((s) => s.collection).filter(Boolean));
+            if (collections.size > 0) {
+              return Array.from(collections).map((collection) => (
+                <div key={collection} className="mb-8 last:mb-0">
+                  <h3 className="text-sm font-medium text-wood-light/60 uppercase tracking-wide mb-4">
+                    {collection}
+                  </h3>
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                    {tool.colorGrid!
+                      .filter((s) => s.collection === collection)
+                      .map((swatch) => (
+                        <div key={swatch.name} className="flex flex-col items-center gap-1.5">
+                          <div
+                            className="w-12 h-12 sm:w-12 sm:h-12 rounded-lg border border-wood/10"
+                            style={{ backgroundColor: swatch.hex }}
+                          />
+                          <span className="text-xs text-wood-light/70 text-center leading-tight">
+                            {swatch.name}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ));
+            }
+            return (
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                {tool.colorGrid.map((swatch) => (
+                  <div key={swatch.name} className="flex flex-col items-center gap-1.5">
+                    <div
+                      className="w-12 h-12 sm:w-12 sm:h-12 rounded-lg border border-wood/10"
+                      style={{ backgroundColor: swatch.hex }}
+                    />
+                    <span className="text-xs text-wood-light/70 text-center leading-tight">
+                      {swatch.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
+          {tool.slug === "rubio-monocoat-oil-plus-2c" && (
+            <p className="text-wood-light/50 text-xs mt-4">
+              Colors shown are approximate. Results vary by wood species and preparation. Always test on a sample first.
+            </p>
+          )}
+        </section>
+      )}
+
+      {/* Product List */}
+      {tool.productList && tool.productList.length > 0 && (
+        <section className="mb-16">
+          <h2 className="font-serif text-2xl text-wood mb-6">Included Products</h2>
+          <ul className="space-y-2">
+            {tool.productList.map((product) => (
+              <li
+                key={product}
+                className="flex items-center gap-3 bg-white/60 rounded-xl p-4 border border-wood/5"
+              >
+                <span className="text-amber">&#x2022;</span>
+                <span className="text-wood">{product}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Buy Links */}
       <section className="mb-16">

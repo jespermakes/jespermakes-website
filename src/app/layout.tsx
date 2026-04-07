@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { Analytics } from "@vercel/analytics/react";
 import { auth } from "@/lib/auth";
 import { SiteJsonLd } from "@/components/site-json-ld";
+import { MobileNav } from "@/components/mobile-nav";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -48,21 +49,15 @@ async function Header() {
         <Link href="/" className="flex items-center">
           <Image src="/logo.png" alt="Jesper Makes Workshop" width={52} height={52} className="rounded-full" />
         </Link>
-        <div className="flex items-center gap-8 text-sm font-sans">
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-8 text-sm font-sans">
           <Link
             href="/shop"
             className="text-wood-light hover:text-amber transition-colors"
           >
             Shop
           </Link>
-          {/* Desktop: dropdown, Mobile: direct link */}
-          <Link
-            href="/tools"
-            className="text-wood-light hover:text-amber transition-colors sm:hidden"
-          >
-            Tools & Links
-          </Link>
-          <div className="relative group hidden sm:block">
+          <div className="relative group">
             <Link
               href="/tools"
               className="text-wood-light hover:text-amber transition-colors"
@@ -79,6 +74,7 @@ async function Header() {
                   { title: "3D Printing & Laser", slug: "3d-printing-laser", icon: "🖨️" },
                   { title: "Workshop Essentials", slug: "workshop-essentials", icon: "🔧" },
                   { title: "Office & YouTube Gear", slug: "office-youtube", icon: "📷" },
+                  { title: "Gardening & Outdoors", slug: "gardening-outdoors", icon: "🌿" },
                 ].map((cat) => (
                   <Link
                     key={cat.slug}
@@ -137,6 +133,8 @@ async function Header() {
             </a>
           </div>
         </div>
+        {/* Mobile nav */}
+        <MobileNav userName={session?.user?.name?.split(" ")[0]} />
       </nav>
     </header>
   );
@@ -150,29 +148,35 @@ function Footer() {
           <Image src="/logo.png" alt="Jesper Makes Workshop" width={32} height={32} className="rounded-full opacity-60" />
           <p>&copy; {new Date().getFullYear()} Jesper Makes Workshop</p>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-          <Link href="/shop" className="hover:text-amber transition-colors">
-            Shop
-          </Link>
-          <Link href="/tools" className="hover:text-amber transition-colors">
-            Tools
-          </Link>
-          <Link href="/about" className="hover:text-amber transition-colors">
-            About
-          </Link>
-          <Link href="/contact" className="hover:text-amber transition-colors">
-            Contact
-          </Link>
-          <span className="text-wood/20">·</span>
-          <Link href="/refund" className="hover:text-amber transition-colors">
-            Refund Policy
-          </Link>
-          <Link href="/privacy" className="hover:text-amber transition-colors">
-            Privacy
-          </Link>
-          <Link href="/terms" className="hover:text-amber transition-colors">
-            Terms
-          </Link>
+        <div className="flex flex-col items-center sm:items-end gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            <Link href="/shop" className="hover:text-amber transition-colors">
+              Shop
+            </Link>
+            <Link href="/tools" className="hover:text-amber transition-colors">
+              Tools
+            </Link>
+            <Link href="/blog" className="hover:text-amber transition-colors">
+              Blog
+            </Link>
+            <Link href="/about" className="hover:text-amber transition-colors">
+              About
+            </Link>
+            <Link href="/contact" className="hover:text-amber transition-colors">
+              Contact
+            </Link>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-wood-light/40">
+            <Link href="/refund" className="hover:text-amber transition-colors">
+              Refund Policy
+            </Link>
+            <Link href="/privacy" className="hover:text-amber transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-amber transition-colors">
+              Terms
+            </Link>
+          </div>
           <div className="flex items-center gap-4">
             <a href="https://youtube.com/@jespermakes" target="_blank" rel="noopener noreferrer" className="hover:text-amber transition-colors" aria-label="YouTube">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z"/></svg>

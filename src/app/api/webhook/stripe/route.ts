@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { db } from "@/lib/db";
+import { users, purchases } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 export const runtime = "nodejs";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!);
+}
 
 // Resend audience ID — resolved once per cold start
 let audienceId: string | null = null;
@@ -36,6 +41,16 @@ async function getOrCreateAudienceId(): Promise<string> {
   return audienceId!;
 }
 
+// --------------- product names for purchase records ---------------
+
+const PRODUCT_NAMES: Record<string, string> = {
+  "workshop-wall-charts": "Jesper's Cheat Sheets",
+  "cone-lamp-laser": "Cone Lamp Laser File",
+  "cone-lamp-3dprint": "Cone Lamp 3D Print Files",
+  "workshop-tee": "Jesper Makes Workshop Tee",
+  "pallet-starter-kit": "The Pallet Builder's Starter Kit",
+};
+
 // --------------- email templates ---------------
 
 interface EmailData {
@@ -46,13 +61,15 @@ interface EmailData {
 
 function buildEmail({ to, firstName, sku }: EmailData) {
   const greeting = firstName ? `Hi ${firstName},` : "Hi there,";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jespermakes.com";
 
   const button = (label: string, href: string) =>
     `<a href="${href}" style="display:inline-block;padding:14px 32px;background:#C17F3C;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold;font-size:16px">${label}</a>`;
 
   const footer = `
-    <p style="margin-top:32px;color:#666">Keep this email — it is the only way to re-download your files.</p>
-    <p style="margin-top:24px">Jesper<br/><span style="color:#888">Jesper Makes</span></p>`;
+    <p style="margin-top:24px;color:#666;font-size:14px">Sign in to your account to re-download your files anytime:</p>
+    <p style="margin:8px 0 32px 0">${button("Go to My Account", `${siteUrl}/account`)}</p>
+    <p>Jesper<br/><span style="color:#888">Jesper Makes</span></p>`;
 
   if (sku === "cone-lamp-3dprint") {
     return {
@@ -63,7 +80,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
           <p>${greeting}</p>
           <p>Thank you for your purchase! Your Cone Lamp 3D print files are ready.</p>
-          <p style="margin:28px 0">${button("Download 3D Print Files", "https://jespermakes.com/downloads/cone-lamp-3dprint.zip")}</p>
+          <p>Create an account (or sign in) to download your files anytime from your account page.</p>
           ${footer}
         </div>`,
     };
@@ -73,13 +90,13 @@ function buildEmail({ to, firstName, sku }: EmailData) {
     return {
       to,
       from: "Jesper Makes <hello@jespermakes.com>",
-      subject: "Your Workshop Wall Charts — Download",
+      subject: "Your Cheat Sheets — Download",
       html: `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
           <p>${greeting}</p>
-          <p>Thank you for your purchase! Your Workshop Wall Charts are ready to download.</p>
+          <p>Thank you for your purchase! Your Cheat Sheets are ready.</p>
           <p>Print all 8 pages on A4 (or US Letter) and pin them to your workshop wall. No more Googling the same things over and over.</p>
-          <p style="margin:28px 0">${button("Download Wall Charts (PDF)", "https://jespermakes.com/downloads/workshop-wall-charts.pdf")}</p>
+          <p>Sign in to your account to download your files:</p>
           ${footer}
         </div>`,
     };
@@ -94,7 +111,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
           <p>${greeting}</p>
           <p>Thank you for your purchase! Your Cone Lamp laser file is ready.</p>
-          <p style="margin:28px 0">${button("Download Laser File", "https://jespermakes.com/downloads/cone-lamp-laser.svg")}</p>
+          <p>Sign in to your account to download your files:</p>
           ${footer}
         </div>`,
     };
@@ -117,7 +134,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
 // --------------- webhook handler ---------------
 
 export async function POST(request: Request) {
-  
+
   const body = Buffer.from(await request.arrayBuffer());
   const sig = request.headers.get("stripe-signature");
 
@@ -127,6 +144,7 @@ export async function POST(request: Request) {
 
   let event: Stripe.Event;
   try {
+    const stripe = getStripe();
     event = stripe.webhooks.constructEvent(
       body,
       sig,
@@ -223,7 +241,7 @@ export async function POST(request: Request) {
           const merchEmail = {
             to: email,
             from: "Jesper Makes <hello@jespermakes.com>",
-            subject: "Your Workshop Tee is on its way! 🎉",
+            subject: "Your Workshop Tee is on its way!",
             html: `
               <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
                 <p>${firstName ? `Hi ${firstName},` : "Hi there,"}</p>
@@ -270,6 +288,53 @@ export async function POST(request: Request) {
         }
       } catch (err) {
         console.error("Failed to add contact to audience:", err);
+      }
+
+      // Link purchase to user account (create user if needed)
+      try {
+        // Find or create user by email
+        let user = await db.query.users.findFirst({
+          where: eq(users.email, email),
+        });
+
+        if (!user) {
+          const [newUser] = await db
+            .insert(users)
+            .values({
+              email,
+              name: name || null,
+              stripeCustomerId: typeof session.customer === "string" ? session.customer : null,
+              newsletterSubscribed: true,
+            })
+            .returning();
+          user = newUser;
+          console.log("Created user for purchase:", email);
+        } else if (!user.stripeCustomerId && typeof session.customer === "string") {
+          // Link Stripe customer ID if not already set
+          await db
+            .update(users)
+            .set({ stripeCustomerId: session.customer, updatedAt: new Date() })
+            .where(eq(users.id, user.id));
+        }
+
+        // Record the purchase with full details
+        if (user) {
+          const amountTotal = session.amount_total;
+          const currency = session.currency || "eur";
+
+          await db.insert(purchases).values({
+            userId: user.id,
+            sku,
+            productName: PRODUCT_NAMES[sku] || sku,
+            amount: amountTotal || null,
+            currency,
+            stripeSessionId: session.id,
+            stripeCustomerId: typeof session.customer === "string" ? session.customer : null,
+          });
+          console.log("Recorded purchase:", sku, "for user:", email);
+        }
+      } catch (err) {
+        console.error("Failed to link purchase to user:", err);
       }
     }
   }

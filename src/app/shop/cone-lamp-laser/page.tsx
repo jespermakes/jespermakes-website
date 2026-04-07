@@ -12,15 +12,17 @@ const images = [
 ];
 
 const includes = [
-  { name: "Stretcher A", desc: "Main structural support piece" },
-  { name: "Stretcher B", desc: "Cross support piece" },
-  { name: "Blade XS", desc: "Extra small blade" },
-  { name: "Blade S", desc: "Small blade" },
-  { name: "Blade M", desc: "Medium blade" },
-  { name: "Blade L", desc: "Large blade" },
-  { name: "Blade XL", desc: "Extra large blade" },
-  { name: "Top circle", desc: "Top closure piece" },
-  { name: "Bottom circle", desc: "Bottom closure piece" },
+  { name: "SVG Laser Cut File", qty: "1", desc: "All shapes in one file, ready to cut" },
+  { name: "PDF Assembly Guide", qty: "1", desc: "Step-by-step instructions with cut list and build video link" },
+  { name: "Bottom circle", qty: "1", desc: "Base of the lamp" },
+  { name: "Top circles", qty: "2", desc: "Top closure pieces" },
+  { name: "Stretcher A", qty: "12", desc: "Main structural support" },
+  { name: "Stretcher B", qty: "12", desc: "Cross support" },
+  { name: "Blade XL", qty: "48", desc: "Extra large blades" },
+  { name: "Blade L", qty: "24", desc: "Large blades" },
+  { name: "Blade M", qty: "24", desc: "Medium blades" },
+  { name: "Blade S", qty: "24", desc: "Small blades" },
+  { name: "Blade XS", qty: "12", desc: "Extra small blades" },
 ];
 
 export default function ConeLampLaser() {
@@ -72,16 +74,25 @@ export default function ConeLampLaser() {
           </h1>
           <p className="text-3xl text-amber font-serif mb-6">€5</p>
 
-          <p className="text-wood-light/80 leading-relaxed mb-8">
-            The SVG laser cut file for the Jesper Makes Cone Lamp. Works with
-            any laser cutter. Includes all parts — stretchers A &amp; B, blades
-            XS/S/M/L/XL, top and bottom circles.
+          <p className="text-wood-light/80 leading-relaxed mb-4">
+            The SVG laser cut template for the Jesper Makes Cone Lamp. One file
+            with all the shapes you need. Works with any laser cutter.
           </p>
+
+          <div className="bg-wood/5 rounded-xl p-5 mb-8 space-y-2">
+            <p className="text-wood font-medium text-sm">Before you cut:</p>
+            <ul className="text-wood-light/70 text-sm space-y-1 list-disc pl-5">
+              <li>Designed for <strong className="text-wood">6.4mm thick material</strong>: plywood, acrylic, cardboard, MDF</li>
+              <li>One SVG file with all shapes included</li>
+              <li>159 total pieces to cut (see full list below)</li>
+              <li>No special tools beyond a laser cutter needed</li>
+            </ul>
+          </div>
 
           <BuyButton />
 
           <p className="text-wood-light/50 text-xs mt-3">
-            Instant SVG download after purchase. Secure payment via Stripe.
+            Instant download after purchase: SVG file + PDF assembly guide. Secure payment via Stripe.
           </p>
         </div>
       </div>
@@ -97,13 +108,20 @@ export default function ConeLampLaser() {
               key={item.name}
               className="border border-wood/10 rounded-xl p-6 hover:border-amber/30 transition-colors"
             >
-              <h3 className="font-serif text-lg text-wood mb-1">
-                {item.name}
-              </h3>
+              <div className="flex items-baseline justify-between mb-1">
+                <h3 className="font-serif text-lg text-wood">
+                  {item.name}
+                </h3>
+                <span className="text-amber font-medium text-sm">x{item.qty}</span>
+              </div>
               <p className="text-wood-light/60 text-sm">{item.desc}</p>
             </div>
           ))}
         </div>
+
+        <p className="text-wood-light/50 text-sm mt-6">
+          Total: 159 pieces from one SVG file. Material: 6.4mm plywood, acrylic, or cardboard.
+        </p>
       </div>
     </div>
   );

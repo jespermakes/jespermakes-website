@@ -6,8 +6,8 @@ import { BuyButton } from "./buy-button";
 
 const images = [
   {
-    src: "/images/products/wall-charts-hero.jpg",
-    alt: "Workshop Wall Charts - all 8 pages fanned out",
+    src: "/images/products/cheat-sheets-hero.jpg",
+    alt: "Jesper with his Cheat Sheets in the workshop",
   },
   {
     src: "/images/products/wall-charts-page-1.jpg",
@@ -112,18 +112,20 @@ export default function WorkshopWallCharts() {
             </span>
           </div>
           <h1 className="font-serif text-3xl md:text-4xl text-wood mb-2">
-            Workshop Wall Charts
+            Jesper&apos;s Cheat Sheets
           </h1>
           <p className="text-wood-light/60 text-sm mb-1">
-            8 printable reference sheets for your workshop
+            8 printable reference sheets for your workshop wall
           </p>
           <p className="text-3xl text-amber font-serif mb-6">&euro;3</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-6">
-            Every chart, table, and conversion you keep Googling, beautifully
-            designed on 8 printable A4 pages. Print them out. Pin them to your
-            workshop wall. Never Google &ldquo;pilot hole size for #8
-            screw&rdquo; again.
+            These started as notes on my own workshop wall because I keep
+            forgetting things. Pilot hole sizes, sandpaper grits, joinery
+            types. I&apos;m a fumbler and I need the cheat-way to do things.
+            So I made them into proper printable sheets and now they&apos;re
+            available for everyone. Print them out, pin them up, stop Googling
+            the same stuff over and over.
           </p>
 
           <div className="bg-wood/5 rounded-lg p-4 mb-6">

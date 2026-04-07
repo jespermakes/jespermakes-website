@@ -162,7 +162,7 @@ export default function Contact() {
               Find me online
             </h3>
             <p className="text-wood-light/60 text-sm mb-6">
-              For quick questions, DMs are often faster than email.
+              I don&apos;t reply to DM&apos;s on social platforms. Send me an email to get in touch.
             </p>
             <div className="space-y-4">
               <a

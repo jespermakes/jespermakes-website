@@ -31,7 +31,7 @@ const PRODUCTS: Record<string, ProductConfig> = {
     price: 500,
   },
   "workshop-wall-charts": {
-    name: "Workshop Wall Charts",
+    name: "Jesper's Cheat Sheets",
     description:
       "8 printable A4 reference sheets for your workshop wall. Wood species, sandpaper, joinery, screws, drill bits, conversions, angles, and safety.",
     price: 300,
