@@ -14,6 +14,99 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "tom-timber-framing-course-denmark-june-2026",
+    title: "Tom Is Coming to Denmark: A Timber Framing Course in June",
+    description:
+      "Tom Schotman from Northmen Guild is teaching a six-day timber framing course in Central Jutland, June 15 to 20. Ten spots. I'll be there as a student. Here's why you should come.",
+    publishedAt: "2026-04-09",
+    author: "Jesper",
+    tags: ["timber framing", "northmen", "course", "latvia", "denmark", "craftsmanship", "tom schotman"],
+    heroImage: "/images/blog/tom-timber-course-denmark.png",
+    heroImageAlt: "Tom Schotman of Northmen Guild peering through a raised post-and-beam timber frame. Text overlay: Timberframe Course, June 15-20 2026, Location Brande Denmark",
+    content: `## The Invitation
+
+Two years ago, a guy named Tom told me to come to Latvia and learn some real woodworking.
+
+That's not exactly what he said. Tom is a craftsman from The Northmen Guild, and Tom is more humble than that. But that was the gist of it, and I took him up on it. Ten days with axes, chisels, and big green timbers. Hand tools only. No power tools, no shortcuts. My body hurt. My head was quiet. It's still one of the best weeks I've ever spent with wood.
+
+I wrote about that trip in [The Hardest Year of My Life](/blog). Latvia was the part of the year where something cracked open for me. Where I stopped being the guy who builds things from pallets on YouTube and started thinking about what traditional timber framing could actually look like in my own hands, on my own property, in my own barn.
+
+Tom has become a good friend since then. He's the person I call when I'm stuck on a piece of joinery and I don't know what to do next. He was standing in my workshop not long ago, drinking coffee and looking at a problem I'd been wrestling with for days. He's the closest thing I have to a teacher in this craft, and I mean that in the old sense of the word.
+
+This June, he's coming to Denmark to teach a course. And I wanted to tell you about it, because I think some of you should be there.
+
+---
+
+## What the Course Is
+
+It's a six-day timber framing course, **June 15 to 20, 2026**, in Brande in Central Jutland. Tom Schotman from Northmen is the guest teacher. The host is Mads Kragelund, a joiner and constructing architect who runs Vildmarksoplevelser, a forest property on Harrild Hede where he's been teaching traditional crafts and running outdoor courses for years. Tom has helped Mads build shelters and houses on the property, so this is familiar ground for both of them.
+
+Over the week, you'll build a traditional post-and-beam timber frame from scratch. Layout, scribing, mortise and tenon joinery, the whole thing.
+
+One important note: unlike the Latvia course, which is hand tools only, this one uses both hand tools and the best Mafell power tools on the market. If you've always wanted to learn traditional timber framing but in a way that translates to a working shop with deadlines and real projects, this is that course. You'll learn the old joinery and the modern tools that can cut it faster without losing the soul of it.
+
+You'll also learn the history of timber framing, how to read drawings, how to choose the right wood, how to sharpen the tools that cut it, and how to handle and raise large timbers safely.
+
+On the last day, Saturday June 20, we raise the frame. Traditional topping-out celebration. Grilled sausage. Group photo. Then we go home tired and changed.
+
+There are 10 spots. The course fee is **1,350 euros** and it covers everything. Tuition, materials, accommodation, and full board for all six days. You sleep in a Norwegian log cabin by the Holtum river, or in a tent, or in one of the big log lean-to shelters if that's more your thing. There's a sauna. There's a hot tub in the woods. There's a campfire. And in the evenings, there's the thing that always matters most on courses like this. Time to sit around and talk about wood with people who actually care about it.
+
+📄 **[Download the full course invitation (PDF)](/downloads/timber-frame-course-denmark-june-2026.pdf)**
+
+---
+
+## Why I'm Telling You
+
+A few reasons.
+
+The first is that Tom is the real thing. I don't say that lightly. I've met a lot of woodworkers over the years, and there's a particular kind of person who has given their life to the old ways without turning it into a performance. Tom is one of them. The quality of his work, the quality of his tools, the quality of his attention. It's all on a level that's hard to find anywhere.
+
+And I've seen him teach. He's patient, precise, generous with what he knows, and he doesn't make beginners feel like beginners. He makes them feel like apprentices.
+
+The second is that I'm going. Not as a teacher. As a student. I did this with Tom in Latvia and I'd happily do it again, and the idea of doing it two hours from home instead of flying across the Baltic is, honestly, a small miracle.
+
+The third is that a course like this is not just about learning joinery. It's about spending a week in a place where the phone doesn't matter and the work is real and the people around you care about the same things you care about. If you've never done something like this before, I understand it sounds like a lot of money and a lot of days. It is. But you get a week back that feels longer than a week, and skills that change how you see every piece of wood you touch for the rest of your life. That's not a bad trade.
+
+---
+
+## Who It's For
+
+Anyone who's curious. You don't need professional experience. Latvia had everyone from beginners to working carpenters, and the course was challenging for all of us in different ways. If you've been watching timber framing videos on YouTube and thinking "I'd like to try that one day," this is the one I'd point you at.
+
+This version of the course is probably especially good for people who already work with power tools and want to add traditional joinery to what they can do. You'll walk out of the week with mortise and tenon skills that scale into real projects, not just museum-piece demonstrations.
+
+And if you've been watching my videos and thinking it might be fun to share a week in the workshop with the person behind them. Well. Here's your chance. I'll be there the whole time, covered in wood chips, probably complaining about my back.
+
+---
+
+## How to Sign Up
+
+Details and registration go through Mads. His contact is:
+
+**Mads Kragelund**
+Email: [mads@vildmarksoplevelser.dk](mailto:mads@vildmarksoplevelser.dk)
+Phone: +45 53 19 48 37
+
+Tell him Jesper sent you. Or don't. He'll figure it out either way.
+
+The course is limited to 10 people, and when it's full, it's full. I don't know how fast it'll go, but I'd move sooner rather than later if you're serious about it.
+
+When you register, Mads will send you the full program, a tool list, and the practical details. You can also [download the course invitation PDF here](/downloads/timber-frame-course-denmark-june-2026.pdf) for all the essentials in one place.
+
+If you want to see the kind of work a course like this produces before you commit, the YouTube video I made about the Latvia course is the best look I can give you at what a week of timber framing actually feels like from the inside. Keep in mind Latvia was hand tools only. Denmark will be faster in places, but the joinery and the spirit are the same.
+
+---
+
+## One Last Thing
+
+This is not a sponsored post. Tom is a friend and a teacher I trust with my own hands, and the course is something I believe in enough to go to again myself.
+
+If any of this sounds like your kind of week, come. And if it doesn't, no hard feelings. Just know that this kind of teaching, from this kind of teacher, doesn't come around often.
+
+I'll see some of you in June.
+`,
+  },
+  {
     slug: "planter-box-finger-joints",
     title: "Box Joints for the Garden Planters",
     description:
