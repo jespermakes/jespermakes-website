@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -25,6 +25,7 @@ interface VideoInfo {
 interface UrlAnalysisResult {
   video: VideoInfo;
   hasTranscript: boolean;
+  videoSummary?: string;
   currentTitleDiagnosis: string;
   jesperStyle: TitleSuggestion[];
   mrbeastStyle: TitleSuggestion[];
@@ -231,15 +232,27 @@ function RepackageTab() {
               </div>
               {result.hasTranscript ? (
                 <span className="text-xs text-emerald-600/50 mt-1 inline-block">
-                  ✓ Transcript analyzed
+                  ✓ Video content analyzed
                 </span>
               ) : (
                 <span className="text-xs text-wood-light/25 mt-1 inline-block">
-                  No transcript available — analysis based on metadata only
+                  Limited context — analysis based on metadata only
                 </span>
               )}
             </div>
           </div>
+
+          {/* Video summary */}
+          {result.videoSummary && (
+            <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-5 mb-2.5">
+              <p className="text-[10px] font-bold tracking-[0.15em] text-wood-light/25 mb-2">
+                WHAT THE AI FOUND
+              </p>
+              <p className="text-sm text-wood-light/[0.55] leading-relaxed">
+                {result.videoSummary}
+              </p>
+            </div>
+          )}
 
           {/* Diagnosis */}
           <div
@@ -656,6 +669,197 @@ function PlaybookTab() {
   );
 }
 
+// ─── Tab: My Real Data ──────────────────────────────────────────────────────
+
+interface ChannelStats {
+  avgCtr: number;
+  avgViews: number;
+  totalViews: number;
+  subscribers: number;
+  topPatterns: { pattern: string; avgViews: number; count: number }[];
+}
+
+interface ChannelVideo {
+  id: string;
+  title: string;
+  thumbnail: string;
+  views: number;
+  publishedAt: string;
+  duration: string;
+  previousTitles?: string[];
+}
+
+function DataTab() {
+  const [stats, setStats] = useState<ChannelStats | null>(null);
+  const [videos, setVideos] = useState<ChannelVideo[]>([]);
+  const [filter, setFilter] = useState<"all" | "outliers" | "repackaged">("all");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const [statsRes, casesRes] = await Promise.all([
+          fetch("/api/title-lab/stats"),
+          fetch("/api/title-lab/cases"),
+        ]);
+        if (!statsRes.ok || !casesRes.ok) throw new Error("Failed to load data");
+        setStats(await statsRes.json());
+        setVideos(await casesRes.json());
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center py-16">
+        <Dots />
+        <p className="text-sm text-wood-light/30 mt-4">Loading channel data...</p>
+      </div>
+    );
+  }
+
+  if (error || !stats) {
+    return (
+      <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+        {error || "Failed to load data"}
+      </div>
+    );
+  }
+
+  const filtered = videos.filter((v) => {
+    if (filter === "outliers") return v.views > stats.avgViews * 3;
+    if (filter === "repackaged") return v.previousTitles && v.previousTitles.length > 0;
+    return true;
+  });
+
+  return (
+    <div>
+      {/* Stats cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-6">
+        {[
+          { label: "SUBSCRIBERS", value: fmt(stats.subscribers) },
+          { label: "AVG CTR", value: `${stats.avgCtr}%` },
+          { label: "AVG VIEWS", value: fmt(stats.avgViews) },
+          { label: "TOTAL VIEWS", value: fmt(stats.totalViews) },
+        ].map((s) => (
+          <div
+            key={s.label}
+            className="bg-white/50 border border-wood/[0.06] rounded-2xl p-4 text-center"
+          >
+            <p className="text-[10px] font-bold tracking-[2px] text-wood-light/[0.2] mb-1">
+              {s.label}
+            </p>
+            <p className="font-serif text-2xl font-bold text-wood m-0">{s.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Proven patterns */}
+      {stats.topPatterns.length > 0 && (
+        <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-5 mb-6">
+          <p className="text-[10px] font-bold tracking-[3px] text-wood-light/[0.2] mb-3">
+            PROVEN PATTERNS — RANKED BY AVG VIEWS
+          </p>
+          {stats.topPatterns.map((p, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between py-2 border-b border-wood/[0.04] last:border-0"
+            >
+              <span className="text-sm text-wood font-medium">{p.pattern}</span>
+              <div className="flex items-center gap-4">
+                <span className="text-xs text-wood-light/30">{p.count} videos</span>
+                <span className="text-sm font-semibold text-amber">
+                  {fmt(p.avgViews)} avg
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Filter buttons */}
+      <div className="flex gap-2 mb-4">
+        {(["all", "outliers", "repackaged"] as const).map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={`px-4 py-2 rounded-lg text-xs font-semibold border transition-colors ${
+              filter === f
+                ? "bg-wood text-cream border-wood"
+                : "bg-transparent text-wood-light/40 border-wood/10 hover:border-wood/20"
+            }`}
+          >
+            {f === "all"
+              ? `All videos (${videos.length})`
+              : f === "outliers"
+              ? "Outliers"
+              : "Repackaged"}
+          </button>
+        ))}
+      </div>
+
+      {/* Video list */}
+      <div className="space-y-2">
+        {filtered.slice(0, 50).map((v) => (
+          <a
+            key={v.id}
+            href={`https://youtube.com/watch?v=${v.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white/50 border border-wood/[0.06] rounded-xl p-3 flex gap-3 items-center hover:border-amber/20 transition-colors block"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={v.thumbnail}
+              alt=""
+              className="w-[100px] h-[56px] object-cover rounded-lg shrink-0"
+            />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-wood font-medium truncate">{v.title}</p>
+              {v.previousTitles && v.previousTitles.length > 0 && (
+                <div className="mt-1">
+                  <span className="text-[9px] font-bold tracking-[1px] text-amber/50">
+                    REPACKAGED FROM:
+                  </span>
+                  {v.previousTitles.map((pt, i) => (
+                    <p
+                      key={i}
+                      className="text-xs text-wood-light/30 line-through m-0"
+                    >
+                      {pt}
+                    </p>
+                  ))}
+                </div>
+              )}
+              <div className="flex gap-3 text-xs text-wood-light/25 mt-1">
+                <span>{fmt(v.views)} views</span>
+                <span>
+                  {new Date(v.publishedAt).toLocaleDateString("en-GB", {
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      {filtered.length === 0 && (
+        <p className="text-sm text-wood-light/30 text-center py-8">
+          No videos match this filter.
+        </p>
+      )}
+    </div>
+  );
+}
+
 // ─── Tab Button ─────────────────────────────────────────────────────────────
 
 function TabBtn({
@@ -745,11 +949,20 @@ export default function TitleLabPage() {
         >
           The Playbook
         </TabBtn>
+        <TabBtn
+          active={tab === "data"}
+          onClick={() => setTab("data")}
+          icon="📊"
+          sub="My channel patterns"
+        >
+          My Real Data
+        </TabBtn>
       </div>
 
       {tab === "repackage" && <RepackageTab />}
       {tab === "plan" && <PlanTab />}
       {tab === "playbook" && <PlaybookTab />}
+      {tab === "data" && <DataTab />}
 
       <div className="mt-16 pt-6 border-t border-wood/[0.06] text-center">
         <p className="text-[11px] text-wood-light/[0.15]">

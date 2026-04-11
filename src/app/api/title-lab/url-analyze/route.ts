@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { fetchTranscript } from "youtube-transcript-plus";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY!;
@@ -33,7 +32,7 @@ async function fetchVideoData(videoId: string) {
   return {
     id: item.id,
     title: item.snippet.title,
-    description: item.snippet.description?.slice(0, 1000) || "",
+    description: item.snippet.description || "",
     tags: item.snippet.tags || [],
     channelTitle: item.snippet.channelTitle,
     views: parseInt(item.statistics.viewCount || "0", 10),
@@ -50,28 +49,18 @@ async function fetchVideoData(videoId: string) {
   };
 }
 
-async function fetchVideoTranscript(videoId: string): Promise<string> {
-  try {
-    const segments = await fetchTranscript(videoId);
-    const full = segments.map((s) => s.text).join(" ");
-    return full.slice(0, 3000);
-  } catch {
-    return "";
-  }
-}
-
 // ─── System Prompt ───────────────────────────────────────────────────────────
 
-const SYSTEM_PROMPT = `You are a YouTube title rewriting engine. You will receive metadata about an existing YouTube video — its current title, description, tags, view count, and often a TRANSCRIPT of what is actually said in the video.
+const SYSTEM_PROMPT = `You are a YouTube title rewriting engine. You will receive metadata about an existing YouTube video — its current title, full description, tags, view count, and other data.
 
-The transcript is your most valuable input. It tells you what the video is ACTUALLY about — the real story, the real promise, the real hook. The title and description may be vague or misleading, but the transcript reveals the truth.
+The DESCRIPTION is your most valuable input after the title. YouTube descriptions often contain:
+- Chapter timestamps that reveal the video's structure and key moments
+- Story beats and narrative arc
+- Specific details (materials, costs, timeframes, people involved)
+- The creator's own summary of what happened
+- Links and references that reveal partnerships or context
 
-When a transcript is available:
-- Find the VIEWER PROMISE — what does someone gain from watching this?
-- Find the STORY — what's the narrative arc? What goes wrong? What's surprising?
-- Find the HOOK — what's the most arresting moment or line?
-- Find SPECIFIC DETAILS — numbers, timeframes, dollar amounts, names, results
-- Use these as raw material for your title suggestions
+Mine the description aggressively for the real story, hook, and promise.
 
 You must generate titles in these categories:
 
@@ -99,7 +88,7 @@ MrBeast's title philosophy:
 - Challenge/bet framing when possible
 - Short, punchy, max impact in fewest words
 - Best patterns: "$X vs $Y", "I Survived...", "I Built...", "World's Largest/Most..."
-- IMPORTANT: MrBeast never uses words like "useful" or "helpful" — he uses extreme emotional language like "insane", "impossible", "craziest"
+- IMPORTANT: MrBeast never uses words like "useful" or "helpful" — he uses extreme emotional language
 Generate 3 titles in this style.
 
 3. ALTERNATIVE STRONG TITLES
@@ -112,12 +101,14 @@ These should use other proven YouTube title patterns:
 Generate 4 titles using varied strategies. Label each with the pattern used.
 
 Also provide:
-- A brief diagnosis of the CURRENT title: what's working and what's not (2-3 sentences). If a transcript is available, point out specifically what story or promise the current title is failing to communicate.
+- A brief diagnosis of the CURRENT title: what's working and what's not (2-3 sentences). Point out specifically what story or promise the current title is failing to communicate.
+- A 1-2 sentence summary of what the video is actually about based on the description and metadata
 - One thumbnail concept suggestion that would pair well with your best title suggestion
 
-Respond ONLY with valid JSON:
+Respond ONLY with valid JSON (no markdown, no backticks, no preamble):
 {
   "currentTitleDiagnosis": "<2-3 sentence analysis>",
+  "videoSummary": "<1-2 sentence summary of what the video is actually about>",
   "jesperStyle": [
     { "title": "...", "reasoning": "..." },
     { "title": "...", "reasoning": "..." },
@@ -154,14 +145,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Fetch video metadata and transcript in parallel
-    const [video, transcript] = await Promise.all([
-      fetchVideoData(videoId),
-      fetchVideoTranscript(videoId),
-    ]);
+    const video = await fetchVideoData(videoId);
 
-    const userMessage = `Here is the video to analyze:
+    const userMessage = `Analyze this YouTube video and generate new title suggestions.
 
+VIDEO URL: https://www.youtube.com/watch?v=${videoId}
 CURRENT TITLE: "${video.title}"
 CHANNEL: ${video.channelTitle}
 VIEWS: ${video.views.toLocaleString()}
@@ -169,21 +157,12 @@ LIKES: ${video.likes.toLocaleString()}
 COMMENTS: ${video.comments.toLocaleString()}
 PUBLISHED: ${video.publishedAt}
 DURATION: ${video.duration}
-TAGS: ${video.tags.slice(0, 15).join(", ")}
-DESCRIPTION (first 500 chars): ${video.description.slice(0, 500)}
+TAGS: ${video.tags.slice(0, 20).join(", ")}
 
-${
-  transcript
-    ? `TRANSCRIPT (first ~3000 chars — this is what is ACTUALLY SAID in the video, use it heavily):
-${transcript}`
-    : "TRANSCRIPT: Not available for this video. Base your analysis on title, description, and tags only."
-}
+FULL DESCRIPTION:
+${video.description.slice(0, 2000)}
 
-Generate new title suggestions in all three styles, diagnose the current title, and suggest a thumbnail pairing.${
-      transcript
-        ? " Pay special attention to the transcript — it contains the real story, hook, and promise that the current title may be failing to communicate."
-        : ""
-    }`;
+Generate new title suggestions in all three styles, diagnose the current title, summarize what the video is about, and suggest a thumbnail pairing. Mine the description for specific details, story beats, and the real promise of this video.`;
 
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
@@ -197,7 +176,7 @@ Generate new title suggestions in all three styles, diagnose the current title, 
         },
         body: JSON.stringify({
           model: MODEL,
-          max_tokens: 2000,
+          max_tokens: 3000,
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
             { role: "user", content: userMessage },
@@ -217,8 +196,20 @@ Generate new title suggestions in all three styles, diagnose the current title, 
     const data = await response.json();
     const text = data.choices?.[0]?.message?.content || "";
 
+    // Parse JSON — strip any markdown fences if present
     const clean = text.replace(/```json\s?|```/g, "").trim();
-    const result = JSON.parse(clean);
+
+    // Find the JSON object in the response (in case there's other text)
+    const jsonMatch = clean.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      console.error("No JSON found in response:", clean.slice(0, 500));
+      return NextResponse.json(
+        { error: "AI response parsing failed" },
+        { status: 500 }
+      );
+    }
+
+    const result = JSON.parse(jsonMatch[0]);
 
     return NextResponse.json({
       video: {
@@ -232,7 +223,9 @@ Generate new title suggestions in all three styles, diagnose the current title, 
         duration: video.duration,
         publishedAt: video.publishedAt,
       },
-      hasTranscript: transcript.length > 0,
+      hasTranscript:
+        !!result.videoSummary &&
+        !result.videoSummary.includes("Could not determine"),
       ...result,
     });
   } catch (error) {
