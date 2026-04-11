@@ -24,6 +24,7 @@ interface VideoInfo {
 
 interface UrlAnalysisResult {
   video: VideoInfo;
+  hasTranscript: boolean;
   currentTitleDiagnosis: string;
   jesperStyle: TitleSuggestion[];
   mrbeastStyle: TitleSuggestion[];
@@ -228,6 +229,15 @@ function RepackageTab() {
                 <span>{result.video.channelTitle}</span>
                 <span>{fmt(result.video.views)} views</span>
               </div>
+              {result.hasTranscript ? (
+                <span className="text-xs text-emerald-600/50 mt-1 inline-block">
+                  ✓ Transcript analyzed
+                </span>
+              ) : (
+                <span className="text-xs text-wood-light/25 mt-1 inline-block">
+                  No transcript available — analysis based on metadata only
+                </span>
+              )}
             </div>
           </div>
 

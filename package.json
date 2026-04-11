@@ -21,7 +21,8 @@
     "react-dom": "^18",
     "react-markdown": "^10.1.0",
     "recharts": "^3.8.0",
-    "stripe": "^20.4.1"
+    "stripe": "^20.4.1",
+    "youtube-transcript-plus": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
