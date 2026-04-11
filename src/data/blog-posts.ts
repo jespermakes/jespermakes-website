@@ -183,15 +183,21 @@ That's the part nobody tells you about woodworking. Sometimes the best part of a
     slug: "how-to-build-with-pallet-wood",
     title: "How to Build with Pallet Wood: A Complete Beginner's Guide",
     description:
-      "Everything you need to know to start building with pallet wood — where to find pallets, what to look for, tools you need, and first project ideas.",
+      "Everything you need to know to start building with pallet wood. Where to find pallets, how to read the stamps, tools you need, and how to prepare the wood for real projects.",
     publishedAt: "2025-03-10",
+    updatedAt: "2026-04-11",
     author: "Jesper",
     tags: ["pallet wood", "beginner", "woodworking", "guide"],
+    heroImage: "/images/blog/pallet-wood-guide-hero.jpg",
+    heroImageAlt: "Jesper in overalls and hat dismantling a euro pallet with a pry bar outside his workshop, stacks of pallets in the background",
+    featuredVideo: "jOXvrHeSLzs",
     content: `## Why Pallet Wood?
 
-I started woodworking with pallet wood in 2020. No fancy tools, no expensive lumber — just a pile of pallets someone left outside a warehouse and a borrowed circular saw. That was it.
+I started woodworking with pallet wood in early 2020. No shop, no plan, no money. Just a stack of euro pallets behind my house and a borrowed circular saw.
 
-Pallet wood is rough, unpredictable, and sometimes full of nails. It's also free, widely available, and genuinely fun to work with. If you're just getting started, there's no better way to learn without putting real money on the line.
+My first projects were boxed wine holders. I made four. Gave two away, sold two, and figured that was the end of it. Then one of the people I gave one to had a party. Turns out a lot of people drink boxed wine in Denmark. My phone started ringing. It hasn't really stopped since.
+
+Pallet wood is rough, inconsistent, and sometimes full of nails that seem personally offended by the idea of being removed. It's also free, widely available, and the lowest-stakes way to learn woodworking I've ever found. You can't be precious about free material. That means you actually build things instead of overthinking them.
 
 This guide covers everything I wish I'd known at the start.
 
@@ -199,18 +205,27 @@ This guide covers everything I wish I'd known at the start.
 
 ## Finding Pallets
 
-The easiest place to find free pallets is behind shops, warehouses, and industrial estates. Garden centres, furniture stores, and builders merchants all receive stock on pallets and often can't get rid of them fast enough.
+The easiest places to find free pallets are behind shops, warehouses, and industrial estates. Garden centres, furniture stores, and builders merchants all receive stock on pallets and usually can't get rid of them fast enough.
 
-Just ask. Walk in, explain you're a hobbyist woodworker, and most places will be happy to let you take them. Some will even hold them for you.
+Just walk in and ask. Explain you're a hobbyist woodworker, and most places will be happy to let you take them. Some will even hold them for you.
 
-**What to look for:**
+I took it further. I contacted five local factories and two of them said I could come grab as many pallets as I wanted. One of them also had shipping crates and other scrap wood that basically built my first workshop. It's worth making those calls.
 
-- **HT stamped pallets** — this means "heat treated". Safe for indoor use. The stamp is usually on the side of the pallet.
-- **MB stamped pallets** — avoid these. MB stands for methyl bromide, a toxic fumigant. It's now banned in most countries but older pallets can still turn up.
-- **DB** — debarked. Fine.
-- **No stamp** — usually fine for outdoor projects, but avoid using indoors around food or where kids will be.
+---
 
-Avoid any pallet that looks like it's been soaked in chemicals or has an unusual stain or smell. Common sense goes a long way.
+## Reading the Stamps
+
+Every pallet used in international shipping should carry an ISPM 15 stamp, usually on the side block or stringer. Here's what to look for:
+
+**HT** means "heat treated." The wood was heated to a core temperature of at least 56°C for a minimum of 30 minutes, which kills insects and pathogens without chemicals. This is the one you want. Safe for indoor projects, furniture, anything.
+
+**MB** means the pallet was fumigated with methyl bromide, a toxic pesticide and ozone-depleting chemical. MB treatment for pallets was phased out in the EU and Canada in 2005 under the Montreal Protocol. The US phased out general use around the same time, though some exemptions still exist. A few countries, especially in parts of Asia, still use it because it's cheaper than heat treatment. So MB-stamped pallets still turn up. Don't use them for anything. Not indoors, not outdoors, not as firewood.
+
+**DB** means "debarked." You'll see this on older pallets. On newer ones, debarking is a standard prerequisite for any ISPM 15 treatment, so the DB marking was dropped from current stamps. Either way, it's not a safety concern.
+
+**No stamp at all** usually means the pallet was made for domestic use and was never treated. These are common. They're generally fine for outdoor projects like planters or garden furniture. I'd avoid using them indoors, especially around food, kids, or anywhere the wood will be in regular contact with skin.
+
+And one more thing: avoid any pallet that looks like it's been soaked in something, has unusual staining, or smells off. You don't know what was shipped on it. Common sense goes a long way here.
 
 ---
 
@@ -218,98 +233,90 @@ Avoid any pallet that looks like it's been soaked in chemicals or has an unusual
 
 Usually pine. Sometimes spruce or fir. Occasionally hardwood, but that's rare.
 
-The good news: pine is a perfectly decent wood for furniture and home projects. It dents easily, but it's light, takes paint and stain well, and has a nice grain when you clean it up.
+Pine is a perfectly decent wood for furniture and home projects. It dents easily, but it's light, takes paint and stain well, and has a nice grain once you clean it up.
 
-Don't expect consistency. The boards will vary in thickness, width, and quality — sometimes on the same pallet. That's part of working with free material.
+Don't expect consistency. The boards will vary in thickness, width, and quality, sometimes on the same pallet. That's part of working with free material. If that bothers you, pallet wood might not be your thing. If it doesn't, you'll have more material than you know what to do with.
 
 ---
 
 ## Tools You'll Need
 
-You don't need much to start:
+You don't need much to start. I didn't have much. My first tools were borrowed, found at garage sales, or gifted by family. My dad gave me his old compressor and nail gun. I got a miter saw from a friend. I restored hand tools I found for almost nothing. You do not need to spend a lot of money to get going. You just need to get going.
 
 **Disassembly:**
-- Pry bar or flat bar (essential — don't try to use a screwdriver)
-- Hammer
-- Nail punch or nail puller for the hidden nails
+- A pry bar or flat bar is essential. Don't try to use a screwdriver.
+- A hammer.
+- A nail punch for the ones hiding below the surface.
 
 **Preparation:**
-- Circular saw or jigsaw to cut boards to length
-- Hand plane or belt sander to clean up faces (a lot of pallet wood has rough surfaces and mill marks)
-- Planer-thicknesser if you want flat, consistent boards — not essential to start
+- A circular saw or jigsaw to cut boards to length.
+- A hand plane or belt sander to clean up the faces, because pallet wood has rough surfaces and mill marks.
+- A planer-thicknesser if you want flat, consistent boards, but it's not essential to start.
 
 **Basic joinery:**
-- Drill and screws
-- Pocket hole jig (cheap ones work fine for pallet projects)
-- Clamps — always more clamps than you think
+- A drill and screws.
+- A pocket hole jig (the cheap ones work fine for pallet projects).
+- Clamps. Always more clamps than you think.
 
-I've put together a full list of recommended tools for beginners over at the [tools hub](/tools) — everything from budget picks to what I actually use in my own workshop.
+I've put together a full list of recommended tools over at the [tools hub](/tools), from budget picks to what I actually use now.
 
 ---
 
-## Disassembling Pallets Without Destroying Everything
+## Dismantling Pallets Without Destroying Everything
 
 This is where most beginners lose half their wood. The boards split, the nails tear through, and you end up with short, cracked pieces.
 
-A few things that help:
+I've dismantled hundreds of pallets at this point. Here's what works:
 
-1. **Work from the end** — use your pry bar at the very end of a board and lever against the stringer (the thick central piece). Don't try to prise in the middle.
-2. **Go slow** — a little bit from each end, working along the board rather than forcing one end all the way up.
-3. **Use a reciprocating saw** — many experienced makers just cut the nails instead of pulling boards. You lose a centimetre or two off the end, but the boards come off in one piece.
-4. **Keep the off-cuts** — even short pieces and broken boards have uses. Nothing goes in the bin.
+**Work from the ends.** Use your pry bar at the very end of a board and lever against the stringer or block. Don't try to prise in the middle.
+
+**Go slow.** A little bit from each end, working your way along.
+
+**Or just cut the nails.** A lot of experienced makers skip the prying entirely and use a reciprocating saw to cut the nails between the board and the stringer. You lose a centimetre or two off each end, but the boards come off in one piece.
+
+**For euro pallets with blocks:** Stand the pallet upright, grab a sledgehammer, and knock the blocks and bottom stretchers off. The top boards are where the good wood lives.
+
+The nails they use are ridiculously long, like they're personally offended by the idea of removal. My trick is to cut them short, give them one solid bang so the head pops proud on the other side, and then pull them out. It's disturbingly satisfying.
+
+Keep the off-cuts. Even short pieces, broken boards, and pallet blocks have uses. I once made a coffee table entirely from pallet blocks. That video basically launched my YouTube channel.
 
 ---
 
 ## Preparing the Wood
 
-Pallet wood is rough. Before you build anything, you need to:
+Pallet wood is rough. Before you build anything, you need to clean it up.
 
-1. **Pull all the nails** — every single one. Run a magnet over the boards to find the hidden ones. Your planer will thank you.
-2. **Let it dry** — if the pallets were stored outside, the wood may be damp. Stack them with sticks between each layer (called stickering) and let them sit for a few weeks.
-3. **Flatten and thickness** — if you have a planer, run each board through to get a consistent thickness. If not, a belt sander with 60 or 80 grit will clean up the face enough for most projects.
-4. **Joint an edge** — for anything that needs to look good, run one edge through a jointer or use a hand plane to get a straight reference edge.
+**Pull all the nails.** Every single one. Run a magnet over each board to find the hidden ones. A nail through your planer blade is an expensive lesson.
 
-You won't get furniture-grade lumber. But you can get clean, flat boards that look genuinely good once they're finished.
+**Let it dry.** If the pallets were stored outside, the wood will be damp. Stack the boards with thin sticks between each layer (this is called stickering) and let them sit in a dry spot for a few weeks. Patience here saves you warped projects later.
+
+**Flatten and thickness.** If you have a planer, run each board through to get a consistent thickness. If not, a belt sander or even a drum sander with 60 or 80 grit will clean up the face enough for most projects.
+
+**Joint an edge.** For anything that needs to look clean, straighten one edge with a jointer or hand plane. This gives you a reference edge for glue-ups and tight joints.
+
+You won't get furniture-grade lumber. But you can get clean, flat boards that look genuinely good once they're finished. And here's something most people overlook: you can laminate thin pallet boards together with glue to get almost any thickness you want. With enough glue surface, the wood will break long before the joint does.
 
 ---
 
 ## Safety
 
-A few things worth saying:
+A few things worth saying clearly:
 
-- **Eye and ear protection, always.** Even when it feels unnecessary.
-- **Watch for nails.** A hidden nail in a circular saw is dangerous. Slow down.
-- **Wear gloves when disassembling.** Pallet wood splinters badly.
-- **Don't use MB pallets indoors.** Not worth the risk.
-- **Dust mask when sanding.** Pine dust is irritating even if it's not toxic.
+**Eye and ear protection, always.** Even when it feels unnecessary. Especially then.
 
----
+**Watch for nails.** A hidden nail hitting a circular saw blade is dangerous. Slow down when cutting pallet wood. Use a metal detector or magnet before running boards through any power tool with a spinning blade.
 
-## First Project Ideas
+**Wear gloves when dismantling.** Pallet wood splinters badly, and the rough surfaces can cut you up quickly.
 
-Start simple. Seriously.
+**Don't use MB-stamped pallets.** Not indoors, not outdoors, not as firewood. The chemical was phased out in Europe twenty years ago, but old pallets still circulate. Just avoid them entirely.
 
-**A small shelf** — three boards, two brackets (cut from pallet stringers), screws. Done in an afternoon. You'll learn how to measure, cut, sand, and finish. Everything after that is just more of the same.
-
-**A garden planter** — pallet wood is perfect here. You can use the rougher boards, it doesn't need to be perfect, and the weathered look suits outdoor projects.
-
-**A serving tray** — flat boards, a couple of handles, some finish. This one punches above its weight visually and makes a great gift.
-
-**A wall-mounted coat rack** — back panel from pallet boards, some hooks, done. You'll learn how to hang something properly and deal with walls.
+**Wear a proper dust mask when sanding.** Wood dust from any species, including pine and spruce, is a real health hazard. The International Agency for Research on Cancer classifies wood dust as carcinogenic. This isn't just about it being "irritating." A proper dust mask or respirator rated for fine particles is not optional. If you're doing a lot of sanding, invest in dust extraction too.
 
 ---
 
-## Taking It Further
+If you want to get serious about pallet builds, I put together [The Pallet Builder's Starter Kit](/shop/pallet-starter-kit) with printable plans and reference sheets designed specifically for working with reclaimed pallet wood. And if you want to follow along with actual builds, I document most of my projects on [YouTube](https://youtube.com/@jespermakes).
 
-Once you've done a few small projects, you start to see what pallet wood can actually do. I've built full workshop benches, storage units, and display shelves from pallets. The material has real character — especially once you've sanded it back and added a natural oil finish.
-
-If you want to get serious about pallet builds, I put together [The Pallet Builder's Starter Kit](/shop/pallet-starter-kit) — a set of printable plans and reference sheets designed specifically for working with reclaimed pallet wood. Cut lists, joinery details, beginner-friendly dimensions. Everything I wished I'd had when I started.
-
-And if you want to follow along with actual builds, I document most of my projects on [YouTube at @jespermakes](https://youtube.com/@jespermakes) — you can see the process, the mistakes, and what actually works.
-
----
-
-Pallet wood taught me more in six months than I'd have learned buying expensive timber and trying to do everything right. The low stakes mean you actually build things instead of overthinking them.
+Pallet wood taught me more about woodworking than any course or expensive lumber ever could. The low stakes mean you actually build things instead of overthinking them.
 
 Get a few pallets. Make something. You'll figure it out as you go.
 `,
