@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
-const MODEL = "anthropic/claude-sonnet-4-20250514";
+const MODEL = "anthropic/claude-sonnet-4";
 
 const SYSTEM_PROMPT = `You are a YouTube title brainstorming engine. The user will provide structured information about a video they're planning:
 

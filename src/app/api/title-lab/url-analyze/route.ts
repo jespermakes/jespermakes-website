@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY!;
-const MODEL = "anthropic/claude-sonnet-4-20250514";
+const MODEL = "anthropic/claude-sonnet-4";
 
 function extractVideoId(url: string): string | null {
   const patterns = [
