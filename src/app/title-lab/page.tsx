@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -306,6 +307,12 @@ function RepackageTab() {
             </p>
           </div>
 
+          <SaveButton
+            result={result}
+            sessionType="url_analyze"
+            inputUrl={url}
+          />
+
           <button
             onClick={() => {
               setUrl("");
@@ -512,6 +519,15 @@ function PlanTab() {
           </div>
         )}
 
+        <SaveButton
+          result={{ jesperStyle: result.jesperStyle, mrbeastStyle: result.mrbeastStyle, alternatives: result.alternatives }}
+          sessionType="guided_brainstorm"
+          inputDescription={desc}
+          inputPromise={promise}
+          inputStory={story}
+          inputHook={hook}
+        />
+
         <button
           onClick={reset}
           className="mt-2 bg-transparent border-none text-wood-light/[0.2] cursor-pointer text-[13px] hover:text-wood-light/40 transition-colors"
@@ -554,13 +570,13 @@ function PlanTab() {
         <label className="text-[10px] font-bold tracking-[3px] text-wood-light/[0.2] block mb-1.5">
           {currentField.label}
         </label>
-        <p className="text-xs text-wood-light/30 mb-2">{currentField.help}</p>
+        <p className="text-sm text-wood-light/50 mb-2">{currentField.help}</p>
         <textarea
           value={currentField.value}
           onChange={(e) => currentField.set(e.target.value)}
           rows={currentField.rows}
           placeholder={currentField.placeholder}
-          className="w-full px-4 py-3 bg-white border border-wood/[0.08] rounded-xl text-wood text-sm font-sans outline-none resize-none leading-relaxed focus:border-amber/30 transition-colors"
+          className="w-full px-4 py-3 bg-white border border-wood/[0.08] rounded-xl text-wood text-sm font-sans outline-none resize-none leading-relaxed focus:border-amber/30 transition-colors placeholder:text-wood-light/35"
           autoFocus
         />
       </div>
@@ -665,6 +681,210 @@ function PlaybookTab() {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+// ─── Save Button ───────────────────────────────────────────────────────
+
+function SaveButton({
+  result,
+  sessionType,
+  inputUrl,
+  inputDescription,
+  inputPromise,
+  inputStory,
+  inputHook,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  result: any;
+  sessionType: string;
+  inputUrl?: string;
+  inputDescription?: string;
+  inputPromise?: string;
+  inputStory?: string;
+  inputHook?: string;
+}) {
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user;
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await fetch("/api/title-lab/sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionType,
+          inputUrl,
+          inputVideoTitle: result.video?.title,
+          inputVideoThumbnail: result.video?.thumbnail,
+          inputVideoViews: result.video?.views,
+          inputVideoChannel: result.video?.channelTitle,
+          inputDescription,
+          inputPromise,
+          inputStory,
+          inputHook,
+          aiResults: result,
+        }),
+      });
+      setSaved(true);
+    } catch {
+      // silent
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (saved) {
+    return (
+      <div className="flex items-center gap-2 text-sm text-emerald-600 mt-4">
+        <span>✓</span> Saved to your account
+      </div>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="bg-white/70 border border-amber/20 rounded-2xl p-5 text-center mt-4">
+        <p className="font-serif text-base text-wood mb-2">
+          Want to save these titles?
+        </p>
+        <p className="text-sm text-wood-light/50 mb-4">
+          Create a free account to save your Title Lab results and build a
+          library of title ideas.
+        </p>
+        <div className="flex gap-3 justify-center">
+          <a
+            href="/signup"
+            className="px-5 py-2.5 bg-wood text-cream rounded-xl text-sm font-semibold hover:bg-wood-light transition-all"
+          >
+            Create free account
+          </a>
+          <a
+            href="/login"
+            className="px-5 py-2.5 border border-wood/15 text-wood-light/50 rounded-xl text-sm hover:border-wood/30 transition-all"
+          >
+            Log in
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={handleSave}
+      disabled={saving}
+      className="flex items-center gap-2 px-5 py-2.5 bg-amber/10 border border-amber/20 rounded-xl text-sm font-semibold text-amber hover:bg-amber/15 transition-all cursor-pointer disabled:opacity-50 mt-4"
+    >
+      {saving ? "Saving..." : "Save to my titles"}
+    </button>
+  );
+}
+
+// ─── Tab: Saved Titles ──────────────────────────────────────────────────
+
+interface SavedSession {
+  id: string;
+  sessionType: string;
+  inputUrl: string | null;
+  inputVideoTitle: string | null;
+  inputVideoThumbnail: string | null;
+  inputVideoViews: number | null;
+  inputVideoChannel: string | null;
+  inputDescription: string | null;
+  chosenTitle: string | null;
+  userNotes: string | null;
+  status: string | null;
+  createdAt: string;
+}
+
+function SavedTab() {
+  const [sessions, setSessions] = useState<SavedSession[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/title-lab/sessions")
+      .then((res) => (res.ok ? res.json() : []))
+      .then(setSessions)
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center py-16">
+        <Dots />
+        <p className="text-sm text-wood-light/30 mt-4">Loading saved titles...</p>
+      </div>
+    );
+  }
+
+  if (sessions.length === 0) {
+    return (
+      <div className="text-center py-16">
+        <p className="text-4xl mb-4 opacity-20">💾</p>
+        <p className="font-serif text-lg text-wood mb-2">No saved titles yet</p>
+        <p className="text-sm text-wood-light/40">
+          Use the Repackage or Plan tabs to generate titles, then save the ones
+          you like.
+        </p>
+      </div>
+    );
+  }
+
+  const handleDelete = async (id: string) => {
+    await fetch(`/api/title-lab/sessions/${id}`, { method: "DELETE" });
+    setSessions((s) => s.filter((x) => x.id !== id));
+  };
+
+  return (
+    <div className="space-y-3">
+      {sessions.map((s) => (
+        <div
+          key={s.id}
+          className="bg-white/50 border border-wood/[0.06] rounded-xl p-4 flex gap-3 items-start"
+        >
+          {s.inputVideoThumbnail && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={s.inputVideoThumbnail}
+              alt=""
+              className="w-[80px] h-[45px] object-cover rounded-lg shrink-0 mt-0.5"
+            />
+          )}
+          <div className="flex-1 min-w-0">
+            <p className="text-sm text-wood font-medium truncate">
+              {s.inputVideoTitle || s.inputDescription?.slice(0, 60) || "Untitled"}
+            </p>
+            {s.chosenTitle && (
+              <p className="text-xs text-amber mt-1">
+                Chosen: {s.chosenTitle}
+              </p>
+            )}
+            <div className="flex gap-3 text-xs text-wood-light/25 mt-1">
+              <span>
+                {s.sessionType === "url_analyze" ? "URL Analysis" : "Brainstorm"}
+              </span>
+              <span>
+                {new Date(s.createdAt).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                })}
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={() => handleDelete(s.id)}
+            className="text-xs text-wood-light/20 hover:text-red-400 transition-colors shrink-0"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
@@ -906,10 +1126,12 @@ function TabBtn({
 // ─── Main Page ──────────────────────────────────────────────────────────────
 
 export default function TitleLabPage() {
+  const { data: userSession } = useSession();
+  const isLoggedIn = !!userSession?.user;
   const [tab, setTab] = useState("repackage");
 
   return (
-    <div className="max-w-2xl mx-auto px-6 py-12 md:py-16">
+    <div className="max-w-4xl mx-auto px-6 py-12 md:py-16">
       <p className="text-[10px] font-bold tracking-[5px] text-amber mb-3.5">
         JESPER MAKES
       </p>
@@ -924,7 +1146,7 @@ export default function TitleLabPage() {
       </p>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8">
         <TabBtn
           active={tab === "repackage"}
           onClick={() => setTab("repackage")}
@@ -957,12 +1179,23 @@ export default function TitleLabPage() {
         >
           My Real Data
         </TabBtn>
+        {isLoggedIn && (
+          <TabBtn
+            active={tab === "saved"}
+            onClick={() => setTab("saved")}
+            icon="💾"
+            sub="Your saved analyses"
+          >
+            My Titles
+          </TabBtn>
+        )}
       </div>
 
       {tab === "repackage" && <RepackageTab />}
       {tab === "plan" && <PlanTab />}
       {tab === "playbook" && <PlaybookTab />}
       {tab === "data" && <DataTab />}
+      {tab === "saved" && <SavedTab />}
 
       <div className="mt-16 pt-6 border-t border-wood/[0.06] text-center">
         <p className="text-[11px] text-wood-light/[0.15]">

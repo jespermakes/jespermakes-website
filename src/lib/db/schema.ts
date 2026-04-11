@@ -5,8 +5,10 @@ import {
   uuid,
   primaryKey,
   integer,
+  serial,
   date,
   boolean,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -107,4 +109,43 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
   token: text("token").notNull().unique(),
   expires: timestamp("expires", { mode: "date" }).notNull(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+export const titleLabEvents = pgTable("title_lab_events", {
+  id: serial("id").primaryKey(),
+  eventType: text("event_type").notNull(),
+  inputTitle: text("input_title"),
+  inputUrl: text("input_url"),
+  inputDescription: text("input_description"),
+  inputPromise: text("input_promise"),
+  inputStory: text("input_story"),
+  inputHook: text("input_hook"),
+  aiResponse: jsonb("ai_response"),
+  sessionId: text("session_id"),
+  userAgent: text("user_agent"),
+  country: text("country"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+export const titleLabSessions = pgTable("title_lab_sessions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+  sessionType: text("session_type").notNull(),
+  inputUrl: text("input_url"),
+  inputVideoTitle: text("input_video_title"),
+  inputVideoThumbnail: text("input_video_thumbnail"),
+  inputVideoViews: integer("input_video_views"),
+  inputVideoChannel: text("input_video_channel"),
+  inputDescription: text("input_description"),
+  inputPromise: text("input_promise"),
+  inputStory: text("input_story"),
+  inputHook: text("input_hook"),
+  aiResults: jsonb("ai_results").notNull(),
+  userNotes: text("user_notes"),
+  chosenTitle: text("chosen_title"),
+  status: text("status").default("saved"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });

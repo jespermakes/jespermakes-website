@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { trackTitleLabEvent } from "@/lib/title-lab-track";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const MODEL = "anthropic/claude-sonnet-4";
@@ -112,6 +113,15 @@ export async function POST(request: NextRequest) {
 
     const clean = text.replace(/```json\s?|```/g, "").trim();
     const result = JSON.parse(clean);
+
+    trackTitleLabEvent({
+      eventType: "guided_brainstorm",
+      inputDescription: description,
+      inputPromise: promise,
+      inputStory: story,
+      inputHook: hook,
+      aiResponse: result,
+    }).catch(() => {});
 
     return NextResponse.json(result);
   } catch (error) {

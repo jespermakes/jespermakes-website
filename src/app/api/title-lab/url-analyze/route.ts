@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { trackTitleLabEvent } from "@/lib/title-lab-track";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY!;
@@ -210,6 +211,13 @@ Generate new title suggestions in all three styles, diagnose the current title, 
     }
 
     const result = JSON.parse(jsonMatch[0]);
+
+    trackTitleLabEvent({
+      eventType: "url_analyze",
+      inputUrl: url,
+      inputTitle: video.title,
+      aiResponse: result,
+    }).catch(() => {});
 
     return NextResponse.json({
       video: {
