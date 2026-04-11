@@ -188,6 +188,8 @@ That's the part nobody tells you about woodworking. Sometimes the best part of a
     updatedAt: "2026-04-11",
     author: "Jesper",
     tags: ["pallet wood", "beginner", "woodworking", "guide"],
+    heroImage: "/images/blog/pallet-wood-guide-hero.jpg",
+    heroImageAlt: "Jesper dismantling a euro pallet with a pry bar outside his workshop",
     featuredVideo: "jOXvrHeSLzs",
     content: `## Why Pallet Wood?
 

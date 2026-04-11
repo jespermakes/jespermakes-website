@@ -86,8 +86,8 @@ export default function BlogPostPage({ params }: Props) {
           &larr; Back to blog
         </Link>
 
-        {/* Hero image */}
-        {post.heroImage && (
+        {/* Hero image (skip if featured video is present) */}
+        {post.heroImage && !post.featuredVideo && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={post.heroImage}
