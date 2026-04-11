@@ -88,6 +88,22 @@ async function Header() {
               </div>
             </div>
           </div>
+          <div className="relative group">
+            <span className="text-wood-light hover:text-amber transition-colors cursor-pointer">
+              Creator Tools
+            </span>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+              <div className="bg-cream border border-wood/10 rounded-xl shadow-lg py-2 w-52">
+                <Link
+                  href="/title-lab"
+                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-wood-light hover:text-amber hover:bg-wood/5 transition-colors"
+                >
+                  <span className="text-base">🧪</span>
+                  Title Lab
+                </Link>
+              </div>
+            </div>
+          </div>
           <Link
             href="/blog"
             className="text-wood-light hover:text-amber transition-colors"
