@@ -622,7 +622,7 @@ function PlaybookTab() {
   return (
     <div>
       <p className="text-sm text-wood-light/50 leading-relaxed">
-        These aren't theory. They're patterns from 127 videos and years of
+        These aren&apos;t theory. They&apos;re patterns from 127 videos and years of
         changing titles until something clicked.
       </p>
       <div className="mt-6">
@@ -706,7 +706,7 @@ export default function TitleLabPage() {
         Apart from making a great video, the single most important thing is the
         right packaging. A bad title can bury a masterpiece. A good title can
         resurrect a forgotten video and add thousands of subscribers overnight.
-        I've seen both happen on my channel.
+        I&apos;ve seen both happen on my channel.
       </p>
 
       {/* Tabs */}
