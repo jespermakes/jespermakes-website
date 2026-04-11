@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY!;
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
+const MODEL = "anthropic/claude-sonnet-4-20250514";
 
 const SYSTEM_PROMPT = `You are a YouTube title brainstorming engine. The user will provide structured information about a video they're planning:
 
@@ -80,23 +81,26 @@ export async function POST(request: NextRequest) {
       userMessage += `\nINTRO HOOK (first 30 seconds):\n${hook}\n`;
     userMessage += `\nGenerate title suggestions in all categories.`;
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
+        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+        "HTTP-Referer": "https://jespermakes.com",
+        "X-Title": "Jesper Makes Title Lab",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
+        model: MODEL,
         max_tokens: 2000,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: "user", content: userMessage }],
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: userMessage },
+        ],
       }),
     });
 
     if (!response.ok) {
-      console.error("Anthropic error:", await response.text());
+      console.error("OpenRouter error:", await response.text());
       return NextResponse.json(
         { error: "Brainstorm failed" },
         { status: 500 }
@@ -104,12 +108,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
-    const text = data.content
-      .map((b: { type: string; text?: string }) =>
-        b.type === "text" ? b.text : ""
-      )
-      .filter(Boolean)
-      .join("\n");
+    const text = data.choices?.[0]?.message?.content || "";
 
     const clean = text.replace(/```json\s?|```/g, "").trim();
     const result = JSON.parse(clean);
