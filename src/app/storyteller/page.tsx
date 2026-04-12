@@ -9,6 +9,11 @@ import {
   type StoryCard,
   type ArcShape,
 } from "@/data/storyteller-data";
+import {
+  briefToText,
+  briefToMarkdown,
+  downloadFile,
+} from "@/lib/storyteller-export";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -104,7 +109,42 @@ function FindStoryTab() {
   const [loading, setLoading] = useState(false);
   const [started, setStarted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const briefRef = useRef<HTMLDivElement>(null);
+
+  const handleCopy = async () => {
+    if (!brief) return;
+    const text = briefToText(brief, desc);
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleMarkdown = () => {
+    if (!brief) return;
+    const md = briefToMarkdown(brief, desc);
+    const date = new Date().toISOString().split("T")[0];
+    downloadFile(md, `story-brief-${date}.md`, "text/markdown");
+  };
+
+  const handlePDF = async () => {
+    if (!briefRef.current) return;
+    const html2pdf = (await import("html2pdf.js")).default;
+    const date = new Date().toISOString().split("T")[0];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (html2pdf() as any)
+      .set({
+        margin: [15, 15, 15, 15],
+        filename: `story-brief-${date}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: "#FAF7F2" },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+      })
+      .from(briefRef.current)
+      .save();
+  };
 
   const callApi = async (
     description: string,
@@ -181,6 +221,7 @@ function FindStoryTab() {
   if (brief) {
     return (
       <div>
+        <div ref={briefRef} className="bg-cream">
         {/* Your Story */}
         <div
           className="bg-white/50 border border-wood/[0.06] rounded-2xl p-5 mb-5"
@@ -267,6 +308,32 @@ function FindStoryTab() {
             WATCH OUT
           </p>
           <p className="text-sm text-wood-light/[0.55] m-0">{brief.warning}</p>
+        </div>
+        </div>
+
+        {/* Export buttons */}
+        <div className="flex flex-wrap gap-2 mt-6 mb-4">
+          <button
+            onClick={handleCopy}
+            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 bg-white/60 border border-wood/[0.08] rounded-xl text-sm font-semibold text-wood hover:bg-white/80 transition-all"
+          >
+            <span>{copied ? "✓" : "📋"}</span>
+            {copied ? "Copied!" : "Copy to clipboard"}
+          </button>
+          <button
+            onClick={handleMarkdown}
+            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 bg-white/60 border border-wood/[0.08] rounded-xl text-sm font-semibold text-wood hover:bg-white/80 transition-all"
+          >
+            <span>📝</span>
+            Download Markdown
+          </button>
+          <button
+            onClick={handlePDF}
+            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 bg-amber/10 border border-amber/20 rounded-xl text-sm font-semibold text-amber hover:bg-amber/15 transition-all"
+          >
+            <span>📄</span>
+            Download PDF
+          </button>
         </div>
 
         <button
