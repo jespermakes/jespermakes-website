@@ -163,3 +163,12 @@ export const boxJointJigEvents = pgTable("box_joint_jig_events", {
   userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
+
+export const coneLampEvents = pgTable("cone_lamp_events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  eventType: text("event_type").notNull(),
+  thickness: real("thickness"),
+  country: text("country"),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});

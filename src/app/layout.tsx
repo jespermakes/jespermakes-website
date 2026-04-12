@@ -115,6 +115,13 @@ async function Header() {
                   <span className="text-base">🧰</span>
                   Box Joint Jig
                 </Link>
+                <Link
+                  href="/cone-lamp"
+                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-wood-light hover:text-amber hover:bg-wood/5 transition-colors"
+                >
+                  <span className="text-base">💡</span>
+                  Cone Lamp
+                </Link>
               </div>
             </div>
           </div>

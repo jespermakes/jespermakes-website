@@ -131,6 +131,14 @@ export function MobileNav({ userName }: { userName?: string | null }) {
             </Link>
 
             <Link
+              href="/cone-lamp"
+              onClick={() => setOpen(false)}
+              className="block py-3 text-lg text-wood hover:text-amber transition-colors border-b border-wood/5"
+            >
+              💡 Cone Lamp
+            </Link>
+
+            <Link
               href="/blog"
               onClick={() => setOpen(false)}
               className="block py-3 text-lg text-wood hover:text-amber transition-colors border-b border-wood/5"
