@@ -8,7 +8,6 @@ import {
   CREATOR_PROFILES,
   type StoryCard,
   type ArcShape,
-  type CreatorProfile,
 } from "@/data/storyteller-data";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
