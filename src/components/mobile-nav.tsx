@@ -123,6 +123,14 @@ export function MobileNav({ userName }: { userName?: string | null }) {
             </Link>
 
             <Link
+              href="/box-joint-jig"
+              onClick={() => setOpen(false)}
+              className="block py-3 text-lg text-wood hover:text-amber transition-colors border-b border-wood/5"
+            >
+              🧰 Box Joint Jig
+            </Link>
+
+            <Link
               href="/blog"
               onClick={() => setOpen(false)}
               className="block py-3 text-lg text-wood hover:text-amber transition-colors border-b border-wood/5"

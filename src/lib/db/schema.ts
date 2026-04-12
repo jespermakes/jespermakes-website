@@ -6,6 +6,7 @@ import {
   primaryKey,
   integer,
   serial,
+  real,
   date,
   boolean,
   jsonb,
@@ -148,4 +149,17 @@ export const titleLabSessions = pgTable("title_lab_sessions", {
   status: text("status").default("saved"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+export const boxJointJigEvents = pgTable("box_joint_jig_events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  eventType: text("event_type").notNull(),
+  unit: text("unit"),
+  thickness: real("thickness"),
+  fingers: integer("fingers"),
+  hasCustomTitle: boolean("has_custom_title"),
+  hasCustomLabel: boolean("has_custom_label"),
+  country: text("country"),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
