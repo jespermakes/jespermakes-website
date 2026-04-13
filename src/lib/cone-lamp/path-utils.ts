@@ -110,6 +110,34 @@ export function getBBox(segments: Segment[]): BBox {
   return { minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY };
 }
 
+// Strip zero-length L segments (the `h0` artifact some of the source paths
+// end with: M leaf, L leaf, XL leaf all have `h0Z` as their closing sequence).
+// Without this, leaf surgery's closingIdx search lands on the h0 instead of
+// the real closing vertical, and every thickness other than 6.4mm produces
+// a zig-zag across the leaf tab. Stretcher surgery's cleanAndRotate already
+// does this cleaning internally; leaves need it as a separate step because
+// they don't want the segment rotation.
+export function stripZeroLengthL(segments: Segment[]): Segment[] {
+  const out: Segment[] = [];
+  let pos: Point = segments[0].pts[0];
+  out.push(segments[0]);
+  for (let i = 1; i < segments.length; i++) {
+    const seg = segments[i];
+    if (seg.cmd === "L") {
+      const end = seg.pts[0];
+      if (Math.hypot(end.x - pos.x, end.y - pos.y) < 0.5) continue;
+      out.push(seg);
+      pos = end;
+    } else if (seg.cmd === "C") {
+      out.push(seg);
+      pos = seg.pts[seg.pts.length - 1];
+    } else if (seg.cmd === "Z") {
+      out.push(seg);
+    }
+  }
+  return out;
+}
+
 // Clean (drop zero-length L segments) and rotate (move OLD segment [1] to
 // before Z). The rotation matters because both stretcher paths have the M
 // point sitting exactly at corner2 of one of the curve-leaf slots — that

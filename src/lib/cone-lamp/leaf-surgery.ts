@@ -1,5 +1,10 @@
 import { ORIG_TAB_WIDTH_SVG } from "./constants";
-import { parsePath, segmentsToPath, type Segment } from "./path-utils";
+import {
+  parsePath,
+  segmentsToPath,
+  stripZeroLengthL,
+  type Segment,
+} from "./path-utils";
 
 function findTabIndex(segments: Segment[]): number {
   for (let i = 1; i < segments.length; i++) {
@@ -93,7 +98,11 @@ function adjustTabPattern1(segments: Segment[], newWidth: number): Segment[] {
 }
 
 export function surgeLeaf(pathString: string, newWidth: number): string {
-  const segs = parsePath(pathString);
+  // Strip the trailing `h0` artifact before surgery — without this, the
+  // closingIdx search in adjustTabPattern2 lands on the zero-length segment
+  // instead of the real closing vertical, causing a zig-zag on the M, L,
+  // and XL leaves at every thickness other than 6.4mm. See Gotcha #14.
+  const segs = stripZeroLengthL(parsePath(pathString));
   const tabIdx = findTabIndex(segs);
   if (tabIdx === -1) return pathString;
   const result =
