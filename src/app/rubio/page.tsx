@@ -82,7 +82,7 @@ function SwatchImage({
 
 export default function RubioGuidePage() {
   const [step, setStep] = useState<StepId>("intro");
-  const [history, setHistory] = useState<StepId[]>(["intro"]);
+  const [, setHistory] = useState<StepId[]>(["intro"]);
   const [product, setProduct] = useState<ProductKey | null>(null);
   const [orientation, setOrientation] = useState<"horizontal" | "vertical" | null>(null);
   const [species, setSpecies] = useState<string | null>(null);
@@ -156,7 +156,7 @@ export default function RubioGuidePage() {
     goTo(loc === "interior" ? "interior" : "exterior");
   }
 
-  function chooseInteriorSurface(_s: string) {
+  function chooseInteriorSurface() {
     setProduct("oil2c");
     trackRubioGuide({ eventType: "product_recommended", product: "oil2c" });
     goTo("product");
@@ -420,10 +420,10 @@ export default function RubioGuidePage() {
               and coverage advice.
             </p>
             <div className="grid grid-cols-1 gap-4 mb-8">
-              <OptionButton icon="🪑" title="Furniture or cabinetry" body="Tables, chairs, cabinets, shelving, decorative pieces." onClick={() => chooseInteriorSurface("furniture")} />
-              <OptionButton icon="⬜" title="Floor" body="Hardwood or solid-plank flooring." onClick={() => chooseInteriorSurface("floor")} />
-              <OptionButton icon="🧺" title="Countertop or serving board" body="Kitchen counter, charcuterie board, serving surface." onClick={() => chooseInteriorSurface("countertop")} />
-              <OptionButton icon="📐" title="Walls or ceiling" body="Wood-panelled walls, ceilings, interior cladding." onClick={() => chooseInteriorSurface("wall")} />
+              <OptionButton icon="🪑" title="Furniture or cabinetry" body="Tables, chairs, cabinets, shelving, decorative pieces." onClick={() => chooseInteriorSurface()} />
+              <OptionButton icon="⬜" title="Floor" body="Hardwood or solid-plank flooring." onClick={() => chooseInteriorSurface()} />
+              <OptionButton icon="🧺" title="Countertop or serving board" body="Kitchen counter, charcuterie board, serving surface." onClick={() => chooseInteriorSurface()} />
+              <OptionButton icon="📐" title="Walls or ceiling" body="Wood-panelled walls, ceilings, interior cladding." onClick={() => chooseInteriorSurface()} />
             </div>
             <div className="flex justify-between items-center mt-8 gap-4 flex-wrap">
               <button className="text-wood-light/60 hover:text-wood px-5 py-3 text-sm font-semibold" onClick={goBack}>
