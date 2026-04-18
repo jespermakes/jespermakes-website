@@ -22,6 +22,13 @@
       "when": 1776018762310,
       "tag": "0002_tiny_pride",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1776541877563,
+      "tag": "0003_calm_ken_ellis",
+      "breakpoints": true
     }
   ]
 }

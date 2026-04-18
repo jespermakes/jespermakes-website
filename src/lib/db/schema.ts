@@ -172,3 +172,17 @@ export const coneLampEvents = pgTable("cone_lamp_events", {
   userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
+
+export const rubioGuideEvents = pgTable("rubio_guide_events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  eventType: text("event_type").notNull(),
+  product: text("product"),
+  species: text("species"),
+  colorId: text("color_id"),
+  colorLabel: text("color_label"),
+  surfaceArea: real("surface_area"),
+  unit: text("unit"),
+  country: text("country"),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
