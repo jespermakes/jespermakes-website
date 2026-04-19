@@ -224,7 +224,8 @@ function SearchAndFilters({
 }) {
   const quickTags = [
     ...vocabulary.material.values.slice(0, 3).map((v) => ({ kind: "material", value: v })),
-    ...vocabulary.subjects.values.slice(0, 4).map((v) => ({ kind: "tag", value: v })),
+    ...vocabulary.toolCategories.values.slice(0, 3).map((v) => ({ kind: "tag", value: v })),
+    ...vocabulary.sponsors.values.slice(0, 2).map((v) => ({ kind: "tag", value: v })),
     ...vocabulary.shotType.values.slice(0, 2).map((v) => ({ kind: "shotType", value: v })),
   ];
 
@@ -349,7 +350,8 @@ function EditorPanel({
 }) {
   const [description, setDescription] = useState(image.description ?? "");
   const [material, setMaterial] = useState<string | null>(image.material);
-  const [subjects, setSubjects] = useState<string[]>(image.subjects);
+  const [sponsors, setSponsors] = useState<string[]>(image.sponsors);
+  const [toolCategories, setToolCategories] = useState<string[]>(image.toolCategories);
   const [shotType, setShotType] = useState<string | null>(image.shotType);
   const [who, setWho] = useState<string[]>(image.who);
   const [setting, setSetting] = useState<string | null>(image.setting);
@@ -363,7 +365,8 @@ function EditorPanel({
   useEffect(() => {
     setDescription(image.description ?? "");
     setMaterial(image.material);
-    setSubjects(image.subjects);
+    setSponsors(image.sponsors);
+    setToolCategories(image.toolCategories);
     setShotType(image.shotType);
     setWho(image.who);
     setSetting(image.setting);
@@ -378,7 +381,8 @@ function EditorPanel({
       body: JSON.stringify({
         description,
         material,
-        subjects,
+        sponsors,
+        toolCategories,
         shotType,
         who,
         setting,
@@ -400,7 +404,8 @@ function EditorPanel({
       const s = data.suggested;
       if (s.description) setDescription(s.description);
       setMaterial(s.material);
-      setSubjects(s.subjects);
+      setSponsors(s.sponsors);
+      setToolCategories(s.toolCategories);
       setShotType(s.shotType);
       setWho(s.who);
       setSetting(s.setting);
@@ -477,11 +482,22 @@ function EditorPanel({
           />
 
           <TagSection
-            label={`${vocabulary.subjects.label} · pick any`}
-            values={vocabulary.subjects.values}
-            selected={subjects}
+            label={`${vocabulary.sponsors.label} · pick any, optional`}
+            values={vocabulary.sponsors.values}
+            selected={sponsors}
             onToggle={(v) =>
-              setSubjects(subjects.includes(v) ? subjects.filter((x) => x !== v) : [...subjects, v])
+              setSponsors(sponsors.includes(v) ? sponsors.filter((x) => x !== v) : [...sponsors, v])
+            }
+          />
+
+          <TagSection
+            label={`${vocabulary.toolCategories.label} · pick any, optional`}
+            values={vocabulary.toolCategories.values}
+            selected={toolCategories}
+            onToggle={(v) =>
+              setToolCategories(
+                toolCategories.includes(v) ? toolCategories.filter((x) => x !== v) : [...toolCategories, v]
+              )
             }
           />
 
@@ -550,6 +566,13 @@ function EditorPanel({
             >
               {copied ? "copied ✓" : "Copy markdown"}
             </button>
+            <a
+              href={`/api/admin/images/${image.id}/download`}
+              download
+              className="bg-amber/10 border border-amber/25 text-amber rounded-lg px-3.5 py-2 text-xs font-medium hover:bg-amber/20 no-underline"
+            >
+              Download
+            </a>
             <button
               onClick={del}
               className="border border-wood/12 text-wood-light/55 rounded-lg px-3.5 py-2 text-xs hover:border-red-300 hover:text-red-600"

@@ -29,7 +29,8 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
     .set({
       description: result.description || image.description,
       material: result.material,
-      subjects: result.subjects,
+      sponsors: result.sponsors,
+      toolCategories: result.toolCategories,
       shotType: result.shotType,
       who: result.who,
       setting: result.setting,

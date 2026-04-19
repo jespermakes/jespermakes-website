@@ -12,18 +12,29 @@ export const IMAGE_TAG_VOCABULARY = {
       "mixed-wood",
     ] as const,
   },
-  subjects: {
-    label: "Subject",
+  sponsors: {
+    label: "Sponsors",
     multi: true,
     values: [
-      "jig",
-      "planter",
-      "box-joint",
-      "cabinet",
-      "shelf",
-      "tool-closeup",
-      "workshop",
-      "finished-piece",
+      "carhartt",
+      "rubio-monocoat",
+      "festool",
+      "bambu-lab",
+      "xtool",
+      "wisa-plywood",
+    ] as const,
+  },
+  toolCategories: {
+    label: "Tool category",
+    multi: true,
+    values: [
+      "hand-tools",
+      "power-tools",
+      "cnc",
+      "laser",
+      "3d-print",
+      "measuring",
+      "clamping",
     ] as const,
   },
   shotType: {
@@ -61,7 +72,8 @@ export type VocabularyField = keyof typeof IMAGE_TAG_VOCABULARY;
 
 export const VOCABULARY_FIELDS: VocabularyField[] = [
   "material",
-  "subjects",
+  "sponsors",
+  "toolCategories",
   "shotType",
   "who",
   "setting",

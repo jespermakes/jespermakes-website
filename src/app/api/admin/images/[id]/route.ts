@@ -58,9 +58,14 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         ? body.setting
         : null;
   }
-  if (Array.isArray(body.subjects)) {
-    updates.subjects = body.subjects.filter((s: unknown): s is string =>
-      typeof s === "string" && isValidTagValue("subjects", s)
+  if (Array.isArray(body.sponsors)) {
+    updates.sponsors = body.sponsors.filter((s: unknown): s is string =>
+      typeof s === "string" && isValidTagValue("sponsors", s)
+    );
+  }
+  if (Array.isArray(body.toolCategories)) {
+    updates.toolCategories = body.toolCategories.filter((s: unknown): s is string =>
+      typeof s === "string" && isValidTagValue("toolCategories", s)
     );
   }
   if (Array.isArray(body.who)) {

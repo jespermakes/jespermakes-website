@@ -6,7 +6,8 @@ const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 export interface AutoTagResult {
   description: string;
   material: string | null;
-  subjects: string[];
+  sponsors: string[];
+  toolCategories: string[];
   shotType: string | null;
   who: string[];
   setting: string | null;
@@ -22,7 +23,8 @@ Return ONLY valid JSON, no markdown, no preamble, matching this shape:
 {
   "description": "<one concise sentence, concrete, no fluff, no marketing language>",
   "material": <one of: ${vocab.material.values.join(", ")}, or null if no dominant wood>,
-  "subjects": [<any of: ${vocab.subjects.values.join(", ")}>],
+  "sponsors": [<any of: ${vocab.sponsors.values.join(", ")}>],
+  "toolCategories": [<any of: ${vocab.toolCategories.values.join(", ")}>],
   "shotType": <one of: ${vocab.shotType.values.join(", ")}, or null>,
   "who": [<any of: ${vocab.who.values.join(", ")}, empty array if no person visible>],
   "setting": <one of: ${vocab.setting.values.join(", ")}, or null>
@@ -30,8 +32,9 @@ Return ONLY valid JSON, no markdown, no preamble, matching this shape:
 
 Rules:
 - description: ONE sentence, max 20 words. Describe what's actually visible. No "beautiful", "stunning", "showcasing" or marketing words.
-- material: the dominant wood type visible, or null if the image isn't wood-focused (e.g. portrait, landscape).
-- subjects: every relevant subject from the list. Multiple OK. Empty array if none fit.
+- material: the dominant wood type visible, or null if the image isn't wood-focused.
+- sponsors: ONLY include a sponsor if their branding/logo/distinctive product is clearly visible. Carhartt = jacket/workwear branding. Festool = green-and-black power tools with visible Festool logo. Bambu Lab = 3D printer with logo. xTool = laser cutter with logo. Rubio Monocoat = oil finish product/can. WISA Plywood = edge-labeled plywood. Empty array if no sponsor visible. Do not guess from context.
+- toolCategories: what tools are visible? hand-tools = chisels, planes, saws, hammers. power-tools = routers, track saws, drills, sanders. cnc = CNC router, Shaper Origin. laser = laser cutter, Glowforge, xTool. 3d-print = 3D printer or 3D-printed parts. measuring = rulers, squares, calipers. clamping = clamps, vises. Multiple OK. Empty array if no tools visible.
 - shotType: pick the single best fit. Hero = wide/final-piece showpiece. Detail = close-up. Process = action mid-build. B-roll = ambient/contextual. Portrait = person-focused.
 - who: only include if a person is clearly visible. "jesper" if it's clearly the channel host (bearded guy, often in wool/denim). "wife" if his partner is visible. "hands-only" if only hands are shown.
 - setting: where was this shot? Null if unclear.
@@ -101,7 +104,8 @@ function sanitize(raw: unknown): AutoTagResult {
   return {
     description: typeof obj.description === "string" ? obj.description.slice(0, 300).trim() : "",
     material: oneOf("material", obj.material),
-    subjects: manyOf("subjects", obj.subjects),
+    sponsors: manyOf("sponsors", obj.sponsors),
+    toolCategories: manyOf("toolCategories", obj.toolCategories),
     shotType: oneOf("shotType", obj.shotType),
     who: manyOf("who", obj.who),
     setting: oneOf("setting", obj.setting),

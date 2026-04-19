@@ -4,7 +4,8 @@ import { and, or, eq, ilike, sql, desc, inArray } from "drizzle-orm";
 
 export interface FindImagesOptions {
   material?: string;
-  subjects?: string[];
+  sponsors?: string[];
+  toolCategories?: string[];
   shotType?: string;
   who?: string[];
   setting?: string;
@@ -25,18 +26,12 @@ export interface ImageMatch extends Image {
  * Do NOT pick images by listing public/images/. Do NOT guess from filename.
  * If nothing matches well, stop and ask Jesper to upload — don't fall back
  * to a similar-looking file.
- *
- * @example
- * const matches = await findImages({ material: "plywood", shotType: "detail" });
- * // matches[0].url is the URL to use in heroImage/featuredImage
- *
- * @example
- * const matches = await findImages({ query: "workshop overview", limit: 5 });
  */
 export async function findImages(options: FindImagesOptions = {}): Promise<ImageMatch[]> {
   const {
     material,
-    subjects,
+    sponsors,
+    toolCategories,
     shotType,
     who,
     setting,
@@ -52,18 +47,15 @@ export async function findImages(options: FindImagesOptions = {}): Promise<Image
     conditions.push(eq(images.hidden, false));
   }
 
-  if (material) {
-    conditions.push(eq(images.material, material));
-  }
-  if (shotType) {
-    conditions.push(eq(images.shotType, shotType));
-  }
-  if (setting) {
-    conditions.push(eq(images.setting, setting));
-  }
+  if (material) conditions.push(eq(images.material, material));
+  if (shotType) conditions.push(eq(images.shotType, shotType));
+  if (setting) conditions.push(eq(images.setting, setting));
 
-  if (subjects && subjects.length > 0) {
-    conditions.push(sql`${images.subjects} && ${subjects}`);
+  if (sponsors && sponsors.length > 0) {
+    conditions.push(sql`${images.sponsors} && ${sponsors}`);
+  }
+  if (toolCategories && toolCategories.length > 0) {
+    conditions.push(sql`${images.toolCategories} && ${toolCategories}`);
   }
   if (who && who.length > 0) {
     conditions.push(sql`${images.who} && ${who}`);
@@ -79,7 +71,8 @@ export async function findImages(options: FindImagesOptions = {}): Promise<Image
         ilike(images.description, q),
         ilike(images.filename, q),
         sql`EXISTS (SELECT 1 FROM unnest(${images.customTags}) AS t WHERE t ILIKE ${q})`,
-        sql`EXISTS (SELECT 1 FROM unnest(${images.subjects}) AS s WHERE s ILIKE ${q})`
+        sql`EXISTS (SELECT 1 FROM unnest(${images.toolCategories}) AS t WHERE t ILIKE ${q})`,
+        sql`EXISTS (SELECT 1 FROM unnest(${images.sponsors}) AS t WHERE t ILIKE ${q})`
       )
     );
   }
@@ -102,8 +95,12 @@ function scoreMatch(image: Image, options: FindImagesOptions): number {
   if (options.material && image.material === options.material) score += 5;
   if (options.shotType && image.shotType === options.shotType) score += 3;
   if (options.setting && image.setting === options.setting) score += 2;
-  if (options.subjects) {
-    const overlap = options.subjects.filter((s) => image.subjects.includes(s)).length;
+  if (options.sponsors) {
+    const overlap = options.sponsors.filter((s) => image.sponsors.includes(s)).length;
+    score += overlap * 4;
+  }
+  if (options.toolCategories) {
+    const overlap = options.toolCategories.filter((t) => image.toolCategories.includes(t)).length;
     score += overlap * 3;
   }
   if (options.who) {

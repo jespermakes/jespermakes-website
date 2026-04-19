@@ -38,7 +38,12 @@ export async function GET(request: NextRequest) {
   if (shotType) conditions.push(eq(images.shotType, shotType));
   if (tag) {
     conditions.push(
-      sql`(${tag} = ANY(${images.subjects}) OR ${tag} = ANY(${images.customTags}) OR ${tag} = ANY(${images.who}))`
+      sql`(
+        ${tag} = ANY(${images.customTags})
+        OR ${tag} = ANY(${images.toolCategories})
+        OR ${tag} = ANY(${images.sponsors})
+        OR ${tag} = ANY(${images.who})
+      )`
     );
   }
   if (query) {
@@ -133,7 +138,8 @@ export async function POST(request: NextRequest) {
       mimeType: file.type,
       description: aiResult?.description ?? null,
       material: aiResult?.material ?? null,
-      subjects: aiResult?.subjects ?? [],
+      sponsors: aiResult?.sponsors ?? [],
+      toolCategories: aiResult?.toolCategories ?? [],
       shotType: aiResult?.shotType ?? null,
       who: aiResult?.who ?? [],
       setting: aiResult?.setting ?? null,

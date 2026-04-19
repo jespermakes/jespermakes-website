@@ -203,7 +203,8 @@ export const images = pgTable("images", {
 
   description: text("description"),
   material: text("material"),
-  subjects: text("subjects").array().notNull().default(sql`ARRAY[]::text[]`),
+  sponsors: text("sponsors").array().notNull().default(sql`ARRAY[]::text[]`),
+  toolCategories: text("tool_categories").array().notNull().default(sql`ARRAY[]::text[]`),
   shotType: text("shot_type"),
   who: text("who").array().notNull().default(sql`ARRAY[]::text[]`),
   setting: text("setting"),
