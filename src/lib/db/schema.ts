@@ -231,16 +231,16 @@ export const blogPosts = pgTable("blog_posts", {
   description: text("description").notNull().default(""),
   content: text("content").notNull().default(""),
   author: text("author").notNull().default("Jesper"),
-  tags: text("tags").array().notNull().default(sql`ARRAY[]::text[]`),
+  tags: jsonb("tags").notNull().default([]),
   heroImage: text("hero_image"),
   heroImageId: uuid("hero_image_id").references(() => images.id, { onDelete: "set null" }),
   heroImageAlt: text("hero_image_alt"),
   featuredVideo: text("featured_video"),
   status: text("status").notNull().default("draft"),
   hidden: boolean("hidden").notNull().default(false),
-  publishedAt: timestamp("published_at", { withTimezone: true }),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  publishedAt: timestamp("published_at", { mode: "date" }),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
 });
 
 export const toolItems = pgTable("tool_items", {
@@ -252,13 +252,14 @@ export const toolItems = pgTable("tool_items", {
   description: text("description").notNull().default(""),
   image: text("image"),
   imageId: uuid("image_id").references(() => images.id, { onDelete: "set null" }),
-  buyLinks: jsonb("buy_links").notNull().default(sql`'{}'::jsonb`),
+  buyLinks: jsonb("buy_links").notNull().default({}),
   ambassadorBadge: boolean("ambassador_badge").notNull().default(false),
   featured: boolean("featured").notNull().default(false),
   hidden: boolean("hidden").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  extra: jsonb("extra"),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
 });
 
 export type BlogPost = typeof blogPosts.$inferSelect;

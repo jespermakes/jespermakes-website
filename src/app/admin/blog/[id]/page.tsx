@@ -23,7 +23,7 @@ export default async function EditBlogPostPage({ params }: { params: { id: strin
         title: post.title,
         description: post.description,
         content: post.content,
-        tags: post.tags,
+        tags: (post.tags as string[]) ?? [],
         heroImageId: post.heroImageId,
         heroImage: post.heroImage,
         heroImageAlt: post.heroImageAlt,
