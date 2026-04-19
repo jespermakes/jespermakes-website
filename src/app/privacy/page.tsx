@@ -14,7 +14,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="font-serif text-2xl text-wood mb-3">1. Who We Are</h2>
           <p>This website is operated by Jesper Makes Workshop, based in Denmark. We sell digital woodworking products and physical merchandise, and we produce content on YouTube and social media.</p>
-          <p>Contact: <a href="mailto:hello@jespermakes.com" className="text-amber hover:underline">hello@jespermakes.com</a></p>
+          <p>Contact: <a href="mailto:hello@jespermakes.com" className="text-forest hover:underline">hello@jespermakes.com</a></p>
         </section>
 
         <section>
@@ -43,10 +43,10 @@ export default function PrivacyPage() {
           <h2 className="font-serif text-2xl text-wood mb-3">4. Third-Party Services</h2>
           <p>We use the following services to operate the shop:</p>
           <ul className="list-disc pl-6 space-y-1">
-            <li><strong>Stripe</strong> for payment processing (<a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer" className="text-amber hover:underline">stripe.com/privacy</a>)</li>
-            <li><strong>Printful</strong> for physical product fulfillment (<a href="https://www.printful.com/policies/privacy" target="_blank" rel="noopener noreferrer" className="text-amber hover:underline">printful.com/policies/privacy</a>)</li>
+            <li><strong>Stripe</strong> for payment processing (<a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer" className="text-forest hover:underline">stripe.com/privacy</a>)</li>
+            <li><strong>Printful</strong> for physical product fulfillment (<a href="https://www.printful.com/policies/privacy" target="_blank" rel="noopener noreferrer" className="text-forest hover:underline">printful.com/policies/privacy</a>)</li>
             <li><strong>Resend</strong> for transactional and marketing emails</li>
-            <li><strong>Vercel</strong> for website hosting and analytics (<a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-amber hover:underline">vercel.com/legal/privacy-policy</a>)</li>
+            <li><strong>Vercel</strong> for website hosting and analytics (<a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-forest hover:underline">vercel.com/legal/privacy-policy</a>)</li>
             <li><strong>Neon</strong> for database hosting</li>
           </ul>
           <p>These services process data on our behalf and are bound by their own privacy policies.</p>
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
             <li><strong>Object</strong> to processing of your data</li>
             <li><strong>Withdraw consent</strong> at any time (e.g., unsubscribe from emails)</li>
           </ul>
-          <p>To exercise any of these rights, email <a href="mailto:hello@jespermakes.com" className="text-amber hover:underline">hello@jespermakes.com</a>. We will respond within 30 days.</p>
+          <p>To exercise any of these rights, email <a href="mailto:hello@jespermakes.com" className="text-forest hover:underline">hello@jespermakes.com</a>. We will respond within 30 days.</p>
         </section>
 
         <section>
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
 
         <section>
           <h2 className="font-serif text-2xl text-wood mb-3">10. Contact</h2>
-          <p>Questions about your privacy? Email us at <a href="mailto:hello@jespermakes.com" className="text-amber hover:underline">hello@jespermakes.com</a></p>
+          <p>Questions about your privacy? Email us at <a href="mailto:hello@jespermakes.com" className="text-forest hover:underline">hello@jespermakes.com</a></p>
         </section>
       </div>
     </div>

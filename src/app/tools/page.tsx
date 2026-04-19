@@ -28,7 +28,7 @@ export default function ToolsPage() {
           </p>
           <p className="text-wood-light/60 text-sm mt-3">
             Items marked{" "}
-            <span className="text-amber font-medium">Ambassador</span> are
+            <span className="text-forest font-medium">Ambassador</span> are
             from brands I officially work with.
           </p>
         </div>
@@ -42,9 +42,9 @@ export default function ToolsPage() {
 
       <Link
         href="/plywood"
-        className="block bg-amber/10 border border-amber/20 rounded-2xl p-6 mb-8 hover:border-amber/40 transition-colors"
+        className="block bg-forest/10 border border-forest/20 rounded-2xl p-6 mb-8 hover:border-forest/40 transition-colors"
       >
-        <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-2">
+        <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-2">
           NEW — MATERIAL GUIDE
         </p>
         <h3 className="font-serif text-2xl text-wood mb-2">
@@ -63,10 +63,10 @@ export default function ToolsPage() {
             <Link
               key={category.slug}
               href={`/tools/category/${category.slug}`}
-              className="group bg-white/60 rounded-xl p-8 border border-wood/5 hover:border-amber/20 transition-colors flex flex-col"
+              className="group bg-white/60 rounded-xl p-8 border border-wood/5 hover:border-forest/20 transition-colors flex flex-col"
             >
               <span className="text-4xl mb-4">{category.icon}</span>
-              <h2 className="font-serif text-xl text-wood group-hover:text-amber transition-colors mb-2">
+              <h2 className="font-serif text-xl text-wood group-hover:text-forest transition-colors mb-2">
                 {category.title}
               </h2>
               <p className="text-wood-light/70 text-sm mb-4 flex-1">

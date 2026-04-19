@@ -26,7 +26,7 @@ export function BuyButton() {
     <button
       onClick={handleBuy}
       disabled={loading}
-      className="w-full sm:w-auto bg-amber hover:bg-amber-dark disabled:opacity-60 text-cream px-8 py-4 rounded-lg font-medium text-lg transition-colors"
+      className="w-full sm:w-auto bg-forest hover:bg-forest-dark disabled:opacity-60 text-cream px-8 py-4 rounded-lg font-medium text-lg transition-colors"
     >
       {loading ? "Redirecting\u2026" : "Buy now \u2014 \u20AC3"}
     </button>

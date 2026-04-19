@@ -328,7 +328,7 @@ export default function RubioGuidePage() {
               (n < current
                 ? "bg-wood"
                 : n === current
-                  ? "bg-amber"
+                  ? "bg-forest"
                   : "bg-wood/10")
             }
           />
@@ -486,17 +486,17 @@ export default function RubioGuidePage() {
         {step === "product" && currentProduct && (
           <section>
             <ProgressBar current={3} />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-amber uppercase mb-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-forest uppercase mb-6">
               Your product
             </p>
 
             <div className="bg-white border border-wood/8 rounded-[20px] p-8 mb-6">
               <div className="flex gap-6 items-start mb-6 pb-6 border-b border-wood/8">
-                <div className="text-3xl w-16 h-16 bg-amber/12 rounded-2xl flex items-center justify-center text-amber flex-shrink-0">
+                <div className="text-3xl w-16 h-16 bg-forest/12 rounded-2xl flex items-center justify-center text-forest flex-shrink-0">
                   {currentProduct.icon}
                 </div>
                 <div>
-                  <div className="text-amber text-sm font-semibold tracking-wider uppercase mb-2">
+                  <div className="text-forest text-sm font-semibold tracking-wider uppercase mb-2">
                     {currentProduct.line}
                   </div>
                   <h2 className="font-serif text-2xl text-wood mb-1 font-medium">
@@ -508,8 +508,8 @@ export default function RubioGuidePage() {
                 </div>
               </div>
 
-              <div className="bg-amber/8 border border-amber/18 rounded-xl px-5 py-4 mb-6">
-                <div className="text-[10px] font-bold tracking-[0.15em] text-amber mb-1.5 uppercase">
+              <div className="bg-forest/8 border border-forest/18 rounded-xl px-5 py-4 mb-6">
+                <div className="text-[10px] font-bold tracking-[0.15em] text-forest mb-1.5 uppercase">
                   Why this one
                 </div>
                 <p className="text-wood-light text-sm leading-relaxed">
@@ -533,7 +533,7 @@ export default function RubioGuidePage() {
                     onChange={(e) =>
                       setArea(parseFloat(e.target.value) || 0)
                     }
-                    className="flex-1 min-w-[140px] bg-white border border-wood/15 rounded-[10px] px-3.5 py-2.5 text-wood outline-none focus:border-amber"
+                    className="flex-1 min-w-[140px] bg-white border border-wood/15 rounded-[10px] px-3.5 py-2.5 text-wood outline-none focus:border-forest"
                   />
                   <div className="inline-flex bg-wood/6 rounded-[10px] p-[3px]">
                     <button
@@ -567,7 +567,7 @@ export default function RubioGuidePage() {
                   <select
                     value={calcSpecies}
                     onChange={(e) => setCalcSpecies(e.target.value)}
-                    className="flex-1 min-w-[140px] bg-white border border-wood/15 rounded-[10px] px-3.5 py-2.5 text-wood outline-none focus:border-amber"
+                    className="flex-1 min-w-[140px] bg-white border border-wood/15 rounded-[10px] px-3.5 py-2.5 text-wood outline-none focus:border-forest"
                   >
                     {product &&
                       CALC_SPECIES[product].map((sp) => (
@@ -577,8 +577,8 @@ export default function RubioGuidePage() {
                       ))}
                   </select>
                 </div>
-                <div className="bg-amber/8 border border-amber/20 rounded-xl px-6 py-5 mt-4">
-                  <div className="text-[10px] font-bold tracking-[0.15em] text-amber mb-2 uppercase">
+                <div className="bg-forest/8 border border-forest/20 rounded-xl px-6 py-5 mt-4">
+                  <div className="text-[10px] font-bold tracking-[0.15em] text-forest mb-2 uppercase">
                     You&apos;ll need
                   </div>
                   <div className="font-serif text-3xl text-wood font-medium leading-tight mb-1">
@@ -642,7 +642,7 @@ export default function RubioGuidePage() {
                         "rounded-xl p-4 text-sm font-medium text-center transition-all " +
                         (species === sp.id
                           ? "border-2 border-wood bg-white shadow-[0_0_0_3px_rgba(44,24,16,0.08)]"
-                          : "border border-wood/10 bg-white/60 hover:border-amber hover:bg-white")
+                          : "border border-wood/10 bg-white/60 hover:border-forest hover:bg-white")
                       }
                       onClick={() => pickSpecies(sp.id)}
                     >
@@ -705,7 +705,7 @@ export default function RubioGuidePage() {
                           "relative rounded-[10px] overflow-hidden bg-white/50 text-left transition-all " +
                           (isSelected
                             ? "border-2 border-wood shadow-[0_0_0_3px_rgba(44,24,16,0.15)]"
-                            : "border-2 border-transparent hover:border-amber")
+                            : "border-2 border-transparent hover:border-forest")
                         }
                       >
                         {c.jesper && (
@@ -766,7 +766,7 @@ export default function RubioGuidePage() {
 
         {step === "summary" && product && currentProduct && (
           <section>
-            <p className="text-[10px] font-bold tracking-[0.15em] text-amber uppercase mb-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-forest uppercase mb-6">
               Your plan
             </p>
             <h2 className="font-serif text-3xl text-wood mb-6 font-medium leading-tight">
@@ -811,7 +811,7 @@ export default function RubioGuidePage() {
                 recommend what I actually use. If you buy through{" "}
                 <Link
                   href="/tools"
-                  className="text-amber hover:text-amber-dark underline"
+                  className="text-forest hover:text-forest-dark underline"
                 >
                   my tool recommendations
                 </Link>
@@ -867,9 +867,9 @@ function OptionButton({
   return (
     <button
       onClick={onClick}
-      className="bg-white/60 border border-wood/10 rounded-2xl p-6 text-left cursor-pointer transition-all hover:border-amber hover:bg-white/90 flex gap-4 items-start"
+      className="bg-white/60 border border-wood/10 rounded-2xl p-6 text-left cursor-pointer transition-all hover:border-forest hover:bg-white/90 flex gap-4 items-start"
     >
-      <div className="text-2xl w-10 h-10 bg-amber/12 rounded-[10px] flex items-center justify-center text-amber flex-shrink-0">
+      <div className="text-2xl w-10 h-10 bg-forest/12 rounded-[10px] flex items-center justify-center text-forest flex-shrink-0">
         {icon}
       </div>
       <div>
@@ -922,7 +922,7 @@ function ApplicationGuide({ product }: { product: ProductKey }) {
               onClick={() => setOpenIndex(open ? -1 : i)}
               className="w-full py-4 px-5 bg-transparent text-base font-medium text-wood text-left flex justify-between items-center cursor-pointer gap-4 hover:bg-wood/[0.02]"
             >
-              <span className="bg-amber/15 text-amber-dark w-7 h-7 rounded-full inline-flex items-center justify-center font-bold text-[13px] flex-shrink-0">
+              <span className="bg-forest/15 text-forest-dark w-7 h-7 rounded-full inline-flex items-center justify-center font-bold text-[13px] flex-shrink-0">
                 {i + 1}
               </span>
               <span className="flex-1 font-serif">{step.title}</span>

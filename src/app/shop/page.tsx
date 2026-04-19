@@ -74,7 +74,7 @@ export default function Shop() {
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <svg
-                      className="w-12 h-12 text-amber/30"
+                      className="w-12 h-12 text-forest/30"
                       fill="none"
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
@@ -90,7 +90,7 @@ export default function Shop() {
                 )}
                 {product.comingSoon && (
                   <div className="absolute inset-0 bg-wood/60 flex items-center justify-center">
-                    <span className="bg-amber text-cream px-4 py-2 rounded-lg font-medium text-sm">
+                    <span className="bg-forest text-cream px-4 py-2 rounded-lg font-medium text-sm">
                       Coming Soon
                     </span>
                   </div>
@@ -103,14 +103,14 @@ export default function Shop() {
                   </div>
                 )}
               </div>
-              <h2 className="font-serif text-xl text-wood group-hover:text-amber transition-colors mb-1">
+              <h2 className="font-serif text-xl text-wood group-hover:text-forest transition-colors mb-1">
                 {product.title}
               </h2>
               <p className="text-wood-light/60 text-sm mb-2">
                 {product.subtitle}
               </p>
               {product.price && (
-                <p className="text-amber font-medium">{product.price}</p>
+                <p className="text-forest font-medium">{product.price}</p>
               )}
             </>
           );

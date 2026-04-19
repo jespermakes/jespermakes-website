@@ -29,7 +29,7 @@ export async function YouTubeSection() {
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <h3 className="font-serif text-lg text-wood group-hover:text-amber transition-colors mb-1 line-clamp-2">
+              <h3 className="font-serif text-lg text-wood group-hover:text-forest transition-colors mb-1 line-clamp-2">
                 {video.title}
               </h3>
               <p className="text-wood-light/50 text-sm">

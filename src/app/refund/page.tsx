@@ -21,7 +21,7 @@ export default function RefundPage() {
             <li>The product was significantly different from what was described</li>
             <li>You were charged twice for the same product</li>
           </ul>
-          <p>To request a refund, email <a href="mailto:hello@jespermakes.com" className="text-amber hover:underline">hello@jespermakes.com</a> within 14 days of purchase with your order details and a description of the issue.</p>
+          <p>To request a refund, email <a href="mailto:hello@jespermakes.com" className="text-forest hover:underline">hello@jespermakes.com</a> within 14 days of purchase with your order details and a description of the issue.</p>
         </section>
 
         <section>
@@ -29,7 +29,7 @@ export default function RefundPage() {
           <p>For physical merchandise (t-shirts, prints, etc.), you have the right to return the product within 14 days of receiving it, in accordance with EU consumer rights.</p>
           <p><strong>To initiate a return:</strong></p>
           <ul className="list-disc pl-6 space-y-1">
-            <li>Email <a href="mailto:hello@jespermakes.com" className="text-amber hover:underline">hello@jespermakes.com</a> within 14 days of delivery</li>
+            <li>Email <a href="mailto:hello@jespermakes.com" className="text-forest hover:underline">hello@jespermakes.com</a> within 14 days of delivery</li>
             <li>The item must be unused, unwashed, and in its original condition</li>
             <li>You are responsible for return shipping costs unless the item is defective</li>
           </ul>
@@ -52,7 +52,7 @@ export default function RefundPage() {
 
         <section>
           <h2 className="font-serif text-2xl text-wood mb-3">Contact</h2>
-          <p>For any refund or return questions, email <a href="mailto:hello@jespermakes.com" className="text-amber hover:underline">hello@jespermakes.com</a>. We aim to respond within 24 hours.</p>
+          <p>For any refund or return questions, email <a href="mailto:hello@jespermakes.com" className="text-forest hover:underline">hello@jespermakes.com</a>. We aim to respond within 24 hours.</p>
         </section>
       </div>
     </div>

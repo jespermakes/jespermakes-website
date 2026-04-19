@@ -56,7 +56,7 @@ export default function Sponsors() {
 
       {/* ---- Honest paragraph ---- */}
       <section className="max-w-3xl mx-auto px-6 py-12">
-        <div className="border-l-4 border-amber pl-6">
+        <div className="border-l-4 border-forest pl-6">
           <p className="text-wood-light/80 text-lg leading-relaxed italic">
             &ldquo;I only collaborate with products I would actually use in my
             shop. No cheap gimmicks, no MDF furniture brands. If it fits a
@@ -79,7 +79,7 @@ export default function Sponsors() {
             "Long-term ambassador relationships",
           ].map((item) => (
             <li key={item} className="flex items-start gap-3">
-              <span className="mt-1.5 w-2 h-2 rounded-full bg-amber shrink-0" />
+              <span className="mt-1.5 w-2 h-2 rounded-full bg-forest shrink-0" />
               {item}
             </li>
           ))}
@@ -94,7 +94,7 @@ export default function Sponsors() {
           </p>
           <Link
             href="/mediakit"
-            className="inline-block border border-wood/20 hover:border-amber text-wood px-6 py-3 rounded-lg font-medium transition-colors"
+            className="inline-block border border-wood/20 hover:border-forest text-wood px-6 py-3 rounded-lg font-medium transition-colors"
           >
             View Media Kit →
           </Link>
@@ -105,7 +105,7 @@ export default function Sponsors() {
       <section className="max-w-5xl mx-auto px-6 pt-12 pb-20 text-center">
         <a
           href="mailto:sponsors@jespermakes.com"
-          className="inline-block bg-amber hover:bg-amber-dark text-cream px-8 py-4 rounded-xl text-lg font-semibold transition-colors"
+          className="inline-block bg-forest hover:bg-forest-dark text-cream px-8 py-4 rounded-xl text-lg font-semibold transition-colors"
         >
           Get in touch → sponsors@jespermakes.com
         </a>

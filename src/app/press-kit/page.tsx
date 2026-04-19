@@ -108,7 +108,7 @@ function DownloadCard({
           </div>
         </div>
       </div>
-      <p className="text-wood-light/60 text-sm mt-2 group-hover:text-amber transition-colors">
+      <p className="text-wood-light/60 text-sm mt-2 group-hover:text-forest transition-colors">
         {caption}
       </p>
     </a>
@@ -120,7 +120,7 @@ export default function PressKit() {
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
       {/* Header */}
       <div className="max-w-2xl mb-16">
-        <p className="text-amber text-sm font-medium tracking-widest uppercase mb-3">
+        <p className="text-forest text-sm font-medium tracking-widest uppercase mb-3">
           Press Kit
         </p>
         <h1 className="font-serif text-4xl md:text-5xl text-wood mb-4">
@@ -134,13 +134,13 @@ export default function PressKit() {
         <div className="flex flex-wrap gap-4 mt-6">
           <Link
             href="/contact"
-            className="text-amber hover:text-amber-dark text-sm font-medium transition-colors"
+            className="text-forest hover:text-forest-dark text-sm font-medium transition-colors"
           >
             ← Back to Contact
           </Link>
           <Link
             href="/mediakit"
-            className="text-wood-light/60 hover:text-amber text-sm font-medium transition-colors"
+            className="text-wood-light/60 hover:text-forest text-sm font-medium transition-colors"
           >
             Looking for audience stats? View Media Kit →
           </Link>
@@ -213,7 +213,7 @@ export default function PressKit() {
         </div>
         <p className="text-wood-light/50 text-xs mt-6">
           Need something specific? Reach out at{" "}
-          <a href="mailto:hello@jespermakes.com" className="text-amber hover:underline">
+          <a href="mailto:hello@jespermakes.com" className="text-forest hover:underline">
             hello@jespermakes.com
           </a>
         </p>

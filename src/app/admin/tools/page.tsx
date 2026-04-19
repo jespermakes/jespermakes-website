@@ -50,7 +50,7 @@ export default async function AdminToolsListPage() {
                   <div className="text-xs text-wood-light/50 font-mono truncate">/{row.slug}</div>
                 </div>
                 {row.ambassadorBadge && (
-                  <span className="text-[11px] bg-amber/15 text-amber-dark rounded-md px-2 py-0.5 font-medium">
+                  <span className="text-[11px] bg-forest/15 text-forest-dark rounded-md px-2 py-0.5 font-medium">
                     Ambassador
                   </span>
                 )}

@@ -23,7 +23,7 @@ function Dots() {
       {[0, 150, 300].map((d) => (
         <span
           key={d}
-          className="w-1.5 h-1.5 rounded-full bg-amber animate-bounce"
+          className="w-1.5 h-1.5 rounded-full bg-forest animate-bounce"
           style={{ animationDelay: `${d}ms` }}
         />
       ))}
@@ -289,7 +289,7 @@ function FindStoryTab() {
 
         {/* Title ideas */}
         <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-5 mb-4">
-          <p className="text-[10px] font-bold tracking-[2px] text-amber/50 mb-2.5">
+          <p className="text-[10px] font-bold tracking-[2px] text-forest/50 mb-2.5">
             TITLE IDEAS
           </p>
           {brief.titleIdeas.map((t, i) => (
@@ -329,7 +329,7 @@ function FindStoryTab() {
           </button>
           <button
             onClick={handlePDF}
-            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 bg-amber/10 border border-amber/20 rounded-xl text-sm font-semibold text-amber hover:bg-amber/15 transition-all"
+            className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 bg-forest/10 border border-forest/20 rounded-xl text-sm font-semibold text-forest hover:bg-forest/15 transition-all"
           >
             <span>📄</span>
             Download PDF
@@ -367,7 +367,7 @@ function FindStoryTab() {
             onChange={(e) => setDesc(e.target.value)}
             rows={3}
             placeholder="e.g. I'm building a shelf for my living room from some pine boards I got at the hardware store."
-            className="w-full px-4 py-3.5 bg-white border border-wood/[0.08] rounded-xl text-wood text-[15px] font-serif outline-none resize-none leading-relaxed focus:border-amber/30 transition-colors placeholder:text-wood-light/35"
+            className="w-full px-4 py-3.5 bg-white border border-wood/[0.08] rounded-xl text-wood text-[15px] font-serif outline-none resize-none leading-relaxed focus:border-forest/30 transition-colors placeholder:text-wood-light/35"
           />
           <button
             onClick={start}
@@ -390,7 +390,7 @@ function FindStoryTab() {
             <div key={i} className="mb-4">
               <div
                 className="bg-white/50 border border-wood/[0.06] rounded-2xl p-5"
-                style={{ borderLeftWidth: 3, borderLeftColor: "#C17F3C" }}
+                style={{ borderLeftWidth: 3, borderLeftColor: "#3F6B4A" }}
               >
                 <p className="text-sm text-wood font-medium m-0">
                   {c.question}
@@ -409,12 +409,12 @@ function FindStoryTab() {
             <div className="mb-4">
               <div
                 className="bg-white/50 border border-wood/[0.06] rounded-2xl p-5"
-                style={{ borderLeftWidth: 3, borderLeftColor: "#C17F3C" }}
+                style={{ borderLeftWidth: 3, borderLeftColor: "#3F6B4A" }}
               >
                 <p className="text-[15px] text-wood font-medium mb-1 m-0">
                   {currentQ.question}
                 </p>
-                <p className="text-[11px] text-amber/50 italic m-0">
+                <p className="text-[11px] text-forest/50 italic m-0">
                   {currentQ.why}
                 </p>
               </div>
@@ -424,7 +424,7 @@ function FindStoryTab() {
                   onChange={(e) => setAnswer(e.target.value)}
                   rows={3}
                   placeholder="Your honest answer..."
-                  className="w-full px-3.5 py-3 bg-white border border-wood/[0.08] rounded-xl text-wood text-sm outline-none resize-none leading-relaxed focus:border-amber/30 transition-colors placeholder:text-wood-light/35"
+                  className="w-full px-3.5 py-3 bg-white border border-wood/[0.08] rounded-xl text-wood text-sm outline-none resize-none leading-relaxed focus:border-forest/30 transition-colors placeholder:text-wood-light/35"
                   autoFocus
                 />
                 <button
@@ -521,7 +521,7 @@ function DrawCardTab() {
             style={{
               borderLeftWidth: 4,
               borderLeftColor:
-                CARD_CATEGORIES[drawn.category]?.color || "#C17F3C",
+                CARD_CATEGORIES[drawn.category]?.color || "#3F6B4A",
             }}
           >
             <div className="flex items-center gap-3 mb-4">
@@ -534,7 +534,7 @@ function DrawCardTab() {
                   className="text-xs font-semibold tracking-[1px] mt-0.5 uppercase"
                   style={{
                     color:
-                      CARD_CATEGORIES[drawn.category]?.color || "#C17F3C",
+                      CARD_CATEGORIES[drawn.category]?.color || "#3F6B4A",
                   }}
                 >
                   {CARD_CATEGORIES[drawn.category]?.label}
@@ -551,8 +551,8 @@ function DrawCardTab() {
             </p>
 
             {/* Jesper example */}
-            <div className="bg-amber/[0.06] rounded-xl p-4 mb-4">
-              <p className="text-[10px] font-bold tracking-[2px] text-amber/50 mb-1.5">
+            <div className="bg-forest/[0.06] rounded-xl p-4 mb-4">
+              <p className="text-[10px] font-bold tracking-[2px] text-forest/50 mb-1.5">
                 JESPER&apos;S EXAMPLE
               </p>
               <p className="text-[13px] text-wood-light/[0.55] m-0 leading-relaxed">
@@ -608,13 +608,13 @@ function ArcCurve({ curve }: { curve: ArcShape["curve"] }) {
       <path
         d={d}
         fill="none"
-        stroke="#C17F3C"
+        stroke="#3F6B4A"
         strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       {points.map((p, i) => (
-        <circle key={i} cx={p[0]} cy={p[1]} r="4" fill="#C17F3C" />
+        <circle key={i} cx={p[0]} cy={p[1]} r="4" fill="#3F6B4A" />
       ))}
       <text x={pad} y={h - 2} fill="rgba(74,50,40,0.15)" fontSize="9">
         Low tension
@@ -649,7 +649,7 @@ function MapArcTab() {
             }}
             className={`bg-white/50 rounded-2xl p-3.5 text-left cursor-pointer transition-all ${
               selected === a.id
-                ? "border-2 border-amber"
+                ? "border-2 border-forest"
                 : "border border-wood/[0.06] hover:border-wood/10"
             }`}
           >
@@ -677,7 +677,7 @@ function MapArcTab() {
             {arc.beats.map((beat, i) => (
               <div key={i} className="mb-3">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[11px] text-amber font-bold font-mono">
+                  <span className="text-[11px] text-forest font-bold font-mono">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="text-sm font-semibold text-wood">
@@ -691,7 +691,7 @@ function MapArcTab() {
                   }
                   rows={2}
                   placeholder={beat.prompt}
-                  className="w-full px-3 py-2.5 bg-white border border-wood/[0.08] rounded-lg text-wood text-[13px] outline-none resize-none leading-relaxed focus:border-amber/30 transition-colors placeholder:text-wood-light/35"
+                  className="w-full px-3 py-2.5 bg-white border border-wood/[0.08] rounded-lg text-wood text-[13px] outline-none resize-none leading-relaxed focus:border-forest/30 transition-colors placeholder:text-wood-light/35"
                 />
               </div>
             ))}
@@ -723,7 +723,7 @@ function CreatorDNATab() {
             onClick={() => setSelected(c.id)}
             className={`bg-white/50 rounded-2xl p-4 text-left cursor-pointer transition-all ${
               selected === c.id
-                ? "border-2 border-amber"
+                ? "border-2 border-forest"
                 : "border border-wood/[0.06] hover:border-wood/10"
             }`}
           >
@@ -743,9 +743,9 @@ function CreatorDNATab() {
           {/* Core Truth */}
           <div
             className="bg-white/50 border border-wood/[0.06] rounded-2xl p-5 mb-4"
-            style={{ borderLeftWidth: 3, borderLeftColor: "#C17F3C" }}
+            style={{ borderLeftWidth: 3, borderLeftColor: "#3F6B4A" }}
           >
-            <p className="text-[10px] font-bold tracking-[2px] text-amber/50 mb-1.5">
+            <p className="text-[10px] font-bold tracking-[2px] text-forest/50 mb-1.5">
               CORE TRUTH
             </p>
             <p className="font-serif text-base text-wood leading-relaxed m-0">
@@ -801,7 +801,7 @@ export default function StorytellerPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12 md:py-16">
-      <p className="text-[10px] font-bold tracking-[5px] text-amber mb-3.5">
+      <p className="text-[10px] font-bold tracking-[5px] text-forest mb-3.5">
         JESPER MAKES
       </p>
       <h1 className="font-serif text-4xl md:text-[38px] font-bold text-wood leading-tight mb-3">

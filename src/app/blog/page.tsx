@@ -38,7 +38,7 @@ export default function BlogPage() {
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="group bg-white/60 rounded-2xl border border-wood/5 hover:border-amber/20 transition-all overflow-hidden"
+            className="group bg-white/60 rounded-2xl border border-wood/5 hover:border-forest/20 transition-all overflow-hidden"
           >
             {post.heroImage && (
               // eslint-disable-next-line @next/next/no-img-element
@@ -58,13 +58,13 @@ export default function BlogPage() {
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber/10 text-amber border border-amber/20"
+                    className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
-              <h2 className="font-serif text-xl text-wood group-hover:text-amber transition-colors mb-2 leading-snug">
+              <h2 className="font-serif text-xl text-wood group-hover:text-forest transition-colors mb-2 leading-snug">
                 {post.title}
               </h2>
               <p className="text-wood-light/70 text-sm leading-relaxed mb-4 line-clamp-3">

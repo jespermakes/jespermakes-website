@@ -76,7 +76,7 @@ export default async function AdminDashboard() {
       <div className="bg-white/55 border border-wood/[0.07] rounded-2xl p-5 mb-6">
         <div className="flex items-baseline justify-between mb-4">
           <h2 className="font-serif text-xl font-normal text-wood m-0">Recent orders</h2>
-          <Link href="/admin/orders" className="text-xs text-amber hover:underline">
+          <Link href="/admin/orders" className="text-xs text-forest hover:underline">
             See all ↗
           </Link>
         </div>

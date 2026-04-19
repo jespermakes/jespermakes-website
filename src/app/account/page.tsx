@@ -45,8 +45,8 @@ const PRODUCT_INFO: Record<
 
 const GUILD_TIERS: Record<string, { label: string; color: string }> = {
   free: { label: "Free", color: "text-wood-light" },
-  apprentice: { label: "Apprentice", color: "text-amber" },
-  journeyman: { label: "Journeyman", color: "text-amber-dark" },
+  apprentice: { label: "Apprentice", color: "text-forest" },
+  journeyman: { label: "Journeyman", color: "text-forest-dark" },
   master: { label: "Master", color: "text-wood" },
 };
 
@@ -115,7 +115,7 @@ export default async function AccountPage() {
             <p className="text-wood-light/60 mb-4">No purchases yet.</p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 bg-amber text-white px-5 py-2.5 rounded-full font-medium hover:bg-amber/90 transition-colors text-sm"
+              className="inline-flex items-center gap-2 bg-forest text-white px-5 py-2.5 rounded-full font-medium hover:bg-forest/90 transition-colors text-sm"
             >
               Browse the Shop
             </Link>
@@ -153,7 +153,7 @@ export default async function AccountPage() {
                   {product?.downloadSku && (
                     <a
                       href={`/api/downloads/${product.downloadSku}`}
-                      className="inline-flex items-center gap-2 bg-amber text-white px-4 py-2 rounded-lg font-medium hover:bg-amber/90 transition-colors text-sm flex-shrink-0"
+                      className="inline-flex items-center gap-2 bg-forest text-white px-4 py-2 rounded-lg font-medium hover:bg-forest/90 transition-colors text-sm flex-shrink-0"
                     >
                       <svg
                         className="w-4 h-4"
@@ -195,7 +195,7 @@ export default async function AccountPage() {
             {tierInfo.label}
           </span>
         </div>
-        <div className="bg-amber/5 rounded-lg p-4 text-center">
+        <div className="bg-forest/5 rounded-lg p-4 text-center">
           <p className="font-serif text-lg text-wood mb-1">Coming soon</p>
           <p className="text-wood-light/60 text-sm">
             The Jesper Makes Guild is being built. Join projects, unlock skills,
@@ -221,7 +221,7 @@ export default async function AccountPage() {
       >
         <button
           type="submit"
-          className="text-sm text-wood-light/60 hover:text-amber transition-colors underline"
+          className="text-sm text-wood-light/60 hover:text-forest transition-colors underline"
         >
           Sign out
         </button>

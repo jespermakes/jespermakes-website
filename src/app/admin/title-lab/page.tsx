@@ -79,7 +79,7 @@ function DailyChart({ data }: { data: DashboardData["daily"] }) {
             <div key={date} className="flex-1 flex flex-col items-center gap-1">
               <div className="w-full flex flex-col justify-end" style={{ height: 100 }}>
                 <div
-                  className="w-full rounded-t bg-amber transition-all duration-500"
+                  className="w-full rounded-t bg-forest transition-all duration-500"
                   style={{ height: `${urlH}%`, minHeight: d.url > 0 ? 3 : 0 }}
                 />
                 <div
@@ -94,7 +94,7 @@ function DailyChart({ data }: { data: DashboardData["daily"] }) {
       </div>
       <div className="flex gap-4 mt-3 justify-center">
         <div className="flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-sm bg-amber" />
+          <div className="w-2 h-2 rounded-sm bg-forest" />
           <span className="text-[10px] text-wood-light/30">URL Analyze</span>
         </div>
         <div className="flex items-center gap-1.5">
@@ -164,7 +164,7 @@ export default function TitleLabDashboard() {
       <div className="max-w-4xl mx-auto px-6 py-16">
         {/* Header */}
         <div className="mb-10">
-          <p className="text-[10px] font-bold tracking-[0.25em] text-amber mb-2 uppercase">
+          <p className="text-[10px] font-bold tracking-[0.25em] text-forest mb-2 uppercase">
             Title Lab
           </p>
           <h1 className="font-serif text-3xl text-wood mb-1">Dashboard</h1>
@@ -219,7 +219,7 @@ export default function TitleLabDashboard() {
                     <span className="text-xs font-semibold text-wood w-7">{c.country}</span>
                     <div className="flex-1 h-1.5 bg-wood/5 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-amber rounded-full transition-all duration-500"
+                        className="h-full bg-forest rounded-full transition-all duration-500"
                         style={{ width: `${(c.count / topCountryMax) * 100}%` }}
                       />
                     </div>
@@ -277,7 +277,7 @@ export default function TitleLabDashboard() {
                 const isBrainstorm = e.eventType === "guided_brainstorm";
                 const typeLabel = isUrl ? "URL" : isBrainstorm ? "BRAINSTORM" : "PLAYBOOK";
                 const typeColor = isUrl
-                  ? "text-amber bg-amber/8"
+                  ? "text-forest bg-forest/8"
                   : isBrainstorm
                   ? "text-blue-500 bg-blue-500/8"
                   : "text-wood-light/30 bg-wood/5";

@@ -30,7 +30,7 @@ export function BlogSection() {
                   />
                 </div>
               )}
-              <h3 className="font-serif text-lg text-wood group-hover:text-amber transition-colors mb-1 line-clamp-2">
+              <h3 className="font-serif text-lg text-wood group-hover:text-forest transition-colors mb-1 line-clamp-2">
                 {post.title}
               </h3>
               <p className="text-wood-light/60 text-sm mb-2 line-clamp-2">
@@ -49,7 +49,7 @@ export function BlogSection() {
         <div className="mt-10">
           <Link
             href="/blog"
-            className="text-amber hover:text-amber-dark font-medium transition-colors"
+            className="text-forest hover:text-forest-dark font-medium transition-colors"
           >
             Read all posts →
           </Link>

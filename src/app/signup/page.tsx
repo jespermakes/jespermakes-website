@@ -77,7 +77,7 @@ export default function SignupPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Your name"
-            className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber"
+            className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-forest/50 focus:border-forest"
           />
         </div>
 
@@ -92,7 +92,7 @@ export default function SignupPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber"
+            className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-forest/50 focus:border-forest"
           />
         </div>
 
@@ -108,14 +108,14 @@ export default function SignupPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Min. 8 characters"
-            className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber"
+            className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-forest/50 focus:border-forest"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-4 py-3 rounded-lg bg-amber text-white font-medium hover:bg-amber-dark transition-colors disabled:opacity-50"
+          className="w-full px-4 py-3 rounded-lg bg-forest text-white font-medium hover:bg-forest-dark transition-colors disabled:opacity-50"
         >
           {loading ? "Creating account..." : "Create account"}
         </button>
@@ -123,7 +123,7 @@ export default function SignupPage() {
 
       <p className="text-wood-light/60 text-sm text-center mt-6">
         Already have an account?{" "}
-        <Link href="/login" className="text-amber hover:text-amber-dark underline">
+        <Link href="/login" className="text-forest hover:text-forest-dark underline">
           Sign in
         </Link>
       </p>

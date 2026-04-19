@@ -22,7 +22,7 @@ function ResetPasswordForm() {
         </p>
         <Link
           href="/forgot-password"
-          className="text-amber hover:text-amber-dark underline"
+          className="text-forest hover:text-forest-dark underline"
         >
           Request a new reset link
         </Link>
@@ -33,8 +33,8 @@ function ResetPasswordForm() {
   if (success) {
     return (
       <div className="max-w-md mx-auto px-6 py-24 text-center">
-        <div className="w-16 h-16 bg-amber/10 rounded-full flex items-center justify-center mx-auto mb-6">
-          <svg className="w-8 h-8 text-amber" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+        <div className="w-16 h-16 bg-forest/10 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg className="w-8 h-8 text-forest" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
         </div>
@@ -44,7 +44,7 @@ function ResetPasswordForm() {
         </p>
         <Link
           href="/login"
-          className="inline-block bg-amber text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-dark transition-colors"
+          className="inline-block bg-forest text-white px-6 py-3 rounded-lg font-medium hover:bg-forest-dark transition-colors"
         >
           Sign in
         </Link>
@@ -118,7 +118,7 @@ function ResetPasswordForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Min. 8 characters"
-            className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber"
+            className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-forest/50 focus:border-forest"
           />
         </div>
 
@@ -134,14 +134,14 @@ function ResetPasswordForm() {
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             placeholder="Repeat your password"
-            className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber"
+            className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-forest/50 focus:border-forest"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-4 py-3 rounded-lg bg-amber text-white font-medium hover:bg-amber-dark transition-colors disabled:opacity-50"
+          className="w-full px-4 py-3 rounded-lg bg-forest text-white font-medium hover:bg-forest-dark transition-colors disabled:opacity-50"
         >
           {loading ? "Updating..." : "Update password"}
         </button>

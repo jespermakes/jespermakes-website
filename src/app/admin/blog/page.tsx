@@ -55,7 +55,7 @@ export default async function AdminBlogListPage() {
               <span
                 className={
                   row.status === "published"
-                    ? "text-[11px] bg-amber/15 text-amber-dark rounded-md px-2 py-0.5 font-medium"
+                    ? "text-[11px] bg-forest/15 text-forest-dark rounded-md px-2 py-0.5 font-medium"
                     : "text-[11px] bg-wood/8 text-wood-light/60 rounded-md px-2 py-0.5 font-medium"
                 }
               >

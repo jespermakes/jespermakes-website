@@ -49,8 +49,8 @@ export default function ConeLampLaser() {
                 onClick={() => setSelectedImage(i)}
                 className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
                   i === selectedImage
-                    ? "border-amber"
-                    : "border-transparent hover:border-amber/40"
+                    ? "border-forest"
+                    : "border-transparent hover:border-forest/40"
                 }`}
               >
                 <Image
@@ -66,13 +66,13 @@ export default function ConeLampLaser() {
 
         {/* Details */}
         <div>
-          <p className="text-amber text-sm font-medium tracking-widest uppercase mb-3">
+          <p className="text-forest text-sm font-medium tracking-widest uppercase mb-3">
             Laser Cut File
           </p>
           <h1 className="font-serif text-3xl md:text-4xl text-wood mb-2">
             Cone Lamp Laser File
           </h1>
-          <p className="text-3xl text-amber font-serif mb-6">€5</p>
+          <p className="text-3xl text-forest font-serif mb-6">€5</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-4">
             The SVG laser cut template for the Jesper Makes Cone Lamp. One file
@@ -106,13 +106,13 @@ export default function ConeLampLaser() {
           {includes.map((item) => (
             <div
               key={item.name}
-              className="border border-wood/10 rounded-xl p-6 hover:border-amber/30 transition-colors"
+              className="border border-wood/10 rounded-xl p-6 hover:border-forest/30 transition-colors"
             >
               <div className="flex items-baseline justify-between mb-1">
                 <h3 className="font-serif text-lg text-wood">
                   {item.name}
                 </h3>
-                <span className="text-amber font-medium text-sm">x{item.qty}</span>
+                <span className="text-forest font-medium text-sm">x{item.qty}</span>
               </div>
               <p className="text-wood-light/60 text-sm">{item.desc}</p>
             </div>

@@ -80,7 +80,7 @@ export function ChangePasswordForm({
           onChange={(e) => setCurrentPassword(e.target.value)}
           placeholder="Current password"
           required
-          className="w-full px-4 py-2.5 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber text-sm"
+          className="w-full px-4 py-2.5 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-forest/50 focus:border-forest text-sm"
         />
       )}
 
@@ -91,7 +91,7 @@ export function ChangePasswordForm({
         placeholder="New password (min. 8 characters)"
         required
         minLength={8}
-        className="w-full px-4 py-2.5 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber text-sm"
+        className="w-full px-4 py-2.5 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-forest/50 focus:border-forest text-sm"
       />
 
       <input
@@ -101,7 +101,7 @@ export function ChangePasswordForm({
         placeholder="Confirm new password"
         required
         minLength={8}
-        className="w-full px-4 py-2.5 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber text-sm"
+        className="w-full px-4 py-2.5 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-forest/50 focus:border-forest text-sm"
       />
 
       <button

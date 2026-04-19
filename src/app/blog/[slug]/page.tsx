@@ -81,7 +81,7 @@ export default function BlogPostPage({ params }: Props) {
         {/* Back link */}
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-sm font-medium text-amber hover:text-amber/80 transition-colors mb-10"
+          className="inline-flex items-center gap-2 text-sm font-medium text-forest hover:text-forest/80 transition-colors mb-10"
         >
           &larr; Back to blog
         </Link>
@@ -102,7 +102,7 @@ export default function BlogPostPage({ params }: Props) {
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber/10 text-amber border border-amber/20"
+                className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20"
               >
                 {tag}
               </span>
@@ -149,9 +149,9 @@ export default function BlogPostPage({ params }: Props) {
           [&_li]:text-base [&_li]:leading-[1.75]
           [&_strong]:text-wood [&_strong]:font-semibold
           [&_em]:italic
-          [&_a]:text-amber [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-amber/80 [&_a]:transition-colors
+          [&_a]:text-forest [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-forest/80 [&_a]:transition-colors
           [&_hr]:border-wood/10 [&_hr]:my-10
-          [&_blockquote]:border-l-4 [&_blockquote]:border-amber/30 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-wood-light/70 [&_blockquote]:my-6
+          [&_blockquote]:border-l-4 [&_blockquote]:border-forest/30 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-wood-light/70 [&_blockquote]:my-6
           [&_code]:bg-wood/5 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_code]:font-mono [&_code]:text-wood
           [&_pre]:bg-wood/5 [&_pre]:rounded-xl [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre]:mb-5
           [&_pre_code]:bg-transparent [&_pre_code]:p-0
@@ -160,7 +160,7 @@ export default function BlogPostPage({ params }: Props) {
         </div>
 
         {/* Shop CTA */}
-        <div className="mt-16 bg-amber/5 border border-amber/20 rounded-2xl p-8">
+        <div className="mt-16 bg-forest/5 border border-forest/20 rounded-2xl p-8">
           <h2 className="font-serif text-2xl text-wood mb-2">
             Ready to build something?
           </h2>
@@ -170,7 +170,7 @@ export default function BlogPostPage({ params }: Props) {
           </p>
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 text-amber font-medium hover:text-amber/80 transition-colors"
+            className="inline-flex items-center gap-2 text-forest font-medium hover:text-forest/80 transition-colors"
           >
             Browse our woodworking plans and files &rarr;
           </Link>

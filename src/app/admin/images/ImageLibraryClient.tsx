@@ -184,7 +184,7 @@ function DropZone({ onFiles }: { onFiles: (files: FileList) => void }) {
         if (e.dataTransfer.files.length) onFiles(e.dataTransfer.files);
       }}
       className={`border-2 border-dashed rounded-2xl px-5 py-4 text-center text-xs text-wood-light/50 mb-4 transition-colors ${
-        hover ? "border-amber bg-amber/5" : "border-wood/12"
+        hover ? "border-forest bg-forest/5" : "border-wood/12"
       }`}
     >
       Drop images here to upload and auto-tag with AI
@@ -198,7 +198,7 @@ function UploadToast({ queue }: { queue: { name: string; status: string }[] }) {
       {queue.map((q, i) => (
         <div key={i} className="flex justify-between py-0.5">
           <span className="truncate">{q.name}</span>
-          <span className={q.status === "error" ? "text-red-600" : q.status === "done" ? "text-green-700" : "text-amber"}>
+          <span className={q.status === "error" ? "text-red-600" : q.status === "done" ? "text-green-700" : "text-forest"}>
             {q.status === "pending" ? "tagging…" : q.status === "done" ? "done" : "failed"}
           </span>
         </div>
@@ -251,7 +251,7 @@ function SearchAndFilters({
           }
           className={`px-2.5 py-1 rounded-md text-xs border transition-colors ${
             activeFilter?.kind === "untagged"
-              ? "bg-amber text-cream border-amber"
+              ? "bg-forest text-cream border-forest"
               : "bg-white border-wood/12 text-wood-light/60 hover:border-wood/30"
           }`}
           style={{ borderStyle: activeFilter?.kind === "untagged" ? "solid" : "dashed" }}
@@ -264,7 +264,7 @@ function SearchAndFilters({
             onClick={() => (isActive(t.kind, t.value) ? setActiveFilter(null) : setActiveFilter(t))}
             className={`px-2.5 py-1 rounded-md text-xs border transition-colors ${
               isActive(t.kind, t.value)
-                ? "bg-amber text-cream border-amber font-medium"
+                ? "bg-forest text-cream border-forest font-medium"
                 : "bg-white border-wood/12 text-wood-light/60 hover:border-wood/30"
             }`}
           >
@@ -320,13 +320,13 @@ function ImageCard({ image, selected, onClick }: { image: Image; selected: boole
     <button
       onClick={onClick}
       className={`relative aspect-square rounded-xl overflow-hidden group border-2 transition-all ${
-        selected ? "border-amber" : "border-transparent hover:border-wood/20"
+        selected ? "border-forest" : "border-transparent hover:border-wood/20"
       }`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt={image.description ?? image.filename} className="w-full h-full object-cover" loading="lazy" />
       {!image.reviewed && (
-        <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-amber rounded-full border-2 border-white" title="Unreviewed" />
+        <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-forest rounded-full border-2 border-white" title="Unreviewed" />
       )}
       <div className="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
         <div className="text-[10px] text-white/90 truncate">{image.filename}</div>
@@ -467,7 +467,7 @@ function EditorPanel({
               <button
                 onClick={regenerate}
                 disabled={regenerating}
-                className="text-amber hover:text-amber-dark disabled:opacity-50"
+                className="text-forest hover:text-forest-dark disabled:opacity-50"
               >
                 {regenerating ? "regenerating…" : "↻ regenerate"}
               </button>
@@ -562,14 +562,14 @@ function EditorPanel({
             </button>
             <button
               onClick={copyMarkdown}
-              className="bg-amber/10 border border-amber/25 text-amber rounded-lg px-3.5 py-2 text-xs font-medium hover:bg-amber/20"
+              className="bg-forest/10 border border-forest/25 text-forest rounded-lg px-3.5 py-2 text-xs font-medium hover:bg-forest/20"
             >
               {copied ? "copied ✓" : "Copy markdown"}
             </button>
             <a
               href={`/api/admin/images/${image.id}/download`}
               download
-              className="bg-amber/10 border border-amber/25 text-amber rounded-lg px-3.5 py-2 text-xs font-medium hover:bg-amber/20 no-underline"
+              className="bg-forest/10 border border-forest/25 text-forest rounded-lg px-3.5 py-2 text-xs font-medium hover:bg-forest/20 no-underline"
             >
               Download
             </a>
@@ -620,7 +620,7 @@ function TagSection({
               onClick={() => onToggle(v)}
               className={`px-2.5 py-1 rounded-md text-xs border transition-colors ${
                 on
-                  ? "bg-amber/15 border-amber/35 text-amber-dark font-medium"
+                  ? "bg-forest/15 border-forest/35 text-forest-dark font-medium"
                   : "bg-white border-wood/12 text-wood-light/55 hover:border-wood/30"
               }`}
             >

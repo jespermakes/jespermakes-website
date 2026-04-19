@@ -291,7 +291,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                   value={thickness}
                   onChange={(e) => setThickness(Number(e.target.value))}
                   className="flex-1"
-                  style={{ accentColor: "#C17F3C" }}
+                  style={{ accentColor: "#3F6B4A" }}
                 />
                 <div className="flex items-baseline gap-1 min-w-[88px] justify-end">
                   <input
@@ -330,7 +330,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                   value={fingers}
                   onChange={(e) => setFingers(Number(e.target.value))}
                   className="flex-1"
-                  style={{ accentColor: "#C17F3C" }}
+                  style={{ accentColor: "#3F6B4A" }}
                 />
                 <div className="flex items-baseline gap-1 min-w-[88px] justify-end">
                   <input
@@ -354,7 +354,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                 <button
                   onClick={() => setShowTitle(!showTitle)}
                   className={`border-none bg-transparent text-[11px] font-bold tracking-wider cursor-pointer p-0 ${
-                    showTitle ? "text-amber" : "text-wood-light/35"
+                    showTitle ? "text-forest" : "text-wood-light/35"
                   }`}
                 >
                   {showTitle ? "ON" : "OFF"}
@@ -382,7 +382,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                 <button
                   onClick={() => setShowLabel(!showLabel)}
                   className={`border-none bg-transparent text-[11px] font-bold tracking-wider cursor-pointer p-0 ${
-                    showLabel ? "text-amber" : "text-wood-light/35"
+                    showLabel ? "text-forest" : "text-wood-light/35"
                   }`}
                 >
                   {showLabel ? "ON" : "OFF"}
@@ -464,7 +464,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                   y="0"
                   width={plateWidth}
                   height={plateHeight}
-                  fill="rgba(193, 127, 60, 0.07)"
+                  fill="rgba(63, 107, 74, 0.07)"
                   stroke="#2C1810"
                   strokeWidth={Math.max(0.4, plateWidth * 0.0018)}
                 />
@@ -559,7 +559,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
               </button>
               <button
                 onClick={openAssembly}
-                className="bg-amber/10 text-amber border border-amber/25 rounded-xl py-[18px] text-sm font-semibold cursor-pointer tracking-wide hover:bg-amber/15 transition-colors"
+                className="bg-forest/10 text-forest border border-forest/25 rounded-xl py-[18px] text-sm font-semibold cursor-pointer tracking-wide hover:bg-forest/15 transition-colors"
               >
                 View Assembly Guide
               </button>
@@ -572,7 +572,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
         </div>
 
         {/* Note from Jesper at bottom */}
-        <div className="mt-12 mx-auto p-6 bg-amber/[0.08] border border-amber/[0.18] rounded-xl text-sm text-wood-light leading-relaxed max-w-[720px]">
+        <div className="mt-12 mx-auto p-6 bg-forest/[0.08] border border-forest/[0.18] rounded-xl text-sm text-wood-light leading-relaxed max-w-[720px]">
           <strong className="text-wood">A note from Jesper:</strong> I built this same jig for a video about making big planters with my wife. The trick is committing to one wood thickness — once you do that, the math just works. 45mm stock gives you 45mm fingers and 45mm gaps. Don&apos;t overthink it.
         </div>
       </div>
@@ -605,8 +605,8 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
               For {formatLength(t, unit)}{unitSuffix(unit)} thick wood · {fingers} fingers · plate {formatLength(plateWidth, unit)} × {formatLength(plateHeight, unit)} {unitSuffix(unit)}
             </p>
 
-            <div className="bg-amber/[0.08] border border-amber/20 rounded-xl px-6 py-5 mb-8">
-              <div className="text-[10px] font-bold tracking-[0.15em] text-amber uppercase mb-2">
+            <div className="bg-forest/[0.08] border border-forest/20 rounded-xl px-6 py-5 mb-8">
+              <div className="text-[10px] font-bold tracking-[0.15em] text-forest uppercase mb-2">
                 You&apos;ll Need
               </div>
               <ul className="mt-2 pl-5 text-sm leading-[1.7] text-wood-light list-disc">
@@ -637,7 +637,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                           y={0}
                           width={plateWidth}
                           height={plateHeight}
-                          fill="rgba(193, 127, 60, 0.12)"
+                          fill="rgba(63, 107, 74, 0.12)"
                           stroke="#2C1810"
                           strokeWidth={asmStroke}
                         />
@@ -674,7 +674,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                         y={0}
                         width={plateWidth}
                         height={plateHeight}
-                        fill="rgba(193, 127, 60, 0.12)"
+                        fill="rgba(63, 107, 74, 0.12)"
                         stroke="#2C1810"
                         strokeWidth={asmStroke}
                       />
@@ -697,7 +697,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                         y1={cutLineY}
                         x2={plateWidth + asmPad}
                         y2={cutLineY}
-                        stroke="#C17F3C"
+                        stroke="#3F6B4A"
                         strokeWidth={asmStroke * 1.8}
                         strokeDasharray={`${asmDashA} ${asmDashB}`}
                       />
@@ -705,7 +705,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                         x={plateWidth + asmPad - asmText * 0.3}
                         y={cutLineY - asmText * 0.4}
                         textAnchor="end"
-                        fill="#C17F3C"
+                        fill="#3F6B4A"
                         fontSize={asmText}
                         fontFamily="Inter, sans-serif"
                         fontWeight="700"
@@ -730,7 +730,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                         y={0}
                         width={plateWidth}
                         height={plateHeight}
-                        fill="rgba(193, 127, 60, 0.12)"
+                        fill="rgba(63, 107, 74, 0.12)"
                         stroke="#2C1810"
                         strokeWidth={asmStroke}
                       />
@@ -740,7 +740,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                         width={plateWidth}
                         height={gapTop}
                         fill="rgba(44, 24, 16, 0.08)"
-                        stroke="#C17F3C"
+                        stroke="#3F6B4A"
                         strokeWidth={asmStroke * 1.6}
                         strokeDasharray={`${asmDashA} ${asmDashB}`}
                       />
@@ -750,7 +750,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                         width={plateWidth}
                         height={plateHeight - gapBot}
                         fill="rgba(44, 24, 16, 0.08)"
-                        stroke="#C17F3C"
+                        stroke="#3F6B4A"
                         strokeWidth={asmStroke * 1.6}
                         strokeDasharray={`${asmDashA} ${asmDashB}`}
                       />
@@ -772,7 +772,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                         x={plateWidth / 2}
                         y={gapTop + t / 2 + asmText * 0.35}
                         textAnchor="middle"
-                        fill="#C17F3C"
+                        fill="#3F6B4A"
                         fontSize={asmText}
                         fontFamily="Inter, sans-serif"
                         fontWeight="700"
@@ -797,7 +797,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                         y={0}
                         width={plateWidth}
                         height={plateHeight}
-                        fill="rgba(193, 127, 60, 0.12)"
+                        fill="rgba(63, 107, 74, 0.12)"
                         stroke="#2C1810"
                         strokeWidth={asmStroke}
                       />
@@ -807,7 +807,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                         width={plateWidth}
                         height={gapTop}
                         fill="rgba(44, 24, 16, 0.08)"
-                        stroke="#C17F3C"
+                        stroke="#3F6B4A"
                         strokeWidth={asmStroke * 1.6}
                         strokeDasharray={`${asmDashA} ${asmDashB}`}
                       />
@@ -817,7 +817,7 @@ ${slotsXml}${titleXml ? "\n" + titleXml : ""}${labelXml ? "\n" + labelXml : ""}
                         width={plateWidth}
                         height={plateHeight - gapBot}
                         fill="rgba(44, 24, 16, 0.08)"
-                        stroke="#C17F3C"
+                        stroke="#3F6B4A"
                         strokeWidth={asmStroke * 1.6}
                         strokeDasharray={`${asmDashA} ${asmDashB}`}
                       />

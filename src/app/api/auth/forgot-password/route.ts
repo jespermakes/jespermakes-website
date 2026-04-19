@@ -52,7 +52,7 @@ export async function POST(request: Request) {
             <p>${firstName ? `Hi ${firstName},` : "Hi there,"}</p>
             <p>You requested a password reset. Click the button below to choose a new password:</p>
             <p style="margin:28px 0">
-              <a href="${resetUrl}" style="display:inline-block;padding:14px 32px;background:#C17F3C;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold;font-size:16px">Reset Password</a>
+              <a href="${resetUrl}" style="display:inline-block;padding:14px 32px;background:#3F6B4A;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold;font-size:16px">Reset Password</a>
             </p>
             <p style="color:#666;font-size:14px">This link expires in 1 hour. If you didn't request this, you can safely ignore this email.</p>
             <p style="margin-top:24px">Jesper<br/><span style="color:#888">Jesper Makes</span></p>

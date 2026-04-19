@@ -58,7 +58,7 @@ function Dots() {
       {[0, 150, 300].map((d) => (
         <span
           key={d}
-          className="w-1.5 h-1.5 rounded-full bg-amber animate-bounce"
+          className="w-1.5 h-1.5 rounded-full bg-forest animate-bounce"
           style={{ animationDelay: `${d}ms` }}
         />
       ))}
@@ -188,7 +188,7 @@ function RepackageTab() {
           onChange={(e) => setUrl(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && run()}
           placeholder="https://youtube.com/watch?v=..."
-          className="w-full px-4 py-3.5 bg-white border border-wood/[0.08] rounded-2xl text-wood text-sm font-sans outline-none focus:border-amber/30 transition-colors"
+          className="w-full px-4 py-3.5 bg-white border border-wood/[0.08] rounded-2xl text-wood text-sm font-sans outline-none focus:border-forest/30 transition-colors"
         />
       </div>
       <button
@@ -271,8 +271,8 @@ function RepackageTab() {
           <TitleGroup
             label="HOW JESPER MAKES WOULD TITLE IT"
             icon="🪵"
-            borderColor="#C17F3C"
-            labelColor="#C17F3C"
+            borderColor="#3F6B4A"
+            labelColor="#3F6B4A"
             titles={result.jesperStyle}
           />
           <TitleGroup
@@ -293,13 +293,13 @@ function RepackageTab() {
 
           {/* Thumbnail suggestion */}
           <div
-            className="bg-amber/[0.04] border border-wood/[0.06] rounded-2xl p-5 mb-2.5"
+            className="bg-forest/[0.04] border border-wood/[0.06] rounded-2xl p-5 mb-2.5"
             style={{
               borderLeftWidth: 3,
               borderLeftColor: "rgba(193,127,60,0.3)",
             }}
           >
-            <p className="text-[10px] font-bold tracking-[3px] text-amber/50 mb-3">
+            <p className="text-[10px] font-bold tracking-[3px] text-forest/50 mb-3">
               THUMBNAIL CONCEPT
             </p>
             <p className="text-sm text-wood-light/[0.55] leading-relaxed m-0">
@@ -455,8 +455,8 @@ function PlanTab() {
         <TitleGroup
           label="HOW JESPER MAKES WOULD TITLE IT"
           icon="🪵"
-          borderColor="#C17F3C"
-          labelColor="#C17F3C"
+          borderColor="#3F6B4A"
+          labelColor="#3F6B4A"
           titles={result.jesperStyle}
         />
         <TitleGroup
@@ -477,19 +477,19 @@ function PlanTab() {
 
         {result.thumbnailSuggestions?.length > 0 && (
           <div
-            className="bg-amber/[0.04] border border-wood/[0.06] rounded-2xl p-5 mb-2.5"
+            className="bg-forest/[0.04] border border-wood/[0.06] rounded-2xl p-5 mb-2.5"
             style={{
               borderLeftWidth: 3,
               borderLeftColor: "rgba(193,127,60,0.3)",
             }}
           >
-            <p className="text-[10px] font-bold tracking-[3px] text-amber/50 mb-3">
+            <p className="text-[10px] font-bold tracking-[3px] text-forest/50 mb-3">
               THUMBNAIL CONCEPTS
             </p>
             {result.thumbnailSuggestions.map((t, i) => (
               <p
                 key={i}
-                className="text-[13px] text-wood-light/50 leading-normal mb-2 pl-3 border-l-2 border-amber/[0.15]"
+                className="text-[13px] text-wood-light/50 leading-normal mb-2 pl-3 border-l-2 border-forest/[0.15]"
               >
                 {t}
               </p>
@@ -559,7 +559,7 @@ function PlanTab() {
             key={i}
             className="flex-1 h-[3px] rounded-sm transition-colors duration-300"
             style={{
-              background: i <= step ? "#C17F3C" : "rgba(44,24,16,0.06)",
+              background: i <= step ? "#3F6B4A" : "rgba(44,24,16,0.06)",
             }}
           />
         ))}
@@ -576,7 +576,7 @@ function PlanTab() {
           onChange={(e) => currentField.set(e.target.value)}
           rows={currentField.rows}
           placeholder={currentField.placeholder}
-          className="w-full px-4 py-3 bg-white border border-wood/[0.08] rounded-xl text-wood text-sm font-sans outline-none resize-none leading-relaxed focus:border-amber/30 transition-colors placeholder:text-wood-light/35"
+          className="w-full px-4 py-3 bg-white border border-wood/[0.08] rounded-xl text-wood text-sm font-sans outline-none resize-none leading-relaxed focus:border-forest/30 transition-colors placeholder:text-wood-light/35"
           autoFocus
         />
       </div>
@@ -612,7 +612,7 @@ function PlanTab() {
           <button
             onClick={generate}
             disabled={!desc.trim() || loading}
-            className="px-5 py-3 bg-transparent border border-amber/30 rounded-xl text-amber cursor-pointer text-[13px] font-semibold hover:bg-amber/5 transition-colors"
+            className="px-5 py-3 bg-transparent border border-forest/30 rounded-xl text-forest cursor-pointer text-[13px] font-semibold hover:bg-forest/5 transition-colors"
           >
             {loading ? <Dots /> : "Skip & generate"}
           </button>
@@ -672,8 +672,8 @@ function PlaybookTab() {
               {r.b}
             </p>
             {r.h && (
-              <div className="mt-2.5 pl-3.5 border-l-2 border-amber/30">
-                <p className="text-sm text-amber/[0.65] italic leading-normal m-0">
+              <div className="mt-2.5 pl-3.5 border-l-2 border-forest/30">
+                <p className="text-sm text-forest/[0.65] italic leading-normal m-0">
                   {r.h}
                 </p>
               </div>
@@ -748,7 +748,7 @@ function SaveButton({
 
   if (!isLoggedIn) {
     return (
-      <div className="bg-white/70 border border-amber/20 rounded-2xl p-5 text-center mt-4">
+      <div className="bg-white/70 border border-forest/20 rounded-2xl p-5 text-center mt-4">
         <p className="font-serif text-base text-wood mb-2">
           Want to save these titles?
         </p>
@@ -778,7 +778,7 @@ function SaveButton({
     <button
       onClick={handleSave}
       disabled={saving}
-      className="flex items-center gap-2 px-5 py-2.5 bg-amber/10 border border-amber/20 rounded-xl text-sm font-semibold text-amber hover:bg-amber/15 transition-all cursor-pointer disabled:opacity-50 mt-4"
+      className="flex items-center gap-2 px-5 py-2.5 bg-forest/10 border border-forest/20 rounded-xl text-sm font-semibold text-forest hover:bg-forest/15 transition-all cursor-pointer disabled:opacity-50 mt-4"
     >
       {saving ? "Saving..." : "Save to my titles"}
     </button>
@@ -861,7 +861,7 @@ function SavedTab() {
               {s.inputVideoTitle || s.inputDescription?.slice(0, 60) || "Untitled"}
             </p>
             {s.chosenTitle && (
-              <p className="text-xs text-amber mt-1">
+              <p className="text-xs text-forest mt-1">
                 Chosen: {s.chosenTitle}
               </p>
             )}
@@ -994,7 +994,7 @@ function DataTab() {
               <span className="text-sm text-wood font-medium">{p.pattern}</span>
               <div className="flex items-center gap-4">
                 <span className="text-xs text-wood-light/30">{p.count} videos</span>
-                <span className="text-sm font-semibold text-amber">
+                <span className="text-sm font-semibold text-forest">
                   {fmt(p.avgViews)} avg
                 </span>
               </div>
@@ -1032,7 +1032,7 @@ function DataTab() {
             href={`https://youtube.com/watch?v=${v.id}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white/50 border border-wood/[0.06] rounded-xl p-3 flex gap-3 items-center hover:border-amber/20 transition-colors block"
+            className="bg-white/50 border border-wood/[0.06] rounded-xl p-3 flex gap-3 items-center hover:border-forest/20 transition-colors block"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -1044,7 +1044,7 @@ function DataTab() {
               <p className="text-sm text-wood font-medium truncate">{v.title}</p>
               {v.previousTitles && v.previousTitles.length > 0 && (
                 <div className="mt-1">
-                  <span className="text-[9px] font-bold tracking-[1px] text-amber/50">
+                  <span className="text-[9px] font-bold tracking-[1px] text-forest/50">
                     REPACKAGED FROM:
                   </span>
                   {v.previousTitles.map((pt, i) => (
@@ -1132,7 +1132,7 @@ export default function TitleLabPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12 md:py-16">
-      <p className="text-[10px] font-bold tracking-[5px] text-amber mb-3.5">
+      <p className="text-[10px] font-bold tracking-[5px] text-forest mb-3.5">
         JESPER MAKES
       </p>
       <h1 className="font-serif text-4xl md:text-[38px] font-bold text-wood leading-tight mb-3">

@@ -28,9 +28,9 @@ export function NewsletterForm() {
   }
 
   return (
-    <section className="bg-amber/10 py-20 md:py-28">
+    <section className="bg-forest/10 py-20 md:py-28">
       <div className="max-w-2xl mx-auto px-6 text-center">
-        <p className="text-amber-dark text-sm font-medium tracking-widest uppercase mb-4">Shop notes</p>
+        <p className="text-forest-dark text-sm font-medium tracking-widest uppercase mb-4">Shop notes</p>
         <h2 className="font-serif text-3xl md:text-4xl text-wood mb-4">
           Join 3,000+ makers
         </h2>
@@ -41,7 +41,7 @@ export function NewsletterForm() {
         </p>
 
         {status === "success" ? (
-          <div className="bg-amber/20 border border-amber/30 rounded-xl px-8 py-6">
+          <div className="bg-forest/20 border border-forest/30 rounded-xl px-8 py-6">
             <p className="font-serif text-wood text-xl mb-1">You&apos;re in.</p>
             <p className="text-wood-light/60 text-sm">Next time something is worth sharing, you&apos;ll get it.</p>
           </div>
@@ -53,12 +53,12 @@ export function NewsletterForm() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com"
               required
-              className="flex-1 bg-white/60 border border-wood/15 text-wood placeholder-wood/30 rounded-lg px-4 py-3 focus:outline-none focus:border-amber transition-colors"
+              className="flex-1 bg-white/60 border border-wood/15 text-wood placeholder-wood/30 rounded-lg px-4 py-3 focus:outline-none focus:border-forest transition-colors"
             />
             <button
               type="submit"
               disabled={status === "loading"}
-              className="bg-amber hover:bg-amber-dark disabled:opacity-60 text-cream px-6 py-3 rounded-lg font-medium transition-colors whitespace-nowrap"
+              className="bg-forest hover:bg-forest-dark disabled:opacity-60 text-cream px-6 py-3 rounded-lg font-medium transition-colors whitespace-nowrap"
             >
               {status === "loading" ? "Signing up…" : "Sign me up"}
             </button>

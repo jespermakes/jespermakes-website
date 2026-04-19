@@ -294,7 +294,7 @@ export function BlogEditor({ initial }: { initial: BlogEditorInitialValues }) {
             <button
               type="button"
               onClick={() => setPickerOpen("hero")}
-              className="bg-amber/10 border border-amber/25 text-amber rounded-xl px-4 py-2 text-sm font-medium hover:bg-amber/20"
+              className="bg-forest/10 border border-forest/25 text-forest rounded-xl px-4 py-2 text-sm font-medium hover:bg-forest/20"
             >
               {heroImage ? "Change" : "Pick image"}
             </button>
@@ -322,7 +322,7 @@ export function BlogEditor({ initial }: { initial: BlogEditorInitialValues }) {
         <button
           type="button"
           onClick={() => setPickerOpen("body")}
-          className="text-[11px] text-amber hover:underline"
+          className="text-[11px] text-forest hover:underline"
         >
           + Insert image from library
         </button>
@@ -338,7 +338,7 @@ export function BlogEditor({ initial }: { initial: BlogEditorInitialValues }) {
           className="w-full bg-white/70 border border-wood/[0.12] rounded-xl px-4 py-3 text-wood text-sm leading-relaxed"
           style={{ fontFamily: "Menlo, Monaco, 'Courier New', monospace" }}
         />
-        <div className="bg-white/55 border border-wood/[0.07] rounded-xl px-5 py-4 prose prose-sm max-w-none prose-headings:font-serif prose-headings:text-wood prose-p:text-wood-light prose-a:text-amber prose-strong:text-wood overflow-auto">
+        <div className="bg-white/55 border border-wood/[0.07] rounded-xl px-5 py-4 prose prose-sm max-w-none prose-headings:font-serif prose-headings:text-wood prose-p:text-wood-light prose-a:text-forest prose-strong:text-wood overflow-auto">
           <ReactMarkdown>{content || "*Start writing\u2026*"}</ReactMarkdown>
         </div>
       </div>

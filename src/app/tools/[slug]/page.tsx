@@ -43,14 +43,14 @@ export default function ToolPage({ params }: Props) {
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-wood-light/60 mb-10">
-        <Link href="/tools" className="hover:text-amber transition-colors">
+        <Link href="/tools" className="hover:text-forest transition-colors">
           Tools & Links
         </Link>
         <span>/</span>
         {category ? (
           <Link
             href={`/tools/category/${category.slug}`}
-            className="hover:text-amber transition-colors"
+            className="hover:text-forest transition-colors"
           >
             {tool.category}
           </Link>
@@ -84,7 +84,7 @@ export default function ToolPage({ params }: Props) {
               {tool.categoryIcon} {tool.category}
             </span>
             {tool.badge && (
-              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber/10 text-amber border border-amber/20">
+              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20">
                 {tool.badge}
               </span>
             )}
@@ -108,7 +108,7 @@ export default function ToolPage({ params }: Props) {
                 key={useCase}
                 className="flex items-center gap-3 bg-white/60 rounded-xl p-4 border border-wood/5"
               >
-                <span className="text-amber">&#x2022;</span>
+                <span className="text-forest">&#x2022;</span>
                 <span className="text-wood">{useCase}</span>
               </li>
             ))}
@@ -136,8 +136,8 @@ export default function ToolPage({ params }: Props) {
       {/* Jesper's Note */}
       {tool.jesperNote && (
         <section className="mb-16">
-          <div className="bg-amber/10 border border-amber/20 rounded-2xl p-8">
-            <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-3">
+          <div className="bg-forest/10 border border-forest/20 rounded-2xl p-8">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
               JESPER&apos;S NOTE
             </p>
             <p className="text-wood text-lg leading-relaxed font-serif italic">
@@ -241,7 +241,7 @@ export default function ToolPage({ params }: Props) {
                 key={product}
                 className="flex items-center gap-3 bg-white/60 rounded-xl p-4 border border-wood/5"
               >
-                <span className="text-amber">&#x2022;</span>
+                <span className="text-forest">&#x2022;</span>
                 <span className="text-wood">{product}</span>
               </li>
             ))}
@@ -261,7 +261,7 @@ export default function ToolPage({ params }: Props) {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between bg-white/60 rounded-xl p-5 border border-wood/5 hover:border-amber/20 transition-colors group"
+                  className="flex items-center justify-between bg-white/60 rounded-xl p-5 border border-wood/5 hover:border-forest/20 transition-colors group"
                 >
                   <div className="flex items-center gap-3">
                     {link.region && (
@@ -269,12 +269,12 @@ export default function ToolPage({ params }: Props) {
                         {regionFlag[link.region] ?? ""}
                       </span>
                     )}
-                    <span className="font-medium text-wood group-hover:text-amber transition-colors">
+                    <span className="font-medium text-wood group-hover:text-forest transition-colors">
                       {link.label}
                     </span>
                   </div>
                   {link.badge && (
-                    <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber/10 text-amber border border-amber/20">
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20">
                       {link.badge}
                     </span>
                   )}
@@ -330,14 +330,14 @@ export default function ToolPage({ params }: Props) {
               <Link
                 key={related.slug}
                 href={`/tools/${related.slug}`}
-                className="group bg-white/60 rounded-xl p-5 border border-wood/5 hover:border-amber/20 transition-colors"
+                className="group bg-white/60 rounded-xl p-5 border border-wood/5 hover:border-forest/20 transition-colors"
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-serif text-lg text-wood group-hover:text-amber transition-colors">
+                  <h3 className="font-serif text-lg text-wood group-hover:text-forest transition-colors">
                     {related.name}
                   </h3>
                   {related.badge && (
-                    <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber/10 text-amber border border-amber/20">
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20">
                       {related.badge}
                     </span>
                   )}
@@ -354,7 +354,7 @@ export default function ToolPage({ params }: Props) {
       {/* Back link */}
       <Link
         href="/tools"
-        className="inline-flex items-center gap-2 text-sm font-medium text-amber hover:text-amber/80 transition-colors"
+        className="inline-flex items-center gap-2 text-sm font-medium text-forest hover:text-forest/80 transition-colors"
       >
         &larr; Back to all tools
       </Link>

@@ -47,7 +47,7 @@ export default function ConeLamp3DPrint() {
                 onClick={() => setActiveImage(i)}
                 className={`relative aspect-square rounded-lg overflow-hidden transition-all ${
                   i === activeImage
-                    ? "ring-2 ring-amber"
+                    ? "ring-2 ring-forest"
                     : "opacity-60 hover:opacity-100"
                 }`}
               >
@@ -59,13 +59,13 @@ export default function ConeLamp3DPrint() {
 
         {/* Details */}
         <div>
-          <p className="text-amber text-sm font-medium tracking-widest uppercase mb-3">
+          <p className="text-forest text-sm font-medium tracking-widest uppercase mb-3">
             3D Print Pack
           </p>
           <h1 className="font-serif text-3xl md:text-4xl text-wood mb-2">
             Cone Lamp 3D Print Files
           </h1>
-          <p className="text-3xl text-amber font-serif mb-6">€5</p>
+          <p className="text-3xl text-forest font-serif mb-6">€5</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-4">
             The complete file pack to 3D print the Jesper Makes Cone Lamp at home. Originally a laser cut design, brilliantly adapted for 3D printing by Ron.
@@ -91,7 +91,7 @@ export default function ConeLamp3DPrint() {
           {includes.map((item) => (
             <div
               key={item.name}
-              className="border border-wood/10 rounded-xl p-6 hover:border-amber/30 transition-colors"
+              className="border border-wood/10 rounded-xl p-6 hover:border-forest/30 transition-colors"
             >
               <h3 className="font-serif text-lg text-wood mb-1">
                 {item.name}

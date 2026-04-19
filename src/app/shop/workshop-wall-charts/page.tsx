@@ -86,8 +86,8 @@ export default function WorkshopWallCharts() {
                 onClick={() => setSelectedImage(i)}
                 className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors bg-wood/10 ${
                   i === selectedImage
-                    ? "border-amber"
-                    : "border-transparent hover:border-amber/40"
+                    ? "border-forest"
+                    : "border-transparent hover:border-forest/40"
                 }`}
               >
                 <Image
@@ -104,7 +104,7 @@ export default function WorkshopWallCharts() {
         {/* Details */}
         <div>
           <div className="flex items-center gap-3 mb-3">
-            <p className="text-amber text-sm font-medium tracking-widest uppercase">
+            <p className="text-forest text-sm font-medium tracking-widest uppercase">
               Instant Download
             </p>
             <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
@@ -117,7 +117,7 @@ export default function WorkshopWallCharts() {
           <p className="text-wood-light/60 text-sm mb-1">
             8 printable reference sheets for your workshop wall
           </p>
-          <p className="text-3xl text-amber font-serif mb-6">&euro;3</p>
+          <p className="text-3xl text-forest font-serif mb-6">&euro;3</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-6">
             These started as notes on my own workshop wall because I keep
@@ -179,10 +179,10 @@ export default function WorkshopWallCharts() {
           {charts.map((chart, i) => (
             <div
               key={chart.title}
-              className="border border-wood/10 rounded-xl p-6 hover:border-amber/30 transition-colors"
+              className="border border-wood/10 rounded-xl p-6 hover:border-forest/30 transition-colors"
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-amber font-serif text-lg">{i + 1}</span>
+                <span className="text-forest font-serif text-lg">{i + 1}</span>
                 <h3 className="font-serif text-lg text-wood">
                   {chart.title}
                 </h3>

@@ -61,7 +61,7 @@ export default function NewsletterPage() {
         <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6 md:p-8 max-w-xl">
           {state === "success" ? (
             <div>
-              <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-3">
+              <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
                 YOU&apos;RE IN
               </p>
               <h2 className="font-serif text-2xl text-wood mb-3">
@@ -96,7 +96,7 @@ export default function NewsletterPage() {
                 }}
                 placeholder="you@example.com"
                 disabled={state === "loading"}
-                className="w-full bg-white border border-wood/15 rounded-xl px-4 py-3 text-wood placeholder:text-wood-light/30 focus:outline-none focus:border-amber/60 mb-3"
+                className="w-full bg-white border border-wood/15 rounded-xl px-4 py-3 text-wood placeholder:text-wood-light/30 focus:outline-none focus:border-forest/60 mb-3"
               />
               {state === "error" && errorMessage ? (
                 <p className="text-sm text-red-700 mb-3">{errorMessage}</p>
@@ -129,7 +129,7 @@ export default function NewsletterPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
-            <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-3">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
               01 &nbsp; BEHIND THE SCENES
             </p>
             <h3 className="font-serif text-xl text-wood mb-3">
@@ -144,7 +144,7 @@ export default function NewsletterPage() {
           </div>
 
           <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
-            <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-3">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
               02 &nbsp; FIRST LOOK
             </p>
             <h3 className="font-serif text-xl text-wood mb-3">
@@ -159,7 +159,7 @@ export default function NewsletterPage() {
           </div>
 
           <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
-            <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-3">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
               03 &nbsp; LONGER THOUGHTS
             </p>
             <h3 className="font-serif text-xl text-wood mb-3">
@@ -173,7 +173,7 @@ export default function NewsletterPage() {
           </div>
 
           <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
-            <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-3">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
               04 &nbsp; SHOP & SUBSCRIBER DEALS
             </p>
             <h3 className="font-serif text-xl text-wood mb-3">
@@ -227,8 +227,8 @@ export default function NewsletterPage() {
 
       {/* Social proof / closer */}
       <section className="max-w-3xl mx-auto px-6 py-16 border-t border-wood/10">
-        <div className="bg-amber/10 border border-amber/20 rounded-2xl p-8">
-          <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-3">
+        <div className="bg-forest/10 border border-forest/20 rounded-2xl p-8">
+          <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
             A QUICK NOTE
           </p>
           <h2 className="font-serif text-2xl md:text-3xl text-wood mb-4">
@@ -267,12 +267,12 @@ export default function NewsletterPage() {
             href="https://www.youtube.com/c/JesperMakes"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-amber hover:underline"
+            className="text-forest hover:underline"
           >
             YouTube
           </a>{" "}
           or browse the{" "}
-          <Link href="/blog" className="text-amber hover:underline">
+          <Link href="/blog" className="text-forest hover:underline">
             blog
           </Link>
           .

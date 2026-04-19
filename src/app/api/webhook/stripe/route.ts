@@ -64,7 +64,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://jespermakes.com";
 
   const button = (label: string, href: string) =>
-    `<a href="${href}" style="display:inline-block;padding:14px 32px;background:#C17F3C;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold;font-size:16px">${label}</a>`;
+    `<a href="${href}" style="display:inline-block;padding:14px 32px;background:#3F6B4A;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold;font-size:16px">${label}</a>`;
 
   const footer = `
     <p style="margin-top:24px;color:#666;font-size:14px">Sign in to your account to re-download your files anytime:</p>

@@ -39,7 +39,7 @@ export default function CategoryPage({ params }: Props) {
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-wood-light/60 mb-10">
-        <Link href="/tools" className="hover:text-amber transition-colors">
+        <Link href="/tools" className="hover:text-forest transition-colors">
           Tools & Links
         </Link>
         <span>/</span>
@@ -65,7 +65,7 @@ export default function CategoryPage({ params }: Props) {
           <Link
             key={tool.slug}
             href={`/tools/${tool.slug}`}
-            className="group bg-white/60 rounded-xl p-5 border border-wood/5 hover:border-amber/20 transition-colors"
+            className="group bg-white/60 rounded-xl p-5 border border-wood/5 hover:border-forest/20 transition-colors"
           >
             <div className="w-full aspect-[4/3] rounded-lg bg-wood/5 flex items-center justify-center mb-4 overflow-hidden relative">
               {tool.image ? (
@@ -83,11 +83,11 @@ export default function CategoryPage({ params }: Props) {
               )}
             </div>
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-serif text-lg text-wood group-hover:text-amber transition-colors">
+              <h3 className="font-serif text-lg text-wood group-hover:text-forest transition-colors">
                 {tool.name}
               </h3>
               {tool.badge && (
-                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber/10 text-amber border border-amber/20">
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20">
                   {tool.badge}
                 </span>
               )}
@@ -95,7 +95,7 @@ export default function CategoryPage({ params }: Props) {
             <p className="text-wood-light/70 text-sm line-clamp-2 mb-3">
               {tool.description}
             </p>
-            <span className="text-sm font-medium text-amber group-hover:text-amber/80 transition-colors">
+            <span className="text-sm font-medium text-forest group-hover:text-forest/80 transition-colors">
               View details &rarr;
             </span>
           </Link>
@@ -106,7 +106,7 @@ export default function CategoryPage({ params }: Props) {
       <div className="mt-12">
         <Link
           href="/tools"
-          className="inline-flex items-center gap-2 text-sm font-medium text-amber hover:text-amber/80 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-medium text-forest hover:text-forest/80 transition-colors"
         >
           &larr; All categories
         </Link>

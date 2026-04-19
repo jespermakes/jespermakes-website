@@ -37,13 +37,13 @@ export default function PalletStarterKit() {
 
         {/* Details */}
         <div>
-          <p className="text-amber text-sm font-medium tracking-widest uppercase mb-3">
+          <p className="text-forest text-sm font-medium tracking-widest uppercase mb-3">
             PDF Bundle
           </p>
           <h1 className="font-serif text-3xl md:text-4xl text-wood mb-2">
             The Pallet Builder&apos;s Starter Kit
           </h1>
-          <p className="text-3xl text-amber font-serif mb-6">€35</p>
+          <p className="text-3xl text-forest font-serif mb-6">€35</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-8">
             5 complete build guides written the way I actually build — rough
@@ -56,7 +56,7 @@ export default function PalletStarterKit() {
           <div className="bg-wood/10 border border-wood/20 rounded-lg px-6 py-4 text-center">
             <p className="font-medium text-wood mb-1">Coming Soon</p>
             <p className="text-wood-light/60 text-sm">
-              <Link href="/#newsletter" className="text-amber hover:text-amber-dark underline transition-colors">
+              <Link href="/#newsletter" className="text-forest hover:text-forest-dark underline transition-colors">
                 Join the newsletter
               </Link>{" "}
               to be the first to know
@@ -74,7 +74,7 @@ export default function PalletStarterKit() {
           {includes.map((item) => (
             <div
               key={item.name}
-              className="border border-wood/10 rounded-xl p-6 hover:border-amber/30 transition-colors"
+              className="border border-wood/10 rounded-xl p-6 hover:border-forest/30 transition-colors"
             >
               <h3 className="font-serif text-lg text-wood mb-1">
                 {item.name}

@@ -27,7 +27,7 @@ export function AboutSection() {
           </p>
           <Link
             href="/about"
-            className="text-amber hover:text-amber-light font-medium transition-colors"
+            className="text-forest hover:text-forest-light font-medium transition-colors"
           >
             Read more about Jesper →
           </Link>

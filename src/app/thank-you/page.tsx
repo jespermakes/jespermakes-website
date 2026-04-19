@@ -38,9 +38,9 @@ export default async function ThankYou({
   return (
     <div className="max-w-2xl mx-auto px-6 py-24 md:py-32 text-center">
       <div className="mb-8">
-        <div className="w-16 h-16 bg-amber/10 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div className="w-16 h-16 bg-forest/10 rounded-full flex items-center justify-center mx-auto mb-6">
           <svg
-            className="w-8 h-8 text-amber"
+            className="w-8 h-8 text-forest"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={2}
@@ -93,7 +93,7 @@ export default async function ThankYou({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/signup"
-            className="inline-block bg-amber text-cream px-6 py-2.5 rounded-lg font-medium hover:bg-amber-dark transition-colors text-sm"
+            className="inline-block bg-forest text-cream px-6 py-2.5 rounded-lg font-medium hover:bg-forest-dark transition-colors text-sm"
           >
             Create account
           </Link>
@@ -109,7 +109,7 @@ export default async function ThankYou({
       <div className="flex flex-wrap justify-center gap-4">
         <Link
           href="/shop"
-          className="inline-block bg-amber hover:bg-amber-dark text-cream px-6 py-3 rounded-lg font-medium transition-colors"
+          className="inline-block bg-forest hover:bg-forest-dark text-cream px-6 py-3 rounded-lg font-medium transition-colors"
         >
           Back to shop
         </Link>
@@ -117,7 +117,7 @@ export default async function ThankYou({
           href="https://youtube.com/@jespermakes"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block border border-wood/20 hover:border-amber text-wood px-6 py-3 rounded-lg font-medium transition-colors"
+          className="inline-block border border-wood/20 hover:border-forest text-wood px-6 py-3 rounded-lg font-medium transition-colors"
         >
           Watch build videos
         </a>

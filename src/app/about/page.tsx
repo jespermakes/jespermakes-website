@@ -111,7 +111,7 @@ export default function About() {
                   href="https://youtube.com/@intherough"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-amber hover:text-amber-dark transition-colors font-medium"
+                  className="text-forest hover:text-forest-dark transition-colors font-medium"
                 >
                   In The Rough
                 </a>{" "}
@@ -203,7 +203,7 @@ export default function About() {
             If you&apos;re a brand that thinks there&apos;s a fit,{" "}
             <Link
               href="/contact"
-              className="text-amber hover:text-amber-dark transition-colors font-medium"
+              className="text-forest hover:text-forest-dark transition-colors font-medium"
             >
               let&apos;s talk
             </Link>
@@ -217,19 +217,19 @@ export default function About() {
         <div className="max-w-5xl mx-auto px-6 py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <p className="font-serif text-3xl md:text-4xl text-amber">352K</p>
+              <p className="font-serif text-3xl md:text-4xl text-forest">352K</p>
               <p className="text-wood-light/60 text-sm mt-1">YouTube subscribers</p>
             </div>
             <div>
-              <p className="font-serif text-3xl md:text-4xl text-amber">4.5M</p>
+              <p className="font-serif text-3xl md:text-4xl text-forest">4.5M</p>
               <p className="text-wood-light/60 text-sm mt-1">Top video views</p>
             </div>
             <div>
-              <p className="font-serif text-3xl md:text-4xl text-amber">2020</p>
+              <p className="font-serif text-3xl md:text-4xl text-forest">2020</p>
               <p className="text-wood-light/60 text-sm mt-1">Started building</p>
             </div>
             <div>
-              <p className="font-serif text-3xl md:text-4xl text-amber">Fyn 🇩🇰</p>
+              <p className="font-serif text-3xl md:text-4xl text-forest">Fyn 🇩🇰</p>
               <p className="text-wood-light/60 text-sm mt-1">Based in Denmark</p>
             </div>
           </div>
@@ -252,7 +252,7 @@ export default function About() {
             href="https://youtube.com/@jespermakes"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-amber hover:bg-amber-dark text-cream px-6 py-3 rounded-lg font-medium transition-colors"
+            className="inline-block bg-forest hover:bg-forest-dark text-cream px-6 py-3 rounded-lg font-medium transition-colors"
           >
             Watch on YouTube
           </a>
@@ -260,7 +260,7 @@ export default function About() {
             href="https://instagram.com/jespermakes"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block border border-wood/20 hover:border-amber text-wood px-6 py-3 rounded-lg font-medium transition-colors"
+            className="inline-block border border-wood/20 hover:border-forest text-wood px-6 py-3 rounded-lg font-medium transition-colors"
           >
             Instagram
           </a>
@@ -268,13 +268,13 @@ export default function About() {
             href="https://tiktok.com/@jespermakes"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block border border-wood/20 hover:border-amber text-wood px-6 py-3 rounded-lg font-medium transition-colors"
+            className="inline-block border border-wood/20 hover:border-forest text-wood px-6 py-3 rounded-lg font-medium transition-colors"
           >
             TikTok
           </a>
           <Link
             href="/shop"
-            className="inline-block border border-wood/20 hover:border-amber text-wood px-6 py-3 rounded-lg font-medium transition-colors"
+            className="inline-block border border-wood/20 hover:border-forest text-wood px-6 py-3 rounded-lg font-medium transition-colors"
           >
             Visit the Shop
           </Link>

@@ -208,7 +208,7 @@ export function ToolEditor({ initial }: { initial: ToolEditorInitialValues }) {
             <button
               type="button"
               onClick={() => setPickerOpen(true)}
-              className="bg-amber/10 border border-amber/25 text-amber rounded-xl px-4 py-2 text-sm font-medium hover:bg-amber/20"
+              className="bg-forest/10 border border-forest/25 text-forest rounded-xl px-4 py-2 text-sm font-medium hover:bg-forest/20"
             >
               {image ? "Change" : "Pick image"}
             </button>
@@ -243,7 +243,7 @@ export function ToolEditor({ initial }: { initial: ToolEditorInitialValues }) {
                 </button>
               </div>
             ))}
-            <button type="button" onClick={addBuyLink} className="text-xs text-amber hover:underline">
+            <button type="button" onClick={addBuyLink} className="text-xs text-forest hover:underline">
               + Add link
             </button>
           </div>
@@ -255,7 +255,7 @@ export function ToolEditor({ initial }: { initial: ToolEditorInitialValues }) {
               type="checkbox"
               checked={ambassadorBadge}
               onChange={(e) => setAmbassadorBadge(e.target.checked)}
-              className="accent-amber"
+              className="accent-forest"
             />
             Ambassador badge
           </label>
@@ -264,7 +264,7 @@ export function ToolEditor({ initial }: { initial: ToolEditorInitialValues }) {
               type="checkbox"
               checked={featured}
               onChange={(e) => setFeatured(e.target.checked)}
-              className="accent-amber"
+              className="accent-forest"
             />
             Featured
           </label>

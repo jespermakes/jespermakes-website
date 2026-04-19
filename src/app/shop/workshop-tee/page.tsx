@@ -53,8 +53,8 @@ export default function WorkshopTee() {
                 onClick={() => setSelectedImage(i)}
                 className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors bg-[#f5f5f5] ${
                   i === selectedImage
-                    ? "border-amber"
-                    : "border-transparent hover:border-amber/40"
+                    ? "border-forest"
+                    : "border-transparent hover:border-forest/40"
                 }`}
               >
                 <Image
@@ -70,13 +70,13 @@ export default function WorkshopTee() {
 
         {/* Details */}
         <div>
-          <p className="text-amber text-sm font-medium tracking-widest uppercase mb-3">
+          <p className="text-forest text-sm font-medium tracking-widest uppercase mb-3">
             Merch
           </p>
           <h1 className="font-serif text-3xl md:text-4xl text-wood mb-2">
             Jesper Makes Workshop Tee
           </h1>
-          <p className="text-3xl text-amber font-serif mb-6">€35</p>
+          <p className="text-3xl text-forest font-serif mb-6">€35</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-8">
             Unisex black tee with the Jesper Makes Workshop logo — small on the
@@ -96,8 +96,8 @@ export default function WorkshopTee() {
                   onClick={() => setSelectedSize(size)}
                   className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
                     selectedSize === size
-                      ? "border-amber bg-amber text-cream"
-                      : "border-wood/20 text-wood hover:border-amber/50"
+                      ? "border-forest bg-forest text-cream"
+                      : "border-wood/20 text-wood hover:border-forest/50"
                   }`}
                 >
                   {size}
@@ -109,7 +109,7 @@ export default function WorkshopTee() {
           <button
             onClick={handleBuy}
             disabled={loading}
-            className="w-full sm:w-auto bg-amber hover:bg-amber-dark disabled:opacity-60 text-cream px-8 py-4 rounded-lg font-medium text-lg transition-colors"
+            className="w-full sm:w-auto bg-forest hover:bg-forest-dark disabled:opacity-60 text-cream px-8 py-4 rounded-lg font-medium text-lg transition-colors"
           >
             {loading ? "Redirecting…" : "Buy now — €35"}
           </button>
@@ -134,7 +134,7 @@ export default function WorkshopTee() {
           ].map((item) => (
             <div
               key={item.name}
-              className="border border-wood/10 rounded-xl p-6 hover:border-amber/30 transition-colors"
+              className="border border-wood/10 rounded-xl p-6 hover:border-forest/30 transition-colors"
             >
               <h3 className="font-serif text-lg text-wood mb-1">
                 {item.name}

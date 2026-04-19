@@ -30,7 +30,7 @@ export default async function AdminOrdersPage() {
             Last {rows.length} purchases · ${(totalRevenue / 100).toFixed(2)} shown ·{" "}
             <a
               href="https://dashboard.stripe.com"
-              className="text-amber hover:underline"
+              className="text-forest hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >

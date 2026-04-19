@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
   if (sent) {
     return (
       <div className="max-w-md mx-auto px-6 py-24 text-center">
-        <div className="mb-6 text-amber text-4xl">&#9993;</div>
+        <div className="mb-6 text-forest text-4xl">&#9993;</div>
         <h1 className="font-serif text-3xl text-wood mb-4">Check your email</h1>
         <p className="text-wood-light leading-relaxed">
           If an account exists for <strong className="text-wood">{email}</strong>,
@@ -47,7 +47,7 @@ export default function ForgotPasswordPage() {
         </p>
         <Link
           href="/login"
-          className="inline-block mt-8 text-amber hover:text-amber-dark underline text-sm"
+          className="inline-block mt-8 text-forest hover:text-forest-dark underline text-sm"
         >
           Back to sign in
         </Link>
@@ -77,19 +77,19 @@ export default function ForgotPasswordPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
-          className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-amber/50 focus:border-amber"
+          className="w-full px-4 py-3 rounded-lg border border-wood/20 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-forest/50 focus:border-forest"
         />
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-4 py-3 rounded-lg bg-amber text-white font-medium hover:bg-amber-dark transition-colors disabled:opacity-50"
+          className="w-full px-4 py-3 rounded-lg bg-forest text-white font-medium hover:bg-forest-dark transition-colors disabled:opacity-50"
         >
           {loading ? "Sending..." : "Send reset link"}
         </button>
       </form>
 
       <p className="text-wood-light/60 text-sm text-center mt-6">
-        <Link href="/login" className="text-amber hover:text-amber-dark underline">
+        <Link href="/login" className="text-forest hover:text-forest-dark underline">
           Back to sign in
         </Link>
       </p>

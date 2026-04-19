@@ -401,7 +401,7 @@ export default function PlywoodHubPage() {
             <Link
               key={p.slug}
               href={`/tools/${p.slug}`}
-              className="group block bg-white/50 border border-wood/[0.06] rounded-2xl p-5 hover:border-amber/40 transition-colors"
+              className="group block bg-white/50 border border-wood/[0.06] rounded-2xl p-5 hover:border-forest/40 transition-colors"
             >
               <div className="aspect-[4/3] rounded-xl overflow-hidden bg-wood/5 mb-5 relative">
                 <Image
@@ -412,7 +412,7 @@ export default function PlywoodHubPage() {
                   sizes="(min-width: 768px) 33vw, 100vw"
                 />
               </div>
-              <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-2">
+              <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-2">
                 {p.label}
               </p>
               <h3 className="font-serif text-2xl text-wood mb-2">{p.name}</h3>
@@ -423,7 +423,7 @@ export default function PlywoodHubPage() {
                 I use it for
               </p>
               <p className="text-sm text-wood-light/80 mb-5">{p.useFor}</p>
-              <span className="text-sm font-semibold text-amber group-hover:underline">
+              <span className="text-sm font-semibold text-forest group-hover:underline">
                 Learn more &rarr;
               </span>
             </Link>
@@ -548,7 +548,7 @@ export default function PlywoodHubPage() {
                     key={c.country}
                     className="bg-white/50 border border-wood/[0.06] rounded-2xl p-5"
                   >
-                    <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-2">
+                    <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-2">
                       {c.flag} &nbsp; {c.country.toUpperCase()}
                     </p>
                     {c.note ? (
@@ -563,7 +563,7 @@ export default function PlywoodHubPage() {
                             href={d.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-wood hover:text-amber font-medium text-sm"
+                            className="text-wood hover:text-forest font-medium text-sm"
                           >
                             {d.name} &rarr;
                           </a>
@@ -605,8 +605,8 @@ export default function PlywoodHubPage() {
 
       {/* Blog post CTA */}
       <section className="max-w-3xl mx-auto px-6 py-16 border-t border-wood/10">
-        <div className="bg-amber/10 border border-amber/20 rounded-2xl p-8">
-          <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-3">
+        <div className="bg-forest/10 border border-forest/20 rounded-2xl p-8">
+          <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
             NEW ON THE BLOG
           </p>
           <h2 className="font-serif text-2xl md:text-3xl text-wood mb-4">

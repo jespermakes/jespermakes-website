@@ -36,7 +36,7 @@ export function NewsletterToggle({
     >
       <div
         className={`relative w-11 h-6 rounded-full transition-colors ${
-          subscribed ? "bg-amber" : "bg-wood/20"
+          subscribed ? "bg-forest" : "bg-wood/20"
         }`}
       >
         <div

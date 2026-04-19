@@ -133,7 +133,7 @@ export function ImagePicker({ open, onClose, onPick, initialQuery = "" }: ImageP
                   onPick(img);
                   onClose();
                 }}
-                className="group relative aspect-square rounded-xl overflow-hidden border-2 border-transparent hover:border-amber transition-all text-left"
+                className="group relative aspect-square rounded-xl overflow-hidden border-2 border-transparent hover:border-forest transition-all text-left"
                 title={img.description ?? img.filename}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -145,7 +145,7 @@ export function ImagePicker({ open, onClose, onPick, initialQuery = "" }: ImageP
                 />
                 {!img.reviewed && (
                   <span
-                    className="absolute top-2 right-2 w-2.5 h-2.5 bg-amber rounded-full border-2 border-white"
+                    className="absolute top-2 right-2 w-2.5 h-2.5 bg-forest rounded-full border-2 border-white"
                     title="Unreviewed — tags may be inaccurate"
                   />
                 )}

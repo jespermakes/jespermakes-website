@@ -307,7 +307,7 @@ export const CARD_CATEGORIES = {
   transformation: { label: "Transformation", color: "#22c55e", description: "Stories about change — material, personal, or both." },
   tension: { label: "Tension", color: "#dc2626", description: "Stories about conflict, risk, stakes, and pressure." },
   structure: { label: "Structure", color: "#3b82f6", description: "How to organize your story beats for maximum impact." },
-  emotion: { label: "Emotion", color: "#C17F3C", description: "Stories driven by feeling — vulnerability, memory, love, fear." },
+  emotion: { label: "Emotion", color: "#3F6B4A", description: "Stories driven by feeling — vulnerability, memory, love, fear." },
   perspective: { label: "Perspective", color: "#8b5cf6", description: "Stories about seeing things differently." },
 };
 

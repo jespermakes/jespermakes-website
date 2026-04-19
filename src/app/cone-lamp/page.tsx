@@ -74,7 +74,7 @@ export default function ConeLampPage() {
                 </div>
                 <div className="text-lg text-wood-light/50">mm</div>
                 {isOriginal && (
-                  <div className="ml-2 text-[11px] text-amber font-bold tracking-[0.1em] uppercase">
+                  <div className="ml-2 text-[11px] text-forest font-bold tracking-[0.1em] uppercase">
                     ↑ original
                   </div>
                 )}
@@ -87,7 +87,7 @@ export default function ConeLampPage() {
                 value={thicknessMM}
                 onChange={(e) => setThicknessMM(parseFloat(e.target.value))}
                 className="w-full"
-                style={{ accentColor: "#C17F3C" }}
+                style={{ accentColor: "#3F6B4A" }}
               />
               <div className="flex justify-between text-[11px] text-wood-light/40 mt-1.5">
                 <span>3 mm</span>
@@ -146,7 +146,7 @@ export default function ConeLampPage() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 mb-3.5">
             {leafParts.map((p) => (
-              <PartCard key={p.key} part={p} accent="amber" />
+              <PartCard key={p.key} part={p} accent="forest" />
             ))}
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
@@ -157,8 +157,8 @@ export default function ConeLampPage() {
         </div>
 
         {/* Note from Jesper */}
-        <div className="bg-amber/[0.08] border border-amber/[0.18] rounded-2xl p-7 mb-5">
-          <div className="text-[10px] font-bold tracking-[0.15em] text-amber uppercase mb-2.5">
+        <div className="bg-forest/[0.08] border border-forest/[0.18] rounded-2xl p-7 mb-5">
+          <div className="text-[10px] font-bold tracking-[0.15em] text-forest uppercase mb-2.5">
             A note from Jesper
           </div>
           <p className="font-serif text-[15px] leading-relaxed m-0 text-wood-light">
@@ -183,7 +183,7 @@ export default function ConeLampPage() {
 
 // ----- PartCard -----
 
-function PartCard({ part, accent }: { part: Part; accent: "amber" | "sage" }) {
+function PartCard({ part, accent }: { part: Part; accent: "forest" | "sage" }) {
   const padding = Math.max(part.bbox.width, part.bbox.height) * 0.06;
   const vbX = part.bbox.minX - padding;
   const vbY = part.bbox.minY - padding;
@@ -192,7 +192,7 @@ function PartCard({ part, accent }: { part: Part; accent: "amber" | "sage" }) {
   const isBottomDisk = part.type === "bottomDisk";
   const isTopDisk = part.type === "topDisk";
   const accentClass =
-    accent === "amber" ? "text-amber" : "text-[#7A8E5C]";
+    accent === "forest" ? "text-forest" : "text-[#7A8E5C]";
 
   return (
     <div className="bg-white/55 border border-wood/[0.07] rounded-2xl p-3.5 h-[220px] flex flex-col">
@@ -204,7 +204,7 @@ function PartCard({ part, accent }: { part: Part; accent: "amber" | "sage" }) {
         >
           <path
             d={part.path}
-            fill="rgba(193, 127, 60, 0.12)"
+            fill="rgba(63, 107, 74, 0.12)"
             stroke="#2C1810"
             strokeWidth={2.5}
           />

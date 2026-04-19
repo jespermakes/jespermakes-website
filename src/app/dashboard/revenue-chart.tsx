@@ -51,7 +51,7 @@ export default function RevenueChart({ data }: { data: DailyRevenue[] }) {
           }
           wrapperStyle={{ color: "#aaa" }}
         />
-        <Bar dataKey="beacons" stackId="a" fill="#C17F3C" radius={[0, 0, 0, 0]} />
+        <Bar dataKey="beacons" stackId="a" fill="#3F6B4A" radius={[0, 0, 0, 0]} />
         <Bar dataKey="store" stackId="a" fill="#6366f1" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>

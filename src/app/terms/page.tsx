@@ -34,7 +34,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="font-serif text-2xl text-wood mb-3">4. Refund Policy</h2>
-          <p>Please see our dedicated <a href="/refund" className="text-amber hover:underline">Refund Policy</a> page for full details on returns and refunds for both digital and physical products.</p>
+          <p>Please see our dedicated <a href="/refund" className="text-forest hover:underline">Refund Policy</a> page for full details on returns and refunds for both digital and physical products.</p>
         </section>
 
         <section>
@@ -65,7 +65,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="font-serif text-2xl text-wood mb-3">10. Governing Law</h2>
-          <p>These terms are governed by the laws of Denmark. Any disputes will be resolved in the courts of Denmark. If you are an EU consumer, you also have the right to use the <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-amber hover:underline">EU Online Dispute Resolution platform</a>.</p>
+          <p>These terms are governed by the laws of Denmark. Any disputes will be resolved in the courts of Denmark. If you are an EU consumer, you also have the right to use the <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="text-forest hover:underline">EU Online Dispute Resolution platform</a>.</p>
         </section>
 
         <section>
@@ -75,7 +75,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="font-serif text-2xl text-wood mb-3">12. Contact</h2>
-          <p>Questions? Email us at <a href="mailto:hello@jespermakes.com" className="text-amber hover:underline">hello@jespermakes.com</a></p>
+          <p>Questions? Email us at <a href="mailto:hello@jespermakes.com" className="text-forest hover:underline">hello@jespermakes.com</a></p>
         </section>
       </div>
     </div>

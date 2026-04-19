@@ -21,10 +21,10 @@ export function ToolsSection() {
             <Link
               key={cat.slug}
               href={`/tools/category/${cat.slug}`}
-              className="group block rounded-xl border border-cream/10 hover:border-amber/40 p-6 transition-colors"
+              className="group block rounded-xl border border-cream/10 hover:border-forest/40 p-6 transition-colors"
             >
               <span className="text-3xl mb-3 block">{cat.icon}</span>
-              <h3 className="font-serif text-lg group-hover:text-amber transition-colors mb-2">
+              <h3 className="font-serif text-lg group-hover:text-forest transition-colors mb-2">
                 {cat.title}
               </h3>
               <p className="text-cream/50 text-sm leading-relaxed">
@@ -36,7 +36,7 @@ export function ToolsSection() {
         <div className="mt-10">
           <Link
             href="/tools"
-            className="text-amber hover:text-amber-light font-medium transition-colors"
+            className="text-forest hover:text-forest-light font-medium transition-colors"
           >
             See the full tool list →
           </Link>

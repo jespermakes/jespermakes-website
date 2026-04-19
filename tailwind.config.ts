@@ -12,9 +12,9 @@ const config: Config = {
         cream: "#FAF7F2",
         wood: "#2C1810",
         "wood-light": "#4A3228",
-        amber: "#C17F3C",
-        "amber-dark": "#A66B2E",
-        "amber-light": "#D4993F",
+        forest: "#3F6B4A",
+        "forest-dark": "#2F5338",
+        "forest-light": "#5C8A69",
       },
       fontFamily: {
         serif: ["Playfair Display", "Georgia", "serif"],

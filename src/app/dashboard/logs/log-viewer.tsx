@@ -67,12 +67,12 @@ export default function LogViewer({ logs }: { logs: Log[] }) {
               placeholder="Search logs..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-wood/15 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-amber/30 focus:border-amber/50 text-sm"
+              className="w-full px-4 py-2 rounded-lg border border-wood/15 bg-white text-wood placeholder:text-wood-light/40 focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest/50 text-sm"
             />
           </div>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="sm:hidden text-wood-light/60 hover:text-amber transition-colors text-sm"
+            className="sm:hidden text-wood-light/60 hover:text-forest transition-colors text-sm"
           >
             {sidebarOpen ? "Show content" : "Show dates"}
           </button>
@@ -105,7 +105,7 @@ export default function LogViewer({ logs }: { logs: Log[] }) {
                     }}
                     className={`w-full text-left px-5 py-4 border-b border-wood/5 transition-colors ${
                       selectedDate === log.date
-                        ? "bg-amber/10 border-l-2 border-l-amber"
+                        ? "bg-forest/10 border-l-2 border-l-forest"
                         : "hover:bg-wood/[0.03] border-l-2 border-l-transparent"
                     }`}
                   >
@@ -113,14 +113,14 @@ export default function LogViewer({ logs }: { logs: Log[] }) {
                       <span
                         className={`font-serif text-sm ${
                           selectedDate === log.date
-                            ? "text-amber-dark"
+                            ? "text-forest-dark"
                             : "text-wood"
                         }`}
                       >
                         {formatDate(log.date)}
                       </span>
                       {wasUpdatedToday(log.updatedAt) && !isToday(log.date) && (
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber" title="Updated today" />
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-forest" title="Updated today" />
                       )}
                     </div>
                     {log.summary && (
@@ -153,7 +153,7 @@ export default function LogViewer({ logs }: { logs: Log[] }) {
                   </p>
                 )}
               </div>
-              <div className="prose prose-stone prose-headings:font-serif prose-headings:text-wood prose-p:text-wood-light prose-strong:text-wood prose-a:text-amber prose-a:no-underline hover:prose-a:underline prose-li:text-wood-light prose-sm max-w-none">
+              <div className="prose prose-stone prose-headings:font-serif prose-headings:text-wood prose-p:text-wood-light prose-strong:text-wood prose-a:text-forest prose-a:no-underline hover:prose-a:underline prose-li:text-wood-light prose-sm max-w-none">
                 <ReactMarkdown>{selectedLog.content}</ReactMarkdown>
               </div>
             </article>
