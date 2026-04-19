@@ -1,10 +1,11 @@
 import { MetadataRoute } from "next";
-import { tools, categories } from "@/data/tools";
-import { getAllBlogPosts } from "@/data/blog-posts";
+import { db } from "@/lib/db";
+import { blogPosts, toolItems } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 const BASE_URL = "https://jespermakes.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
   // Static pages
@@ -85,23 +86,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
-  // Tool category pages
-  const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
-    url: `${BASE_URL}/tools/category/${cat.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  }));
-
-  // Individual tool pages
-  const toolPages: MetadataRoute.Sitemap = tools.map((tool) => ({
-    url: `${BASE_URL}/tools/${tool.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
-
-  // Blog pages
+  // Blog listing page
   const blogListingPage: MetadataRoute.Sitemap = [
     {
       url: `${BASE_URL}/blog`,
@@ -111,12 +96,50 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const blogPostPages: MetadataRoute.Sitemap = getAllBlogPosts().map((post) => ({
-    url: `${BASE_URL}/blog/${post.slug}`,
-    lastModified: post.updatedAt ?? post.publishedAt,
+  // DB-backed pages
+  const posts = await db
+    .select({ slug: blogPosts.slug, updatedAt: blogPosts.updatedAt })
+    .from(blogPosts)
+    .where(eq(blogPosts.hidden, false));
+
+  const tools = await db
+    .select({
+      slug: toolItems.slug,
+      updatedAt: toolItems.updatedAt,
+      categorySlug: toolItems.categorySlug,
+    })
+    .from(toolItems)
+    .where(eq(toolItems.hidden, false));
+
+  const blogPostPages: MetadataRoute.Sitemap = posts.map((p) => ({
+    url: `${BASE_URL}/blog/${p.slug}`,
+    lastModified: p.updatedAt,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
-  return [...staticPages, ...shopPages, ...categoryPages, ...toolPages, ...blogListingPage, ...blogPostPages];
+  // Tool category pages (deduplicate)
+  const categorySlugs = Array.from(new Set(tools.map((t) => t.categorySlug)));
+  const categoryPages: MetadataRoute.Sitemap = categorySlugs.map((slug) => ({
+    url: `${BASE_URL}/tools/category/${slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
+  const toolPages: MetadataRoute.Sitemap = tools.map((t) => ({
+    url: `${BASE_URL}/tools/${t.slug}`,
+    lastModified: t.updatedAt,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  return [
+    ...staticPages,
+    ...shopPages,
+    ...blogListingPage,
+    ...blogPostPages,
+    ...categoryPages,
+    ...toolPages,
+  ];
 }

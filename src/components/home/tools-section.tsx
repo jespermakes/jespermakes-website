@@ -1,10 +1,23 @@
 import Link from "next/link";
-import { categories } from "@/data/tools";
+import { db } from "@/lib/db";
+import { toolItems } from "@/lib/db/schema";
+import { eq, sql } from "drizzle-orm";
 
 const featuredSlugs = ["festool", "hand-tools", "finishing", "gardening-outdoors"];
 
-export function ToolsSection() {
-  const featured = categories.filter((c) => featuredSlugs.includes(c.slug));
+export async function ToolsSection() {
+  const rows = await db
+    .select({
+      category: toolItems.category,
+      categorySlug: toolItems.categorySlug,
+      categoryIcon: toolItems.categoryIcon,
+      count: sql<number>`count(*)::int`,
+    })
+    .from(toolItems)
+    .where(eq(toolItems.hidden, false))
+    .groupBy(toolItems.category, toolItems.categorySlug, toolItems.categoryIcon);
+
+  const featured = rows.filter((c) => featuredSlugs.includes(c.categorySlug));
 
   return (
     <section className="bg-wood text-cream">
@@ -19,17 +32,14 @@ export function ToolsSection() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featured.map((cat) => (
             <Link
-              key={cat.slug}
-              href={`/tools/category/${cat.slug}`}
+              key={cat.categorySlug}
+              href={`/tools/category/${cat.categorySlug}`}
               className="group block rounded-xl border border-cream/10 hover:border-forest/40 p-6 transition-colors"
             >
-              <span className="text-3xl mb-3 block">{cat.icon}</span>
+              <span className="text-3xl mb-3 block">{cat.categoryIcon}</span>
               <h3 className="font-serif text-lg group-hover:text-forest transition-colors mb-2">
-                {cat.title}
+                {cat.category}
               </h3>
-              <p className="text-cream/50 text-sm leading-relaxed">
-                {cat.description}
-              </p>
             </Link>
           ))}
         </div>

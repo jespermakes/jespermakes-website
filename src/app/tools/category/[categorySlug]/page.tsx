@@ -1,39 +1,41 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import {
-  categories,
-  getCategoryBySlug,
-  getToolsByCategory,
-} from "@/data/tools";
+import { db } from "@/lib/db";
+import { toolItems, images } from "@/lib/db/schema";
+import { eq, and, asc } from "drizzle-orm";
 
-type Props = {
-  params: { categorySlug: string };
-};
+export const revalidate = 60;
 
-export function generateStaticParams() {
-  return categories.map((c) => ({ categorySlug: c.slug }));
-}
+export async function generateMetadata({ params }: { params: { categorySlug: string } }): Promise<Metadata> {
+  const rows = await db
+    .select({ category: toolItems.category })
+    .from(toolItems)
+    .where(and(eq(toolItems.categorySlug, params.categorySlug), eq(toolItems.hidden, false)))
+    .limit(1);
 
-export function generateMetadata({ params }: Props): Metadata {
-  const category = getCategoryBySlug(params.categorySlug);
-  if (!category) return {};
+  const categoryName = rows[0]?.category;
+  if (!categoryName) return {};
 
   return {
-    title: `${category.title} — Tools — Jesper Makes`,
-    description: category.description,
+    title: `${categoryName} — Tools — Jesper Makes`,
     alternates: {
-      canonical: `/tools/category/${category.slug}`,
+      canonical: `/tools/category/${params.categorySlug}`,
     },
   };
 }
 
-export default function CategoryPage({ params }: Props) {
-  const category = getCategoryBySlug(params.categorySlug);
-  if (!category) notFound();
+export default async function CategoryPage({ params }: { params: { categorySlug: string } }) {
+  const rows = await db
+    .select({ tool: toolItems, image: images })
+    .from(toolItems)
+    .leftJoin(images, eq(toolItems.imageId, images.id))
+    .where(and(eq(toolItems.categorySlug, params.categorySlug), eq(toolItems.hidden, false)))
+    .orderBy(asc(toolItems.sortOrder), asc(toolItems.name));
 
-  const categoryTools = getToolsByCategory(category.title);
+  if (rows.length === 0) notFound();
+
+  const { category, categoryIcon } = rows[0].tool;
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
@@ -43,63 +45,62 @@ export default function CategoryPage({ params }: Props) {
           Tools & Links
         </Link>
         <span>/</span>
-        <span className="text-wood">{category.title}</span>
+        <span className="text-wood">{category}</span>
       </nav>
 
       {/* Category header */}
       <div className="flex items-center gap-4 mb-10">
-        <span className="text-4xl">{category.icon}</span>
+        <span className="text-4xl">{categoryIcon}</span>
         <div>
           <h1 className="font-serif text-3xl md:text-4xl text-wood">
-            {category.title}
+            {category}
           </h1>
-          <p className="text-wood-light/70 text-lg mt-1">
-            {category.description}
-          </p>
         </div>
       </div>
 
       {/* Tool grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {categoryTools.map((tool) => (
-          <Link
-            key={tool.slug}
-            href={`/tools/${tool.slug}`}
-            className="group bg-white/60 rounded-xl p-5 border border-wood/5 hover:border-forest/20 transition-colors"
-          >
-            <div className="w-full aspect-[4/3] rounded-lg bg-wood/5 flex items-center justify-center mb-4 overflow-hidden relative">
-              {tool.image ? (
-                <Image
-                  src={tool.image}
-                  alt={tool.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-              ) : (
-                <span className="text-3xl opacity-40">
-                  {tool.categoryIcon}
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-serif text-lg text-wood group-hover:text-forest transition-colors">
-                {tool.name}
-              </h3>
-              {tool.badge && (
-                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20">
-                  {tool.badge}
-                </span>
-              )}
-            </div>
-            <p className="text-wood-light/70 text-sm line-clamp-2 mb-3">
-              {tool.description}
-            </p>
-            <span className="text-sm font-medium text-forest group-hover:text-forest/80 transition-colors">
-              View details &rarr;
-            </span>
-          </Link>
-        ))}
+        {rows.map(({ tool, image }) => {
+          const imgUrl = image?.url ?? tool.image ?? null;
+          return (
+            <Link
+              key={tool.id}
+              href={`/tools/${tool.slug}`}
+              className="group bg-white/60 rounded-xl p-5 border border-wood/5 hover:border-forest/20 transition-colors"
+            >
+              <div className="w-full aspect-[4/3] rounded-lg bg-wood/5 flex items-center justify-center mb-4 overflow-hidden">
+                {imgUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={imgUrl}
+                    alt={tool.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-3xl opacity-40">
+                    {tool.categoryIcon}
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="font-serif text-lg text-wood group-hover:text-forest transition-colors">
+                  {tool.name}
+                </h3>
+                {tool.ambassadorBadge && (
+                  <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20">
+                    Ambassador
+                  </span>
+                )}
+              </div>
+              <p className="text-wood-light/70 text-sm line-clamp-2 mb-3">
+                {tool.description}
+              </p>
+              <span className="text-sm font-medium text-forest group-hover:text-forest/80 transition-colors">
+                View details &rarr;
+              </span>
+            </Link>
+          );
+        })}
       </div>
 
       {/* Back link */}
