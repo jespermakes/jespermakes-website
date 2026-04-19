@@ -275,6 +275,7 @@ export function ToolEditor({ initial }: { initial: ToolEditorInitialValues }) {
             <div className="flex gap-3 items-start">
               {image ? (
                 <div className="flex-1 flex gap-3 items-center bg-white/70 border border-wood/[0.12] rounded-xl p-2.5">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={image.url} alt="" className="w-16 h-16 object-cover rounded-lg flex-shrink-0" />
                   <div className="flex-1 min-w-0">
                     <div className="text-sm text-wood truncate font-medium">{image.filename}</div>
@@ -418,6 +419,7 @@ export function ToolEditor({ initial }: { initial: ToolEditorInitialValues }) {
             <div className="flex flex-wrap gap-2 mb-2">
               {gallery.map((url) => (
                 <div key={url} className="relative group">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={url}
                     alt=""
