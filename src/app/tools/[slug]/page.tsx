@@ -98,6 +98,67 @@ export default function ToolPage({ params }: Props) {
         </div>
       </div>
 
+      {/* Use Cases */}
+      {tool.useCases && tool.useCases.length > 0 && (
+        <section className="mb-16">
+          <h2 className="font-serif text-2xl text-wood mb-6">What I use it for</h2>
+          <ul className="space-y-2">
+            {tool.useCases.map((useCase) => (
+              <li
+                key={useCase}
+                className="flex items-center gap-3 bg-white/60 rounded-xl p-4 border border-wood/5"
+              >
+                <span className="text-amber">&#x2022;</span>
+                <span className="text-wood">{useCase}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Specs */}
+      {tool.specs && tool.specs.length > 0 && (
+        <section className="mb-16">
+          <h2 className="font-serif text-2xl text-wood mb-6">Specifications</h2>
+          <div className="bg-white/60 rounded-xl border border-wood/5 divide-y divide-wood/5">
+            {tool.specs.map((spec) => (
+              <div key={spec.label} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 p-4">
+                <span className="text-sm font-medium text-wood-light/60 sm:w-48 shrink-0">
+                  {spec.label}
+                </span>
+                <span className="text-wood">{spec.value}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Jesper's Note */}
+      {tool.jesperNote && (
+        <section className="mb-16">
+          <div className="bg-amber/10 border border-amber/20 rounded-2xl p-8">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-3">
+              JESPER&apos;S NOTE
+            </p>
+            <p className="text-wood text-lg leading-relaxed font-serif italic">
+              {tool.jesperNote}
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* Learn More */}
+      {tool.learnMoreUrl && (
+        <section className="mb-16">
+          <Link
+            href={tool.learnMoreUrl}
+            className="inline-flex items-center gap-2 bg-wood text-cream px-6 py-3 rounded-full font-medium hover:bg-wood/90 transition-colors"
+          >
+            Learn more about this product &rarr;
+          </Link>
+        </section>
+      )}
+
       {/* Photo Gallery */}
       {tool.gallery && tool.gallery.length > 0 && (
         <section className="mb-16">

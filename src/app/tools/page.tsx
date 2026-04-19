@@ -40,6 +40,22 @@ export default function ToolsPage() {
         />
       </div>
 
+      <Link
+        href="/plywood"
+        className="block bg-amber/10 border border-amber/20 rounded-2xl p-6 mb-8 hover:border-amber/40 transition-colors"
+      >
+        <p className="text-[10px] font-bold tracking-[0.15em] text-amber mb-2">
+          NEW — MATERIAL GUIDE
+        </p>
+        <h3 className="font-serif text-2xl text-wood mb-2">
+          Plywood, explained properly
+        </h3>
+        <p className="text-wood-light/70">
+          A beginner&apos;s guide to birch vs spruce, grade stamps, edge sealing,
+          and the three WISA panels I use for every serious project.
+        </p>
+      </Link>
+
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((category) => {
           const count = getToolsByCategory(category.title).length;

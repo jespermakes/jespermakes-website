@@ -25,6 +25,10 @@ export type Tool = {
   colorGrid?: ColorSwatch[];
   productList?: string[];
   gallery?: string[];
+  useCases?: string[];
+  specs?: { label: string; value: string }[];
+  jesperNote?: string;
+  learnMoreUrl?: string;
 };
 
 export const tools: Tool[] = [
@@ -1020,6 +1024,113 @@ export const tools: Tool[] = [
     categoryIcon: "📷",
     buyLinks: [],
   },
+
+  // Plywood
+  {
+    slug: "wisa-birch-plywood",
+    name: "WISA-Birch Plywood",
+    description:
+      "Finnish birch plywood. The workhorse for kitchens, furniture, templates, and anything that wants to look good uncoated.",
+    longDescription: `WISA-Birch is a full birch veneer plywood made in Finland by UPM Plywood, bonded with weather-resistant phenolic glue. It has a light, smooth, even face and an excellent strength-to-weight ratio.
+
+I use it anywhere the finished surface matters. It cuts clean, sands beautifully, takes stain and clear finishes without fighting me, and the edge laminations are a design feature if you know how to treat them. It's what I'm using for the kitchen I promised my wife I'd upgrade, and it's my default for templates, jigs, and furniture bodies.
+
+The face grade (BB, WG, III) affects appearance only, not structural performance. Buy the grade that fits your finish: BB for visible lacquered work, WG for painted or hidden work, lower grades for anything structural you don't need to look at.`,
+    category: "Plywood",
+    categoryIcon: "🪵",
+    image: "/images/plywood/wisa-birch-hero.jpg",
+    badge: "Ambassador",
+    buyLinks: [
+      { label: "Find a WISA distributor", url: "https://www.wisaplywood.com/buy-and-contact/", region: "global" },
+    ],
+    useCases: [
+      "Kitchen cabinets and millwork",
+      "Furniture bodies and carcasses",
+      "CNC and router templates",
+      "Jigs that need to stay flat",
+      "Any project with visible plywood edges",
+    ],
+    specs: [
+      { label: "Species", value: "European / Nordic birch" },
+      { label: "Glue", value: "Phenolic, weather-resistant (EN 314-2 Class 3)" },
+      { label: "Standard thicknesses", value: "4, 6.5, 9, 12, 15, 18, 21, 24, 27, 30 mm" },
+      { label: "Standard sizes", value: "1220x2440, 1250x2500, 1500x3000 mm and more" },
+      { label: "Certification", value: "FSC / PEFC, CE 2+, M1, E1" },
+      { label: "Country of origin", value: "Finland" },
+    ],
+    jesperNote: "This is the plywood I grab when I want the final thing to look beautiful. If you only buy one sheet of plywood this year, make it this one.",
+    learnMoreUrl: "/plywood",
+  },
+  {
+    slug: "wisa-spruce-plywood",
+    name: "WISA-Spruce Plywood",
+    description:
+      "Lightweight Nordic spruce plywood. What I used for the interior of our off-grid cabin and what I reach for on shop projects.",
+    longDescription: `WISA-Spruce is Nordic spruce plywood built for structural work — roofing, flooring, wall sheathing, and anything else where lightness and strength matter more than a perfect face. It's roughly half the weight of particleboard or OSB at similar thicknesses, which you feel the first time you carry a full sheet.
+
+I used it for the interior of the off-grid cabin my family is building, and it's my default for shop projects where I'd rather spend my wood budget on the things people actually see. The face has a livelier, more industrial look than birch — if that's the aesthetic you want, you can leave it exposed. Otherwise it paints beautifully.
+
+Unlike birch, spruce plywood has better natural biological durability thanks to the closed cell structure of the wood, which is part of why it holds up so well in construction use.`,
+    category: "Plywood",
+    categoryIcon: "🪵",
+    image: "/images/plywood/wisa-spruce-hero.jpg",
+    badge: "Ambassador",
+    buyLinks: [
+      { label: "Find a WISA distributor", url: "https://www.wisaplywood.com/buy-and-contact/", region: "global" },
+    ],
+    useCases: [
+      "Cabin and outbuilding interiors",
+      "Shop furniture and storage",
+      "Wall sheathing and flooring (structural)",
+      "Painted furniture where weight matters",
+      "Any project that will be painted or hidden",
+    ],
+    specs: [
+      { label: "Species", value: "Nordic spruce" },
+      { label: "Glue", value: "Phenolic, weather-resistant (EN 314-2 Class 3)" },
+      { label: "Standard thicknesses", value: "9, 12, 15, 18, 21, 24, 27, 30 mm (up to 50 mm on request)" },
+      { label: "Bonding", value: "WISA BioBond (50%+ bio-based lignin)" },
+      { label: "Certification", value: "FSC / PEFC, CE 2+, M1, E1" },
+      { label: "Country of origin", value: "Finland" },
+    ],
+    jesperNote: "Half the weight of MDF, stronger than OSB, and it smells like a Finnish forest when you cut it. Don't overpay for birch when spruce will do the job.",
+    learnMoreUrl: "/plywood",
+  },
+  {
+    slug: "wisa-sprucebt-plywood",
+    name: "WISA-Spruce BT Plywood",
+    description:
+      "Biocide-treated spruce plywood for construction exposed to weather during the build. What we used for the cabin roof and exterior.",
+    longDescription: `WISA-Spruce BT is standard WISA spruce plywood with a wood protective treatment against staining and decaying fungi. It's designed for the phase of a build where a panel is going to sit in the weather for weeks or months before it gets a roof over it, paint on it, or cladding covering it.
+
+This is what we used for the roof and the exterior sheathing of our off-grid cabin. It's also become my go-to for serious shop projects — outfeed tables, big assembly surfaces, anything that'll take a beating over years in a workshop that isn't climate controlled.
+
+Important caveat from WISA: BT is a construction-phase protection, not a permanent outdoor finish. Any BT panel that will stay visible outside the finished building needs a paint or coating. Don't leave it bare and exposed to rain and sun forever — it will weather.`,
+    category: "Plywood",
+    categoryIcon: "🪵",
+    image: "/images/plywood/wisa-sprucebt-hero.jpg",
+    badge: "Ambassador",
+    buyLinks: [
+      { label: "Find a WISA distributor", url: "https://www.wisaplywood.com/buy-and-contact/", region: "global" },
+    ],
+    useCases: [
+      "Roof sheathing that'll sit in the rain before cladding goes on",
+      "Exterior wall sheathing during construction",
+      "Shop worktops, outfeed tables, and heavy-use surfaces",
+      "Outbuilding panels that will be painted or clad",
+      "Any structural spruce panel job where the build timeline is unpredictable",
+    ],
+    specs: [
+      { label: "Species", value: "Nordic spruce, biocide-treated" },
+      { label: "Glue", value: "Phenolic, weather-resistant (EN 314-2 Class 3)" },
+      { label: "Treatment", value: "Biocide against mould, blue stain, and decaying fungi" },
+      { label: "Standard thicknesses", value: "9, 12, 15, 18, 21, 24, 27, 30 mm" },
+      { label: "Certification", value: "FSC / PEFC, CE 2+, M1, E1" },
+      { label: "Country of origin", value: "Finland" },
+    ],
+    jesperNote: "The only plywood in my shop that I'd call genuinely tough. If you're building outside, or your shop humidity is a disaster, this is the sheet you want.",
+    learnMoreUrl: "/plywood",
+  },
 ];
 
 export type Category = {
@@ -1078,6 +1189,12 @@ export const categories: Category[] = [
     slug: "gardening-outdoors",
     icon: "🌿",
     description: "Tools and gear for the garden and outdoor projects.",
+  },
+  {
+    title: "Plywood",
+    slug: "plywood",
+    icon: "🪵",
+    description: "The three WISA panels I use for every serious project. Finnish-made, ambassador-approved.",
   },
 ];
 
