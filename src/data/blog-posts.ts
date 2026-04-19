@@ -2115,8 +2115,8 @@ Go build something messy, meaningful, and mildly unstable. Whatever works. Becau
     publishedAt: "2026-04-19",
     author: "Jesper",
     tags: ["plywood", "beginner", "materials", "WISA"],
-    heroImage: "/images/blog/plywood-secrets-hero.jpg",
-    heroImageAlt: "Jesper cutting a sheet of WISA birch plywood in the workshop",
+    heroImage: "/images/press/jesper-workshop-carrying.jpg",
+    heroImageAlt: "Jesper measuring a sheet of WISA birch plywood in the workshop",
     content: `I used to think plywood was for people who couldn't afford real wood.
 
 That's wrong, and it took me longer than it should have to figure out why. Plywood is stable. It stays flat. It gives you sheet sizes you cannot get from a tree. Good plywood is not a compromise. It's the right material for most of what we're actually building, and if you're fighting solid wood on every project, you're doing it the hard way.
