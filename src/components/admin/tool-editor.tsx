@@ -48,7 +48,8 @@ export function ToolEditor({ initial }: { initial: ToolEditorInitialValues }) {
   const [buyLinks, setBuyLinks] = useState<BuyLink[]>(initial.buyLinks);
   const [youtubeVideos, setYoutubeVideos] = useState<string[]>(initial.youtubeVideos);
   const [colorGrid, setColorGrid] = useState<ColorSwatch[]>(initial.colorGrid);
-  const [productList, setProductList] = useState<string[]>(initial.productList);
+  // productList has no editor UI yet but is preserved on save
+  const [productList] = useState<string[]>(initial.productList);
   const [gallery, setGallery] = useState<string[]>(initial.gallery);
   const [useCases, setUseCases] = useState<string[]>(initial.useCases);
   const [specs, setSpecs] = useState<Spec[]>(initial.specs);
