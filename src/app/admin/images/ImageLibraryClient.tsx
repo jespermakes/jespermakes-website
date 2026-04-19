@@ -359,6 +359,7 @@ function EditorPanel({
   const [regenerating, setRegenerating] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally reset all fields only when image.id changes
   useEffect(() => {
     setDescription(image.description ?? "");
     setMaterial(image.material);
@@ -470,49 +471,39 @@ function EditorPanel({
 
           <TagSection
             label={`${vocabulary.material.label} · pick one`}
-            field="material"
             values={vocabulary.material.values}
             selected={material ? [material] : []}
             onToggle={(v) => setMaterial(material === v ? null : v)}
-            multi={false}
           />
 
           <TagSection
             label={`${vocabulary.subjects.label} · pick any`}
-            field="subjects"
             values={vocabulary.subjects.values}
             selected={subjects}
             onToggle={(v) =>
               setSubjects(subjects.includes(v) ? subjects.filter((x) => x !== v) : [...subjects, v])
             }
-            multi
           />
 
           <TagSection
             label={`${vocabulary.shotType.label} · pick one`}
-            field="shotType"
             values={vocabulary.shotType.values}
             selected={shotType ? [shotType] : []}
             onToggle={(v) => setShotType(shotType === v ? null : v)}
-            multi={false}
           />
 
           <TagSection
             label={`${vocabulary.who.label} · pick any, optional`}
-            field="who"
             values={vocabulary.who.values}
             selected={who}
             onToggle={(v) => setWho(who.includes(v) ? who.filter((x) => x !== v) : [...who, v])}
-            multi
           />
 
           <TagSection
             label={`${vocabulary.setting.label} · pick one, optional`}
-            field="setting"
             values={vocabulary.setting.values}
             selected={setting ? [setting] : []}
             onToggle={(v) => setSetting(setting === v ? null : v)}
-            multi={false}
           />
 
           <Section label="Custom tags">
@@ -586,18 +577,14 @@ function Section({ label, children }: { label: string; children: React.ReactNode
 
 function TagSection({
   label,
-  field: _field,
   values,
   selected,
   onToggle,
-  multi: _multi,
 }: {
   label: string;
-  field: string;
   values: readonly string[];
   selected: string[];
   onToggle: (v: string) => void;
-  multi: boolean;
 }) {
   return (
     <Section label={label}>
