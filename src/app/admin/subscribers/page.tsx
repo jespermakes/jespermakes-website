@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
+import { newsletterSubscribers } from "@/lib/db/schema";
 import { desc, eq } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
@@ -7,14 +7,15 @@ export const dynamic = "force-dynamic";
 export default async function AdminSubscribersPage() {
   const rows = await db
     .select({
-      id: users.id,
-      email: users.email,
-      name: users.name,
-      createdAt: users.createdAt,
+      id: newsletterSubscribers.id,
+      email: newsletterSubscribers.email,
+      firstName: newsletterSubscribers.firstName,
+      source: newsletterSubscribers.source,
+      subscribedAt: newsletterSubscribers.subscribedAt,
     })
-    .from(users)
-    .where(eq(users.newsletterSubscribed, true))
-    .orderBy(desc(users.createdAt));
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.subscribed, true))
+    .orderBy(desc(newsletterSubscribers.subscribedAt));
 
   return (
     <div className="max-w-5xl">
@@ -22,7 +23,7 @@ export default async function AdminSubscribersPage() {
         <div>
           <h1 className="font-serif text-3xl font-normal text-wood mb-1">Subscribers</h1>
           <p className="text-sm text-wood-light/60 m-0">
-            {rows.length.toLocaleString()} newsletter {rows.length === 1 ? "subscriber" : "subscribers"}
+            {rows.length.toLocaleString()} active newsletter subscribers
           </p>
         </div>
         <a
@@ -34,9 +35,10 @@ export default async function AdminSubscribersPage() {
       </div>
 
       <div className="bg-white/55 border border-wood/[0.07] rounded-2xl overflow-hidden">
-        <div className="grid grid-cols-[1fr_1fr_140px] gap-4 px-5 py-3 border-b border-wood/[0.06] text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase">
+        <div className="grid grid-cols-[1fr_1fr_120px_140px] gap-4 px-5 py-3 border-b border-wood/[0.06] text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase">
           <div>Email</div>
           <div>Name</div>
+          <div>Source</div>
           <div className="text-right">Joined</div>
         </div>
         {rows.length === 0 && (
@@ -46,14 +48,15 @@ export default async function AdminSubscribersPage() {
           <div
             key={row.id}
             className={
-              "grid grid-cols-[1fr_1fr_140px] gap-4 px-5 py-3 text-sm" +
+              "grid grid-cols-[1fr_1fr_120px_140px] gap-4 px-5 py-3 text-sm" +
               (i > 0 ? " border-t border-wood/[0.05]" : "")
             }
           >
             <div className="text-wood truncate">{row.email}</div>
-            <div className="text-wood-light/60 truncate">{row.name ?? "—"}</div>
+            <div className="text-wood-light/60 truncate">{row.firstName ?? "—"}</div>
+            <div className="text-[11px] text-wood-light/50">{row.source}</div>
             <div className="text-right text-wood-light/50 text-xs tabular-nums">
-              {new Date(row.createdAt).toISOString().slice(0, 10)}
+              {new Date(row.subscribedAt).toISOString().slice(0, 10)}
             </div>
           </div>
         ))}

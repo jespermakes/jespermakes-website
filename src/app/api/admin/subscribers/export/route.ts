@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
+import { newsletterSubscribers } from "@/lib/db/schema";
 import { desc, eq } from "drizzle-orm";
 import { checkAdminApi } from "@/lib/admin/auth";
 
@@ -16,14 +16,22 @@ export async function GET() {
   if (!gate.ok) return NextResponse.json({ error: gate.error }, { status: gate.status });
 
   const rows = await db
-    .select({ email: users.email, name: users.name, createdAt: users.createdAt })
-    .from(users)
-    .where(eq(users.newsletterSubscribed, true))
-    .orderBy(desc(users.createdAt));
+    .select({
+      email: newsletterSubscribers.email,
+      firstName: newsletterSubscribers.firstName,
+      source: newsletterSubscribers.source,
+      subscribedAt: newsletterSubscribers.subscribedAt,
+    })
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.subscribed, true))
+    .orderBy(desc(newsletterSubscribers.subscribedAt));
 
-  const header = "email,name,joined_at\n";
+  const header = "email,first_name,source,subscribed_at\n";
   const body = rows
-    .map((r) => `${csvEscape(r.email)},${csvEscape(r.name)},${r.createdAt.toISOString()}`)
+    .map(
+      (r) =>
+        `${csvEscape(r.email)},${csvEscape(r.firstName)},${csvEscape(r.source)},${r.subscribedAt.toISOString()}`
+    )
     .join("\n");
   const csv = header + body + (body.length > 0 ? "\n" : "");
 

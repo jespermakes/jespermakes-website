@@ -272,6 +272,22 @@ export const toolItems = pgTable("tool_items", {
   updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
 });
 
+export const newsletterSubscribers = pgTable("newsletter_subscribers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").notNull().unique(),
+  firstName: text("first_name"),
+  resendContactId: text("resend_contact_id"),
+  subscribed: boolean("subscribed").notNull().default(true),
+  source: text("source").notNull().default("public_form"),
+  subscribedAt: timestamp("subscribed_at", { withTimezone: false }).notNull().defaultNow(),
+  unsubscribedAt: timestamp("unsubscribed_at", { withTimezone: false }),
+  lastSyncedAt: timestamp("last_synced_at", { withTimezone: false }).notNull().defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: false }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: false }).notNull().defaultNow(),
+});
+
+export type NewsletterSubscriber = typeof newsletterSubscribers.$inferSelect;
+
 export type BlogPost = typeof blogPosts.$inferSelect;
 export type NewBlogPost = typeof blogPosts.$inferInsert;
 export type ToolItem = typeof toolItems.$inferSelect;

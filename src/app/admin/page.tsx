@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
-import { purchases, users, blogPosts, toolItems } from "@/lib/db/schema";
+import { purchases, users, blogPosts, toolItems, newsletterSubscribers } from "@/lib/db/schema";
 import { desc, eq, sql } from "drizzle-orm";
 import { StatCard } from "@/components/admin/stat-card";
 
@@ -13,8 +13,8 @@ export default async function AdminDashboard() {
 
   const [subscriberCount] = await db
     .select({ count: sql<number>`count(*)::int` })
-    .from(users)
-    .where(eq(users.newsletterSubscribed, true));
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.subscribed, true));
 
   const [postCount] = await db
     .select({ count: sql<number>`count(*)::int` })

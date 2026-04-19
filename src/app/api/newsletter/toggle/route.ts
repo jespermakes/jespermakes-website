@@ -1,69 +1,36 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { subscribeToNewsletter, unsubscribeFromNewsletter } from "@/lib/newsletter";
 
-export async function POST(request: Request) {
+export const runtime = "nodejs";
+
+export async function POST(request: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id || !session.user.email) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
-    const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-    }
+    const body = await request.json();
+    const subscribed = !!body.subscribed;
 
-    const { subscribed } = await request.json();
-
-    const user = await db.query.users.findFirst({
-      where: eq(users.id, session.user.id),
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    // Update in database
-    await db
-      .update(users)
-      .set({ newsletterSubscribed: subscribed, updatedAt: new Date() })
-      .where(eq(users.id, user.id));
-
-    // Update in Resend audience
-    try {
-      // Get audience
-      const audRes = await fetch("https://api.resend.com/audiences", {
-        headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+    if (subscribed) {
+      await subscribeToNewsletter({
+        email: session.user.email,
+        firstName: session.user.name ?? null,
+        source: "account_toggle",
+        userId: session.user.id,
       });
-      const audData = await audRes.json();
-      const audience = audData.data?.find(
-        (a: { name: string }) => a.name === "Customers"
-      );
-
-      if (audience) {
-        await fetch(
-          `https://api.resend.com/audiences/${audience.id}/contacts`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: user.email,
-              unsubscribed: !subscribed,
-            }),
-          }
-        );
-      }
-    } catch (err) {
-      console.error("Failed to update Resend subscription:", err);
+    } else {
+      await unsubscribeFromNewsletter({
+        email: session.user.email,
+        userId: session.user.id,
+      });
     }
 
-    return NextResponse.json({ success: true, subscribed });
-  } catch (error) {
-    console.error("Newsletter toggle error:", error);
-    return NextResponse.json(
-      { error: "Something went wrong" },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: true, subscribed });
+  } catch (e) {
+    console.error("Newsletter toggle error:", e);
+    return NextResponse.json({ error: "Toggle failed" }, { status: 500 });
   }
 }
