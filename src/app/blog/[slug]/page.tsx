@@ -2,19 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import { blogPosts, getBlogPostBySlug } from "@/data/blog-posts";
+import { db } from "@/lib/db";
+import { blogPosts, images } from "@/lib/db/schema";
+import { eq, and } from "drizzle-orm";
 
-type Props = {
-  params: { slug: string };
-};
+export const revalidate = 60;
 
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
-}
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const rows = await db
+    .select()
+    .from(blogPosts)
+    .where(and(eq(blogPosts.slug, params.slug), eq(blogPosts.hidden, false)))
+    .limit(1);
 
-export function generateMetadata({ params }: Props): Metadata {
-  const post = getBlogPostBySlug(params.slug);
-  if (!post) return {};
+  const post = rows[0];
+  if (!post) return { title: "Not found — Jesper Makes" };
 
   return {
     title: `${post.title} — Jesper Makes`,
@@ -26,25 +28,38 @@ export function generateMetadata({ params }: Props): Metadata {
       title: post.title,
       description: post.description,
       type: "article",
-      publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
-      authors: [post.author],
+      publishedTime: post.publishedAt?.toISOString(),
+      modifiedTime: post.updatedAt?.toISOString(),
+      authors: [post.author ?? "Jesper"],
       ...(post.heroImage && { images: [{ url: post.heroImage, alt: post.heroImageAlt ?? post.title }] }),
     },
   };
 }
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-GB", {
+function formatDate(d: Date | null): string {
+  if (!d) return "";
+  return new Date(d).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
 }
 
-export default function BlogPostPage({ params }: Props) {
-  const post = getBlogPostBySlug(params.slug);
-  if (!post) notFound();
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const rows = await db
+    .select({ post: blogPosts, image: images })
+    .from(blogPosts)
+    .leftJoin(images, eq(blogPosts.heroImageId, images.id))
+    .where(and(eq(blogPosts.slug, params.slug), eq(blogPosts.hidden, false)))
+    .limit(1);
+
+  const row = rows[0];
+  if (!row || row.post.status !== "published") notFound();
+
+  const { post, image } = row;
+  const heroUrl = image?.url ?? post.heroImage ?? null;
+  const heroAlt = post.heroImageAlt ?? image?.description ?? post.title;
+  const tags = Array.isArray(post.tags) ? (post.tags as string[]) : [];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -53,7 +68,7 @@ export default function BlogPostPage({ params }: Props) {
     description: post.description,
     author: {
       "@type": "Person",
-      name: post.author,
+      name: post.author ?? "Jesper",
       url: "https://jespermakes.com/about",
     },
     publisher: {
@@ -61,13 +76,13 @@ export default function BlogPostPage({ params }: Props) {
       name: "Jesper Makes",
       url: "https://jespermakes.com",
     },
-    datePublished: post.publishedAt,
-    dateModified: post.updatedAt ?? post.publishedAt,
+    datePublished: post.publishedAt?.toISOString(),
+    dateModified: (post.updatedAt ?? post.publishedAt)?.toISOString(),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `https://jespermakes.com/blog/${post.slug}`,
     },
-    ...(post.heroImage && { image: post.heroImage }),
+    ...(heroUrl && { image: heroUrl }),
   };
 
   return (
@@ -87,11 +102,11 @@ export default function BlogPostPage({ params }: Props) {
         </Link>
 
         {/* Hero image (skip if featured video is present) */}
-        {post.heroImage && !post.featuredVideo && (
+        {heroUrl && !post.featuredVideo && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={post.heroImage}
-            alt={post.heroImageAlt ?? post.title}
+            src={heroUrl}
+            alt={heroAlt}
             className="w-full aspect-[16/9] object-cover rounded-2xl mb-10"
           />
         )}
@@ -99,7 +114,7 @@ export default function BlogPostPage({ params }: Props) {
         {/* Header */}
         <header className="mb-10">
           <div className="flex flex-wrap gap-2 mb-4">
-            {post.tags.map((tag) => (
+            {tags.map((tag) => (
               <span
                 key={tag}
                 className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20"
@@ -112,10 +127,10 @@ export default function BlogPostPage({ params }: Props) {
             {post.title}
           </h1>
           <div className="flex items-center gap-2 text-sm text-wood-light/50 font-sans">
-            <span>{post.author}</span>
+            <span>{post.author ?? "Jesper"}</span>
             <span>·</span>
             <span>{formatDate(post.publishedAt)}</span>
-            {post.updatedAt && post.updatedAt !== post.publishedAt && (
+            {post.updatedAt && post.publishedAt && post.updatedAt.getTime() !== post.publishedAt.getTime() && (
               <>
                 <span>·</span>
                 <span>Updated {formatDate(post.updatedAt)}</span>

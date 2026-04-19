@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { categories, getToolsByCategory } from "@/data/tools";
+import { db } from "@/lib/db";
+import { toolItems } from "@/lib/db/schema";
+import { eq, asc, sql } from "drizzle-orm";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Tools & Links — Jesper Makes",
@@ -8,7 +12,28 @@ export const metadata: Metadata = {
     "The tools, materials and products I actually use in my workshop. Honest recommendations from years of building.",
 };
 
-export default function ToolsPage() {
+type CategoryInfo = {
+  category: string;
+  categorySlug: string;
+  categoryIcon: string;
+  count: number;
+};
+
+export default async function ToolsPage() {
+  const rows = await db
+    .select({
+      category: toolItems.category,
+      categorySlug: toolItems.categorySlug,
+      categoryIcon: toolItems.categoryIcon,
+      count: sql<number>`count(*)::int`,
+    })
+    .from(toolItems)
+    .where(eq(toolItems.hidden, false))
+    .groupBy(toolItems.category, toolItems.categorySlug, toolItems.categoryIcon)
+    .orderBy(asc(toolItems.category));
+
+  const categories: CategoryInfo[] = rows;
+
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
       <div className="grid md:grid-cols-2 gap-10 md:gap-14 mb-16 items-center">
@@ -57,27 +82,21 @@ export default function ToolsPage() {
       </Link>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {categories.map((category) => {
-          const count = getToolsByCategory(category.title).length;
-          return (
-            <Link
-              key={category.slug}
-              href={`/tools/category/${category.slug}`}
-              className="group bg-white/60 rounded-xl p-8 border border-wood/5 hover:border-forest/20 transition-colors flex flex-col"
-            >
-              <span className="text-4xl mb-4">{category.icon}</span>
-              <h2 className="font-serif text-xl text-wood group-hover:text-forest transition-colors mb-2">
-                {category.title}
-              </h2>
-              <p className="text-wood-light/70 text-sm mb-4 flex-1">
-                {category.description}
-              </p>
-              <span className="text-xs font-medium text-wood-light/50">
-                {count} {count === 1 ? "item" : "items"}
-              </span>
-            </Link>
-          );
-        })}
+        {categories.map((cat) => (
+          <Link
+            key={cat.categorySlug}
+            href={`/tools/category/${cat.categorySlug}`}
+            className="group bg-white/60 rounded-xl p-8 border border-wood/5 hover:border-forest/20 transition-colors flex flex-col"
+          >
+            <span className="text-4xl mb-4">{cat.categoryIcon}</span>
+            <h2 className="font-serif text-xl text-wood group-hover:text-forest transition-colors mb-2">
+              {cat.category}
+            </h2>
+            <span className="text-xs font-medium text-wood-light/50 mt-auto">
+              {cat.count} {cat.count === 1 ? "item" : "items"}
+            </span>
+          </Link>
+        ))}
       </div>
 
       {/* CTA Section */}

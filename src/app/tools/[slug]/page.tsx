@@ -1,18 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { tools, getToolBySlug, getToolsByCategory, getCategoryByTitle } from "@/data/tools";
+import { db } from "@/lib/db";
+import { toolItems, images } from "@/lib/db/schema";
+import type { BuyLink, ColorSwatch, Spec } from "@/lib/db/schema";
+import { eq, and, asc } from "drizzle-orm";
 
-type Props = {
-  params: { slug: string };
+export const revalidate = 60;
+
+const regionFlag: Record<string, string> = {
+  us: "\u{1F1FA}\u{1F1F8}",
+  eu: "\u{1F1EA}\u{1F1FA}",
+  global: "\u{1F30D}",
 };
 
-export function generateStaticParams() {
-  return tools.map((tool) => ({ slug: tool.slug }));
-}
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const rows = await db
+    .select()
+    .from(toolItems)
+    .where(and(eq(toolItems.slug, params.slug), eq(toolItems.hidden, false)))
+    .limit(1);
 
-export function generateMetadata({ params }: Props): Metadata {
-  const tool = getToolBySlug(params.slug);
+  const tool = rows[0];
   if (!tool) return {};
 
   return {
@@ -24,20 +33,37 @@ export function generateMetadata({ params }: Props): Metadata {
   };
 }
 
-const regionFlag: Record<string, string> = {
-  us: "\u{1F1FA}\u{1F1F8}",
-  eu: "\u{1F1EA}\u{1F1FA}",
-  global: "\u{1F30D}",
-};
+export default async function ToolPage({ params }: { params: { slug: string } }) {
+  const rows = await db
+    .select({ tool: toolItems, image: images })
+    .from(toolItems)
+    .leftJoin(images, eq(toolItems.imageId, images.id))
+    .where(and(eq(toolItems.slug, params.slug), eq(toolItems.hidden, false)))
+    .limit(1);
 
-export default function ToolPage({ params }: Props) {
-  const tool = getToolBySlug(params.slug);
-  if (!tool) notFound();
+  const row = rows[0];
+  if (!row) notFound();
 
-  const relatedTools = getToolsByCategory(tool.category).filter(
-    (t) => t.slug !== tool.slug
-  );
-  const category = getCategoryByTitle(tool.category);
+  const { tool, image } = row;
+  const imgUrl = image?.url ?? tool.image ?? null;
+  const buyLinks = (Array.isArray(tool.buyLinks) ? tool.buyLinks : []) as BuyLink[];
+  const gallery = (Array.isArray(tool.gallery) ? tool.gallery : []) as string[];
+  const useCases = (Array.isArray(tool.useCases) ? tool.useCases : []) as string[];
+  const specs = (Array.isArray(tool.specs) ? tool.specs : []) as Spec[];
+  const colorGrid = (Array.isArray(tool.colorGrid) ? tool.colorGrid : []) as ColorSwatch[];
+  const youtubeVideos = (Array.isArray(tool.youtubeVideos) ? tool.youtubeVideos : []) as string[];
+  const productList = (Array.isArray(tool.productList) ? tool.productList : []) as string[];
+
+  // Related tools in same category
+  const relatedRows = await db
+    .select({ tool: toolItems })
+    .from(toolItems)
+    .where(and(eq(toolItems.category, tool.category), eq(toolItems.hidden, false)))
+    .orderBy(asc(toolItems.sortOrder), asc(toolItems.name));
+
+  const relatedTools = relatedRows
+    .map((r) => r.tool)
+    .filter((t) => t.slug !== tool.slug);
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
@@ -47,9 +73,9 @@ export default function ToolPage({ params }: Props) {
           Tools & Links
         </Link>
         <span>/</span>
-        {category ? (
+        {tool.categorySlug ? (
           <Link
-            href={`/tools/category/${category.slug}`}
+            href={`/tools/category/${tool.categorySlug}`}
             className="hover:text-forest transition-colors"
           >
             {tool.category}
@@ -65,10 +91,10 @@ export default function ToolPage({ params }: Props) {
       <div className="grid md:grid-cols-2 gap-10 md:gap-14 mb-16">
         {/* Image / Placeholder */}
         <div className="w-full aspect-[4/3] rounded-xl bg-wood/5 flex items-center justify-center">
-          {tool.image ? (
+          {imgUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={tool.image}
+              src={imgUrl}
               alt={tool.name}
               className="w-full h-full object-cover rounded-xl"
             />
@@ -83,9 +109,9 @@ export default function ToolPage({ params }: Props) {
             <span className="text-sm font-medium text-wood-light/60 bg-wood/5 px-3 py-1 rounded-full">
               {tool.categoryIcon} {tool.category}
             </span>
-            {tool.badge && (
+            {tool.ambassadorBadge && (
               <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20">
-                {tool.badge}
+                Ambassador
               </span>
             )}
           </div>
@@ -99,11 +125,11 @@ export default function ToolPage({ params }: Props) {
       </div>
 
       {/* Use Cases */}
-      {tool.useCases && tool.useCases.length > 0 && (
+      {useCases.length > 0 && (
         <section className="mb-16">
           <h2 className="font-serif text-2xl text-wood mb-6">What I use it for</h2>
           <ul className="space-y-2">
-            {tool.useCases.map((useCase) => (
+            {useCases.map((useCase) => (
               <li
                 key={useCase}
                 className="flex items-center gap-3 bg-white/60 rounded-xl p-4 border border-wood/5"
@@ -117,11 +143,11 @@ export default function ToolPage({ params }: Props) {
       )}
 
       {/* Specs */}
-      {tool.specs && tool.specs.length > 0 && (
+      {specs.length > 0 && (
         <section className="mb-16">
           <h2 className="font-serif text-2xl text-wood mb-6">Specifications</h2>
           <div className="bg-white/60 rounded-xl border border-wood/5 divide-y divide-wood/5">
-            {tool.specs.map((spec) => (
+            {specs.map((spec) => (
               <div key={spec.label} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 p-4">
                 <span className="text-sm font-medium text-wood-light/60 sm:w-48 shrink-0">
                   {spec.label}
@@ -160,11 +186,11 @@ export default function ToolPage({ params }: Props) {
       )}
 
       {/* Photo Gallery */}
-      {tool.gallery && tool.gallery.length > 0 && (
+      {gallery.length > 0 && (
         <section className="mb-16">
           <h2 className="font-serif text-2xl text-wood mb-6">Photos</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {tool.gallery.map((src, i) => (
+            {gallery.map((src, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={i}
@@ -178,11 +204,11 @@ export default function ToolPage({ params }: Props) {
       )}
 
       {/* Color Grid */}
-      {tool.colorGrid && tool.colorGrid.length > 0 && (
+      {colorGrid.length > 0 && (
         <section className="mb-16">
           <h2 className="font-serif text-2xl text-wood mb-6">Color Range</h2>
           {(() => {
-            const collections = new Set(tool.colorGrid.map((s) => s.collection).filter(Boolean));
+            const collections = new Set(colorGrid.map((s) => s.collection).filter(Boolean));
             if (collections.size > 0) {
               return Array.from(collections).map((collection) => (
                 <div key={collection} className="mb-8 last:mb-0">
@@ -190,7 +216,7 @@ export default function ToolPage({ params }: Props) {
                     {collection}
                   </h3>
                   <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-                    {tool.colorGrid!
+                    {colorGrid
                       .filter((s) => s.collection === collection)
                       .map((swatch) => (
                         <div key={swatch.name} className="flex flex-col items-center gap-1.5">
@@ -209,7 +235,7 @@ export default function ToolPage({ params }: Props) {
             }
             return (
               <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-                {tool.colorGrid.map((swatch) => (
+                {colorGrid.map((swatch) => (
                   <div key={swatch.name} className="flex flex-col items-center gap-1.5">
                     <div
                       className="w-12 h-12 sm:w-12 sm:h-12 rounded-lg border border-wood/10"
@@ -232,11 +258,11 @@ export default function ToolPage({ params }: Props) {
       )}
 
       {/* Product List */}
-      {tool.productList && tool.productList.length > 0 && (
+      {productList.length > 0 && (
         <section className="mb-16">
           <h2 className="font-serif text-2xl text-wood mb-6">Included Products</h2>
           <ul className="space-y-2">
-            {tool.productList.map((product) => (
+            {productList.map((product) => (
               <li
                 key={product}
                 className="flex items-center gap-3 bg-white/60 rounded-xl p-4 border border-wood/5"
@@ -252,10 +278,10 @@ export default function ToolPage({ params }: Props) {
       {/* Buy Links */}
       <section className="mb-16">
         <h2 className="font-serif text-2xl text-wood mb-6">Where to buy</h2>
-        {tool.buyLinks.length > 0 ? (
+        {buyLinks.length > 0 ? (
           <>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {tool.buyLinks.map((link) => (
+              {buyLinks.map((link) => (
                 <a
                   key={link.url}
                   href={link.url}
@@ -295,13 +321,13 @@ export default function ToolPage({ params }: Props) {
       </section>
 
       {/* Related Videos */}
-      {tool.youtubeVideos && tool.youtubeVideos.length > 0 && (
+      {youtubeVideos.length > 0 && (
         <section className="mb-16">
           <h2 className="font-serif text-2xl text-wood mb-6">
             Videos featuring this tool
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
-            {tool.youtubeVideos.map((videoId) => (
+            {youtubeVideos.map((videoId) => (
               <div
                 key={videoId}
                 className="aspect-video rounded-xl overflow-hidden"
@@ -336,9 +362,9 @@ export default function ToolPage({ params }: Props) {
                   <h3 className="font-serif text-lg text-wood group-hover:text-forest transition-colors">
                     {related.name}
                   </h3>
-                  {related.badge && (
+                  {related.ambassadorBadge && (
                     <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-forest/10 text-forest border border-forest/20">
-                      {related.badge}
+                      Ambassador
                     </span>
                   )}
                 </div>
