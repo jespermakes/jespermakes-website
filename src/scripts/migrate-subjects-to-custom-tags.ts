@@ -1,5 +1,4 @@
 import { db } from "../lib/db";
-import { images } from "../lib/db/schema";
 import { sql } from "drizzle-orm";
 
 async function run() {
