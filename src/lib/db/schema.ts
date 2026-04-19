@@ -247,17 +247,27 @@ export const toolItems = pgTable("tool_items", {
   id: uuid("id").primaryKey().defaultRandom(),
   slug: text("slug").notNull().unique(),
   name: text("name").notNull(),
-  category: text("category").notNull(),
-  categorySlug: text("category_slug").notNull(),
+  category: text("category").notNull().default(""),
+  categorySlug: text("category_slug").notNull().default(""),
+  categoryIcon: text("category_icon").notNull().default(""),
   description: text("description").notNull().default(""),
+  longDescription: text("long_description"),
   image: text("image"),
   imageId: uuid("image_id").references(() => images.id, { onDelete: "set null" }),
-  buyLinks: jsonb("buy_links").notNull().default({}),
+  buyLinks: jsonb("buy_links").notNull().default(sql`'[]'::jsonb`),
   ambassadorBadge: boolean("ambassador_badge").notNull().default(false),
   featured: boolean("featured").notNull().default(false),
   hidden: boolean("hidden").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
-  extra: jsonb("extra"),
+  youtubeVideos: jsonb("youtube_videos").notNull().default(sql`'[]'::jsonb`),
+  colorGrid: jsonb("color_grid").notNull().default(sql`'[]'::jsonb`),
+  productList: jsonb("product_list").notNull().default(sql`'[]'::jsonb`),
+  gallery: jsonb("gallery").notNull().default(sql`'[]'::jsonb`),
+  useCases: jsonb("use_cases").notNull().default(sql`'[]'::jsonb`),
+  specs: jsonb("specs").notNull().default(sql`'[]'::jsonb`),
+  jesperNote: text("jesper_note"),
+  learnMoreUrl: text("learn_more_url"),
+  extra: jsonb("extra").notNull().default(sql`'{}'::jsonb`),
   createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
 });
@@ -266,3 +276,21 @@ export type BlogPost = typeof blogPosts.$inferSelect;
 export type NewBlogPost = typeof blogPosts.$inferInsert;
 export type ToolItem = typeof toolItems.$inferSelect;
 export type NewToolItem = typeof toolItems.$inferInsert;
+
+export type BuyLink = {
+  label: string;
+  url: string;
+  region?: "us" | "eu" | "global";
+  badge?: string;
+};
+
+export type ColorSwatch = {
+  name: string;
+  hex: string;
+  collection?: string;
+};
+
+export type Spec = {
+  label: string;
+  value: string;
+};

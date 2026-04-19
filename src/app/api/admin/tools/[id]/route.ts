@@ -27,16 +27,39 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     }
 
     const updates: Partial<typeof toolItems.$inferInsert> = { updatedAt: new Date() };
+
     if (body.slug !== undefined) updates.slug = body.slug;
     if (body.name !== undefined) updates.name = body.name;
     if (body.category !== undefined) updates.category = body.category;
     if (body.categorySlug !== undefined) updates.categorySlug = body.categorySlug;
+    if (body.categoryIcon !== undefined) updates.categoryIcon = body.categoryIcon;
     if (body.description !== undefined) updates.description = body.description;
+    if (body.longDescription !== undefined) updates.longDescription = body.longDescription;
     if (body.image !== undefined) updates.image = body.image;
     if (body.imageId !== undefined) updates.imageId = body.imageId;
     if (body.buyLinks !== undefined) {
-      updates.buyLinks = typeof body.buyLinks === "object" && body.buyLinks !== null ? body.buyLinks : {};
+      updates.buyLinks = Array.isArray(body.buyLinks) ? body.buyLinks : [];
     }
+    if (body.youtubeVideos !== undefined) {
+      updates.youtubeVideos = Array.isArray(body.youtubeVideos) ? body.youtubeVideos : [];
+    }
+    if (body.colorGrid !== undefined) {
+      updates.colorGrid = Array.isArray(body.colorGrid) ? body.colorGrid : [];
+    }
+    if (body.productList !== undefined) {
+      updates.productList = Array.isArray(body.productList) ? body.productList : [];
+    }
+    if (body.gallery !== undefined) {
+      updates.gallery = Array.isArray(body.gallery) ? body.gallery : [];
+    }
+    if (body.useCases !== undefined) {
+      updates.useCases = Array.isArray(body.useCases) ? body.useCases : [];
+    }
+    if (body.specs !== undefined) {
+      updates.specs = Array.isArray(body.specs) ? body.specs : [];
+    }
+    if (body.jesperNote !== undefined) updates.jesperNote = body.jesperNote;
+    if (body.learnMoreUrl !== undefined) updates.learnMoreUrl = body.learnMoreUrl;
     if (body.ambassadorBadge !== undefined) updates.ambassadorBadge = !!body.ambassadorBadge;
     if (body.featured !== undefined) updates.featured = !!body.featured;
     if (body.sortOrder !== undefined) updates.sortOrder = Number(body.sortOrder) || 0;
