@@ -121,6 +121,22 @@ export default async function AdminDashboard() {
           </div>
           <div className="text-wood font-semibold">Events, session analysis →</div>
         </Link>
+        <a
+          href="https://vercel.com/floki-dgx-spark/jespermakes-website/analytics?period=30d"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block bg-white/50 border border-wood/[0.06] rounded-2xl p-5 hover:border-wood/[0.15] transition-colors no-underline"
+        >
+          <div className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-2">
+            Traffic
+          </div>
+          <div className="font-serif text-lg text-wood">
+            View visitors, sources, pages →
+          </div>
+          <div className="text-xs text-wood-light/50 mt-1">
+            Opens in Vercel Analytics
+          </div>
+        </a>
       </div>
     </div>
   );
