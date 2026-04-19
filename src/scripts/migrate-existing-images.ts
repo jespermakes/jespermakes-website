@@ -1,4 +1,3 @@
-import "dotenv/config";
 import { readdirSync, statSync, readFileSync } from "fs";
 import { join, relative, extname } from "path";
 import imageSize from "image-size";
