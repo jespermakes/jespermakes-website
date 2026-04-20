@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
-import { purchases, users, blogPosts, toolItems, newsletterSubscribers } from "@/lib/db/schema";
-import { desc, eq, sql } from "drizzle-orm";
+import { purchases, users, blogPosts, toolItems, newsletterSubscribers, videos } from "@/lib/db/schema";
+import { desc, eq, sql, and, inArray } from "drizzle-orm";
+import { LONGFORM_ACTIVE_STAGES, STAGE_LABELS } from "@/lib/video-stages";
 import { StatCard } from "@/components/admin/stat-card";
 
 export const dynamic = "force-dynamic";
@@ -25,6 +26,31 @@ export default async function AdminDashboard() {
     .select({ count: sql<number>`count(*)::int` })
     .from(toolItems)
     .where(eq(toolItems.hidden, false));
+
+  const activeLongform = await db
+    .select({ id: videos.id, title: videos.title, stage: videos.stage, sponsor: videos.sponsor })
+    .from(videos)
+    .where(
+      and(
+        eq(videos.kind, "longform"),
+        eq(videos.hidden, false),
+        inArray(videos.stage, LONGFORM_ACTIVE_STAGES as unknown as string[])
+      )
+    )
+    .orderBy(desc(videos.updatedAt))
+    .limit(4);
+
+  const [readyShortsRow] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(videos)
+    .where(
+      and(
+        eq(videos.kind, "shorts"),
+        eq(videos.stage, "recorded"),
+        eq(videos.hidden, false)
+      )
+    );
+  const readyShortsCount = readyShortsRow?.count ?? 0;
 
   const recentOrders = await db
     .select({
@@ -103,6 +129,33 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a
+          href="/admin/videos/longform"
+          className="block bg-white/50 border border-wood/[0.06] rounded-2xl p-5 hover:border-wood/[0.15] no-underline"
+        >
+          <div className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-3">
+            In production
+          </div>
+          {activeLongform.length === 0 ? (
+            <div className="text-sm text-wood-light/50">No videos in production right now.</div>
+          ) : (
+            <div className="space-y-2 mb-3">
+              {activeLongform.slice(0, 3).map((v) => (
+                <div key={v.id} className="flex items-baseline justify-between gap-3">
+                  <div className="font-semibold text-wood text-sm truncate">{v.title}</div>
+                  <div className="text-[11px] text-wood-light/50 flex-shrink-0">
+                    {STAGE_LABELS[v.stage] ?? v.stage}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {readyShortsCount > 0 && (
+            <div className="text-xs text-forest mt-2 pt-2 border-t border-wood/[0.06]">
+              {readyShortsCount} short{readyShortsCount === 1 ? "" : "s"} ready to publish &rarr;
+            </div>
+          )}
+        </a>
         <Link
           href="/admin/images"
           className="bg-white/55 border border-wood/[0.07] rounded-2xl p-5 hover:border-wood/[0.15]"

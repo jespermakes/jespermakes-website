@@ -11,6 +11,7 @@ import {
   date,
   boolean,
   jsonb,
+  index,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -310,3 +311,49 @@ export type Spec = {
   label: string;
   value: string;
 };
+
+export const videos = pgTable("videos", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  kind: text("kind").notNull(),  // 'longform' | 'shorts'
+  title: text("title").notNull(),
+  stage: text("stage").notNull(),
+  sponsor: text("sponsor"),
+  targetPublishDate: date("target_publish_date"),
+  publishedAt: timestamp("published_at", { withTimezone: false }),
+  youtubeId: text("youtube_id"),
+  scriptNotes: text("script_notes"),
+  sponsorContact: text("sponsor_contact"),
+  notes: text("notes"),
+  hidden: boolean("hidden").notNull().default(false),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: false }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: false }).notNull().defaultNow(),
+}, (table) => ({
+  kindStageIdx: index("videos_kind_stage_idx").on(table.kind, table.stage),
+  updatedAtIdx: index("videos_updated_at_idx").on(table.updatedAt),
+}));
+
+export const videoTasks = pgTable("video_tasks", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  videoId: uuid("video_id").notNull().references(() => videos.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  done: boolean("done").notNull().default(false),
+  assignee: text("assignee"),  // 'jesper' | 'bearatski' | NULL
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: false }).notNull().defaultNow(),
+  completedAt: timestamp("completed_at", { withTimezone: false }),
+  updatedAt: timestamp("updated_at", { withTimezone: false }).notNull().defaultNow(),
+}, (table) => ({
+  videoIdIdx: index("video_tasks_video_id_idx").on(table.videoId),
+}));
+
+export const videoTools = pgTable("video_tools", {
+  videoId: uuid("video_id").notNull().references(() => videos.id, { onDelete: "cascade" }),
+  toolId: uuid("tool_id").notNull().references(() => toolItems.id, { onDelete: "cascade" }),
+  sortOrder: integer("sort_order").notNull().default(0),
+}, (table) => ({
+  pk: primaryKey({ columns: [table.videoId, table.toolId] }),
+}));
+
+export type Video = typeof videos.$inferSelect;
+export type VideoTask = typeof videoTasks.$inferSelect;
