@@ -11,6 +11,16 @@ const nextConfig = {
         protocol: "https",
         hostname: "i.ytimg.com",
       },
+      {
+        protocol: "https",
+        hostname: "fgrwwf1ctwchpvxd.public.blob.vercel-storage.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+        pathname: "/**",
+      },
     ],
   },
   async redirects() {
