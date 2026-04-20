@@ -3,6 +3,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { toolItems } from "@/lib/db/schema";
 import { eq, asc, sql } from "drizzle-orm";
+import { SmartImage } from "@/components/smart-image";
 
 export const revalidate = 60;
 
@@ -57,10 +58,12 @@ export default async function ToolsPage() {
             from brands I officially work with.
           </p>
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <SmartImage
           src="/images/jesper-workshop-tools.jpg"
           alt="Jesper in the workshop"
+          aspectRatio="3/2"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority
           className="w-full rounded-xl"
         />
       </div>

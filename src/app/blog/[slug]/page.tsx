@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { db } from "@/lib/db";
 import { blogPosts, images } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
+import { SmartImage } from "@/components/smart-image";
 
 export const revalidate = 60;
 
@@ -103,12 +104,26 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
         {/* Hero image (skip if featured video is present) */}
         {heroUrl && !post.featuredVideo && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={heroUrl}
-            alt={heroAlt}
-            className="w-full aspect-[16/9] object-cover rounded-2xl mb-10"
-          />
+          image?.width && image?.height ? (
+            <SmartImage
+              src={heroUrl}
+              alt={heroAlt}
+              width={image.width}
+              height={image.height}
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+              className="w-full aspect-[16/9] object-cover rounded-2xl mb-10"
+            />
+          ) : (
+            <SmartImage
+              src={heroUrl}
+              alt={heroAlt}
+              aspectRatio="16/9"
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+              className="w-full rounded-2xl mb-10"
+            />
+          )
         )}
 
         {/* Header */}

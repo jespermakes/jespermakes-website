@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Image } from "@/lib/db/schema";
+import { SmartImage } from "@/components/smart-image";
 
 interface ImagePickerProps {
   open: boolean;
@@ -136,13 +137,24 @@ export function ImagePicker({ open, onClose, onPick, initialQuery = "" }: ImageP
                 className="group relative aspect-square rounded-xl overflow-hidden border-2 border-transparent hover:border-forest transition-all text-left"
                 title={img.description ?? img.filename}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={img.url}
-                  alt={img.description ?? img.filename}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
+                {img.width && img.height ? (
+                  <SmartImage
+                    src={img.url}
+                    alt={img.description ?? img.filename}
+                    width={img.width}
+                    height={img.height}
+                    sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, 20vw"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <SmartImage
+                    src={img.url}
+                    alt={img.description ?? img.filename}
+                    aspectRatio="1"
+                    sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, 20vw"
+                    className="w-full h-full"
+                  />
+                )}
                 {!img.reviewed && (
                   <span
                     className="absolute top-2 right-2 w-2.5 h-2.5 bg-forest rounded-full border-2 border-white"

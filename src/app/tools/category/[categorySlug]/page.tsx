@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { toolItems, images } from "@/lib/db/schema";
 import { eq, and, asc } from "drizzle-orm";
+import { SmartImage } from "@/components/smart-image";
 
 export const revalidate = 60;
 
@@ -70,12 +71,24 @@ export default async function CategoryPage({ params }: { params: { categorySlug:
             >
               <div className="w-full aspect-[4/3] rounded-lg bg-wood/5 flex items-center justify-center mb-4 overflow-hidden">
                 {imgUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={imgUrl}
-                    alt={tool.name}
-                    className="w-full h-full object-cover"
-                  />
+                  image?.width && image?.height ? (
+                    <SmartImage
+                      src={imgUrl}
+                      alt={tool.name}
+                      width={image.width}
+                      height={image.height}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <SmartImage
+                      src={imgUrl}
+                      alt={tool.name}
+                      aspectRatio="4/3"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="w-full h-full"
+                    />
+                  )
                 ) : (
                   <span className="text-3xl opacity-40">
                     {tool.categoryIcon}

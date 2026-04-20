@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Image } from "@/lib/db/schema";
+import { SmartImage } from "@/components/smart-image";
 import { IMAGE_TAG_VOCABULARY } from "@/data/image-tag-vocabulary";
 
 type Vocabulary = typeof IMAGE_TAG_VOCABULARY;
@@ -323,8 +324,24 @@ function ImageCard({ image, selected, onClick }: { image: Image; selected: boole
         selected ? "border-forest" : "border-transparent hover:border-wood/20"
       }`}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={image.description ?? image.filename} className="w-full h-full object-cover" loading="lazy" />
+      {image.width && image.height ? (
+        <SmartImage
+          src={src}
+          alt={image.description ?? image.filename}
+          width={image.width}
+          height={image.height}
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <SmartImage
+          src={src}
+          alt={image.description ?? image.filename}
+          aspectRatio="1"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+          className="w-full h-full"
+        />
+      )}
       {!image.reviewed && (
         <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-forest rounded-full border-2 border-white" title="Unreviewed" />
       )}
@@ -445,8 +462,24 @@ function EditorPanel({
       <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-5">
         <div>
           <div className="aspect-square rounded-xl overflow-hidden bg-wood/5 mb-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image.url} alt="" className="w-full h-full object-cover" />
+            {image.width && image.height ? (
+              <SmartImage
+                src={image.url}
+                alt={image.description ?? image.filename}
+                width={image.width}
+                height={image.height}
+                sizes="200px"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <SmartImage
+                src={image.url}
+                alt={image.description ?? image.filename}
+                aspectRatio="1"
+                sizes="200px"
+                className="w-full h-full"
+              />
+            )}
           </div>
           <div className="text-[11px] text-wood-light/60 leading-relaxed break-all">
             {image.width && image.height && `${image.width} × ${image.height}`}

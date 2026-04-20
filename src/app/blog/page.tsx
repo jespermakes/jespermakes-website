@@ -3,6 +3,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { blogPosts, images } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { SmartImage } from "@/components/smart-image";
 
 export const revalidate = 60;
 
@@ -58,12 +59,24 @@ export default async function BlogPage() {
               className="group bg-white/60 rounded-2xl border border-wood/5 hover:border-forest/20 transition-all overflow-hidden"
             >
               {heroUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={heroUrl}
-                  alt={heroAlt}
-                  className="w-full aspect-[16/9] object-cover"
-                />
+                image?.width && image?.height ? (
+                  <SmartImage
+                    src={heroUrl}
+                    alt={heroAlt}
+                    width={image.width}
+                    height={image.height}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="w-full aspect-[16/9] object-cover"
+                  />
+                ) : (
+                  <SmartImage
+                    src={heroUrl}
+                    alt={heroAlt}
+                    aspectRatio="16/9"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="w-full"
+                  />
+                )
               ) : (
                 <div className="w-full aspect-[16/9] bg-wood/5 flex items-center justify-center">
                   <span className="text-4xl opacity-20">🪵</span>
