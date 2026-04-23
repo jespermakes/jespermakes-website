@@ -6,6 +6,7 @@ import { toolItems, images } from "@/lib/db/schema";
 import type { BuyLink, ColorSwatch, Spec } from "@/lib/db/schema";
 import { eq, and, asc } from "drizzle-orm";
 import { SmartImage } from "@/components/smart-image";
+import ToolGallery from "@/components/tool-gallery";
 
 export const revalidate = 60;
 
@@ -90,33 +91,26 @@ export default async function ToolPage({ params }: { params: { slug: string } })
 
       {/* Hero */}
       <div className="grid md:grid-cols-2 gap-10 md:gap-14 mb-16">
-        {/* Image / Placeholder */}
-        <div className="w-full aspect-[4/3] rounded-xl bg-wood/5 flex items-center justify-center overflow-hidden">
-          {imgUrl ? (
-            image?.width && image?.height ? (
-              <SmartImage
-                src={imgUrl}
-                alt={tool.name}
-                width={image.width}
-                height={image.height}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-                className="w-full h-full object-cover rounded-xl"
-              />
-            ) : (
-              <SmartImage
-                src={imgUrl}
-                alt={tool.name}
-                aspectRatio="4/3"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-                className="w-full h-full rounded-xl"
-              />
-            )
-          ) : (
-            <span className="text-5xl opacity-30">{tool.categoryIcon}</span>
-          )}
-        </div>
+        {/* Image Gallery */}
+        <ToolGallery
+          images={[
+            ...(imgUrl ? [{
+              id: "hero",
+              url: imgUrl,
+              alt: tool.name,
+              width: image?.width ?? null,
+              height: image?.height ?? null,
+            }] : []),
+            ...gallery.map((src, i) => ({
+              id: `gallery-${i}`,
+              url: src,
+              alt: `${tool.name} photo ${i + 1}`,
+              width: null,
+              height: null,
+            })),
+          ]}
+          altPrefix={tool.name}
+        />
 
         {/* Details */}
         <div className="flex flex-col justify-center">
@@ -197,25 +191,6 @@ export default async function ToolPage({ params }: { params: { slug: string } })
           >
             Learn more about this product &rarr;
           </Link>
-        </section>
-      )}
-
-      {/* Photo Gallery */}
-      {gallery.length > 0 && (
-        <section className="mb-16">
-          <h2 className="font-serif text-2xl text-wood mb-6">Photos</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {gallery.map((src, i) => (
-              <SmartImage
-                key={i}
-                src={src}
-                alt={`${tool.name} photo ${i + 1}`}
-                aspectRatio="4/3"
-                sizes="(max-width: 768px) 50vw, 25vw"
-                className="w-full rounded-xl"
-              />
-            ))}
-          </div>
         </section>
       )}
 
