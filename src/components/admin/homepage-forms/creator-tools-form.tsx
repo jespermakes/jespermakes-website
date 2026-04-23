@@ -2,6 +2,7 @@
 import { useState } from "react";
 import type { CreatorToolsData } from "@/lib/homepage/types";
 import { CREATOR_TOOL_REGISTRY, CREATOR_TOOL_SLUGS } from "@/lib/creator-tools";
+import ThemePicker from "./theme-picker";
 import { Field, TextInput, TextArea, SaveBar } from "./_fields";
 
 export default function CreatorToolsForm({ initial, onSave, saving }: { initial: CreatorToolsData; onSave: (d: CreatorToolsData) => void; saving: boolean }) {
@@ -52,6 +53,7 @@ export default function CreatorToolsForm({ initial, onSave, saving }: { initial:
           })}
         </div>
       </Field>
+      <ThemePicker value={d.theme} onChange={(t) => setD({ ...d, theme: t })} />
       <SaveBar saving={saving} onSave={() => onSave(d)} />
     </div>
   );

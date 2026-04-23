@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { FeedData, ModuleKind } from "@/lib/homepage/types";
+import ThemePicker from "./theme-picker";
 import { Field, TextInput, TextArea, SaveBar } from "./_fields";
 
 export default function FeedForm({ kind, initial, onSave, saving }: { kind: ModuleKind; initial: FeedData; onSave: (d: FeedData) => void; saving: boolean }) {
@@ -58,6 +59,7 @@ export default function FeedForm({ kind, initial, onSave, saving }: { kind: Modu
         <Field label="Link label"><TextInput value={d.ctaLabel ?? ""} onChange={(e) => setD({ ...d, ctaLabel: e.target.value })} /></Field>
         <Field label="Link URL"><TextInput value={d.ctaUrl ?? ""} onChange={(e) => setD({ ...d, ctaUrl: e.target.value })} /></Field>
       </div>
+      <ThemePicker value={d.theme} onChange={(t) => setD({ ...d, theme: t })} />
       <SaveBar saving={saving} onSave={() => onSave(d)} />
     </div>
   );

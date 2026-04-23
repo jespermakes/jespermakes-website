@@ -1,20 +1,22 @@
 import { getYoutubeVideosForFeed } from "@/lib/homepage/fetch";
 import type { YoutubeData } from "@/lib/homepage/types";
+import { resolveTheme } from "@/lib/homepage/themes";
 
 export default async function YoutubeModule({ data }: { data: YoutubeData }) {
   const videos = await getYoutubeVideosForFeed(data.mode, data.count, data.ids);
+  const theme = resolveTheme("youtube", data.theme);
   if (videos.length === 0) return null;
 
   return (
-    <section className="bg-wood/[0.03]">
+    <section className={theme.bg}>
       <div className="mx-auto max-w-5xl px-6 py-16 md:py-20">
         <div className="flex items-baseline justify-between gap-6">
           <div>
-            {data.caps && <div className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase">{data.caps}</div>}
-            <h2 className="mt-2 font-serif text-3xl md:text-4xl text-wood">{data.title}</h2>
+            {data.caps && <div className={`text-[10px] font-bold tracking-[0.15em] uppercase ${theme.caps}`}>{data.caps}</div>}
+            <h2 className={`mt-2 font-serif text-3xl md:text-4xl ${theme.heading}`}>{data.title}</h2>
           </div>
           {data.ctaLabel && data.ctaUrl && (
-            <a href={data.ctaUrl} className="text-forest text-sm font-semibold hover:text-forest/80">
+            <a href={data.ctaUrl} className={`text-sm font-semibold ${theme.accent}`}>
               {data.ctaLabel}
             </a>
           )}
@@ -37,9 +39,9 @@ export default async function YoutubeModule({ data }: { data: YoutubeData }) {
                   </div>
                 )}
               </div>
-              <h3 className="mt-3 font-sans text-sm font-medium text-wood leading-snug">{v.title}</h3>
+              <h3 className={`mt-3 font-sans text-sm font-medium leading-snug ${theme.heading}`}>{v.title}</h3>
               {(v.viewCount || v.publishedAt) && (
-                <div className="mt-1 text-xs text-wood-light/60">
+                <div className={`mt-1 text-xs ${theme.muted}`}>
                   {v.viewCount ? `${formatViewCount(v.viewCount)} views` : ""}
                   {v.viewCount && v.publishedAt ? " \u00B7 " : ""}
                   {v.publishedAt ? new Date(v.publishedAt).toLocaleDateString("en-GB", { month: "short", year: "numeric" }) : ""}

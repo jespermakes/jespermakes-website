@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { NewsletterData } from "@/lib/homepage/types";
+import ThemePicker from "./theme-picker";
 import { Field, TextInput, TextArea, SaveBar } from "./_fields";
 
 export default function AdminNewsletterForm({ initial, onSave, saving }: { initial: NewsletterData; onSave: (d: NewsletterData) => void; saving: boolean }) {
@@ -21,6 +22,7 @@ export default function AdminNewsletterForm({ initial, onSave, saving }: { initi
           <span className="text-sm text-wood-light">Show the live subscriber count below the form.</span>
         </label>
       </Field>
+      <ThemePicker value={d.theme} onChange={(t) => setD({ ...d, theme: t })} />
       <SaveBar saving={saving} onSave={() => onSave(d)} />
     </div>
   );

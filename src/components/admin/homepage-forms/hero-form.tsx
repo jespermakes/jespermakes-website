@@ -1,10 +1,13 @@
 "use client";
 import { useState } from "react";
 import type { HeroData } from "@/lib/homepage/types";
+import { ImagePicker } from "@/components/admin/image-picker";
+import ThemePicker from "./theme-picker";
 import { Field, TextInput, TextArea, SaveBar } from "./_fields";
 
 export default function HeroForm({ initial, onSave, saving }: { initial: HeroData; onSave: (d: HeroData) => void; saving: boolean }) {
   const [d, setD] = useState<HeroData>(initial);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-4">
@@ -21,8 +24,14 @@ export default function HeroForm({ initial, onSave, saving }: { initial: HeroDat
         <Field label="Secondary button label"><TextInput value={d.secondaryCta?.label ?? ""} onChange={(e) => setD({ ...d, secondaryCta: { label: e.target.value, url: d.secondaryCta?.url ?? "" } })} /></Field>
         <Field label="Secondary button URL"><TextInput value={d.secondaryCta?.url ?? ""} onChange={(e) => setD({ ...d, secondaryCta: { label: d.secondaryCta?.label ?? "", url: e.target.value } })} /></Field>
       </div>
-      <Field label="Hero image ID" help="Paste the image ID from the image library.">
-        <TextInput value={d.mediaImageId ?? ""} onChange={(e) => setD({ ...d, mediaImageId: e.target.value })} />
+      <Field label="Hero image">
+        <div className="flex items-center gap-3">
+          <button type="button" onClick={() => setPickerOpen(true)} className="rounded-md border border-wood/15 bg-white px-3 py-2 text-sm hover:bg-wood/5">
+            {d.mediaImageId ? "Change image" : "Pick image"}
+          </button>
+          {d.mediaImageId && <span className="text-xs text-wood-light/60 font-mono">{d.mediaImageId}</span>}
+        </div>
+        <ImagePicker open={pickerOpen} onClose={() => setPickerOpen(false)} onPick={(img) => { setD({ ...d, mediaImageId: img.id }); setPickerOpen(false); }} />
       </Field>
       <Field label="Overlay text (optional)" help="Text shown on top of the hero image">
         <TextInput value={d.mediaOverlayText ?? ""} onChange={(e) => setD({ ...d, mediaOverlayText: e.target.value })} />
@@ -30,6 +39,7 @@ export default function HeroForm({ initial, onSave, saving }: { initial: HeroDat
       <Field label="YouTube video ID (optional)" help="If set, the hero image becomes clickable and opens this video.">
         <TextInput value={d.mediaYoutubeId ?? ""} onChange={(e) => setD({ ...d, mediaYoutubeId: e.target.value })} />
       </Field>
+      <ThemePicker value={d.theme} onChange={(t) => setD({ ...d, theme: t })} />
       <SaveBar saving={saving} onSave={() => onSave(d)} />
     </div>
   );

@@ -1,3 +1,5 @@
+import type { ModuleTheme } from "./themes";
+
 export type ModuleKind =
   | "hero"
   | "about"
@@ -41,6 +43,7 @@ export interface HeroData {
   mediaImageId?: string;
   mediaOverlayText?: string;
   mediaYoutubeId?: string;
+  theme?: ModuleTheme;
 }
 
 export interface AboutData {
@@ -50,6 +53,7 @@ export interface AboutData {
   ctaLabel?: string;
   ctaUrl?: string;
   direction?: "image-left" | "image-right";
+  theme?: ModuleTheme;
 }
 
 export interface CreatorToolsData {
@@ -57,6 +61,7 @@ export interface CreatorToolsData {
   title: string;
   subtitle?: string;
   toolSlugs: string[];
+  theme?: ModuleTheme;
 }
 
 export interface FeedData {
@@ -68,6 +73,7 @@ export interface FeedData {
   ids?: string[];
   ctaLabel?: string;
   ctaUrl?: string;
+  theme?: ModuleTheme;
 }
 
 export type BlogData = FeedData;
@@ -81,6 +87,7 @@ export interface NewsletterData {
   buttonLabel: string;
   placeholder: string;
   showSubscriberCount: boolean;
+  theme?: ModuleTheme;
 }
 
 export type ModuleData =

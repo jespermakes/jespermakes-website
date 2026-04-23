@@ -1,20 +1,22 @@
 import { getShopProductsForFeed } from "@/lib/homepage/fetch";
 import type { ShopData } from "@/lib/homepage/types";
+import { resolveTheme } from "@/lib/homepage/themes";
 
 export default function ShopModule({ data }: { data: ShopData }) {
   const products = getShopProductsForFeed(data.mode, data.count, data.ids);
+  const theme = resolveTheme("shop", data.theme);
   if (products.length === 0) return null;
 
   return (
-    <section>
+    <section className={theme.bg}>
       <div className="mx-auto max-w-5xl px-6 py-16 md:py-20">
         <div className="flex items-baseline justify-between gap-6">
           <div>
-            {data.caps && <div className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase">{data.caps}</div>}
-            <h2 className="mt-2 font-serif text-2xl md:text-3xl text-wood max-w-xl">{data.title}</h2>
+            {data.caps && <div className={`text-[10px] font-bold tracking-[0.15em] uppercase ${theme.caps}`}>{data.caps}</div>}
+            <h2 className={`mt-2 font-serif text-2xl md:text-3xl max-w-xl ${theme.heading}`}>{data.title}</h2>
           </div>
           {data.ctaLabel && data.ctaUrl && (
-            <a href={data.ctaUrl} className="text-forest text-sm font-semibold hover:text-forest/80">
+            <a href={data.ctaUrl} className={`text-sm font-semibold ${theme.accent}`}>
               {data.ctaLabel}
             </a>
           )}
