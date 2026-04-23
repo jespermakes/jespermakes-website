@@ -357,3 +357,15 @@ export const videoTools = pgTable("video_tools", {
 
 export type Video = typeof videos.$inferSelect;
 export type VideoTask = typeof videoTasks.$inferSelect;
+
+export const pageSections = pgTable("page_sections", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  pageSlug: text("page_slug").notNull().default("home"),
+  position: integer("position").notNull().default(0),
+  kind: text("kind").notNull(),
+  visible: boolean("visible").notNull().default(true),
+  hidden: boolean("hidden").notNull().default(false),
+  data: jsonb("data").notNull().default({}),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
