@@ -26,7 +26,7 @@ export default async function AboutModule({ data }: { data: AboutData }) {
           <div>
             <h2 className={`font-serif text-3xl md:text-4xl leading-[1.1] ${theme.heading}`}>{data.title}</h2>
             <div className={`mt-5 leading-relaxed space-y-3 ${theme.text}`}>
-              {data.body.split("\n").filter(Boolean).map((p, i) => <p key={i}>{p}</p>)}
+              {data.body.split("\n").filter(Boolean).map((p, i) => <p key={i} className={theme.text}>{p}</p>)}
             </div>
             {data.ctaLabel && data.ctaUrl && (
               <a href={data.ctaUrl} className={`mt-6 inline-block font-medium ${theme.accent}`}>
