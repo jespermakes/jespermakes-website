@@ -16,7 +16,7 @@ interface Props {
   altPrefix: string;
 }
 
-export default function ToolGallery({ images, altPrefix }: Props) {
+export default function ImageGallery({ images, altPrefix }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);

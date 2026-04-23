@@ -1,29 +1,44 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import ImageGallery from "@/components/image-gallery";
+import type { GalleryImage } from "@/components/image-gallery";
 import { BuyButton } from "./buy-button";
 
-const images = [
+const images: GalleryImage[] = [
   {
-    src: "/images/products/cheat-sheets-hero.jpg",
+    id: "0",
+    url: "/images/products/cheat-sheets-hero.jpg",
     alt: "Jesper with his Cheat Sheets in the workshop",
+    width: null,
+    height: null,
   },
   {
-    src: "/images/products/wall-charts-page-1.jpg",
+    id: "1",
+    url: "/images/products/wall-charts-page-1.jpg",
     alt: "Page 1: Wood Species Reference",
+    width: null,
+    height: null,
   },
   {
-    src: "/images/products/wall-charts-page-2.jpg",
+    id: "2",
+    url: "/images/products/wall-charts-page-2.jpg",
     alt: "Page 2: Sandpaper & Finishing Guide",
+    width: null,
+    height: null,
   },
   {
-    src: "/images/products/wall-charts-page-3.jpg",
+    id: "3",
+    url: "/images/products/wall-charts-page-3.jpg",
     alt: "Page 3: Joinery Quick Reference",
+    width: null,
+    height: null,
   },
   {
-    src: "/images/products/wall-charts-page-4.jpg",
+    id: "4",
+    url: "/images/products/wall-charts-page-4.jpg",
     alt: "Page 4: Screws, Nails & Fasteners",
+    width: null,
+    height: null,
   },
 ];
 
@@ -63,43 +78,11 @@ const charts = [
 ];
 
 export default function WorkshopWallCharts() {
-  const [selectedImage, setSelectedImage] = useState(0);
-
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
       <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
         {/* Image gallery */}
-        <div>
-          <div className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-2xl shadow-wood/10 bg-wood">
-            <Image
-              src={images[selectedImage].src}
-              alt={images[selectedImage].alt}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="grid grid-cols-5 gap-3 mt-4">
-            {images.map((img, i) => (
-              <button
-                key={img.src}
-                onClick={() => setSelectedImage(i)}
-                className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors bg-wood/10 ${
-                  i === selectedImage
-                    ? "border-forest"
-                    : "border-transparent hover:border-forest/40"
-                }`}
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  className="object-cover"
-                />
-              </button>
-            ))}
-          </div>
-        </div>
+        <ImageGallery images={images} altPrefix="Workshop Wall Charts" />
 
         {/* Details */}
         <div>

@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { toolItems, images } from "@/lib/db/schema";
 import type { BuyLink, ColorSwatch, Spec } from "@/lib/db/schema";
 import { eq, and, asc } from "drizzle-orm";
-import ToolGallery from "@/components/tool-gallery";
+import ImageGallery from "@/components/image-gallery";
 
 export const revalidate = 60;
 
@@ -91,7 +91,7 @@ export default async function ToolPage({ params }: { params: { slug: string } })
       {/* Hero */}
       <div className="grid md:grid-cols-2 gap-10 md:gap-14 mb-16">
         {/* Image Gallery */}
-        <ToolGallery
+        <ImageGallery
           images={[
             ...(imgUrl ? [{
               id: "hero",
