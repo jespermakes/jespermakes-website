@@ -5,7 +5,6 @@ import { db } from "@/lib/db";
 import { toolItems, images } from "@/lib/db/schema";
 import type { BuyLink, ColorSwatch, Spec } from "@/lib/db/schema";
 import { eq, and, asc } from "drizzle-orm";
-import { SmartImage } from "@/components/smart-image";
 import ToolGallery from "@/components/tool-gallery";
 
 export const revalidate = 60;
