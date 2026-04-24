@@ -369,3 +369,64 @@ export const pageSections = pgTable("page_sections", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+
+// ============================================================================
+// MCP (Model Context Protocol) - OAuth 2.1 server + activity logging
+// ============================================================================
+
+export const mcpOauthClients = pgTable("mcp_oauth_clients", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  clientId: text("client_id").notNull().unique(),
+  clientName: text("client_name").notNull(),
+  redirectUris: jsonb("redirect_uris").notNull().$type<string[]>(),
+  grantTypes: jsonb("grant_types").notNull().$type<string[]>().default(["authorization_code", "refresh_token"]),
+  tokenEndpointAuthMethod: text("token_endpoint_auth_method").notNull().default("none"),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  lastUsedAt: timestamp("last_used_at", { mode: "date" }),
+  revoked: boolean("revoked").notNull().default(false),
+});
+
+export const mcpAuthorizationCodes = pgTable("mcp_authorization_codes", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  code: text("code").notNull().unique(),
+  clientId: text("client_id").notNull(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  redirectUri: text("redirect_uri").notNull(),
+  codeChallenge: text("code_challenge").notNull(),
+  codeChallengeMethod: text("code_challenge_method").notNull().default("S256"),
+  scope: text("scope").notNull().default("mcp"),
+  expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
+  consumed: boolean("consumed").notNull().default(false),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+});
+
+export const mcpTokens = pgTable("mcp_tokens", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  tokenHash: text("token_hash").notNull().unique(),
+  tokenType: text("token_type").notNull(),
+  clientId: text("client_id").notNull(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  scope: text("scope").notNull().default("mcp"),
+  parentTokenId: uuid("parent_token_id"),
+  expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
+  revokedAt: timestamp("revoked_at", { mode: "date" }),
+  lastUsedAt: timestamp("last_used_at", { mode: "date" }),
+  verboseLogging: boolean("verbose_logging").notNull().default(true),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+});
+
+export const mcpActivity = pgTable("mcp_activity", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  tokenId: uuid("token_id").references(() => mcpTokens.id, { onDelete: "set null" }),
+  clientId: text("client_id"),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+  method: text("method"),
+  toolName: text("tool_name"),
+  durationMs: integer("duration_ms"),
+  success: boolean("success").notNull(),
+  errorMessage: text("error_message"),
+  requestBody: jsonb("request_body"),
+  responseBody: jsonb("response_body"),
+  ipAddress: text("ip_address"),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+});

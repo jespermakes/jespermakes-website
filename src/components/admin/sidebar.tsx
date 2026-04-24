@@ -17,6 +17,8 @@ const NAV = [
 
 const DEEP_DIVES = [
   { href: "/admin/title-lab", label: "Title Lab stats" },
+  { href: "/admin/mcp-tokens", label: "MCP sessions" },
+  { href: "/admin/mcp-activity", label: "MCP activity" },
 ];
 
 export function AdminSidebar() {
