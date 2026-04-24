@@ -98,3 +98,4 @@ export function resolveTheme(kind: string, theme?: ModuleTheme): ThemeStyle {
   const key = !theme || theme === "default" ? DEFAULT_THEMES[kind] ?? "cream" : theme;
   return THEMES[key as Exclude<ModuleTheme, "default">] ?? THEMES.cream;
 }
+// theme sweep audit: all modules confirmed using theme classes — 20260424
