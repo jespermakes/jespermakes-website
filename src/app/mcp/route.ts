@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
+import { IncomingMessage, ServerResponse } from "node:http";
+import { Socket } from "node:net";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { db } from "@/lib/db";
@@ -12,6 +14,7 @@ import { registerTools, type ToolContext } from "./tools";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
+export const maxDuration = 60;
 
 function unauthorized() {
   const issuer = process.env.MCP_ISSUER_URL || "https://jespermakes.com";
@@ -25,6 +28,74 @@ function unauthorized() {
       },
     },
   );
+}
+
+function toNodeRequest(webRequest: NextRequest, bodyBuffer: Buffer): IncomingMessage {
+  const socket = new Socket();
+  const req = new IncomingMessage(socket);
+  req.method = webRequest.method;
+  req.url = new URL(webRequest.url).pathname + new URL(webRequest.url).search;
+
+  const headers: Record<string, string> = {};
+  webRequest.headers.forEach((value, key) => {
+    headers[key.toLowerCase()] = value;
+  });
+  req.headers = headers;
+
+  req.push(bodyBuffer);
+  req.push(null);
+
+  return req;
+}
+
+class BufferedResponse extends ServerResponse {
+  private chunks: Buffer[] = [];
+  public done: Promise<void>;
+  private resolveDone!: () => void;
+
+  constructor(req: IncomingMessage) {
+    super(req);
+    this.done = new Promise((resolve) => {
+      this.resolveDone = resolve;
+    });
+
+    const originalWrite = this.write.bind(this);
+    const originalEnd = this.end.bind(this);
+
+    this.write = ((chunk: any, ...args: any[]) => {
+      if (chunk) {
+        this.chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk)));
+      }
+      return originalWrite(chunk, ...args);
+    }) as any;
+
+    this.end = ((chunk?: any, ...args: any[]) => {
+      if (chunk) {
+        this.chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk)));
+      }
+      const result = originalEnd(chunk, ...args);
+      this.resolveDone();
+      return result;
+    }) as any;
+  }
+
+  getBuffered(): { status: number; headers: Record<string, string>; body: Buffer } {
+    const headers: Record<string, string> = {};
+    for (const [name, value] of Object.entries(this.getHeaders())) {
+      if (typeof value === "string") {
+        headers[name] = value;
+      } else if (Array.isArray(value)) {
+        headers[name] = value.join(", ");
+      } else if (value != null) {
+        headers[name] = String(value);
+      }
+    }
+    return {
+      status: this.statusCode || 200,
+      headers,
+      body: Buffer.concat(this.chunks),
+    };
+  }
 }
 
 async function handler(request: NextRequest): Promise<Response> {
@@ -53,7 +124,6 @@ async function handler(request: NextRequest): Promise<Response> {
     );
   }
 
-  // Bump lastUsedAt (fire and forget)
   db.update(mcpTokens)
     .set({ lastUsedAt: new Date() })
     .where(eq(mcpTokens.id, token.id))
@@ -62,7 +132,14 @@ async function handler(request: NextRequest): Promise<Response> {
   const startTime = Date.now();
   const ipAddress = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || null;
 
-  const body = await request.json().catch(() => null);
+  const bodyText = await request.text();
+  const bodyBuffer = Buffer.from(bodyText, "utf8");
+  let parsedBody: any = null;
+  try {
+    parsedBody = bodyText ? JSON.parse(bodyText) : null;
+  } catch {
+    // Not JSON - let the transport handle it
+  }
 
   const context: ToolContext = {
     userId: token.userId,
@@ -84,77 +161,55 @@ async function handler(request: NextRequest): Promise<Response> {
 
   await server.connect(transport);
 
-  const response = await new Promise<{ status: number; body: unknown }>((resolve) => {
-    let resolved = false;
-    const mockRes = {
-      statusCode: 200,
-      setHeader: () => {},
-      getHeader: () => undefined,
-      writeHead: function (code: number) { this.statusCode = code; return this; },
-      write: (chunk: any) => {
-        if (!resolved) {
-          resolved = true;
-          try {
-            const text = typeof chunk === "string" ? chunk : Buffer.from(chunk).toString("utf8");
-            const parsed = JSON.parse(text);
-            resolve({ status: mockRes.statusCode, body: parsed });
-          } catch {
-            resolve({ status: mockRes.statusCode, body: null });
-          }
-        }
-      },
-      end: (chunk?: any) => {
-        if (!resolved) {
-          if (chunk) {
-            resolved = true;
-            try {
-              const text = typeof chunk === "string" ? chunk : Buffer.from(chunk).toString("utf8");
-              const parsed = JSON.parse(text);
-              resolve({ status: mockRes.statusCode, body: parsed });
-            } catch {
-              resolve({ status: mockRes.statusCode, body: null });
-            }
-          } else {
-            resolved = true;
-            resolve({ status: mockRes.statusCode, body: null });
-          }
-        }
-      },
-      on: () => mockRes,
-      once: () => mockRes,
-      emit: () => false,
+  const nodeReq = toNodeRequest(request, bodyBuffer);
+  const nodeRes = new BufferedResponse(nodeReq);
+
+  try {
+    await transport.handleRequest(nodeReq, nodeRes, parsedBody);
+    await nodeRes.done;
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    const errorBody = {
+      jsonrpc: "2.0",
+      error: { code: -32603, message },
+      id: parsedBody?.id ?? null,
     };
 
-    const mockReq = {
-      method: request.method,
-      headers: Object.fromEntries(request.headers.entries()),
-      on: () => mockReq,
-      once: () => mockReq,
-    };
-
-    // @ts-expect-error - we're feeding the transport a minimal mock req/res
-    transport.handleRequest(mockReq, mockRes, body).catch((err: unknown) => {
-      if (!resolved) {
-        resolved = true;
-        resolve({
-          status: 500,
-          body: {
-            jsonrpc: "2.0",
-            error: {
-              code: -32603,
-              message: err instanceof Error ? err.message : "Internal error",
-            },
-            id: (body as any)?.id ?? null,
-          },
-        });
-      }
+    logActivity({
+      tokenId: token.id,
+      clientId: token.clientId,
+      userId: token.userId,
+      method: parsedBody?.method ?? null,
+      toolName: parsedBody?.method === "tools/call" ? parsedBody?.params?.name ?? null : null,
+      durationMs: Date.now() - startTime,
+      success: false,
+      errorMessage: message,
+      requestBody: parsedBody,
+      responseBody: errorBody,
+      verbose: token.verboseLogging,
+      ipAddress,
     });
-  });
 
+    return new NextResponse(JSON.stringify(errorBody), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const { status, headers, body } = nodeRes.getBuffered();
   const durationMs = Date.now() - startTime;
-  const method = (body as any)?.method ?? null;
-  const toolName = method === "tools/call" ? (body as any)?.params?.name ?? null : null;
-  const success = response.status < 400 && !(response.body as any)?.error;
+  const method = parsedBody?.method ?? null;
+  const toolName = method === "tools/call" ? parsedBody?.params?.name ?? null : null;
+
+  let responseBody: any = null;
+  try {
+    const text = body.toString("utf8");
+    if (text) responseBody = JSON.parse(text);
+  } catch {
+    responseBody = null;
+  }
+
+  const success = status < 400 && !responseBody?.error;
 
   logActivity({
     tokenId: token.id,
@@ -164,16 +219,25 @@ async function handler(request: NextRequest): Promise<Response> {
     toolName,
     durationMs,
     success,
-    errorMessage: success ? null : JSON.stringify((response.body as any)?.error ?? null),
-    requestBody: body,
-    responseBody: response.body,
+    errorMessage: success ? null : JSON.stringify(responseBody?.error ?? null),
+    requestBody: parsedBody,
+    responseBody,
     verbose: token.verboseLogging,
     ipAddress,
   });
 
-  return new NextResponse(JSON.stringify(response.body), {
-    status: response.status,
-    headers: { "Content-Type": "application/json" },
+  const responseHeaders = new Headers();
+  for (const [name, value] of Object.entries(headers)) {
+    if (["connection", "transfer-encoding", "keep-alive"].includes(name.toLowerCase())) continue;
+    responseHeaders.set(name, value);
+  }
+  if (!responseHeaders.has("content-type")) {
+    responseHeaders.set("content-type", "application/json");
+  }
+
+  return new NextResponse(body.toString("utf8"), {
+    status,
+    headers: responseHeaders,
   });
 }
 
