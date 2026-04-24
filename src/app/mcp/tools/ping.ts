@@ -1,7 +1,8 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { ToolContext } from "./index";
 
-export function registerPing(server: McpServer, _context: ToolContext) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function registerPing(server: McpServer, _ctx: ToolContext) {
   server.registerTool(
     "ping",
     {

@@ -6,7 +6,8 @@ import { db } from "@/lib/db";
 import { blogPosts } from "@/lib/db/schema";
 import type { ToolContext } from "./index";
 
-export function registerUpdateBlogDraft(server: McpServer, _context: ToolContext) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function registerUpdateBlogDraft(server: McpServer, _ctx: ToolContext) {
   server.registerTool(
     "update_blog_draft",
     {

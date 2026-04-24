@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { mcpOauthClients } from "@/lib/db/schema";
 
 export async function POST(request: NextRequest) {
-  let body: any;
+  let body: Record<string, unknown>;
   try {
     body = await request.json();
   } catch {
