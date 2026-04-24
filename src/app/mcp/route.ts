@@ -219,10 +219,18 @@ async function handler(request: NextRequest): Promise<Response> {
   try {
     if (bodyAsString) responseBody = JSON.parse(bodyAsString);
   } catch {
-    responseBody = null;
+    // Body isn't JSON (likely SSE). Store raw for diagnostics.
+    responseBody = {
+      _raw: bodyAsString.slice(0, 2000),
+      _contentType: headers["content-type"] || "unknown",
+      _status: status,
+      _bodyLength: body.length,
+      _acceptHeader: request.headers.get("accept"),
+      _allResponseHeaders: headers,
+    };
   }
 
-  const success = status < 400 && !responseBody?.error;
+  const success = status < 400 && !(typeof responseBody === "object" && responseBody?.error);
 
   logActivity({
     tokenId: token.id,
@@ -235,7 +243,7 @@ async function handler(request: NextRequest): Promise<Response> {
     errorMessage: success ? null : JSON.stringify(responseBody?.error ?? null),
     requestBody: parsedBody,
     responseBody,
-    verbose: token.verboseLogging,
+    verbose: true, // force verbose for diagnostics
     ipAddress,
   });
 
