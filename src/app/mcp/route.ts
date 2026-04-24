@@ -201,10 +201,23 @@ async function handler(request: NextRequest): Promise<Response> {
   const method = parsedBody?.method ?? null;
   const toolName = method === "tools/call" ? parsedBody?.params?.name ?? null : null;
 
+  // ============================================================
+  // DIAGNOSTIC LOGGING - TEMPORARY, REMOVE IN NEXT PATCH
+  // ============================================================
+  const bodyAsString = body.toString("utf8");
+  console.log("[MCP DIAG] === Transport response for method:", method);
+  console.log("[MCP DIAG] Client Accept header:", request.headers.get("accept"));
+  console.log("[MCP DIAG] Response status:", status);
+  console.log("[MCP DIAG] Response headers (from transport):", JSON.stringify(headers, null, 2));
+  console.log("[MCP DIAG] Response body length (bytes):", body.length);
+  console.log("[MCP DIAG] Response body (raw utf8):", JSON.stringify(bodyAsString));
+  console.log("[MCP DIAG] First 10 byte values:", Array.from(body.slice(0, 10)));
+  console.log("[MCP DIAG] ===");
+  // ============================================================
+
   let responseBody: any = null;
   try {
-    const text = body.toString("utf8");
-    if (text) responseBody = JSON.parse(text);
+    if (bodyAsString) responseBody = JSON.parse(bodyAsString);
   } catch {
     responseBody = null;
   }
@@ -235,7 +248,19 @@ async function handler(request: NextRequest): Promise<Response> {
     responseHeaders.set("content-type", "application/json");
   }
 
-  return new NextResponse(body.toString("utf8"), {
+  // ============================================================
+  // DIAGNOSTIC LOGGING - TEMPORARY, REMOVE IN NEXT PATCH
+  // ============================================================
+  const finalHeaders: Record<string, string> = {};
+  responseHeaders.forEach((value, key) => { finalHeaders[key] = value; });
+  console.log("[MCP DIAG] === Final response we're sending to Claude");
+  console.log("[MCP DIAG] Final status:", status);
+  console.log("[MCP DIAG] Final headers:", JSON.stringify(finalHeaders, null, 2));
+  console.log("[MCP DIAG] Final body (utf8):", JSON.stringify(bodyAsString));
+  console.log("[MCP DIAG] ===");
+  // ============================================================
+
+  return new NextResponse(new Uint8Array(body), {
     status,
     headers: responseHeaders,
   });
