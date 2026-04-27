@@ -14,6 +14,7 @@ import {
 import { Canvas } from "@/components/studio/canvas";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
 import { SelectionHandles } from "@/components/studio/selection-handles";
+import { StatusBar } from "@/components/studio/status-bar";
 import { Toolbar } from "@/components/studio/toolbar";
 import { ToolOverlay } from "@/components/studio/tool-overlay";
 import {
@@ -63,6 +64,9 @@ export default function StudioPage() {
 
   // Track canvas pixel dimensions so we can compute the viewBox in mm.
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const [cursorDocPos, setCursorDocPos] = useState<{ x: number; y: number } | null>(
+    null,
+  );
 
   useLayoutEffect(() => {
     const el = containerRef.current;
@@ -399,8 +403,17 @@ export default function StudioPage() {
 
   const handlePointerMove = useCallback(
     (e: ReactPointerEvent<SVGSVGElement>) => {
+      const screen = screenPointFromEvent(e);
+      const docPoint = screenToDoc(
+        screen.x,
+        screen.y,
+        doc.viewportX,
+        doc.viewportY,
+        doc.zoom,
+      );
+      setCursorDocPos(docPoint);
+
       if (panRef.current && panRef.current.pointerId === e.pointerId) {
-        const screen = screenPointFromEvent(e);
         const dxMm = (screen.x - panRef.current.startScreenX) / doc.zoom;
         const dyMm = (screen.y - panRef.current.startScreenY) / doc.zoom;
         dispatch({
@@ -412,14 +425,6 @@ export default function StudioPage() {
       }
 
       if (transform && transform.pointerId === e.pointerId) {
-        const screen = screenPointFromEvent(e);
-        const docPoint = screenToDoc(
-          screen.x,
-          screen.y,
-          doc.viewportX,
-          doc.viewportY,
-          doc.zoom,
-        );
         setTransform({
           ...transform,
           currentDocX: docPoint.x,
@@ -436,14 +441,6 @@ export default function StudioPage() {
         selectInteraction.pointerId === e.pointerId &&
         selectInteraction.kind === "marquee"
       ) {
-        const screen = screenPointFromEvent(e);
-        const docPoint = screenToDoc(
-          screen.x,
-          screen.y,
-          doc.viewportX,
-          doc.viewportY,
-          doc.zoom,
-        );
         setSelectInteraction({
           ...selectInteraction,
           currentDocX: docPoint.x,
@@ -458,14 +455,6 @@ export default function StudioPage() {
       const matchesTwoClick = drawing.kind === "two-click";
       if (!matchesDrag && !matchesTwoClick) return;
 
-      const screen = screenPointFromEvent(e);
-      const docPoint = screenToDoc(
-        screen.x,
-        screen.y,
-        doc.viewportX,
-        doc.viewportY,
-        doc.zoom,
-      );
       setDrawing({
         ...drawing,
         currentDocX: docPoint.x,
@@ -663,6 +652,76 @@ export default function StudioPage() {
     [doc.zoom, doc.viewportX, doc.viewportY, screenPointFromEvent],
   );
 
+  const handleFitAll = useCallback(() => {
+    if (canvasSize.width === 0 || canvasSize.height === 0) return;
+    const bounds =
+      doc.shapes.length > 0
+        ? shapesBounds(doc.shapes)
+        : { minX: -100, minY: -100, maxX: 100, maxY: 100 };
+    if (!bounds) return;
+    const pad = 20;
+    const w = bounds.maxX - bounds.minX + pad * 2;
+    const h = bounds.maxY - bounds.minY + pad * 2;
+    if (w <= 0 || h <= 0) return;
+    const zoomX = canvasSize.width / w;
+    const zoomY = canvasSize.height / h;
+    const nextZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Math.min(zoomX, zoomY)));
+    const visibleW = canvasSize.width / nextZoom;
+    const visibleH = canvasSize.height / nextZoom;
+    const cx = (bounds.minX + bounds.maxX) / 2;
+    const cy = (bounds.minY + bounds.maxY) / 2;
+    dispatch({
+      type: "SET_VIEWPORT",
+      viewportX: cx - visibleW / 2,
+      viewportY: cy - visibleH / 2,
+      zoom: nextZoom,
+    });
+  }, [canvasSize.height, canvasSize.width, doc.shapes]);
+
+  const zoomCentered = useCallback(
+    (factor: number) => {
+      if (canvasSize.width === 0) return;
+      const nextZoom = Math.max(
+        MIN_ZOOM,
+        Math.min(MAX_ZOOM, doc.zoom * factor),
+      );
+      const centerScreenX = canvasSize.width / 2;
+      const centerScreenY = canvasSize.height / 2;
+      const beforeDocX = doc.viewportX + centerScreenX / doc.zoom;
+      const beforeDocY = doc.viewportY + centerScreenY / doc.zoom;
+      dispatch({
+        type: "SET_ZOOM",
+        zoom: nextZoom,
+        viewportX: beforeDocX - centerScreenX / nextZoom,
+        viewportY: beforeDocY - centerScreenY / nextZoom,
+      });
+    },
+    [canvasSize.height, canvasSize.width, doc.zoom, doc.viewportX, doc.viewportY],
+  );
+
+  const handleZoomIn = useCallback(() => zoomCentered(1.25), [zoomCentered]);
+  const handleZoomOut = useCallback(() => zoomCentered(1 / 1.25), [zoomCentered]);
+  const handleZoomReset = useCallback(() => {
+    if (canvasSize.width === 0) return;
+    const nextZoom = 3.78;
+    const centerScreenX = canvasSize.width / 2;
+    const centerScreenY = canvasSize.height / 2;
+    const beforeDocX = doc.viewportX + centerScreenX / doc.zoom;
+    const beforeDocY = doc.viewportY + centerScreenY / doc.zoom;
+    dispatch({
+      type: "SET_ZOOM",
+      zoom: nextZoom,
+      viewportX: beforeDocX - centerScreenX / nextZoom,
+      viewportY: beforeDocY - centerScreenY / nextZoom,
+    });
+  }, [
+    canvasSize.height,
+    canvasSize.width,
+    doc.viewportX,
+    doc.viewportY,
+    doc.zoom,
+  ]);
+
   // Keyboard shortcuts.
   useEffect(() => {
     const isEditableTarget = () => {
@@ -699,6 +758,11 @@ export default function StudioPage() {
       }
       if (meta && (e.key === "a" || e.key === "A")) {
         dispatch({ type: "SELECT_ALL" });
+        e.preventDefault();
+        return;
+      }
+      if (meta && e.key === "0") {
+        handleFitAll();
         e.preventDefault();
         return;
       }
@@ -740,7 +804,7 @@ export default function StudioPage() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
     };
-  }, [spaceHeld, setActiveTool]);
+  }, [spaceHeld, setActiveTool, handleFitAll]);
 
   const cursor = useMemo(() => {
     if (panRef.current) return "grabbing";
@@ -864,29 +928,6 @@ export default function StudioPage() {
     [doc.shapes, doc.selectedIds],
   );
 
-  const handleFitAll = useCallback(() => {
-    if (doc.shapes.length === 0 || canvasSize.width === 0) return;
-    const bounds = shapesBounds(doc.shapes);
-    if (!bounds) return;
-    const pad = 10;
-    const w = bounds.maxX - bounds.minX + pad * 2;
-    const h = bounds.maxY - bounds.minY + pad * 2;
-    if (w <= 0 || h <= 0) return;
-    const zoomX = canvasSize.width / w;
-    const zoomY = canvasSize.height / h;
-    const nextZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Math.min(zoomX, zoomY)));
-    const visibleW = canvasSize.width / nextZoom;
-    const visibleH = canvasSize.height / nextZoom;
-    const cx = (bounds.minX + bounds.maxX) / 2;
-    const cy = (bounds.minY + bounds.maxY) / 2;
-    dispatch({
-      type: "SET_VIEWPORT",
-      viewportX: cx - visibleW / 2,
-      viewportY: cy - visibleH / 2,
-      zoom: nextZoom,
-    });
-  }, [canvasSize.height, canvasSize.width, doc.shapes]);
-
   const handleExport = useCallback(() => {
     if (doc.shapes.length === 0) return;
     const svg = exportSVG(doc.shapes);
@@ -904,37 +945,50 @@ export default function StudioPage() {
         canUndo={canUndo(state)}
         canRedo={canRedo(state)}
       />
-      <div ref={containerRef} className="relative flex-1 overflow-hidden">
-        <Canvas
-          ref={svgRef}
-          shapes={displayShapes}
-          selectedIds={doc.selectedIds}
-          viewportX={doc.viewportX}
-          viewportY={doc.viewportY}
-          zoom={doc.zoom}
-          gridSpacing={doc.gridSpacing}
-          viewWidthMm={viewWidthMm}
-          viewHeightMm={viewHeightMm}
-          cursor={cursor}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onWheel={handleWheel}
-          overlay={
-            <>
-              {selectedSingleShape && !drawing ? (
-                <SelectionHandles
-                  shape={selectedSingleShape}
+      <div className="relative flex flex-1 flex-col overflow-hidden">
+        <div ref={containerRef} className="relative flex-1 overflow-hidden">
+          <Canvas
+            ref={svgRef}
+            shapes={displayShapes}
+            selectedIds={doc.selectedIds}
+            viewportX={doc.viewportX}
+            viewportY={doc.viewportY}
+            zoom={doc.zoom}
+            gridSpacing={doc.gridSpacing}
+            viewWidthMm={viewWidthMm}
+            viewHeightMm={viewHeightMm}
+            cursor={cursor}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerLeave={() => setCursorDocPos(null)}
+            onWheel={handleWheel}
+            overlay={
+              <>
+                {selectedSingleShape && !drawing ? (
+                  <SelectionHandles
+                    shape={selectedSingleShape}
+                    zoomScale={1 / doc.zoom}
+                  />
+                ) : null}
+                <ToolOverlay
+                  preview={previewShape}
                   zoomScale={1 / doc.zoom}
+                  marquee={marqueeRect}
                 />
-              ) : null}
-              <ToolOverlay
-                preview={previewShape}
-                zoomScale={1 / doc.zoom}
-                marquee={marqueeRect}
-              />
-            </>
-          }
+              </>
+            }
+          />
+        </div>
+        <StatusBar
+          cursorDocPos={cursorDocPos}
+          unit={doc.unitDisplay}
+          selectedShapes={selectedShapes}
+          zoom={doc.zoom}
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
+          onZoomReset={handleZoomReset}
+          onFitAll={handleFitAll}
         />
       </div>
       <PropertiesPanel
