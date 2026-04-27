@@ -22,6 +22,7 @@ export function ImageLibraryClient({ vocabulary }: { vocabulary: Vocabulary }) {
   const [activeFilter, setActiveFilter] = useState<{ kind: string; value: string } | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadQueue, setUploadQueue] = useState<{ name: string; status: "pending" | "done" | "error" }[]>([]);
+  const [recentUploads, setRecentUploads] = useState<{ id: string; filename: string; url: string }[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -57,6 +58,7 @@ export function ImageLibraryClient({ vocabulary }: { vocabulary: Vocabulary }) {
     const queue = Array.from(files).map((f) => ({ name: f.name, status: "pending" as const }));
     setUploadQueue(queue);
 
+    const uploaded: { id: string; filename: string; url: string }[] = [];
     await Promise.all(
       Array.from(files).map(async (file, idx) => {
         try {
@@ -64,12 +66,19 @@ export function ImageLibraryClient({ vocabulary }: { vocabulary: Vocabulary }) {
           fd.append("file", file);
           const res = await fetch("/api/admin/images", { method: "POST", body: fd });
           if (!res.ok) throw new Error();
+          const data = await res.json();
+          if (data.image) {
+            uploaded.push({ id: data.image.id, filename: data.image.filename, url: data.image.url });
+          }
           setUploadQueue((q) => q.map((x, i) => (i === idx ? { ...x, status: "done" } : x)));
         } catch {
           setUploadQueue((q) => q.map((x, i) => (i === idx ? { ...x, status: "error" } : x)));
         }
       })
     );
+    if (uploaded.length > 0) {
+      setRecentUploads((prev) => [...uploaded, ...prev]);
+    }
 
     setUploading(false);
     setTimeout(() => setUploadQueue([]), 2500);
@@ -100,6 +109,10 @@ export function ImageLibraryClient({ vocabulary }: { vocabulary: Vocabulary }) {
         {uploadQueue.length > 0 && <UploadToast queue={uploadQueue} />}
 
         <DropZone onFiles={handleFiles} />
+
+        {recentUploads.length > 0 && (
+          <RecentUploadsPanel uploads={recentUploads} />
+        )}
 
         <SearchAndFilters
           query={query}
@@ -188,7 +201,7 @@ function DropZone({ onFiles }: { onFiles: (files: FileList) => void }) {
         hover ? "border-forest bg-forest/5" : "border-wood/12"
       }`}
     >
-      Drop images here to upload and auto-tag with AI
+      Drop images here to upload
     </div>
   );
 }
@@ -200,7 +213,7 @@ function UploadToast({ queue }: { queue: { name: string; status: string }[] }) {
         <div key={i} className="flex justify-between py-0.5">
           <span className="truncate">{q.name}</span>
           <span className={q.status === "error" ? "text-red-600" : q.status === "done" ? "text-green-700" : "text-forest"}>
-            {q.status === "pending" ? "tagging…" : q.status === "done" ? "done" : "failed"}
+            {q.status === "pending" ? "uploading…" : q.status === "done" ? "done" : "failed"}
           </span>
         </div>
       ))}
@@ -663,5 +676,45 @@ function TagSection({
         })}
       </div>
     </Section>
+  );
+}
+
+function RecentUploadsPanel({ uploads }: { uploads: { id: string; filename: string; url: string }[] }) {
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  async function copy(url: string, id: string) {
+    await navigator.clipboard.writeText(url);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 1500);
+  }
+
+  return (
+    <div className="mb-4 space-y-2">
+      <div className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase">
+        Just uploaded — paste URL into Claude to tag
+      </div>
+      {uploads.map((u) => (
+        <div
+          key={u.id}
+          className="bg-white/70 border border-wood/8 rounded-xl p-3 flex items-center gap-3"
+        >
+          <div className="flex-1 min-w-0">
+            <div className="text-xs font-medium text-wood truncate">{u.filename}</div>
+            <div className="flex items-center gap-2 mt-1">
+              <code className="text-[11px] bg-wood/5 px-2 py-0.5 rounded flex-1 truncate text-wood-light/70">
+                {u.url}
+              </code>
+              <button
+                type="button"
+                onClick={() => copy(u.url, u.id)}
+                className="text-xs border border-wood/15 hover:border-wood/30 text-wood-light rounded-lg px-3 py-1.5 shrink-0"
+              >
+                {copiedId === u.id ? "Copied!" : "Copy URL"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }

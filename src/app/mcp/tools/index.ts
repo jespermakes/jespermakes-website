@@ -16,6 +16,7 @@ import { registerPublishTool } from "./publish-tool";
 import { registerUnpublishTool } from "./unpublish-tool";
 import { registerSearchTools } from "./search-tools";
 import { registerListRecentChanges } from "./list-recent-changes";
+import { registerUpdateImageMetadata } from "./update-image-metadata";
 
 export interface ToolContext {
   userId: string;
@@ -51,5 +52,6 @@ export function registerTools(server: McpServer, context: ToolContext) {
 
   // Cross-cutting
   registerFindImages(server, context);
+  registerUpdateImageMetadata(server, context);
   registerListRecentChanges(server, context);
 }
