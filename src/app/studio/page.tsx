@@ -22,7 +22,7 @@ import {
 } from "@/lib/studio/reducer";
 import { MAX_ZOOM, MIN_ZOOM } from "@/lib/studio/constants";
 import { rectFromCorners, screenToDoc, snapPoint } from "@/lib/studio/geometry";
-import { createRectangle } from "@/lib/studio/shape-factory";
+import { createCircle, createRectangle } from "@/lib/studio/shape-factory";
 import type { Shape, Tool } from "@/lib/studio/types";
 
 export default function StudioPage() {
@@ -119,7 +119,7 @@ export default function StudioPage() {
         doc.zoom,
       );
 
-      if (activeTool === "rectangle") {
+      if (activeTool === "rectangle" || activeTool === "circle") {
         setDrawing({
           kind: "drag",
           tool: activeTool,
@@ -205,9 +205,7 @@ export default function StudioPage() {
         const r = rectFromCorners(a.x, a.y, b.x, b.y);
         if (r.width > 0 && r.height > 0) {
           const shape: Shape =
-            drawing.tool === "rectangle"
-              ? createRectangle(r)
-              : createRectangle(r); // circle handled in a later step
+            drawing.tool === "rectangle" ? createRectangle(r) : createCircle(r);
           dispatch({ type: "ADD_SHAPE", shape, selectAfter: true });
           setActiveTool("select");
         }
@@ -348,7 +346,7 @@ export default function StudioPage() {
     const r = rectFromCorners(ax, ay, bx, by);
     if (r.width === 0 && r.height === 0) return null;
     if (drawing.tool === "rectangle") return createRectangle(r);
-    return createRectangle(r); // circle preview added in next step
+    return createCircle(r);
   }, [drawing]);
 
   const handleExport = useCallback(() => {
