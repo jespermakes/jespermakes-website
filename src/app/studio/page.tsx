@@ -22,15 +22,25 @@ import {
 } from "@/lib/studio/reducer";
 import { MAX_ZOOM, MIN_ZOOM } from "@/lib/studio/constants";
 import { rectFromCorners, screenToDoc, snapPoint } from "@/lib/studio/geometry";
-import { createCircle, createRectangle } from "@/lib/studio/shape-factory";
+import {
+  createCircle,
+  createLine,
+  createRectangle,
+} from "@/lib/studio/shape-factory";
 import type { Shape, Tool } from "@/lib/studio/types";
 
 export default function StudioPage() {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
   const { document: doc } = state;
 
-  const [activeTool, setActiveTool] = useState<Tool>("select");
+  const [activeTool, setActiveToolState] = useState<Tool>("select");
   const [spaceHeld, setSpaceHeld] = useState(false);
+
+  // Cancel any in-progress draw whenever the active tool changes.
+  const setActiveTool = useCallback((t: Tool) => {
+    setActiveToolState(t);
+    setDrawing(null);
+  }, []);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -68,7 +78,7 @@ export default function StudioPage() {
   >(null);
 
   // Active drawing operation (rectangle/circle drag, or line two-click).
-  const [drawing, setDrawing] = useState<
+  type DrawingState =
     | {
         kind: "drag";
         tool: "rectangle" | "circle";
@@ -79,8 +89,16 @@ export default function StudioPage() {
         currentDocY: number;
         shift: boolean;
       }
-    | null
-  >(null);
+    | {
+        kind: "two-click";
+        tool: "line";
+        startDocX: number;
+        startDocY: number;
+        currentDocX: number;
+        currentDocY: number;
+        shift: boolean;
+      };
+  const [drawing, setDrawing] = useState<DrawingState | null>(null);
 
   const screenPointFromEvent = useCallback(
     (e: ReactPointerEvent<SVGSVGElement> | ReactWheelEvent<SVGSVGElement>) => {
@@ -134,13 +152,62 @@ export default function StudioPage() {
         e.preventDefault();
         return;
       }
+
+      if (activeTool === "line") {
+        if (!drawing) {
+          // First click — record start, await the second click.
+          setDrawing({
+            kind: "two-click",
+            tool: "line",
+            startDocX: docPoint.x,
+            startDocY: docPoint.y,
+            currentDocX: docPoint.x,
+            currentDocY: docPoint.y,
+            shift: e.shiftKey,
+          });
+        } else if (drawing.kind === "two-click" && drawing.tool === "line") {
+          // Second click — finalize.
+          let bx = docPoint.x;
+          let by = docPoint.y;
+          if (e.shiftKey) {
+            const dx = bx - drawing.startDocX;
+            const dy = by - drawing.startDocY;
+            const len = Math.hypot(dx, dy);
+            if (len > 0) {
+              const angle = Math.atan2(dy, dx);
+              const stepped =
+                Math.round(angle / (Math.PI / 4)) * (Math.PI / 4);
+              bx = drawing.startDocX + Math.cos(stepped) * len;
+              by = drawing.startDocY + Math.sin(stepped) * len;
+            }
+          }
+          const a = snapPoint(
+            drawing.startDocX,
+            drawing.startDocY,
+            doc.gridSpacing,
+            doc.snapToGrid,
+          );
+          const b = snapPoint(bx, by, doc.gridSpacing, doc.snapToGrid);
+          if (a.x !== b.x || a.y !== b.y) {
+            const shape = createLine({ x1: a.x, y1: a.y, x2: b.x, y2: b.y });
+            dispatch({ type: "ADD_SHAPE", shape, selectAfter: true });
+            setActiveTool("select");
+          }
+          setDrawing(null);
+        }
+        e.preventDefault();
+        return;
+      }
     },
     [
       activeTool,
+      drawing,
       spaceHeld,
       doc.viewportX,
       doc.viewportY,
       doc.zoom,
+      doc.gridSpacing,
+      doc.snapToGrid,
       screenPointFromEvent,
     ],
   );
@@ -159,23 +226,26 @@ export default function StudioPage() {
         return;
       }
 
-      if (drawing && drawing.pointerId === e.pointerId) {
-        const screen = screenPointFromEvent(e);
-        const docPoint = screenToDoc(
-          screen.x,
-          screen.y,
-          doc.viewportX,
-          doc.viewportY,
-          doc.zoom,
-        );
-        setDrawing({
-          ...drawing,
-          currentDocX: docPoint.x,
-          currentDocY: docPoint.y,
-          shift: e.shiftKey,
-        });
-        return;
-      }
+      if (!drawing) return;
+      const matchesDrag =
+        drawing.kind === "drag" && drawing.pointerId === e.pointerId;
+      const matchesTwoClick = drawing.kind === "two-click";
+      if (!matchesDrag && !matchesTwoClick) return;
+
+      const screen = screenPointFromEvent(e);
+      const docPoint = screenToDoc(
+        screen.x,
+        screen.y,
+        doc.viewportX,
+        doc.viewportY,
+        doc.zoom,
+      );
+      setDrawing({
+        ...drawing,
+        currentDocX: docPoint.x,
+        currentDocY: docPoint.y,
+        shift: e.shiftKey,
+      });
     },
     [doc.zoom, doc.viewportX, doc.viewportY, drawing, screenPointFromEvent],
   );
@@ -188,7 +258,11 @@ export default function StudioPage() {
         return;
       }
 
-      if (drawing && drawing.pointerId === e.pointerId) {
+      if (
+        drawing &&
+        drawing.kind === "drag" &&
+        drawing.pointerId === e.pointerId
+      ) {
         const shift = e.shiftKey || drawing.shift;
         let { startDocX: ax, startDocY: ay } = drawing;
         let bx = drawing.currentDocX;
@@ -291,6 +365,7 @@ export default function StudioPage() {
         case "V":
         case "Escape":
           setActiveTool("select");
+          setDrawing(null);
           break;
         case "r":
         case "R":
@@ -333,20 +408,42 @@ export default function StudioPage() {
 
   const previewShape = useMemo<Shape | null>(() => {
     if (!drawing) return null;
-    let { startDocX: ax, startDocY: ay } = drawing;
+    if (drawing.kind === "drag") {
+      const { startDocX: ax, startDocY: ay } = drawing;
+      let bx = drawing.currentDocX;
+      let by = drawing.currentDocY;
+      if (drawing.shift) {
+        const dx = bx - ax;
+        const dy = by - ay;
+        const size = Math.max(Math.abs(dx), Math.abs(dy));
+        bx = ax + Math.sign(dx || 1) * size;
+        by = ay + Math.sign(dy || 1) * size;
+      }
+      const r = rectFromCorners(ax, ay, bx, by);
+      if (r.width === 0 && r.height === 0) return null;
+      if (drawing.tool === "rectangle") return createRectangle(r);
+      return createCircle(r);
+    }
+    // two-click line preview
     let bx = drawing.currentDocX;
     let by = drawing.currentDocY;
     if (drawing.shift) {
-      const dx = bx - ax;
-      const dy = by - ay;
-      const size = Math.max(Math.abs(dx), Math.abs(dy));
-      bx = ax + Math.sign(dx || 1) * size;
-      by = ay + Math.sign(dy || 1) * size;
+      const dx = bx - drawing.startDocX;
+      const dy = by - drawing.startDocY;
+      const len = Math.hypot(dx, dy);
+      if (len > 0) {
+        const angle = Math.atan2(dy, dx);
+        const stepped = Math.round(angle / (Math.PI / 4)) * (Math.PI / 4);
+        bx = drawing.startDocX + Math.cos(stepped) * len;
+        by = drawing.startDocY + Math.sin(stepped) * len;
+      }
     }
-    const r = rectFromCorners(ax, ay, bx, by);
-    if (r.width === 0 && r.height === 0) return null;
-    if (drawing.tool === "rectangle") return createRectangle(r);
-    return createCircle(r);
+    return createLine({
+      x1: drawing.startDocX,
+      y1: drawing.startDocY,
+      x2: bx,
+      y2: by,
+    });
   }, [drawing]);
 
   const handleExport = useCallback(() => {
