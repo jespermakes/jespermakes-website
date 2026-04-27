@@ -45,16 +45,31 @@ const nextConfig = {
     ];
   },
   async rewrites() {
-    return [
-      {
-        source: "/.well-known/oauth-protected-resource",
-        destination: "/api/well-known/oauth-protected-resource",
-      },
-      {
-        source: "/.well-known/oauth-authorization-server",
-        destination: "/api/well-known/oauth-authorization-server",
-      },
-    ];
+    return {
+      beforeFiles: [
+        // studio.jespermakes.com → /studio
+        {
+          source: "/",
+          has: [{ type: "host", value: "studio.jespermakes.com" }],
+          destination: "/studio",
+        },
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "studio.jespermakes.com" }],
+          destination: "/studio/:path*",
+        },
+      ],
+      afterFiles: [
+        {
+          source: "/.well-known/oauth-protected-resource",
+          destination: "/api/well-known/oauth-protected-resource",
+        },
+        {
+          source: "/.well-known/oauth-authorization-server",
+          destination: "/api/well-known/oauth-authorization-server",
+        },
+      ],
+    };
   },
 };
 
