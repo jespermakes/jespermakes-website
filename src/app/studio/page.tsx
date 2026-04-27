@@ -46,6 +46,11 @@ import {
   rotateShape,
 } from "@/lib/studio/transform";
 import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
+import {
+  applyMoveSnap,
+  snapThresholdMm,
+  type GuideLine,
+} from "@/lib/studio/guides";
 import type { LineEndpointHandle, ResizeHandle } from "@/lib/studio/geometry";
 import type { Shape, Tool } from "@/lib/studio/types";
 
@@ -535,16 +540,33 @@ export default function StudioPage() {
         const grid = doc.gridSpacing;
         const snapped = doc.snapToGrid;
         if (t.kind === "move") {
-          const dx = t.currentDocX - t.startDocX;
-          const dy = t.currentDocY - t.startDocY;
-          const sdx = snapped ? Math.round(dx / grid) * grid : dx;
-          const sdy = snapped ? Math.round(dy / grid) * grid : dy;
-          if (sdx !== 0 || sdy !== 0) {
+          const rawDx = t.currentDocX - t.startDocX;
+          const rawDy = t.currentDocY - t.startDocY;
+          const movingShapes = doc.shapes.filter((s) =>
+            t.originals.has(s.id),
+          );
+          const staticShapes = doc.shapes.filter(
+            (s) => !t.originals.has(s.id),
+          );
+          const result = applyMoveSnap({
+            movingShapes,
+            rawDx,
+            rawDy,
+            staticShapes,
+            threshold: snapThresholdMm(doc.zoom),
+            gridSpacing: grid,
+            snapToGrid: snapped,
+          });
+          if (result.dx !== 0 || result.dy !== 0) {
             const updated: Shape[] = [];
             t.originals.forEach((orig, id) => {
               const s = doc.shapes.find((sh) => sh.id === id);
               if (!s) return;
-              updated.push({ ...s, x: orig.x + sdx, y: orig.y + sdy });
+              updated.push({
+                ...s,
+                x: orig.x + result.dx,
+                y: orig.y + result.dy,
+              });
             });
             if (updated.length > 0)
               dispatch({ type: "UPDATE_SHAPES", shapes: updated });
@@ -670,6 +692,7 @@ export default function StudioPage() {
       setActiveTool,
     ],
   );
+  // Note: doc.zoom + applyMoveSnap dep already in scope via state above.
 
   const handleWheel = useCallback(
     (e: ReactWheelEvent<SVGSVGElement>) => {
@@ -971,18 +994,43 @@ export default function StudioPage() {
     });
   }, [drawing]);
 
-  // Live shape overrides while a transform is in progress (no history churn).
-  const liveShapeOverrides = useMemo<Map<string, Shape>>(() => {
+  // Live shape overrides + smart guides while a transform is in progress
+  // (no history churn).
+  const liveTransform = useMemo<{
+    overrides: Map<string, Shape>;
+    guides: GuideLine[];
+  }>(() => {
     const overrides = new Map<string, Shape>();
-    if (!transform) return overrides;
+    const guides: GuideLine[] = [];
+    if (!transform) return { overrides, guides };
     if (transform.kind === "move") {
-      const dx = transform.currentDocX - transform.startDocX;
-      const dy = transform.currentDocY - transform.startDocY;
+      const rawDx = transform.currentDocX - transform.startDocX;
+      const rawDy = transform.currentDocY - transform.startDocY;
+      const movingShapes = doc.shapes.filter((s) =>
+        transform.originals.has(s.id),
+      );
+      const staticShapes = doc.shapes.filter(
+        (s) => !transform.originals.has(s.id),
+      );
+      const result = applyMoveSnap({
+        movingShapes,
+        rawDx,
+        rawDy,
+        staticShapes,
+        threshold: snapThresholdMm(doc.zoom),
+        gridSpacing: doc.gridSpacing,
+        snapToGrid: doc.snapToGrid,
+      });
       transform.originals.forEach((orig, id) => {
         const s = doc.shapes.find((sh) => sh.id === id);
         if (!s) return;
-        overrides.set(id, { ...s, x: orig.x + dx, y: orig.y + dy });
+        overrides.set(id, {
+          ...s,
+          x: orig.x + result.dx,
+          y: orig.y + result.dy,
+        });
       });
+      guides.push(...result.guides);
     } else if (transform.kind === "resize") {
       const next = resizeRectLikeShape(
         transform.original,
@@ -1010,8 +1058,11 @@ export default function StudioPage() {
       );
       overrides.set(transform.targetId, next);
     }
-    return overrides;
-  }, [transform, doc.shapes]);
+    return { overrides, guides };
+  }, [transform, doc.shapes, doc.zoom, doc.gridSpacing, doc.snapToGrid]);
+
+  const liveShapeOverrides = liveTransform.overrides;
+  const activeGuides = liveTransform.guides;
 
   const displayShapes = useMemo<Shape[]>(() => {
     if (liveShapeOverrides.size === 0) return doc.shapes;
@@ -1139,6 +1190,13 @@ export default function StudioPage() {
                   preview={previewShape}
                   zoomScale={1 / doc.zoom}
                   marquee={marqueeRect}
+                  guides={activeGuides}
+                  viewport={{
+                    x: doc.viewportX,
+                    y: doc.viewportY,
+                    width: viewWidthMm,
+                    height: viewHeightMm,
+                  }}
                 />
               </>
             }
