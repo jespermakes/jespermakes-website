@@ -38,6 +38,7 @@ import {
   createLine,
   createRectangle,
   createText,
+  generateId,
 } from "@/lib/studio/shape-factory";
 import {
   resizeLineEndpoint,
@@ -47,6 +48,11 @@ import {
 import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
 import type { LineEndpointHandle, ResizeHandle } from "@/lib/studio/geometry";
 import type { Shape, Tool } from "@/lib/studio/types";
+
+// Module-level clipboard: shapes copied within the app, not the system
+// clipboard. Persists across mount cycles within a single page session.
+let clipboard: Shape[] | null = null;
+const PASTE_OFFSET_MM = 10;
 
 export default function StudioPage() {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
@@ -72,6 +78,20 @@ export default function StudioPage() {
   const [editingTextShapeId, setEditingTextShapeId] = useState<string | null>(
     null,
   );
+  const [toast, setToast] = useState<string | null>(null);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => setToast(null), 1200);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
+  }, []);
 
   // Clear text editing whenever the selection no longer contains the shape.
   useEffect(() => {
@@ -727,6 +747,44 @@ export default function StudioPage() {
     [canvasSize.height, canvasSize.width, doc.zoom, doc.viewportX, doc.viewportY],
   );
 
+  const handleCopy = useCallback(() => {
+    const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
+    if (sel.length === 0) return;
+    clipboard = sel.map((s) => ({ ...s }));
+    showToast(sel.length === 1 ? "Copied" : `Copied ${sel.length}`);
+  }, [doc.shapes, doc.selectedIds, showToast]);
+
+  const handlePaste = useCallback(() => {
+    if (!clipboard || clipboard.length === 0) return;
+    const newShapes = clipboard.map((s) => ({
+      ...s,
+      id: generateId(),
+      x: s.x + PASTE_OFFSET_MM,
+      y: s.y + PASTE_OFFSET_MM,
+    }));
+    dispatch({ type: "ADD_SHAPES", shapes: newShapes, selectAfter: true });
+  }, []);
+
+  const handleDuplicate = useCallback(() => {
+    const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
+    if (sel.length === 0) return;
+    const newShapes = sel.map((s) => ({
+      ...s,
+      id: generateId(),
+      x: s.x + PASTE_OFFSET_MM,
+      y: s.y + PASTE_OFFSET_MM,
+    }));
+    dispatch({ type: "ADD_SHAPES", shapes: newShapes, selectAfter: true });
+  }, [doc.shapes, doc.selectedIds]);
+
+  const handleCut = useCallback(() => {
+    const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
+    if (sel.length === 0) return;
+    clipboard = sel.map((s) => ({ ...s }));
+    showToast(sel.length === 1 ? "Cut" : `Cut ${sel.length}`);
+    dispatch({ type: "DELETE_SELECTED" });
+  }, [doc.shapes, doc.selectedIds, showToast]);
+
   const handleZoomIn = useCallback(() => zoomCentered(1.25), [zoomCentered]);
   const handleZoomOut = useCallback(() => zoomCentered(1 / 1.25), [zoomCentered]);
   const handleZoomReset = useCallback(() => {
@@ -794,6 +852,26 @@ export default function StudioPage() {
         e.preventDefault();
         return;
       }
+      if (meta && (e.key === "c" || e.key === "C")) {
+        handleCopy();
+        e.preventDefault();
+        return;
+      }
+      if (meta && (e.key === "v" || e.key === "V")) {
+        handlePaste();
+        e.preventDefault();
+        return;
+      }
+      if (meta && (e.key === "d" || e.key === "D")) {
+        handleDuplicate();
+        e.preventDefault();
+        return;
+      }
+      if (meta && (e.key === "x" || e.key === "X")) {
+        handleCut();
+        e.preventDefault();
+        return;
+      }
 
       switch (e.key) {
         case "v":
@@ -836,7 +914,15 @@ export default function StudioPage() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
     };
-  }, [spaceHeld, setActiveTool, handleFitAll]);
+  }, [
+    spaceHeld,
+    setActiveTool,
+    handleFitAll,
+    handleCopy,
+    handlePaste,
+    handleDuplicate,
+    handleCut,
+  ]);
 
   const cursor = useMemo(() => {
     if (panRef.current) return "grabbing";
@@ -1019,6 +1105,11 @@ export default function StudioPage() {
             cursorDocPos={cursorDocPos?.y ?? null}
           />
           <div ref={containerRef} className="relative overflow-hidden">
+            {toast ? (
+              <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-lg bg-wood/90 px-3 py-1 text-xs font-medium text-cream shadow-lg">
+                {toast}
+              </div>
+            ) : null}
             <Canvas
             ref={svgRef}
             shapes={displayShapes}
