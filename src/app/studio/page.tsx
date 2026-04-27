@@ -12,6 +12,7 @@ import {
   type WheelEvent as ReactWheelEvent,
 } from "react";
 import { Canvas } from "@/components/studio/canvas";
+import { SelectionHandles } from "@/components/studio/selection-handles";
 import { Toolbar } from "@/components/studio/toolbar";
 import { ToolOverlay } from "@/components/studio/tool-overlay";
 import {
@@ -33,6 +34,13 @@ import {
   createLine,
   createRectangle,
 } from "@/lib/studio/shape-factory";
+import {
+  moveShapes,
+  resizeLineEndpoint,
+  resizeRectLikeShape,
+  rotateShape,
+} from "@/lib/studio/transform";
+import type { LineEndpointHandle, ResizeHandle } from "@/lib/studio/geometry";
 import type { Shape, Tool } from "@/lib/studio/types";
 
 export default function StudioPage() {
@@ -119,6 +127,49 @@ export default function StudioPage() {
   const [selectInteraction, setSelectInteraction] =
     useState<SelectInteraction | null>(null);
 
+  // Transformation interactions: move (drag selected shapes), resize (drag a
+  // resize handle), rotate (drag the rotation handle).
+  type TransformInteraction =
+    | {
+        kind: "move";
+        pointerId: number;
+        startDocX: number;
+        startDocY: number;
+        currentDocX: number;
+        currentDocY: number;
+        originals: Map<string, { x: number; y: number }>;
+      }
+    | {
+        kind: "resize";
+        pointerId: number;
+        targetId: string;
+        handle: ResizeHandle;
+        original: Shape;
+        currentDocX: number;
+        currentDocY: number;
+        shift: boolean;
+      }
+    | {
+        kind: "resize-line";
+        pointerId: number;
+        targetId: string;
+        handle: LineEndpointHandle;
+        original: Shape;
+        currentDocX: number;
+        currentDocY: number;
+      }
+    | {
+        kind: "rotate";
+        pointerId: number;
+        targetId: string;
+        original: Shape;
+        initialPointerAngleDeg: number;
+        currentDocX: number;
+        currentDocY: number;
+        shift: boolean;
+      };
+  const [transform, setTransform] = useState<TransformInteraction | null>(null);
+
   const screenPointFromEvent = useCallback(
     (e: ReactPointerEvent<SVGSVGElement> | ReactWheelEvent<SVGSVGElement>) => {
       const svg = svgRef.current;
@@ -157,17 +208,96 @@ export default function StudioPage() {
       );
 
       if (activeTool === "select") {
-        const target = (e.target as Element | null)?.closest?.(
-          "[data-shape-id]",
-        ) as HTMLElement | SVGElement | null;
-        const shapeId = target?.dataset?.shapeId;
+        const targetEl = e.target as Element | null;
+        // Handle clicks (resize, rotate, line endpoint) take priority.
+        const handleEl = targetEl?.closest?.("[data-handle]") as
+          | (HTMLElement | SVGElement)
+          | null;
+        const handleKey = handleEl?.dataset?.handle;
+        if (handleKey && doc.selectedIds.length === 1) {
+          const targetId = doc.selectedIds[0];
+          const original = doc.shapes.find((s) => s.id === targetId);
+          if (original) {
+            if (handleKey === "rotate") {
+              const dx = docPoint.x - original.x;
+              const dy = docPoint.y - original.y;
+              const initialPointerAngleDeg =
+                (Math.atan2(dy, dx) * 180) / Math.PI;
+              setTransform({
+                kind: "rotate",
+                pointerId: e.pointerId,
+                targetId,
+                original,
+                initialPointerAngleDeg,
+                currentDocX: docPoint.x,
+                currentDocY: docPoint.y,
+                shift: e.shiftKey,
+              });
+            } else if (
+              handleKey === "endpoint-1" ||
+              handleKey === "endpoint-2"
+            ) {
+              setTransform({
+                kind: "resize-line",
+                pointerId: e.pointerId,
+                targetId,
+                handle: handleKey,
+                original,
+                currentDocX: docPoint.x,
+                currentDocY: docPoint.y,
+              });
+            } else {
+              setTransform({
+                kind: "resize",
+                pointerId: e.pointerId,
+                targetId,
+                handle: handleKey as ResizeHandle,
+                original,
+                currentDocX: docPoint.x,
+                currentDocY: docPoint.y,
+                shift: e.shiftKey,
+              });
+            }
+            (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+            e.preventDefault();
+            return;
+          }
+        }
+
+        const shapeTarget = targetEl?.closest?.("[data-shape-id]") as
+          | (HTMLElement | SVGElement)
+          | null;
+        const shapeId = shapeTarget?.dataset?.shapeId;
         if (shapeId) {
           if (e.shiftKey) {
+            // Pure selection toggle — no move-priming on shift-click.
             dispatch({ type: "TOGGLE_SELECT", id: shapeId });
-          } else if (!doc.selectedIds.includes(shapeId)) {
-            dispatch({ type: "SELECT", ids: [shapeId] });
+            e.preventDefault();
+            return;
           }
-          // Drag-to-move attaches in the transformation step.
+          // No shift: select if not already, then prime a move.
+          let nextSelected = doc.selectedIds;
+          if (!doc.selectedIds.includes(shapeId)) {
+            dispatch({ type: "SELECT", ids: [shapeId] });
+            nextSelected = [shapeId];
+          }
+          const originals = new Map<string, { x: number; y: number }>();
+          for (const id of nextSelected) {
+            const s = doc.shapes.find((sh) => sh.id === id);
+            if (s) originals.set(id, { x: s.x, y: s.y });
+          }
+          if (originals.size > 0) {
+            setTransform({
+              kind: "move",
+              pointerId: e.pointerId,
+              startDocX: docPoint.x,
+              startDocY: docPoint.y,
+              currentDocX: docPoint.x,
+              currentDocY: docPoint.y,
+              originals,
+            });
+            (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+          }
           e.preventDefault();
           return;
         }
@@ -276,6 +406,26 @@ export default function StudioPage() {
         return;
       }
 
+      if (transform && transform.pointerId === e.pointerId) {
+        const screen = screenPointFromEvent(e);
+        const docPoint = screenToDoc(
+          screen.x,
+          screen.y,
+          doc.viewportX,
+          doc.viewportY,
+          doc.zoom,
+        );
+        setTransform({
+          ...transform,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+          ...((transform.kind === "rotate" || transform.kind === "resize")
+            ? { shift: e.shiftKey }
+            : {}),
+        } as TransformInteraction);
+        return;
+      }
+
       if (
         selectInteraction &&
         selectInteraction.pointerId === e.pointerId &&
@@ -324,6 +474,7 @@ export default function StudioPage() {
       doc.viewportY,
       drawing,
       selectInteraction,
+      transform,
       screenPointFromEvent,
     ],
   );
@@ -332,6 +483,66 @@ export default function StudioPage() {
     (e: ReactPointerEvent<SVGSVGElement>) => {
       if (panRef.current && panRef.current.pointerId === e.pointerId) {
         panRef.current = null;
+        (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+        return;
+      }
+
+      if (transform && transform.pointerId === e.pointerId) {
+        const t = transform;
+        const shiftAtUp = e.shiftKey;
+        const grid = doc.gridSpacing;
+        const snapped = doc.snapToGrid;
+        if (t.kind === "move") {
+          const dx = t.currentDocX - t.startDocX;
+          const dy = t.currentDocY - t.startDocY;
+          const sdx = snapped ? Math.round(dx / grid) * grid : dx;
+          const sdy = snapped ? Math.round(dy / grid) * grid : dy;
+          if (sdx !== 0 || sdy !== 0) {
+            const updated: Shape[] = [];
+            t.originals.forEach((orig, id) => {
+              const s = doc.shapes.find((sh) => sh.id === id);
+              if (!s) return;
+              updated.push({ ...s, x: orig.x + sdx, y: orig.y + sdy });
+            });
+            if (updated.length > 0)
+              dispatch({ type: "UPDATE_SHAPES", shapes: updated });
+          }
+        } else if (t.kind === "resize") {
+          const cursor = snapped
+            ? snapPoint(t.currentDocX, t.currentDocY, grid, true)
+            : { x: t.currentDocX, y: t.currentDocY };
+          const next = resizeRectLikeShape(
+            t.original,
+            t.handle,
+            cursor.x,
+            cursor.y,
+            shiftAtUp || t.shift,
+          );
+          dispatch({ type: "UPDATE_SHAPES", shapes: [next] });
+        } else if (t.kind === "resize-line") {
+          const cursor = snapped
+            ? snapPoint(t.currentDocX, t.currentDocY, grid, true)
+            : { x: t.currentDocX, y: t.currentDocY };
+          const next = resizeLineEndpoint(
+            t.original,
+            t.handle,
+            cursor.x,
+            cursor.y,
+          );
+          dispatch({ type: "UPDATE_SHAPES", shapes: [next] });
+        } else if (t.kind === "rotate") {
+          const next = rotateShape(
+            t.original,
+            t.currentDocX,
+            t.currentDocY,
+            t.initialPointerAngleDeg,
+            shiftAtUp || t.shift,
+          );
+          if (next.rotation !== t.original.rotation) {
+            dispatch({ type: "UPDATE_SHAPES", shapes: [next] });
+          }
+        }
+        setTransform(null);
         (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
         return;
       }
@@ -408,6 +619,7 @@ export default function StudioPage() {
     [
       drawing,
       selectInteraction,
+      transform,
       doc.gridSpacing,
       doc.snapToGrid,
       doc.zoom,
@@ -571,6 +783,59 @@ export default function StudioPage() {
     });
   }, [drawing]);
 
+  // Live shape overrides while a transform is in progress (no history churn).
+  const liveShapeOverrides = useMemo<Map<string, Shape>>(() => {
+    const overrides = new Map<string, Shape>();
+    if (!transform) return overrides;
+    if (transform.kind === "move") {
+      const dx = transform.currentDocX - transform.startDocX;
+      const dy = transform.currentDocY - transform.startDocY;
+      transform.originals.forEach((orig, id) => {
+        const s = doc.shapes.find((sh) => sh.id === id);
+        if (!s) return;
+        overrides.set(id, { ...s, x: orig.x + dx, y: orig.y + dy });
+      });
+    } else if (transform.kind === "resize") {
+      const next = resizeRectLikeShape(
+        transform.original,
+        transform.handle,
+        transform.currentDocX,
+        transform.currentDocY,
+        transform.shift,
+      );
+      overrides.set(transform.targetId, next);
+    } else if (transform.kind === "resize-line") {
+      const next = resizeLineEndpoint(
+        transform.original,
+        transform.handle,
+        transform.currentDocX,
+        transform.currentDocY,
+      );
+      overrides.set(transform.targetId, next);
+    } else if (transform.kind === "rotate") {
+      const next = rotateShape(
+        transform.original,
+        transform.currentDocX,
+        transform.currentDocY,
+        transform.initialPointerAngleDeg,
+        transform.shift,
+      );
+      overrides.set(transform.targetId, next);
+    }
+    return overrides;
+  }, [transform, doc.shapes]);
+
+  const displayShapes = useMemo<Shape[]>(() => {
+    if (liveShapeOverrides.size === 0) return doc.shapes;
+    return doc.shapes.map((s) => liveShapeOverrides.get(s.id) ?? s);
+  }, [doc.shapes, liveShapeOverrides]);
+
+  const selectedSingleShape = useMemo<Shape | null>(() => {
+    if (doc.selectedIds.length !== 1) return null;
+    const id = doc.selectedIds[0];
+    return displayShapes.find((s) => s.id === id) ?? null;
+  }, [doc.selectedIds, displayShapes]);
+
   const marqueeRect = useMemo(() => {
     if (!selectInteraction || selectInteraction.kind !== "marquee") return null;
     const r = rectFromCorners(
@@ -606,7 +871,7 @@ export default function StudioPage() {
       <div ref={containerRef} className="relative flex-1 overflow-hidden">
         <Canvas
           ref={svgRef}
-          shapes={doc.shapes}
+          shapes={displayShapes}
           selectedIds={doc.selectedIds}
           viewportX={doc.viewportX}
           viewportY={doc.viewportY}
@@ -620,11 +885,19 @@ export default function StudioPage() {
           onPointerUp={handlePointerUp}
           onWheel={handleWheel}
           overlay={
-            <ToolOverlay
-              preview={previewShape}
-              zoomScale={1 / doc.zoom}
-              marquee={marqueeRect}
-            />
+            <>
+              {selectedSingleShape && !drawing ? (
+                <SelectionHandles
+                  shape={selectedSingleShape}
+                  zoomScale={1 / doc.zoom}
+                />
+              ) : null}
+              <ToolOverlay
+                preview={previewShape}
+                zoomScale={1 / doc.zoom}
+                marquee={marqueeRect}
+              />
+            </>
           }
         />
       </div>

@@ -123,3 +123,65 @@ export function formatDisplay(valueMm: number, unit: "mm" | "in"): string {
   const decimals = unit === "in" ? 3 : 2;
   return v.toFixed(decimals);
 }
+
+export function localToDoc(
+  shape: Pick<Shape, "x" | "y" | "rotation">,
+  lx: number,
+  ly: number,
+): { x: number; y: number } {
+  const r = (shape.rotation * Math.PI) / 180;
+  const cos = Math.cos(r);
+  const sin = Math.sin(r);
+  return {
+    x: shape.x + lx * cos - ly * sin,
+    y: shape.y + lx * sin + ly * cos,
+  };
+}
+
+export function docToLocal(
+  shape: Pick<Shape, "x" | "y" | "rotation">,
+  dx: number,
+  dy: number,
+): { x: number; y: number } {
+  const r = (shape.rotation * Math.PI) / 180;
+  const cos = Math.cos(r);
+  const sin = Math.sin(r);
+  const tx = dx - shape.x;
+  const ty = dy - shape.y;
+  return { x: tx * cos + ty * sin, y: -tx * sin + ty * cos };
+}
+
+export type ResizeHandle =
+  | "tl"
+  | "tr"
+  | "bl"
+  | "br"
+  | "t"
+  | "b"
+  | "l"
+  | "r";
+
+export type LineEndpointHandle = "endpoint-1" | "endpoint-2";
+
+export type TransformHandle = ResizeHandle | LineEndpointHandle | "rotate";
+
+export function handleSign(handle: ResizeHandle): { sx: -1 | 0 | 1; sy: -1 | 0 | 1 } {
+  switch (handle) {
+    case "tl":
+      return { sx: -1, sy: -1 };
+    case "tr":
+      return { sx: 1, sy: -1 };
+    case "bl":
+      return { sx: -1, sy: 1 };
+    case "br":
+      return { sx: 1, sy: 1 };
+    case "t":
+      return { sx: 0, sy: -1 };
+    case "b":
+      return { sx: 0, sy: 1 };
+    case "l":
+      return { sx: -1, sy: 0 };
+    case "r":
+      return { sx: 1, sy: 0 };
+  }
+}
