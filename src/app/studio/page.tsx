@@ -21,7 +21,13 @@ import {
   reducer,
 } from "@/lib/studio/reducer";
 import { MAX_ZOOM, MIN_ZOOM } from "@/lib/studio/constants";
-import { rectFromCorners, screenToDoc, snapPoint } from "@/lib/studio/geometry";
+import {
+  boxesIntersect,
+  rectFromCorners,
+  screenToDoc,
+  shapeBounds,
+  snapPoint,
+} from "@/lib/studio/geometry";
 import {
   createCircle,
   createLine,
@@ -100,6 +106,19 @@ export default function StudioPage() {
       };
   const [drawing, setDrawing] = useState<DrawingState | null>(null);
 
+  // Active select-tool interaction (marquee drag).
+  type SelectInteraction = {
+    kind: "marquee";
+    pointerId: number;
+    additive: boolean;
+    startDocX: number;
+    startDocY: number;
+    currentDocX: number;
+    currentDocY: number;
+  };
+  const [selectInteraction, setSelectInteraction] =
+    useState<SelectInteraction | null>(null);
+
   const screenPointFromEvent = useCallback(
     (e: ReactPointerEvent<SVGSVGElement> | ReactWheelEvent<SVGSVGElement>) => {
       const svg = svgRef.current;
@@ -136,6 +155,37 @@ export default function StudioPage() {
         doc.viewportY,
         doc.zoom,
       );
+
+      if (activeTool === "select") {
+        const target = (e.target as Element | null)?.closest?.(
+          "[data-shape-id]",
+        ) as HTMLElement | SVGElement | null;
+        const shapeId = target?.dataset?.shapeId;
+        if (shapeId) {
+          if (e.shiftKey) {
+            dispatch({ type: "TOGGLE_SELECT", id: shapeId });
+          } else if (!doc.selectedIds.includes(shapeId)) {
+            dispatch({ type: "SELECT", ids: [shapeId] });
+          }
+          // Drag-to-move attaches in the transformation step.
+          e.preventDefault();
+          return;
+        }
+        // Empty canvas: start a marquee. We treat a no-movement gesture as a
+        // click-to-deselect on pointer-up.
+        setSelectInteraction({
+          kind: "marquee",
+          pointerId: e.pointerId,
+          additive: e.shiftKey,
+          startDocX: docPoint.x,
+          startDocY: docPoint.y,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+        });
+        (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+        e.preventDefault();
+        return;
+      }
 
       if (activeTool === "rectangle" || activeTool === "circle") {
         setDrawing({
@@ -226,6 +276,27 @@ export default function StudioPage() {
         return;
       }
 
+      if (
+        selectInteraction &&
+        selectInteraction.pointerId === e.pointerId &&
+        selectInteraction.kind === "marquee"
+      ) {
+        const screen = screenPointFromEvent(e);
+        const docPoint = screenToDoc(
+          screen.x,
+          screen.y,
+          doc.viewportX,
+          doc.viewportY,
+          doc.zoom,
+        );
+        setSelectInteraction({
+          ...selectInteraction,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+        });
+        return;
+      }
+
       if (!drawing) return;
       const matchesDrag =
         drawing.kind === "drag" && drawing.pointerId === e.pointerId;
@@ -247,13 +318,59 @@ export default function StudioPage() {
         shift: e.shiftKey,
       });
     },
-    [doc.zoom, doc.viewportX, doc.viewportY, drawing, screenPointFromEvent],
+    [
+      doc.zoom,
+      doc.viewportX,
+      doc.viewportY,
+      drawing,
+      selectInteraction,
+      screenPointFromEvent,
+    ],
   );
 
   const handlePointerUp = useCallback(
     (e: ReactPointerEvent<SVGSVGElement>) => {
       if (panRef.current && panRef.current.pointerId === e.pointerId) {
         panRef.current = null;
+        (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+        return;
+      }
+
+      if (
+        selectInteraction &&
+        selectInteraction.kind === "marquee" &&
+        selectInteraction.pointerId === e.pointerId
+      ) {
+        const r = rectFromCorners(
+          selectInteraction.startDocX,
+          selectInteraction.startDocY,
+          selectInteraction.currentDocX,
+          selectInteraction.currentDocY,
+        );
+        const screenWidthPx = r.width * doc.zoom;
+        const screenHeightPx = r.height * doc.zoom;
+        const moved = screenWidthPx > 2 || screenHeightPx > 2;
+        if (!moved) {
+          // Click on empty canvas — clear selection unless additive.
+          if (!selectInteraction.additive) {
+            dispatch({ type: "CLEAR_SELECTION" });
+          }
+        } else {
+          const marqueeBox = {
+            minX: r.x - r.width / 2,
+            minY: r.y - r.height / 2,
+            maxX: r.x + r.width / 2,
+            maxY: r.y + r.height / 2,
+          };
+          const intersected = doc.shapes
+            .filter((s) => boxesIntersect(shapeBounds(s), marqueeBox))
+            .map((s) => s.id);
+          const next = selectInteraction.additive
+            ? Array.from(new Set([...doc.selectedIds, ...intersected]))
+            : intersected;
+          dispatch({ type: "SELECT", ids: next });
+        }
+        setSelectInteraction(null);
         (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
         return;
       }
@@ -288,7 +405,15 @@ export default function StudioPage() {
         return;
       }
     },
-    [drawing, doc.gridSpacing, doc.snapToGrid],
+    [
+      drawing,
+      selectInteraction,
+      doc.gridSpacing,
+      doc.snapToGrid,
+      doc.zoom,
+      doc.shapes,
+      doc.selectedIds,
+    ],
   );
 
   const handleWheel = useCallback(
@@ -446,6 +571,23 @@ export default function StudioPage() {
     });
   }, [drawing]);
 
+  const marqueeRect = useMemo(() => {
+    if (!selectInteraction || selectInteraction.kind !== "marquee") return null;
+    const r = rectFromCorners(
+      selectInteraction.startDocX,
+      selectInteraction.startDocY,
+      selectInteraction.currentDocX,
+      selectInteraction.currentDocY,
+    );
+    if (r.width <= 0 && r.height <= 0) return null;
+    return {
+      x: r.x - r.width / 2,
+      y: r.y - r.height / 2,
+      width: r.width,
+      height: r.height,
+    };
+  }, [selectInteraction]);
+
   const handleExport = useCallback(() => {
     // Wired in a later step.
   }, []);
@@ -481,7 +623,7 @@ export default function StudioPage() {
             <ToolOverlay
               preview={previewShape}
               zoomScale={1 / doc.zoom}
-              marquee={null}
+              marquee={marqueeRect}
             />
           }
         />
