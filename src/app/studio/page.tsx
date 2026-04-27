@@ -896,10 +896,24 @@ export default function StudioPage() {
         return;
       }
 
+      if (e.key === "Escape") {
+        // Priority order per Phase 2 spec.
+        if (editingTextShapeId) {
+          setEditingTextShapeId(null);
+        } else if (doc.selectedIds.length > 0) {
+          dispatch({ type: "CLEAR_SELECTION" });
+        } else if (activeTool !== "select") {
+          setActiveTool("select");
+        } else if (drawing) {
+          setDrawing(null);
+        }
+        e.preventDefault();
+        return;
+      }
+
       switch (e.key) {
         case "v":
         case "V":
-        case "Escape":
           setActiveTool("select");
           setDrawing(null);
           break;
@@ -945,6 +959,10 @@ export default function StudioPage() {
     handlePaste,
     handleDuplicate,
     handleCut,
+    activeTool,
+    drawing,
+    editingTextShapeId,
+    doc.selectedIds,
   ]);
 
   const cursor = useMemo(() => {
@@ -1172,6 +1190,7 @@ export default function StudioPage() {
             viewWidthMm={viewWidthMm}
             viewHeightMm={viewHeightMm}
             cursor={cursor}
+            shapesInteractive={activeTool === "select"}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}

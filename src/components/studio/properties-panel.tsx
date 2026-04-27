@@ -102,7 +102,8 @@ function PanelBody({
 }: PropertiesPanelProps) {
   if (selectedShapes.length === 0) {
     return (
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-6">
+        <EmptyStateHints />
         <Section label="Document">
           <NumberField
             label="Grid"
@@ -542,6 +543,30 @@ function LineEndpointFields({
         suffix={unit}
       />
     </Section>
+  );
+}
+
+function EmptyStateHints() {
+  const items: { key: string; label: string }[] = [
+    { key: "R", label: "Rectangle" },
+    { key: "C", label: "Circle" },
+    { key: "L", label: "Line" },
+    { key: "T", label: "Text" },
+  ];
+  return (
+    <div className="flex flex-col items-center gap-3 pt-2 text-center text-wood-light/40">
+      <p className="text-xs">Draw something to get started.</p>
+      <ul className="flex flex-col gap-1.5 text-[11px]">
+        {items.map((it) => (
+          <li key={it.key} className="flex items-center justify-center gap-2">
+            <kbd className="rounded border border-wood/15 bg-white/60 px-1.5 py-0.5 font-mono text-[10px] text-wood-light/70">
+              {it.key}
+            </kbd>
+            <span>{it.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
