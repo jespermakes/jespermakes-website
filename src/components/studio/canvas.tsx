@@ -78,6 +78,7 @@ export const Canvas = forwardRef<SVGSVGElement, CanvasProps>(function Canvas(
         viewportY={viewportY}
         viewWidthMm={viewWidthMm}
         viewHeightMm={viewHeightMm}
+        zoom={zoom}
       />
       <g>
         {shapes.map((shape) => (

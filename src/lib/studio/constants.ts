@@ -6,8 +6,6 @@ export const SELECTION_STROKE = "#3B82F6";
 export const SELECTION_STROKE_WIDTH = 0.3;
 
 export const CANVAS_BACKGROUND = "#FAF7F2";
-export const GRID_MINOR = "rgba(74, 50, 40, 0.05)";
-export const GRID_MAJOR = "rgba(74, 50, 40, 0.12)";
 
 export const DEFAULT_GRID_SPACING = 10;
 export const DEFAULT_ZOOM = 3;
