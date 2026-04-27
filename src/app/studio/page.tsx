@@ -37,11 +37,11 @@ import {
   createRectangle,
 } from "@/lib/studio/shape-factory";
 import {
-  moveShapes,
   resizeLineEndpoint,
   resizeRectLikeShape,
   rotateShape,
 } from "@/lib/studio/transform";
+import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
 import type { LineEndpointHandle, ResizeHandle } from "@/lib/studio/geometry";
 import type { Shape, Tool } from "@/lib/studio/types";
 
@@ -390,7 +390,10 @@ export default function StudioPage() {
       doc.zoom,
       doc.gridSpacing,
       doc.snapToGrid,
+      doc.selectedIds,
+      doc.shapes,
       screenPointFromEvent,
+      setActiveTool,
     ],
   );
 
@@ -594,7 +597,7 @@ export default function StudioPage() {
         drawing.pointerId === e.pointerId
       ) {
         const shift = e.shiftKey || drawing.shift;
-        let { startDocX: ax, startDocY: ay } = drawing;
+        const { startDocX: ax, startDocY: ay } = drawing;
         let bx = drawing.currentDocX;
         let by = drawing.currentDocY;
         if (shift) {
@@ -627,6 +630,7 @@ export default function StudioPage() {
       doc.zoom,
       doc.shapes,
       doc.selectedIds,
+      setActiveTool,
     ],
   );
 
@@ -736,7 +740,7 @@ export default function StudioPage() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
     };
-  }, [spaceHeld]);
+  }, [spaceHeld, setActiveTool]);
 
   const cursor = useMemo(() => {
     if (panRef.current) return "grabbing";
@@ -884,8 +888,10 @@ export default function StudioPage() {
   }, [canvasSize.height, canvasSize.width, doc.shapes]);
 
   const handleExport = useCallback(() => {
-    // Wired in a later step.
-  }, []);
+    if (doc.shapes.length === 0) return;
+    const svg = exportSVG(doc.shapes);
+    downloadSVG(svg, "design.svg");
+  }, [doc.shapes]);
 
   return (
     <div className="flex h-full w-full">

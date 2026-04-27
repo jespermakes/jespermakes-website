@@ -9,15 +9,6 @@ import type { Shape } from "./types";
 
 const MIN_DIM = 0.0001;
 
-export function moveShapes(
-  shapes: Shape[],
-  dx: number,
-  dy: number,
-): Shape[] {
-  if (dx === 0 && dy === 0) return shapes;
-  return shapes.map((s) => ({ ...s, x: s.x + dx, y: s.y + dy }));
-}
-
 export function resizeRectLikeShape(
   orig: Shape,
   handle: ResizeHandle,
