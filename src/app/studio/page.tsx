@@ -13,6 +13,7 @@ import {
 } from "react";
 import { Canvas } from "@/components/studio/canvas";
 import { Toolbar } from "@/components/studio/toolbar";
+import { ToolOverlay } from "@/components/studio/tool-overlay";
 import {
   canRedo,
   canUndo,
@@ -20,8 +21,9 @@ import {
   reducer,
 } from "@/lib/studio/reducer";
 import { MAX_ZOOM, MIN_ZOOM } from "@/lib/studio/constants";
-import { screenToDoc } from "@/lib/studio/geometry";
-import type { Tool } from "@/lib/studio/types";
+import { rectFromCorners, screenToDoc, snapPoint } from "@/lib/studio/geometry";
+import { createRectangle } from "@/lib/studio/shape-factory";
+import type { Shape, Tool } from "@/lib/studio/types";
 
 export default function StudioPage() {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
@@ -65,6 +67,21 @@ export default function StudioPage() {
     | null
   >(null);
 
+  // Active drawing operation (rectangle/circle drag, or line two-click).
+  const [drawing, setDrawing] = useState<
+    | {
+        kind: "drag";
+        tool: "rectangle" | "circle";
+        pointerId: number;
+        startDocX: number;
+        startDocY: number;
+        currentDocX: number;
+        currentDocY: number;
+        shift: boolean;
+      }
+    | null
+  >(null);
+
   const screenPointFromEvent = useCallback(
     (e: ReactPointerEvent<SVGSVGElement> | ReactWheelEvent<SVGSVGElement>) => {
       const svg = svgRef.current;
@@ -79,8 +96,8 @@ export default function StudioPage() {
     (e: ReactPointerEvent<SVGSVGElement>) => {
       const isMiddle = e.button === 1;
       const wantsPan = spaceHeld || isMiddle;
+      const screen = screenPointFromEvent(e);
       if (wantsPan) {
-        const screen = screenPointFromEvent(e);
         panRef.current = {
           pointerId: e.pointerId,
           startScreenX: screen.x,
@@ -88,12 +105,44 @@ export default function StudioPage() {
           startViewportX: doc.viewportX,
           startViewportY: doc.viewportY,
         };
-        (e.target as Element).setPointerCapture?.(e.pointerId);
+        (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+        e.preventDefault();
+        return;
+      }
+
+      if (e.button !== 0) return;
+      const docPoint = screenToDoc(
+        screen.x,
+        screen.y,
+        doc.viewportX,
+        doc.viewportY,
+        doc.zoom,
+      );
+
+      if (activeTool === "rectangle") {
+        setDrawing({
+          kind: "drag",
+          tool: activeTool,
+          pointerId: e.pointerId,
+          startDocX: docPoint.x,
+          startDocY: docPoint.y,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+          shift: e.shiftKey,
+        });
+        (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
         e.preventDefault();
         return;
       }
     },
-    [spaceHeld, doc.viewportX, doc.viewportY, screenPointFromEvent],
+    [
+      activeTool,
+      spaceHeld,
+      doc.viewportX,
+      doc.viewportY,
+      doc.zoom,
+      screenPointFromEvent,
+    ],
   );
 
   const handlePointerMove = useCallback(
@@ -109,19 +158,65 @@ export default function StudioPage() {
         });
         return;
       }
+
+      if (drawing && drawing.pointerId === e.pointerId) {
+        const screen = screenPointFromEvent(e);
+        const docPoint = screenToDoc(
+          screen.x,
+          screen.y,
+          doc.viewportX,
+          doc.viewportY,
+          doc.zoom,
+        );
+        setDrawing({
+          ...drawing,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+          shift: e.shiftKey,
+        });
+        return;
+      }
     },
-    [doc.zoom, screenPointFromEvent],
+    [doc.zoom, doc.viewportX, doc.viewportY, drawing, screenPointFromEvent],
   );
 
   const handlePointerUp = useCallback(
     (e: ReactPointerEvent<SVGSVGElement>) => {
       if (panRef.current && panRef.current.pointerId === e.pointerId) {
         panRef.current = null;
-        (e.target as Element).releasePointerCapture?.(e.pointerId);
+        (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+        return;
+      }
+
+      if (drawing && drawing.pointerId === e.pointerId) {
+        const shift = e.shiftKey || drawing.shift;
+        let { startDocX: ax, startDocY: ay } = drawing;
+        let bx = drawing.currentDocX;
+        let by = drawing.currentDocY;
+        if (shift) {
+          const dx = bx - ax;
+          const dy = by - ay;
+          const size = Math.max(Math.abs(dx), Math.abs(dy));
+          bx = ax + Math.sign(dx || 1) * size;
+          by = ay + Math.sign(dy || 1) * size;
+        }
+        const a = snapPoint(ax, ay, doc.gridSpacing, doc.snapToGrid);
+        const b = snapPoint(bx, by, doc.gridSpacing, doc.snapToGrid);
+        const r = rectFromCorners(a.x, a.y, b.x, b.y);
+        if (r.width > 0 && r.height > 0) {
+          const shape: Shape =
+            drawing.tool === "rectangle"
+              ? createRectangle(r)
+              : createRectangle(r); // circle handled in a later step
+          dispatch({ type: "ADD_SHAPE", shape, selectAfter: true });
+          setActiveTool("select");
+        }
+        setDrawing(null);
+        (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
         return;
       }
     },
-    [],
+    [drawing, doc.gridSpacing, doc.snapToGrid],
   );
 
   const handleWheel = useCallback(
@@ -238,6 +333,24 @@ export default function StudioPage() {
     return "crosshair";
   }, [activeTool, spaceHeld]);
 
+  const previewShape = useMemo<Shape | null>(() => {
+    if (!drawing) return null;
+    let { startDocX: ax, startDocY: ay } = drawing;
+    let bx = drawing.currentDocX;
+    let by = drawing.currentDocY;
+    if (drawing.shift) {
+      const dx = bx - ax;
+      const dy = by - ay;
+      const size = Math.max(Math.abs(dx), Math.abs(dy));
+      bx = ax + Math.sign(dx || 1) * size;
+      by = ay + Math.sign(dy || 1) * size;
+    }
+    const r = rectFromCorners(ax, ay, bx, by);
+    if (r.width === 0 && r.height === 0) return null;
+    if (drawing.tool === "rectangle") return createRectangle(r);
+    return createRectangle(r); // circle preview added in next step
+  }, [drawing]);
+
   const handleExport = useCallback(() => {
     // Wired in a later step.
   }, []);
@@ -269,6 +382,13 @@ export default function StudioPage() {
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onWheel={handleWheel}
+          overlay={
+            <ToolOverlay
+              preview={previewShape}
+              zoomScale={1 / doc.zoom}
+              marquee={null}
+            />
+          }
         />
       </div>
     </div>
