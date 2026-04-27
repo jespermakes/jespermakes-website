@@ -19,6 +19,7 @@ export interface StudioState {
 
 export type StudioAction =
   | { type: "ADD_SHAPE"; shape: Shape; selectAfter?: boolean }
+  | { type: "ADD_SHAPES"; shapes: Shape[]; selectAfter?: boolean }
   | { type: "UPDATE_SHAPES"; shapes: Shape[] }
   | { type: "DELETE_SELECTED" }
   | { type: "SELECT"; ids: string[] }
@@ -36,6 +37,7 @@ export type StudioAction =
 
 const ACTIONS_THAT_MODIFY_SHAPES: StudioAction["type"][] = [
   "ADD_SHAPE",
+  "ADD_SHAPES",
   "UPDATE_SHAPES",
   "DELETE_SELECTED",
 ];
@@ -96,6 +98,18 @@ export function reducer(state: StudioState, action: StudioAction): StudioState {
         ...doc,
         shapes: [...doc.shapes, action.shape],
         selectedIds: action.selectAfter ? [action.shape.id] : doc.selectedIds,
+      };
+      return applyShapeMutation(state, next);
+    }
+
+    case "ADD_SHAPES": {
+      if (action.shapes.length === 0) return state;
+      const next: StudioDocument = {
+        ...doc,
+        shapes: [...doc.shapes, ...action.shapes],
+        selectedIds: action.selectAfter
+          ? action.shapes.map((s) => s.id)
+          : doc.selectedIds,
       };
       return applyShapeMutation(state, next);
     }

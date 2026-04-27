@@ -13,7 +13,9 @@ import {
 } from "react";
 import { Canvas } from "@/components/studio/canvas";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
+import { Ruler, RulerCorner } from "@/components/studio/ruler";
 import { SelectionHandles } from "@/components/studio/selection-handles";
+import { StatusBar } from "@/components/studio/status-bar";
 import { Toolbar } from "@/components/studio/toolbar";
 import { ToolOverlay } from "@/components/studio/tool-overlay";
 import {
@@ -35,6 +37,8 @@ import {
   createCircle,
   createLine,
   createRectangle,
+  createText,
+  generateId,
 } from "@/lib/studio/shape-factory";
 import {
   resizeLineEndpoint,
@@ -42,8 +46,18 @@ import {
   rotateShape,
 } from "@/lib/studio/transform";
 import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
+import {
+  applyMoveSnap,
+  snapThresholdMm,
+  type GuideLine,
+} from "@/lib/studio/guides";
 import type { LineEndpointHandle, ResizeHandle } from "@/lib/studio/geometry";
 import type { Shape, Tool } from "@/lib/studio/types";
+
+// Module-level clipboard: shapes copied within the app, not the system
+// clipboard. Persists across mount cycles within a single page session.
+let clipboard: Shape[] | null = null;
+const PASTE_OFFSET_MM = 10;
 
 export default function StudioPage() {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
@@ -63,6 +77,34 @@ export default function StudioPage() {
 
   // Track canvas pixel dimensions so we can compute the viewBox in mm.
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+  const [cursorDocPos, setCursorDocPos] = useState<{ x: number; y: number } | null>(
+    null,
+  );
+  const [editingTextShapeId, setEditingTextShapeId] = useState<string | null>(
+    null,
+  );
+  const [toast, setToast] = useState<string | null>(null);
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showToast = useCallback((msg: string) => {
+    setToast(msg);
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = setTimeout(() => setToast(null), 1200);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
+  }, []);
+
+  // Clear text editing whenever the selection no longer contains the shape.
+  useEffect(() => {
+    if (!editingTextShapeId) return;
+    if (!doc.selectedIds.includes(editingTextShapeId)) {
+      setEditingTextShapeId(null);
+    }
+  }, [doc.selectedIds, editingTextShapeId]);
 
   useLayoutEffect(() => {
     const el = containerRef.current;
@@ -335,6 +377,21 @@ export default function StudioPage() {
         return;
       }
 
+      if (activeTool === "text") {
+        const snapped = snapPoint(
+          docPoint.x,
+          docPoint.y,
+          doc.gridSpacing,
+          doc.snapToGrid,
+        );
+        const shape = createText({ x: snapped.x, y: snapped.y });
+        dispatch({ type: "ADD_SHAPE", shape, selectAfter: true });
+        setActiveTool("select");
+        setEditingTextShapeId(shape.id);
+        e.preventDefault();
+        return;
+      }
+
       if (activeTool === "line") {
         if (!drawing) {
           // First click — record start, await the second click.
@@ -399,8 +456,17 @@ export default function StudioPage() {
 
   const handlePointerMove = useCallback(
     (e: ReactPointerEvent<SVGSVGElement>) => {
+      const screen = screenPointFromEvent(e);
+      const docPoint = screenToDoc(
+        screen.x,
+        screen.y,
+        doc.viewportX,
+        doc.viewportY,
+        doc.zoom,
+      );
+      setCursorDocPos(docPoint);
+
       if (panRef.current && panRef.current.pointerId === e.pointerId) {
-        const screen = screenPointFromEvent(e);
         const dxMm = (screen.x - panRef.current.startScreenX) / doc.zoom;
         const dyMm = (screen.y - panRef.current.startScreenY) / doc.zoom;
         dispatch({
@@ -412,14 +478,6 @@ export default function StudioPage() {
       }
 
       if (transform && transform.pointerId === e.pointerId) {
-        const screen = screenPointFromEvent(e);
-        const docPoint = screenToDoc(
-          screen.x,
-          screen.y,
-          doc.viewportX,
-          doc.viewportY,
-          doc.zoom,
-        );
         setTransform({
           ...transform,
           currentDocX: docPoint.x,
@@ -436,14 +494,6 @@ export default function StudioPage() {
         selectInteraction.pointerId === e.pointerId &&
         selectInteraction.kind === "marquee"
       ) {
-        const screen = screenPointFromEvent(e);
-        const docPoint = screenToDoc(
-          screen.x,
-          screen.y,
-          doc.viewportX,
-          doc.viewportY,
-          doc.zoom,
-        );
         setSelectInteraction({
           ...selectInteraction,
           currentDocX: docPoint.x,
@@ -458,14 +508,6 @@ export default function StudioPage() {
       const matchesTwoClick = drawing.kind === "two-click";
       if (!matchesDrag && !matchesTwoClick) return;
 
-      const screen = screenPointFromEvent(e);
-      const docPoint = screenToDoc(
-        screen.x,
-        screen.y,
-        doc.viewportX,
-        doc.viewportY,
-        doc.zoom,
-      );
       setDrawing({
         ...drawing,
         currentDocX: docPoint.x,
@@ -498,16 +540,33 @@ export default function StudioPage() {
         const grid = doc.gridSpacing;
         const snapped = doc.snapToGrid;
         if (t.kind === "move") {
-          const dx = t.currentDocX - t.startDocX;
-          const dy = t.currentDocY - t.startDocY;
-          const sdx = snapped ? Math.round(dx / grid) * grid : dx;
-          const sdy = snapped ? Math.round(dy / grid) * grid : dy;
-          if (sdx !== 0 || sdy !== 0) {
+          const rawDx = t.currentDocX - t.startDocX;
+          const rawDy = t.currentDocY - t.startDocY;
+          const movingShapes = doc.shapes.filter((s) =>
+            t.originals.has(s.id),
+          );
+          const staticShapes = doc.shapes.filter(
+            (s) => !t.originals.has(s.id),
+          );
+          const result = applyMoveSnap({
+            movingShapes,
+            rawDx,
+            rawDy,
+            staticShapes,
+            threshold: snapThresholdMm(doc.zoom),
+            gridSpacing: grid,
+            snapToGrid: snapped,
+          });
+          if (result.dx !== 0 || result.dy !== 0) {
             const updated: Shape[] = [];
             t.originals.forEach((orig, id) => {
               const s = doc.shapes.find((sh) => sh.id === id);
               if (!s) return;
-              updated.push({ ...s, x: orig.x + sdx, y: orig.y + sdy });
+              updated.push({
+                ...s,
+                x: orig.x + result.dx,
+                y: orig.y + result.dy,
+              });
             });
             if (updated.length > 0)
               dispatch({ type: "UPDATE_SHAPES", shapes: updated });
@@ -633,6 +692,7 @@ export default function StudioPage() {
       setActiveTool,
     ],
   );
+  // Note: doc.zoom + applyMoveSnap dep already in scope via state above.
 
   const handleWheel = useCallback(
     (e: ReactWheelEvent<SVGSVGElement>) => {
@@ -662,6 +722,114 @@ export default function StudioPage() {
     },
     [doc.zoom, doc.viewportX, doc.viewportY, screenPointFromEvent],
   );
+
+  const handleFitAll = useCallback(() => {
+    if (canvasSize.width === 0 || canvasSize.height === 0) return;
+    const bounds =
+      doc.shapes.length > 0
+        ? shapesBounds(doc.shapes)
+        : { minX: -100, minY: -100, maxX: 100, maxY: 100 };
+    if (!bounds) return;
+    const pad = 20;
+    const w = bounds.maxX - bounds.minX + pad * 2;
+    const h = bounds.maxY - bounds.minY + pad * 2;
+    if (w <= 0 || h <= 0) return;
+    const zoomX = canvasSize.width / w;
+    const zoomY = canvasSize.height / h;
+    const nextZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Math.min(zoomX, zoomY)));
+    const visibleW = canvasSize.width / nextZoom;
+    const visibleH = canvasSize.height / nextZoom;
+    const cx = (bounds.minX + bounds.maxX) / 2;
+    const cy = (bounds.minY + bounds.maxY) / 2;
+    dispatch({
+      type: "SET_VIEWPORT",
+      viewportX: cx - visibleW / 2,
+      viewportY: cy - visibleH / 2,
+      zoom: nextZoom,
+    });
+  }, [canvasSize.height, canvasSize.width, doc.shapes]);
+
+  const zoomCentered = useCallback(
+    (factor: number) => {
+      if (canvasSize.width === 0) return;
+      const nextZoom = Math.max(
+        MIN_ZOOM,
+        Math.min(MAX_ZOOM, doc.zoom * factor),
+      );
+      const centerScreenX = canvasSize.width / 2;
+      const centerScreenY = canvasSize.height / 2;
+      const beforeDocX = doc.viewportX + centerScreenX / doc.zoom;
+      const beforeDocY = doc.viewportY + centerScreenY / doc.zoom;
+      dispatch({
+        type: "SET_ZOOM",
+        zoom: nextZoom,
+        viewportX: beforeDocX - centerScreenX / nextZoom,
+        viewportY: beforeDocY - centerScreenY / nextZoom,
+      });
+    },
+    [canvasSize.height, canvasSize.width, doc.zoom, doc.viewportX, doc.viewportY],
+  );
+
+  const handleCopy = useCallback(() => {
+    const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
+    if (sel.length === 0) return;
+    clipboard = sel.map((s) => ({ ...s }));
+    showToast(sel.length === 1 ? "Copied" : `Copied ${sel.length}`);
+  }, [doc.shapes, doc.selectedIds, showToast]);
+
+  const handlePaste = useCallback(() => {
+    if (!clipboard || clipboard.length === 0) return;
+    const newShapes = clipboard.map((s) => ({
+      ...s,
+      id: generateId(),
+      x: s.x + PASTE_OFFSET_MM,
+      y: s.y + PASTE_OFFSET_MM,
+    }));
+    dispatch({ type: "ADD_SHAPES", shapes: newShapes, selectAfter: true });
+  }, []);
+
+  const handleDuplicate = useCallback(() => {
+    const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
+    if (sel.length === 0) return;
+    const newShapes = sel.map((s) => ({
+      ...s,
+      id: generateId(),
+      x: s.x + PASTE_OFFSET_MM,
+      y: s.y + PASTE_OFFSET_MM,
+    }));
+    dispatch({ type: "ADD_SHAPES", shapes: newShapes, selectAfter: true });
+  }, [doc.shapes, doc.selectedIds]);
+
+  const handleCut = useCallback(() => {
+    const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
+    if (sel.length === 0) return;
+    clipboard = sel.map((s) => ({ ...s }));
+    showToast(sel.length === 1 ? "Cut" : `Cut ${sel.length}`);
+    dispatch({ type: "DELETE_SELECTED" });
+  }, [doc.shapes, doc.selectedIds, showToast]);
+
+  const handleZoomIn = useCallback(() => zoomCentered(1.25), [zoomCentered]);
+  const handleZoomOut = useCallback(() => zoomCentered(1 / 1.25), [zoomCentered]);
+  const handleZoomReset = useCallback(() => {
+    if (canvasSize.width === 0) return;
+    const nextZoom = 3.78;
+    const centerScreenX = canvasSize.width / 2;
+    const centerScreenY = canvasSize.height / 2;
+    const beforeDocX = doc.viewportX + centerScreenX / doc.zoom;
+    const beforeDocY = doc.viewportY + centerScreenY / doc.zoom;
+    dispatch({
+      type: "SET_ZOOM",
+      zoom: nextZoom,
+      viewportX: beforeDocX - centerScreenX / nextZoom,
+      viewportY: beforeDocY - centerScreenY / nextZoom,
+    });
+  }, [
+    canvasSize.height,
+    canvasSize.width,
+    doc.viewportX,
+    doc.viewportY,
+    doc.zoom,
+  ]);
 
   // Keyboard shortcuts.
   useEffect(() => {
@@ -702,11 +870,50 @@ export default function StudioPage() {
         e.preventDefault();
         return;
       }
+      if (meta && e.key === "0") {
+        handleFitAll();
+        e.preventDefault();
+        return;
+      }
+      if (meta && (e.key === "c" || e.key === "C")) {
+        handleCopy();
+        e.preventDefault();
+        return;
+      }
+      if (meta && (e.key === "v" || e.key === "V")) {
+        handlePaste();
+        e.preventDefault();
+        return;
+      }
+      if (meta && (e.key === "d" || e.key === "D")) {
+        handleDuplicate();
+        e.preventDefault();
+        return;
+      }
+      if (meta && (e.key === "x" || e.key === "X")) {
+        handleCut();
+        e.preventDefault();
+        return;
+      }
+
+      if (e.key === "Escape") {
+        // Priority order per Phase 2 spec.
+        if (editingTextShapeId) {
+          setEditingTextShapeId(null);
+        } else if (doc.selectedIds.length > 0) {
+          dispatch({ type: "CLEAR_SELECTION" });
+        } else if (activeTool !== "select") {
+          setActiveTool("select");
+        } else if (drawing) {
+          setDrawing(null);
+        }
+        e.preventDefault();
+        return;
+      }
 
       switch (e.key) {
         case "v":
         case "V":
-        case "Escape":
           setActiveTool("select");
           setDrawing(null);
           break;
@@ -721,6 +928,10 @@ export default function StudioPage() {
         case "l":
         case "L":
           setActiveTool("line");
+          break;
+        case "t":
+        case "T":
+          setActiveTool("text");
           break;
         case "Delete":
         case "Backspace":
@@ -740,7 +951,19 @@ export default function StudioPage() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
     };
-  }, [spaceHeld, setActiveTool]);
+  }, [
+    spaceHeld,
+    setActiveTool,
+    handleFitAll,
+    handleCopy,
+    handlePaste,
+    handleDuplicate,
+    handleCut,
+    activeTool,
+    drawing,
+    editingTextShapeId,
+    doc.selectedIds,
+  ]);
 
   const cursor = useMemo(() => {
     if (panRef.current) return "grabbing";
@@ -789,18 +1012,43 @@ export default function StudioPage() {
     });
   }, [drawing]);
 
-  // Live shape overrides while a transform is in progress (no history churn).
-  const liveShapeOverrides = useMemo<Map<string, Shape>>(() => {
+  // Live shape overrides + smart guides while a transform is in progress
+  // (no history churn).
+  const liveTransform = useMemo<{
+    overrides: Map<string, Shape>;
+    guides: GuideLine[];
+  }>(() => {
     const overrides = new Map<string, Shape>();
-    if (!transform) return overrides;
+    const guides: GuideLine[] = [];
+    if (!transform) return { overrides, guides };
     if (transform.kind === "move") {
-      const dx = transform.currentDocX - transform.startDocX;
-      const dy = transform.currentDocY - transform.startDocY;
+      const rawDx = transform.currentDocX - transform.startDocX;
+      const rawDy = transform.currentDocY - transform.startDocY;
+      const movingShapes = doc.shapes.filter((s) =>
+        transform.originals.has(s.id),
+      );
+      const staticShapes = doc.shapes.filter(
+        (s) => !transform.originals.has(s.id),
+      );
+      const result = applyMoveSnap({
+        movingShapes,
+        rawDx,
+        rawDy,
+        staticShapes,
+        threshold: snapThresholdMm(doc.zoom),
+        gridSpacing: doc.gridSpacing,
+        snapToGrid: doc.snapToGrid,
+      });
       transform.originals.forEach((orig, id) => {
         const s = doc.shapes.find((sh) => sh.id === id);
         if (!s) return;
-        overrides.set(id, { ...s, x: orig.x + dx, y: orig.y + dy });
+        overrides.set(id, {
+          ...s,
+          x: orig.x + result.dx,
+          y: orig.y + result.dy,
+        });
       });
+      guides.push(...result.guides);
     } else if (transform.kind === "resize") {
       const next = resizeRectLikeShape(
         transform.original,
@@ -828,8 +1076,11 @@ export default function StudioPage() {
       );
       overrides.set(transform.targetId, next);
     }
-    return overrides;
-  }, [transform, doc.shapes]);
+    return { overrides, guides };
+  }, [transform, doc.shapes, doc.zoom, doc.gridSpacing, doc.snapToGrid]);
+
+  const liveShapeOverrides = liveTransform.overrides;
+  const activeGuides = liveTransform.guides;
 
   const displayShapes = useMemo<Shape[]>(() => {
     if (liveShapeOverrides.size === 0) return doc.shapes;
@@ -864,28 +1115,21 @@ export default function StudioPage() {
     [doc.shapes, doc.selectedIds],
   );
 
-  const handleFitAll = useCallback(() => {
-    if (doc.shapes.length === 0 || canvasSize.width === 0) return;
-    const bounds = shapesBounds(doc.shapes);
-    if (!bounds) return;
-    const pad = 10;
-    const w = bounds.maxX - bounds.minX + pad * 2;
-    const h = bounds.maxY - bounds.minY + pad * 2;
-    if (w <= 0 || h <= 0) return;
-    const zoomX = canvasSize.width / w;
-    const zoomY = canvasSize.height / h;
-    const nextZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Math.min(zoomX, zoomY)));
-    const visibleW = canvasSize.width / nextZoom;
-    const visibleH = canvasSize.height / nextZoom;
-    const cx = (bounds.minX + bounds.maxX) / 2;
-    const cy = (bounds.minY + bounds.maxY) / 2;
-    dispatch({
-      type: "SET_VIEWPORT",
-      viewportX: cx - visibleW / 2,
-      viewportY: cy - visibleH / 2,
-      zoom: nextZoom,
-    });
-  }, [canvasSize.height, canvasSize.width, doc.shapes]);
+  const handleDoubleClick = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      const targetEl = e.target as Element | null;
+      const shapeTarget = targetEl?.closest?.("[data-shape-id]") as
+        | (HTMLElement | SVGElement)
+        | null;
+      const shapeId = shapeTarget?.dataset?.shapeId;
+      if (!shapeId) return;
+      const shape = doc.shapes.find((s) => s.id === shapeId);
+      if (!shape || shape.type !== "text") return;
+      dispatch({ type: "SELECT", ids: [shapeId] });
+      setEditingTextShapeId(shapeId);
+    },
+    [doc.shapes],
+  );
 
   const handleExport = useCallback(() => {
     if (doc.shapes.length === 0) return;
@@ -904,37 +1148,89 @@ export default function StudioPage() {
         canUndo={canUndo(state)}
         canRedo={canRedo(state)}
       />
-      <div ref={containerRef} className="relative flex-1 overflow-hidden">
-        <Canvas
-          ref={svgRef}
-          shapes={displayShapes}
-          selectedIds={doc.selectedIds}
-          viewportX={doc.viewportX}
-          viewportY={doc.viewportY}
-          zoom={doc.zoom}
-          gridSpacing={doc.gridSpacing}
-          viewWidthMm={viewWidthMm}
-          viewHeightMm={viewHeightMm}
-          cursor={cursor}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onWheel={handleWheel}
-          overlay={
-            <>
-              {selectedSingleShape && !drawing ? (
-                <SelectionHandles
-                  shape={selectedSingleShape}
+      <div className="relative flex flex-1 flex-col overflow-hidden">
+        <div className="grid flex-1 overflow-hidden" style={{ gridTemplateColumns: "24px 1fr", gridTemplateRows: "24px 1fr" }}>
+          <RulerCorner
+            unit={doc.unitDisplay}
+            onToggleUnit={() =>
+              dispatch({
+                type: "SET_UNIT_DISPLAY",
+                unitDisplay: doc.unitDisplay === "mm" ? "in" : "mm",
+              })
+            }
+          />
+          <Ruler
+            orientation="horizontal"
+            viewportStart={doc.viewportX}
+            zoom={doc.zoom}
+            unit={doc.unitDisplay}
+            cursorDocPos={cursorDocPos?.x ?? null}
+          />
+          <Ruler
+            orientation="vertical"
+            viewportStart={doc.viewportY}
+            zoom={doc.zoom}
+            unit={doc.unitDisplay}
+            cursorDocPos={cursorDocPos?.y ?? null}
+          />
+          <div ref={containerRef} className="relative overflow-hidden">
+            {toast ? (
+              <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-lg bg-wood/90 px-3 py-1 text-xs font-medium text-cream shadow-lg">
+                {toast}
+              </div>
+            ) : null}
+            <Canvas
+            ref={svgRef}
+            shapes={displayShapes}
+            selectedIds={doc.selectedIds}
+            viewportX={doc.viewportX}
+            viewportY={doc.viewportY}
+            zoom={doc.zoom}
+            gridSpacing={doc.gridSpacing}
+            viewWidthMm={viewWidthMm}
+            viewHeightMm={viewHeightMm}
+            cursor={cursor}
+            shapesInteractive={activeTool === "select"}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerLeave={() => setCursorDocPos(null)}
+            onWheel={handleWheel}
+            onDoubleClick={handleDoubleClick}
+            overlay={
+              <>
+                {selectedSingleShape && !drawing ? (
+                  <SelectionHandles
+                    shape={selectedSingleShape}
+                    zoomScale={1 / doc.zoom}
+                  />
+                ) : null}
+                <ToolOverlay
+                  preview={previewShape}
                   zoomScale={1 / doc.zoom}
+                  marquee={marqueeRect}
+                  guides={activeGuides}
+                  viewport={{
+                    x: doc.viewportX,
+                    y: doc.viewportY,
+                    width: viewWidthMm,
+                    height: viewHeightMm,
+                  }}
                 />
-              ) : null}
-              <ToolOverlay
-                preview={previewShape}
-                zoomScale={1 / doc.zoom}
-                marquee={marqueeRect}
-              />
-            </>
-          }
+              </>
+            }
+          />
+          </div>
+        </div>
+        <StatusBar
+          cursorDocPos={cursorDocPos}
+          unit={doc.unitDisplay}
+          selectedShapes={selectedShapes}
+          zoom={doc.zoom}
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
+          onZoomReset={handleZoomReset}
+          onFitAll={handleFitAll}
         />
       </div>
       <PropertiesPanel
@@ -946,6 +1242,8 @@ export default function StudioPage() {
           unitDisplay: doc.unitDisplay,
           zoom: doc.zoom,
         }}
+        editingTextShapeId={editingTextShapeId}
+        onTextEditDone={() => setEditingTextShapeId(null)}
         onUpdateShape={(next) =>
           dispatch({ type: "UPDATE_SHAPES", shapes: [next] })
         }

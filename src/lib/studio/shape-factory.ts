@@ -66,6 +66,57 @@ export function createCircle({ x, y, width, height }: RectangleInput): Shape {
   };
 }
 
+export const DEFAULT_TEXT = "Text";
+export const DEFAULT_FONT_SIZE = 10;
+export const DEFAULT_FONT_FAMILY = "Inter, sans-serif";
+
+/** Estimate a bounding box for a text shape from its content + size. */
+export function estimateTextBox(
+  text: string,
+  fontSize: number,
+): { width: number; height: number } {
+  const lines = (text === "" ? " " : text).split("\n");
+  const longest = lines.reduce(
+    (n, line) => Math.max(n, line.length),
+    1,
+  );
+  // Rough heuristic for proportional fonts; good enough for selection bboxes.
+  const width = fontSize * 0.55 * longest;
+  const height = fontSize * 1.2 * lines.length;
+  return { width, height };
+}
+
+export interface TextInput {
+  x: number;
+  y: number;
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  textAnchor?: "start" | "middle" | "end";
+}
+
+export function createText({
+  x,
+  y,
+  text = DEFAULT_TEXT,
+  fontSize = DEFAULT_FONT_SIZE,
+  fontFamily = DEFAULT_FONT_FAMILY,
+  textAnchor = "middle",
+}: TextInput): Shape {
+  const { width, height } = estimateTextBox(text, fontSize);
+  return {
+    ...baseShape("text"),
+    x,
+    y,
+    width,
+    height,
+    text,
+    fontSize,
+    fontFamily,
+    textAnchor,
+  };
+}
+
 export function createLine({ x1, y1, x2, y2 }: LineInput): Shape {
   // Store the line with its centroid as (x, y); endpoints relative.
   const cx = (x1 + x2) / 2;

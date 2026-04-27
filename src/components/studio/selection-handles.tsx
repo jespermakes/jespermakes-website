@@ -23,10 +23,11 @@ const RESIZE_HANDLES: ResizeHandle[] = [
   "r",
 ];
 
-const HANDLE_PIXELS = 8;
-const ROTATE_PIXELS = 9;
-const ROTATE_OFFSET_PIXELS = 22;
+const HANDLE_PIXELS = 7;
+const ROTATE_PIXELS = 7;
+const ROTATE_OFFSET_PIXELS = 20;
 const HANDLE_FILL = "#FFFFFF";
+const HANDLE_STROKE_PIXELS = 1;
 
 export function SelectionHandles({ shape, zoomScale }: SelectionHandlesProps) {
   const handleSize = HANDLE_PIXELS * zoomScale;
@@ -34,6 +35,10 @@ export function SelectionHandles({ shape, zoomScale }: SelectionHandlesProps) {
 
   if (shape.type === "line") {
     return <LineHandles shape={shape} zoomScale={zoomScale} />;
+  }
+
+  if (shape.type === "text") {
+    return <TextHandles shape={shape} zoomScale={zoomScale} />;
   }
 
   const halfW = shape.width / 2;
@@ -55,7 +60,7 @@ export function SelectionHandles({ shape, zoomScale }: SelectionHandlesProps) {
         height={shape.height}
         fill="none"
         stroke={SELECTION_STROKE}
-        strokeWidth={zoomScale * 0.6}
+        strokeWidth={zoomScale * HANDLE_STROKE_PIXELS}
         pointerEvents="none"
       />
       {/* Rotation arm */}
@@ -65,7 +70,7 @@ export function SelectionHandles({ shape, zoomScale }: SelectionHandlesProps) {
         x2={shape.x}
         y2={shape.y + rotateLocalY}
         stroke={SELECTION_STROKE}
-        strokeWidth={zoomScale * 0.6}
+        strokeWidth={zoomScale * HANDLE_STROKE_PIXELS}
         pointerEvents="none"
       />
       <circle
@@ -74,9 +79,9 @@ export function SelectionHandles({ shape, zoomScale }: SelectionHandlesProps) {
         r={rotateRadius}
         fill={HANDLE_FILL}
         stroke={SELECTION_STROKE}
-        strokeWidth={zoomScale * 0.6}
+        strokeWidth={zoomScale * HANDLE_STROKE_PIXELS}
         data-handle="rotate"
-        style={{ cursor: "alias" }}
+        style={{ cursor: "grab" }}
       />
       {RESIZE_HANDLES.map((h) => {
         const { sx, sy } = handleSign(h);
@@ -91,12 +96,62 @@ export function SelectionHandles({ shape, zoomScale }: SelectionHandlesProps) {
             height={handleSize}
             fill={HANDLE_FILL}
             stroke={SELECTION_STROKE}
-            strokeWidth={zoomScale * 0.6}
+            strokeWidth={zoomScale * HANDLE_STROKE_PIXELS}
             data-handle={h}
             style={{ cursor: cursorForHandle(h, shape.rotation) }}
           />
         );
       })}
+    </g>
+  );
+}
+
+function TextHandles({
+  shape,
+  zoomScale,
+}: {
+  shape: Shape;
+  zoomScale: number;
+}) {
+  const halfW = shape.width / 2;
+  const halfH = shape.height / 2;
+  const transform = shape.rotation
+    ? `rotate(${shape.rotation} ${shape.x} ${shape.y})`
+    : undefined;
+  const rotateLineLength = ROTATE_OFFSET_PIXELS * zoomScale;
+  const rotateRadius = (ROTATE_PIXELS * zoomScale) / 2;
+  const rotateLocalY = -halfH - rotateLineLength;
+  return (
+    <g pointerEvents="auto" transform={transform}>
+      <rect
+        x={shape.x - halfW}
+        y={shape.y - halfH}
+        width={shape.width}
+        height={shape.height}
+        fill="none"
+        stroke={SELECTION_STROKE}
+        strokeWidth={zoomScale * HANDLE_STROKE_PIXELS}
+        pointerEvents="none"
+      />
+      <line
+        x1={shape.x}
+        y1={shape.y - halfH}
+        x2={shape.x}
+        y2={shape.y + rotateLocalY}
+        stroke={SELECTION_STROKE}
+        strokeWidth={zoomScale * HANDLE_STROKE_PIXELS}
+        pointerEvents="none"
+      />
+      <circle
+        cx={shape.x}
+        cy={shape.y + rotateLocalY}
+        r={rotateRadius}
+        fill={HANDLE_FILL}
+        stroke={SELECTION_STROKE}
+        strokeWidth={zoomScale * HANDLE_STROKE_PIXELS}
+        data-handle="rotate"
+        style={{ cursor: "grab" }}
+      />
     </g>
   );
 }
@@ -123,7 +178,7 @@ function LineHandles({ shape, zoomScale }: { shape: Shape; zoomScale: number }) 
           height={handleSize}
           fill={HANDLE_FILL}
           stroke={SELECTION_STROKE}
-          strokeWidth={zoomScale * 0.6}
+          strokeWidth={zoomScale * HANDLE_STROKE_PIXELS}
           data-handle={h.key}
           style={{ cursor: "crosshair" }}
         />

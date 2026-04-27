@@ -1,12 +1,30 @@
+import type { GuideLine } from "@/lib/studio/guides";
 import type { Shape } from "@/lib/studio/types";
+
+interface Viewport {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 interface ToolOverlayProps {
   preview: Shape | null;
   zoomScale: number;
   marquee: { x: number; y: number; width: number; height: number } | null;
+  guides?: GuideLine[];
+  viewport?: Viewport;
 }
 
-export function ToolOverlay({ preview, zoomScale, marquee }: ToolOverlayProps) {
+const GUIDE_COLOR = "#C17F3C";
+
+export function ToolOverlay({
+  preview,
+  zoomScale,
+  marquee,
+  guides,
+  viewport,
+}: ToolOverlayProps) {
   return (
     <g pointerEvents="none">
       {preview ? <PreviewShape shape={preview} zoomScale={zoomScale} /> : null}
@@ -22,6 +40,28 @@ export function ToolOverlay({ preview, zoomScale, marquee }: ToolOverlayProps) {
           strokeDasharray={`${3 * zoomScale} ${2 * zoomScale}`}
         />
       ) : null}
+      {guides && viewport
+        ? guides.map((g, i) => (
+            <line
+              key={`${g.axis}-${g.position}-${i}`}
+              x1={g.axis === "vertical" ? g.position : viewport.x}
+              y1={g.axis === "vertical" ? viewport.y : g.position}
+              x2={
+                g.axis === "vertical"
+                  ? g.position
+                  : viewport.x + viewport.width
+              }
+              y2={
+                g.axis === "vertical"
+                  ? viewport.y + viewport.height
+                  : g.position
+              }
+              stroke={GUIDE_COLOR}
+              strokeWidth={1 * zoomScale}
+              strokeDasharray={`${4 * zoomScale} ${4 * zoomScale}`}
+            />
+          ))
+        : null}
     </g>
   );
 }

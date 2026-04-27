@@ -1,5 +1,6 @@
 import type { Shape } from "@/lib/studio/types";
 import {
+  SELECTION_FILL,
   SELECTION_STROKE,
   SELECTION_STROKE_WIDTH,
 } from "@/lib/studio/constants";
@@ -9,6 +10,7 @@ interface ShapeRendererProps {
   selected?: boolean;
   /** Inverse of zoom; used to keep selection overlay strokes screen-stable. */
   zoomScale?: number;
+  interactive?: boolean;
 }
 
 function shapeTransform(shape: Shape): string | undefined {
@@ -16,15 +18,24 @@ function shapeTransform(shape: Shape): string | undefined {
   return `rotate(${shape.rotation} ${shape.x} ${shape.y})`;
 }
 
-export function ShapeElement({ shape }: { shape: Shape }) {
+export function ShapeElement({
+  shape,
+  interactive = true,
+}: {
+  shape: Shape;
+  interactive?: boolean;
+}) {
   const transform = shapeTransform(shape);
+  const cursor = interactive ? "move" : "inherit";
+  const pointerEvents = interactive ? undefined : "none";
   const common = {
     stroke: shape.stroke,
     strokeWidth: shape.strokeWidth,
     fill: shape.fill,
     transform,
     "data-shape-id": shape.id,
-    style: { cursor: "default" },
+    style: { cursor },
+    pointerEvents,
   } as const;
 
   if (shape.type === "rectangle") {
@@ -58,7 +69,40 @@ export function ShapeElement({ shape }: { shape: Shape }) {
         strokeLinecap="round"
         transform={transform}
         data-shape-id={shape.id}
+        style={{ cursor }}
+        pointerEvents={pointerEvents}
       />
+    );
+  }
+  if (shape.type === "text") {
+    const lines = (shape.text ?? "").split("\n");
+    const fontSize = shape.fontSize ?? 10;
+    const lineHeight = fontSize * 1.2;
+    const startDy = -((lines.length - 1) * lineHeight) / 2;
+    return (
+      <text
+        x={shape.x}
+        y={shape.y}
+        fontSize={fontSize}
+        fontFamily={shape.fontFamily ?? "Inter, sans-serif"}
+        textAnchor={shape.textAnchor ?? "middle"}
+        dominantBaseline="middle"
+        fill={shape.stroke}
+        transform={transform}
+        data-shape-id={shape.id}
+        style={{ cursor, userSelect: "none" }}
+        pointerEvents={pointerEvents}
+      >
+        {lines.map((line, i) => (
+          <tspan
+            key={i}
+            x={shape.x}
+            dy={i === 0 ? startDy : lineHeight}
+          >
+            {line === "" ? " " : line}
+          </tspan>
+        ))}
+      </text>
     );
   }
   return null;
@@ -68,10 +112,11 @@ export function ShapeRenderer({
   shape,
   selected,
   zoomScale = 1,
+  interactive = true,
 }: ShapeRendererProps) {
   return (
     <>
-      <ShapeElement shape={shape} />
+      <ShapeElement shape={shape} interactive={interactive} />
       {selected ? (
         <ShapeSelectionOverlay shape={shape} zoomScale={zoomScale} />
       ) : null}
@@ -92,7 +137,7 @@ function ShapeSelectionOverlay({
   const common = {
     stroke,
     strokeWidth,
-    fill: "none" as const,
+    fill: SELECTION_FILL,
     pointerEvents: "none" as const,
     transform,
   };
@@ -125,8 +170,20 @@ function ShapeSelectionOverlay({
         y2={shape.y + (shape.y2 ?? 0)}
         stroke={stroke}
         strokeWidth={strokeWidth}
+        fill="none"
         pointerEvents="none"
         transform={transform}
+      />
+    );
+  }
+  if (shape.type === "text") {
+    return (
+      <rect
+        x={shape.x - shape.width / 2}
+        y={shape.y - shape.height / 2}
+        width={shape.width}
+        height={shape.height}
+        {...common}
       />
     );
   }
