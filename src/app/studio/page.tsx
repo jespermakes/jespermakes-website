@@ -13,6 +13,7 @@ import {
 } from "react";
 import { Canvas } from "@/components/studio/canvas";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
+import { Ruler, RulerCorner } from "@/components/studio/ruler";
 import { SelectionHandles } from "@/components/studio/selection-handles";
 import { StatusBar } from "@/components/studio/status-bar";
 import { Toolbar } from "@/components/studio/toolbar";
@@ -946,8 +947,32 @@ export default function StudioPage() {
         canRedo={canRedo(state)}
       />
       <div className="relative flex flex-1 flex-col overflow-hidden">
-        <div ref={containerRef} className="relative flex-1 overflow-hidden">
-          <Canvas
+        <div className="grid flex-1 overflow-hidden" style={{ gridTemplateColumns: "24px 1fr", gridTemplateRows: "24px 1fr" }}>
+          <RulerCorner
+            unit={doc.unitDisplay}
+            onToggleUnit={() =>
+              dispatch({
+                type: "SET_UNIT_DISPLAY",
+                unitDisplay: doc.unitDisplay === "mm" ? "in" : "mm",
+              })
+            }
+          />
+          <Ruler
+            orientation="horizontal"
+            viewportStart={doc.viewportX}
+            zoom={doc.zoom}
+            unit={doc.unitDisplay}
+            cursorDocPos={cursorDocPos?.x ?? null}
+          />
+          <Ruler
+            orientation="vertical"
+            viewportStart={doc.viewportY}
+            zoom={doc.zoom}
+            unit={doc.unitDisplay}
+            cursorDocPos={cursorDocPos?.y ?? null}
+          />
+          <div ref={containerRef} className="relative overflow-hidden">
+            <Canvas
             ref={svgRef}
             shapes={displayShapes}
             selectedIds={doc.selectedIds}
@@ -979,6 +1004,7 @@ export default function StudioPage() {
               </>
             }
           />
+          </div>
         </div>
         <StatusBar
           cursorDocPos={cursorDocPos}
