@@ -1,0 +1,222 @@
+"use client";
+
+import Link from "next/link";
+import type { Tool } from "@/lib/studio/types";
+
+interface ToolbarProps {
+  activeTool: Tool;
+  onSelectTool: (tool: Tool) => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  onExport: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
+}
+
+interface ToolDef {
+  tool: Tool;
+  label: string;
+  shortcut: string;
+  icon: React.ReactNode;
+}
+
+const TOOLS: ToolDef[] = [
+  {
+    tool: "select",
+    label: "Select",
+    shortcut: "V",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <path
+          d="M3 2 L3 13 L6 10 L8 14 L10 13 L8 9 L13 9 Z"
+          fill="currentColor"
+          stroke="currentColor"
+          strokeLinejoin="round"
+          strokeWidth="0.5"
+        />
+      </svg>
+    ),
+  },
+  {
+    tool: "rectangle",
+    label: "Rectangle",
+    shortcut: "R",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <rect
+          x="2.5"
+          y="3.5"
+          width="11"
+          height="9"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+        />
+      </svg>
+    ),
+  },
+  {
+    tool: "circle",
+    label: "Circle",
+    shortcut: "C",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <circle
+          cx="8"
+          cy="8"
+          r="5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+        />
+      </svg>
+    ),
+  },
+  {
+    tool: "line",
+    label: "Line",
+    shortcut: "L",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <line
+          x1="3"
+          y1="13"
+          x2="13"
+          y2="3"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+];
+
+function ToolButton({
+  active,
+  disabled,
+  label,
+  shortcut,
+  onClick,
+  children,
+}: {
+  active?: boolean;
+  disabled?: boolean;
+  label: string;
+  shortcut?: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={shortcut ? `${label} (${shortcut})` : label}
+      className={[
+        "group relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors",
+        active ? "bg-white/20 text-cream" : "text-cream/80 hover:bg-white/10 hover:text-cream",
+        disabled ? "opacity-30 cursor-not-allowed hover:bg-transparent" : "",
+      ].join(" ")}
+    >
+      {children}
+      <span
+        className="pointer-events-none absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-wood-light px-2 py-1 text-[11px] font-medium text-cream opacity-0 shadow-md transition-opacity group-hover:opacity-100"
+        role="tooltip"
+      >
+        {label}
+        {shortcut ? (
+          <span className="ml-2 opacity-60">{shortcut}</span>
+        ) : null}
+      </span>
+    </button>
+  );
+}
+
+function Separator() {
+  return <div className="my-1 h-px w-6 bg-cream/15" />;
+}
+
+export function Toolbar({
+  activeTool,
+  onSelectTool,
+  onUndo,
+  onRedo,
+  onExport,
+  canUndo,
+  canRedo,
+}: ToolbarProps) {
+  return (
+    <div className="flex h-full w-12 flex-col items-center gap-1 rounded-r-xl bg-wood py-3 text-cream">
+      <Link
+        href="/"
+        aria-label="Back to Jesper Makes"
+        className="group relative mb-1 flex h-9 w-9 items-center justify-center rounded-lg text-cream/80 transition-colors hover:bg-white/10 hover:text-cream"
+      >
+        <span className="font-serif text-lg leading-none">JM</span>
+        <span
+          className="pointer-events-none absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-wood-light px-2 py-1 text-[11px] font-medium text-cream opacity-0 shadow-md transition-opacity group-hover:opacity-100"
+          role="tooltip"
+        >
+          Jesper Makes
+        </span>
+      </Link>
+      <Separator />
+      {TOOLS.map((t) => (
+        <ToolButton
+          key={t.tool}
+          active={activeTool === t.tool}
+          label={t.label}
+          shortcut={t.shortcut}
+          onClick={() => onSelectTool(t.tool)}
+        >
+          {t.icon}
+        </ToolButton>
+      ))}
+      <Separator />
+      <ToolButton
+        label="Undo"
+        shortcut="Ctrl+Z"
+        disabled={!canUndo}
+        onClick={onUndo}
+      >
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <path
+            d="M3 7 L6 4 L6 6 C 9.5 6 12 8 12 11 L 10 11 C 10 9 8.5 8 6 8 L 6 10 Z"
+            fill="currentColor"
+          />
+        </svg>
+      </ToolButton>
+      <ToolButton
+        label="Redo"
+        shortcut="Ctrl+Shift+Z"
+        disabled={!canRedo}
+        onClick={onRedo}
+      >
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <path
+            d="M13 7 L10 4 L10 6 C 6.5 6 4 8 4 11 L 6 11 C 6 9 7.5 8 10 8 L 10 10 Z"
+            fill="currentColor"
+          />
+        </svg>
+      </ToolButton>
+      <div className="flex-1" />
+      <ToolButton label="Export SVG" onClick={onExport}>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <path
+            d="M8 2 L8 10 M5 7 L8 10 L11 7"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M3 12 L13 12 L13 14 L3 14 Z"
+            fill="currentColor"
+          />
+        </svg>
+      </ToolButton>
+    </div>
+  );
+}

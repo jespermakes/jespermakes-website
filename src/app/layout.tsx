@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { auth } from "@/lib/auth";
 import { SiteJsonLd } from "@/components/site-json-ld";
 import { MobileNav } from "@/components/mobile-nav";
+import { ConditionalChrome } from "@/components/conditional-chrome";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -243,9 +244,9 @@ export default async function RootLayout({
       <body className="font-sans min-h-screen flex flex-col antialiased">
         <SiteJsonLd />
         <SessionProvider session={session}>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <ConditionalChrome header={<Header />} footer={<Footer />}>
+            {children}
+          </ConditionalChrome>
           <Analytics />
         </SessionProvider>
       </body>
