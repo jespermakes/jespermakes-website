@@ -12,6 +12,7 @@ import {
   type WheelEvent as ReactWheelEvent,
 } from "react";
 import { Canvas } from "@/components/studio/canvas";
+import { PropertiesPanel } from "@/components/studio/properties-panel";
 import { SelectionHandles } from "@/components/studio/selection-handles";
 import { Toolbar } from "@/components/studio/toolbar";
 import { ToolOverlay } from "@/components/studio/tool-overlay";
@@ -27,6 +28,7 @@ import {
   rectFromCorners,
   screenToDoc,
   shapeBounds,
+  shapesBounds,
   snapPoint,
 } from "@/lib/studio/geometry";
 import {
@@ -853,6 +855,34 @@ export default function StudioPage() {
     };
   }, [selectInteraction]);
 
+  const selectedShapes = useMemo(
+    () => doc.shapes.filter((s) => doc.selectedIds.includes(s.id)),
+    [doc.shapes, doc.selectedIds],
+  );
+
+  const handleFitAll = useCallback(() => {
+    if (doc.shapes.length === 0 || canvasSize.width === 0) return;
+    const bounds = shapesBounds(doc.shapes);
+    if (!bounds) return;
+    const pad = 10;
+    const w = bounds.maxX - bounds.minX + pad * 2;
+    const h = bounds.maxY - bounds.minY + pad * 2;
+    if (w <= 0 || h <= 0) return;
+    const zoomX = canvasSize.width / w;
+    const zoomY = canvasSize.height / h;
+    const nextZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Math.min(zoomX, zoomY)));
+    const visibleW = canvasSize.width / nextZoom;
+    const visibleH = canvasSize.height / nextZoom;
+    const cx = (bounds.minX + bounds.maxX) / 2;
+    const cy = (bounds.minY + bounds.maxY) / 2;
+    dispatch({
+      type: "SET_VIEWPORT",
+      viewportX: cx - visibleW / 2,
+      viewportY: cy - visibleH / 2,
+      zoom: nextZoom,
+    });
+  }, [canvasSize.height, canvasSize.width, doc.shapes]);
+
   const handleExport = useCallback(() => {
     // Wired in a later step.
   }, []);
@@ -901,6 +931,30 @@ export default function StudioPage() {
           }
         />
       </div>
+      <PropertiesPanel
+        selectedShapes={selectedShapes}
+        unit={doc.unitDisplay}
+        doc={{
+          gridSpacing: doc.gridSpacing,
+          snapToGrid: doc.snapToGrid,
+          unitDisplay: doc.unitDisplay,
+          zoom: doc.zoom,
+        }}
+        onUpdateShape={(next) =>
+          dispatch({ type: "UPDATE_SHAPES", shapes: [next] })
+        }
+        onDeleteSelected={() => dispatch({ type: "DELETE_SELECTED" })}
+        onSetGridSpacing={(mm) =>
+          dispatch({ type: "SET_GRID_SPACING", gridSpacing: mm })
+        }
+        onSetSnapToGrid={(v) =>
+          dispatch({ type: "SET_SNAP_TO_GRID", snapToGrid: v })
+        }
+        onSetUnitDisplay={(u) =>
+          dispatch({ type: "SET_UNIT_DISPLAY", unitDisplay: u })
+        }
+        onFitAll={handleFitAll}
+      />
     </div>
   );
 }
