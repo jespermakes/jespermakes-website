@@ -39,6 +39,10 @@ function selectionLabel(shapes: Shape[], unit: "mm" | "in"): string {
     const len = Math.hypot(dx, dy);
     return `Line ${formatDimension(len, unit)} ${unit}`;
   }
+  if (s.type === "text") {
+    const preview = (s.text ?? "").slice(0, 24);
+    return `Text "${preview}"`;
+  }
   return "1 shape selected";
 }
 

@@ -36,6 +36,10 @@ export function SelectionHandles({ shape, zoomScale }: SelectionHandlesProps) {
     return <LineHandles shape={shape} zoomScale={zoomScale} />;
   }
 
+  if (shape.type === "text") {
+    return <TextHandles shape={shape} zoomScale={zoomScale} />;
+  }
+
   const halfW = shape.width / 2;
   const halfH = shape.height / 2;
   const transform = shape.rotation
@@ -97,6 +101,56 @@ export function SelectionHandles({ shape, zoomScale }: SelectionHandlesProps) {
           />
         );
       })}
+    </g>
+  );
+}
+
+function TextHandles({
+  shape,
+  zoomScale,
+}: {
+  shape: Shape;
+  zoomScale: number;
+}) {
+  const halfW = shape.width / 2;
+  const halfH = shape.height / 2;
+  const transform = shape.rotation
+    ? `rotate(${shape.rotation} ${shape.x} ${shape.y})`
+    : undefined;
+  const rotateLineLength = ROTATE_OFFSET_PIXELS * zoomScale;
+  const rotateRadius = (ROTATE_PIXELS * zoomScale) / 2;
+  const rotateLocalY = -halfH - rotateLineLength;
+  return (
+    <g pointerEvents="auto" transform={transform}>
+      <rect
+        x={shape.x - halfW}
+        y={shape.y - halfH}
+        width={shape.width}
+        height={shape.height}
+        fill="none"
+        stroke={SELECTION_STROKE}
+        strokeWidth={zoomScale * 0.6}
+        pointerEvents="none"
+      />
+      <line
+        x1={shape.x}
+        y1={shape.y - halfH}
+        x2={shape.x}
+        y2={shape.y + rotateLocalY}
+        stroke={SELECTION_STROKE}
+        strokeWidth={zoomScale * 0.6}
+        pointerEvents="none"
+      />
+      <circle
+        cx={shape.x}
+        cy={shape.y + rotateLocalY}
+        r={rotateRadius}
+        fill={HANDLE_FILL}
+        stroke={SELECTION_STROKE}
+        strokeWidth={zoomScale * 0.6}
+        data-handle="rotate"
+        style={{ cursor: "alias" }}
+      />
     </g>
   );
 }

@@ -61,6 +61,36 @@ export function ShapeElement({ shape }: { shape: Shape }) {
       />
     );
   }
+  if (shape.type === "text") {
+    const lines = (shape.text ?? "").split("\n");
+    const fontSize = shape.fontSize ?? 10;
+    const lineHeight = fontSize * 1.2;
+    const startDy = -((lines.length - 1) * lineHeight) / 2;
+    return (
+      <text
+        x={shape.x}
+        y={shape.y}
+        fontSize={fontSize}
+        fontFamily={shape.fontFamily ?? "Inter, sans-serif"}
+        textAnchor={shape.textAnchor ?? "middle"}
+        dominantBaseline="middle"
+        fill={shape.stroke}
+        transform={transform}
+        data-shape-id={shape.id}
+        style={{ cursor: "default", userSelect: "none" }}
+      >
+        {lines.map((line, i) => (
+          <tspan
+            key={i}
+            x={shape.x}
+            dy={i === 0 ? startDy : lineHeight}
+          >
+            {line === "" ? " " : line}
+          </tspan>
+        ))}
+      </text>
+    );
+  }
   return null;
 }
 
@@ -127,6 +157,17 @@ function ShapeSelectionOverlay({
         strokeWidth={strokeWidth}
         pointerEvents="none"
         transform={transform}
+      />
+    );
+  }
+  if (shape.type === "text") {
+    return (
+      <rect
+        x={shape.x - shape.width / 2}
+        y={shape.y - shape.height / 2}
+        width={shape.width}
+        height={shape.height}
+        {...common}
       />
     );
   }

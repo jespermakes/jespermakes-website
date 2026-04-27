@@ -90,6 +90,26 @@ const TOOLS: ToolDef[] = [
       </svg>
     ),
   },
+  {
+    tool: "text",
+    label: "Text",
+    shortcut: "T",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <text
+          x="8"
+          y="11.5"
+          fontSize="11"
+          fontFamily="Inter, sans-serif"
+          fontWeight="600"
+          textAnchor="middle"
+          fill="currentColor"
+        >
+          A
+        </text>
+      </svg>
+    ),
+  },
 ];
 
 function ToolButton({

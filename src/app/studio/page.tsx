@@ -37,6 +37,7 @@ import {
   createCircle,
   createLine,
   createRectangle,
+  createText,
 } from "@/lib/studio/shape-factory";
 import {
   resizeLineEndpoint,
@@ -68,6 +69,17 @@ export default function StudioPage() {
   const [cursorDocPos, setCursorDocPos] = useState<{ x: number; y: number } | null>(
     null,
   );
+  const [editingTextShapeId, setEditingTextShapeId] = useState<string | null>(
+    null,
+  );
+
+  // Clear text editing whenever the selection no longer contains the shape.
+  useEffect(() => {
+    if (!editingTextShapeId) return;
+    if (!doc.selectedIds.includes(editingTextShapeId)) {
+      setEditingTextShapeId(null);
+    }
+  }, [doc.selectedIds, editingTextShapeId]);
 
   useLayoutEffect(() => {
     const el = containerRef.current;
@@ -336,6 +348,21 @@ export default function StudioPage() {
           shift: e.shiftKey,
         });
         (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+        e.preventDefault();
+        return;
+      }
+
+      if (activeTool === "text") {
+        const snapped = snapPoint(
+          docPoint.x,
+          docPoint.y,
+          doc.gridSpacing,
+          doc.snapToGrid,
+        );
+        const shape = createText({ x: snapped.x, y: snapped.y });
+        dispatch({ type: "ADD_SHAPE", shape, selectAfter: true });
+        setActiveTool("select");
+        setEditingTextShapeId(shape.id);
         e.preventDefault();
         return;
       }
@@ -787,6 +814,10 @@ export default function StudioPage() {
         case "L":
           setActiveTool("line");
           break;
+        case "t":
+        case "T":
+          setActiveTool("text");
+          break;
         case "Delete":
         case "Backspace":
           dispatch({ type: "DELETE_SELECTED" });
@@ -929,6 +960,22 @@ export default function StudioPage() {
     [doc.shapes, doc.selectedIds],
   );
 
+  const handleDoubleClick = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      const targetEl = e.target as Element | null;
+      const shapeTarget = targetEl?.closest?.("[data-shape-id]") as
+        | (HTMLElement | SVGElement)
+        | null;
+      const shapeId = shapeTarget?.dataset?.shapeId;
+      if (!shapeId) return;
+      const shape = doc.shapes.find((s) => s.id === shapeId);
+      if (!shape || shape.type !== "text") return;
+      dispatch({ type: "SELECT", ids: [shapeId] });
+      setEditingTextShapeId(shapeId);
+    },
+    [doc.shapes],
+  );
+
   const handleExport = useCallback(() => {
     if (doc.shapes.length === 0) return;
     const svg = exportSVG(doc.shapes);
@@ -988,6 +1035,7 @@ export default function StudioPage() {
             onPointerUp={handlePointerUp}
             onPointerLeave={() => setCursorDocPos(null)}
             onWheel={handleWheel}
+            onDoubleClick={handleDoubleClick}
             overlay={
               <>
                 {selectedSingleShape && !drawing ? (
@@ -1026,6 +1074,8 @@ export default function StudioPage() {
           unitDisplay: doc.unitDisplay,
           zoom: doc.zoom,
         }}
+        editingTextShapeId={editingTextShapeId}
+        onTextEditDone={() => setEditingTextShapeId(null)}
         onUpdateShape={(next) =>
           dispatch({ type: "UPDATE_SHAPES", shapes: [next] })
         }

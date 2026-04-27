@@ -1,6 +1,12 @@
 "use client";
 
-import { forwardRef, type PointerEvent, type ReactNode, type WheelEvent } from "react";
+import {
+  forwardRef,
+  type MouseEvent,
+  type PointerEvent,
+  type ReactNode,
+  type WheelEvent,
+} from "react";
 import type { Shape } from "@/lib/studio/types";
 import { CANVAS_BACKGROUND } from "@/lib/studio/constants";
 import { GridLayer } from "./grid-layer";
@@ -21,6 +27,7 @@ interface CanvasProps {
   onPointerUp: (e: PointerEvent<SVGSVGElement>) => void;
   onPointerLeave?: (e: PointerEvent<SVGSVGElement>) => void;
   onWheel: (e: WheelEvent<SVGSVGElement>) => void;
+  onDoubleClick?: (e: MouseEvent<SVGSVGElement>) => void;
   overlay?: ReactNode;
 }
 
@@ -40,6 +47,7 @@ export const Canvas = forwardRef<SVGSVGElement, CanvasProps>(function Canvas(
     onPointerUp,
     onPointerLeave,
     onWheel,
+    onDoubleClick,
     overlay,
   },
   ref,
@@ -64,6 +72,7 @@ export const Canvas = forwardRef<SVGSVGElement, CanvasProps>(function Canvas(
       onPointerUp={onPointerUp}
       onPointerLeave={onPointerLeave}
       onWheel={onWheel}
+      onDoubleClick={onDoubleClick}
       style={{
         background: CANVAS_BACKGROUND,
         touchAction: "none",

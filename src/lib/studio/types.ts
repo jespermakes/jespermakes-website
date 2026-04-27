@@ -1,6 +1,6 @@
-export type ShapeType = "rectangle" | "circle" | "line";
+export type ShapeType = "rectangle" | "circle" | "line" | "text";
 
-export type Tool = "select" | "rectangle" | "circle" | "line";
+export type Tool = "select" | "rectangle" | "circle" | "line" | "text";
 
 export interface Shape {
   id: string;
@@ -17,6 +17,11 @@ export interface Shape {
   stroke: string;
   strokeWidth: number;
   fill: string;
+  // Text-specific (only for type === "text")
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  textAnchor?: "start" | "middle" | "end";
 }
 
 export interface StudioDocument {

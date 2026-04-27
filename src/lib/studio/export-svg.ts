@@ -11,6 +11,13 @@ function escapeXmlAttr(value: string): string {
     .replace(/"/g, "&quot;");
 }
 
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 function formatNumber(n: number): string {
   if (!Number.isFinite(n)) return "0";
   // Trim to 4 decimals, drop trailing zeros.
@@ -42,6 +49,26 @@ function shapeToSvg(shape: Shape): string | null {
       return `<circle cx="${formatNumber(shape.x)}" cy="${formatNumber(shape.y)}" r="${formatNumber(rx)}" ${attrs} />`;
     }
     return `<ellipse cx="${formatNumber(shape.x)}" cy="${formatNumber(shape.y)}" rx="${formatNumber(rx)}" ry="${formatNumber(ry)}" ${attrs} />`;
+  }
+  if (shape.type === "text") {
+    const text = shape.text ?? "";
+    const fontSize = shape.fontSize ?? 10;
+    const fontFamily = shape.fontFamily ?? "Inter, sans-serif";
+    const anchor = shape.textAnchor ?? "middle";
+    const lineHeight = fontSize * 1.2;
+    const lines = text.split("\n");
+    const startDy = -((lines.length - 1) * lineHeight) / 2;
+    const fill = `fill="${escapeXmlAttr(shape.stroke)}"`;
+    const transform = shape.rotation
+      ? ` transform="rotate(${formatNumber(shape.rotation)}, ${formatNumber(shape.x)}, ${formatNumber(shape.y)})"`
+      : "";
+    const tspans = lines
+      .map(
+        (line, i) =>
+          `<tspan x="${formatNumber(shape.x)}" dy="${formatNumber(i === 0 ? startDy : lineHeight)}">${escapeXml(line)}</tspan>`,
+      )
+      .join("");
+    return `<text x="${formatNumber(shape.x)}" y="${formatNumber(shape.y)}" font-size="${formatNumber(fontSize)}" font-family="${escapeXmlAttr(fontFamily)}" text-anchor="${anchor}" dominant-baseline="middle" ${fill}${transform}>${tspans}</text>`;
   }
   if (shape.type === "line") {
     const x1 = shape.x + (shape.x1 ?? 0);
