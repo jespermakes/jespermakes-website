@@ -63,13 +63,17 @@ import {
   shapeToPath,
   syncPathBounds,
 } from "@/lib/studio/path-ops";
-import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
 import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
 import {
   buildDesignFile,
   downloadDesignFile,
   parseDesignFile,
 } from "@/lib/studio/file-format";
+import {
+  downloadProfileExport,
+  rememberProfile,
+  type ExportProfile,
+} from "@/lib/studio/export-profiles";
 import { parseSVG, recenterImportedShapes } from "@/lib/studio/svg-import";
 import {
   applyMoveSnap,
@@ -2249,11 +2253,17 @@ export default function StudioPage() {
     [doc.shapes, drawing, finalizePenAsOpen],
   );
 
-  const handleExport = useCallback(() => {
-    if (doc.shapes.length === 0) return;
-    const svg = exportSVG(doc.shapes);
-    downloadSVG(svg, "design.svg");
-  }, [doc.shapes]);
+  const handleExportProfile = useCallback(
+    (profile: ExportProfile) => {
+      if (doc.shapes.length === 0) {
+        showToast("Nothing to export.");
+        return;
+      }
+      rememberProfile(profile);
+      downloadProfileExport(doc.shapes, profile, designName);
+    },
+    [doc.shapes, designName, showToast],
+  );
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const designFileInputRef = useRef<HTMLInputElement | null>(null);
@@ -2360,7 +2370,8 @@ export default function StudioPage() {
         }}
         onUndo={() => dispatch({ type: "UNDO" })}
         onRedo={() => dispatch({ type: "REDO" })}
-        onExport={handleExport}
+        onExportProfile={handleExportProfile}
+        onSaveToFile={handleSaveToFile}
         onImport={handleImportClick}
         onBooleanUnion={() => handleBoolean("union")}
         onBooleanDifference={() => handleBoolean("difference")}
