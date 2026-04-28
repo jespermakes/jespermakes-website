@@ -24,6 +24,7 @@ import { DogboneOverlay } from "@/components/studio/dogbone-overlay";
 import { KerfOverlay } from "@/components/studio/kerf-overlay";
 import { MaterialOutline } from "@/components/studio/material-outline";
 import { PlanPanel } from "@/components/studio/plan-panel";
+import { TabOverlay } from "@/components/studio/tab-overlay";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
 import { Ruler, RulerCorner } from "@/components/studio/ruler";
 import { SelectionHandles } from "@/components/studio/selection-handles";
@@ -77,6 +78,7 @@ import {
 } from "@/lib/studio/tool-library";
 import { shapesWithCutTypeColors } from "@/lib/studio/cut-types";
 import { defaultDogboneCorners } from "@/lib/studio/dogbones";
+import { autoPlaceTabs } from "@/lib/studio/tabs";
 import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
 import {
   buildDesignFile,
@@ -1809,11 +1811,25 @@ export default function StudioPage() {
   );
 
   const handleAutoTabs = useCallback(
-    (_count: number) => {
-      void _count;
-      showToast("Tabs — coming next");
+    (count: number) => {
+      if (doc.selectedIds.length === 0) return;
+      const updated: Shape[] = [];
+      const tabHeight = Math.max(0.5, doc.material.thickness / 2);
+      for (const s of doc.shapes) {
+        if (!doc.selectedIds.includes(s.id)) continue;
+        if (s.cutType !== "outside") continue;
+        updated.push({
+          ...s,
+          tabs: autoPlaceTabs(count, 5, tabHeight),
+        });
+      }
+      if (updated.length === 0) {
+        showToast("Tabs apply only to outside-cut shapes.");
+        return;
+      }
+      dispatch({ type: "UPDATE_SHAPES", shapes: updated });
     },
-    [showToast],
+    [doc.shapes, doc.selectedIds, doc.material.thickness, showToast],
   );
 
   const handleClearTabs = useCallback(() => {
@@ -2818,6 +2834,12 @@ export default function StudioPage() {
                   <DogboneOverlay
                     shapes={displayShapes}
                     toolDiameter={activeCuttingTool.diameter}
+                    zoomScale={1 / doc.zoom}
+                  />
+                ) : null}
+                {doc.mode !== "design" ? (
+                  <TabOverlay
+                    shapes={displayShapes}
                     zoomScale={1 / doc.zoom}
                   />
                 ) : null}
