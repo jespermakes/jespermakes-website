@@ -22,6 +22,12 @@ interface DocSettings {
   zoom: number;
 }
 
+interface PolygonSettings {
+  sides: number;
+  star: boolean;
+  innerPct: number;
+}
+
 interface PropertiesPanelProps {
   selectedShapes: Shape[];
   unit: "mm" | "in";
@@ -30,6 +36,9 @@ interface PropertiesPanelProps {
   editingTextShapeId: string | null;
   /** When set, the panel shows node-editing controls instead of bbox edits. */
   nodeEditingShapeId: string | null;
+  /** Polygon-tool settings. The panel shows them when polygonToolActive. */
+  polygonSettings: PolygonSettings;
+  polygonToolActive: boolean;
   onUpdateShape: (next: Shape) => void;
   onDeleteSelected: () => void;
   onSetGridSpacing: (mm: number) => void;
@@ -39,6 +48,9 @@ interface PropertiesPanelProps {
   onTextEditDone: () => void;
   onEnterNodeEdit: (shapeId: string) => void;
   onExitNodeEdit: () => void;
+  onSetPolygonSides: (n: number) => void;
+  onSetPolygonStar: (v: boolean) => void;
+  onSetPolygonInnerPct: (n: number) => void;
 }
 
 const SECTION_LABEL =
@@ -97,6 +109,8 @@ function PanelBody({
   doc,
   editingTextShapeId,
   nodeEditingShapeId,
+  polygonSettings,
+  polygonToolActive,
   onUpdateShape,
   onDeleteSelected,
   onSetGridSpacing,
@@ -106,6 +120,9 @@ function PanelBody({
   onTextEditDone,
   onEnterNodeEdit,
   onExitNodeEdit,
+  onSetPolygonSides,
+  onSetPolygonStar,
+  onSetPolygonInnerPct,
 }: PropertiesPanelProps) {
   if (nodeEditingShapeId) {
     const editing = selectedShapes.find((s) => s.id === nodeEditingShapeId);
@@ -134,6 +151,46 @@ function PanelBody({
   if (selectedShapes.length === 0) {
     return (
       <div className="flex flex-col gap-6">
+        {polygonToolActive ? (
+          <Section label="Polygon">
+            <NumberField
+              label="N"
+              value={polygonSettings.sides}
+              onCommit={(v) =>
+                onSetPolygonSides(
+                  Math.max(3, Math.min(64, Math.round(v))),
+                )
+              }
+              min={3}
+              max={64}
+              format={(v) => v.toString()}
+              parse={(raw) => Number.parseInt(raw, 10)}
+            />
+            <label className="flex items-center gap-2 text-sm text-wood">
+              <input
+                type="checkbox"
+                checked={polygonSettings.star}
+                onChange={(e) => onSetPolygonStar(e.target.checked)}
+                className="h-3.5 w-3.5 accent-forest"
+              />
+              Star
+            </label>
+            {polygonSettings.star ? (
+              <NumberField
+                label="In%"
+                value={polygonSettings.innerPct}
+                onCommit={(v) =>
+                  onSetPolygonInnerPct(Math.max(10, Math.min(90, v)))
+                }
+                min={10}
+                max={90}
+                format={(v) => v.toString()}
+                parse={(raw) => Number.parseFloat(raw)}
+                suffix="%"
+              />
+            ) : null}
+          </Section>
+        ) : null}
         <EmptyStateHints />
         <Section label="Document">
           <NumberField

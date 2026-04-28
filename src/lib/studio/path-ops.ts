@@ -281,6 +281,28 @@ export function applyNodeDrag(
   return next;
 }
 
+export function generatePolygonPoints(
+  cx: number,
+  cy: number,
+  radius: number,
+  sides: number,
+  star: boolean,
+  innerPct: number,
+  rotationDeg: number,
+): PathPoint[] {
+  if (radius <= 0 || sides < 3) return [];
+  const count = star ? sides * 2 : sides;
+  const baseAngle = ((rotationDeg - 90) * Math.PI) / 180;
+  const innerR = (radius * Math.max(1, Math.min(100, innerPct))) / 100;
+  const points: PathPoint[] = [];
+  for (let i = 0; i < count; i++) {
+    const angle = baseAngle + (i * 2 * Math.PI) / count;
+    const r = star && i % 2 === 1 ? innerR : radius;
+    points.push({ x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r });
+  }
+  return points;
+}
+
 /** Recompute width/height/x/y on a path shape from its points or pathData. */
 export function syncPathBounds(shape: Shape): Shape {
   if (shape.type !== "path") return shape;

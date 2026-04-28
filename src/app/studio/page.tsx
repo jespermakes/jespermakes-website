@@ -49,7 +49,11 @@ import {
   resizeRectLikeShape,
   rotateShape,
 } from "@/lib/studio/transform";
-import { applyNodeDrag, syncPathBounds } from "@/lib/studio/path-ops";
+import {
+  applyNodeDrag,
+  generatePolygonPoints,
+  syncPathBounds,
+} from "@/lib/studio/path-ops";
 import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
 import {
   applyMoveSnap,
@@ -202,8 +206,23 @@ export default function StudioPage() {
         dragging: { pointerId: number; pointIndex: number; alt: boolean } | null;
         shift: boolean;
         hoveringFirstPoint: boolean;
+      }
+    | {
+        kind: "drag-radius";
+        tool: "polygon";
+        pointerId: number;
+        centerDocX: number;
+        centerDocY: number;
+        currentDocX: number;
+        currentDocY: number;
+        shift: boolean;
       };
   const [drawing, setDrawing] = useState<DrawingState | null>(null);
+
+  // Polygon-tool persistent settings.
+  const [polygonSides, setPolygonSides] = useState(6);
+  const [polygonStar, setPolygonStar] = useState(false);
+  const [polygonInnerPct, setPolygonInnerPct] = useState(50);
 
   // Active select-tool interaction (marquee drag).
   type SelectInteraction = {
@@ -529,6 +548,22 @@ export default function StudioPage() {
         return;
       }
 
+      if (activeTool === "polygon") {
+        setDrawing({
+          kind: "drag-radius",
+          tool: "polygon",
+          pointerId: e.pointerId,
+          centerDocX: docPoint.x,
+          centerDocY: docPoint.y,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+          shift: e.shiftKey,
+        });
+        (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+        e.preventDefault();
+        return;
+      }
+
       if (activeTool === "pen") {
         const HOVER_THRESHOLD_MM = 8 / Math.max(0.0001, doc.zoom);
         // Already drawing a pen path?
@@ -726,6 +761,18 @@ export default function StudioPage() {
       }
 
       if (!drawing) return;
+      if (
+        drawing.kind === "drag-radius" &&
+        drawing.pointerId === e.pointerId
+      ) {
+        setDrawing({
+          ...drawing,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+          shift: e.shiftKey,
+        });
+        return;
+      }
       if (drawing.kind === "pen") {
         const HOVER_THRESHOLD_MM = 8 / Math.max(0.0001, doc.zoom);
         const first = drawing.points[0];
@@ -934,6 +981,41 @@ export default function StudioPage() {
           }
         }
         setNodeDrag(null);
+        (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+        return;
+      }
+
+      if (
+        drawing &&
+        drawing.kind === "drag-radius" &&
+        drawing.pointerId === e.pointerId
+      ) {
+        const dx = drawing.currentDocX - drawing.centerDocX;
+        const dy = drawing.currentDocY - drawing.centerDocY;
+        const radius = Math.hypot(dx, dy);
+        let angleDeg = (Math.atan2(dy, dx) * 180) / Math.PI;
+        if (e.shiftKey || drawing.shift) {
+          angleDeg = Math.round(angleDeg / 15) * 15;
+        }
+        if (radius > 0.0001) {
+          // First vertex at angle (rotation = angleDeg + 90 because
+          // generatePolygonPoints subtracts 90).
+          const points = generatePolygonPoints(
+            drawing.centerDocX,
+            drawing.centerDocY,
+            radius,
+            polygonSides,
+            polygonStar,
+            polygonInnerPct,
+            angleDeg + 90,
+          );
+          if (points.length > 0) {
+            const shape = createPath({ points, closed: true });
+            dispatch({ type: "ADD_SHAPE", shape, selectAfter: true });
+            setActiveTool("select");
+          }
+        }
+        setDrawing(null);
         (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
         return;
       }
@@ -1380,6 +1462,25 @@ export default function StudioPage() {
   const previewShape = useMemo<Shape | null>(() => {
     if (!drawing) return null;
     if (drawing.kind === "pen") return null;
+    if (drawing.kind === "drag-radius") {
+      const dx = drawing.currentDocX - drawing.centerDocX;
+      const dy = drawing.currentDocY - drawing.centerDocY;
+      const radius = Math.hypot(dx, dy);
+      if (radius < 0.0001) return null;
+      let angleDeg = (Math.atan2(dy, dx) * 180) / Math.PI;
+      if (drawing.shift) angleDeg = Math.round(angleDeg / 15) * 15;
+      const points = generatePolygonPoints(
+        drawing.centerDocX,
+        drawing.centerDocY,
+        radius,
+        polygonSides,
+        polygonStar,
+        polygonInnerPct,
+        angleDeg + 90,
+      );
+      if (points.length === 0) return null;
+      return createPath({ points, closed: true });
+    }
     if (drawing.kind === "drag") {
       const { startDocX: ax, startDocY: ay } = drawing;
       let bx = drawing.currentDocX;
@@ -1416,7 +1517,7 @@ export default function StudioPage() {
       x2: bx,
       y2: by,
     });
-  }, [drawing]);
+  }, [drawing, polygonSides, polygonStar, polygonInnerPct]);
 
   // Live shape overrides + smart guides while a transform is in progress
   // (no history churn).
@@ -1716,6 +1817,12 @@ export default function StudioPage() {
         }}
         editingTextShapeId={editingTextShapeId}
         nodeEditingShapeId={nodeEditingShapeId}
+        polygonSettings={{
+          sides: polygonSides,
+          star: polygonStar,
+          innerPct: polygonInnerPct,
+        }}
+        polygonToolActive={activeTool === "polygon"}
         onTextEditDone={() => setEditingTextShapeId(null)}
         onEnterNodeEdit={(id) => {
           setNodeEditingShapeId(id);
@@ -1725,6 +1832,9 @@ export default function StudioPage() {
           setNodeEditingShapeId(null);
           setSelectedNodeIndices([]);
         }}
+        onSetPolygonSides={setPolygonSides}
+        onSetPolygonStar={setPolygonStar}
+        onSetPolygonInnerPct={setPolygonInnerPct}
         onUpdateShape={(next) =>
           dispatch({ type: "UPDATE_SHAPES", shapes: [next] })
         }
