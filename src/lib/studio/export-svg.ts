@@ -1,5 +1,6 @@
 import type { Shape } from "./types";
 import { shapesBounds } from "./geometry";
+import { pointsToSVGPath } from "./path-ops";
 
 const PADDING_MM = 10;
 
@@ -69,6 +70,13 @@ function shapeToSvg(shape: Shape): string | null {
       )
       .join("");
     return `<text x="${formatNumber(shape.x)}" y="${formatNumber(shape.y)}" font-size="${formatNumber(fontSize)}" font-family="${escapeXmlAttr(fontFamily)}" text-anchor="${anchor}" dominant-baseline="middle" ${fill}${transform}>${tspans}</text>`;
+  }
+  if (shape.type === "path") {
+    const d =
+      shape.pathData ??
+      pointsToSVGPath(shape.points ?? [], shape.closed ?? false);
+    if (!d) return null;
+    return `<path d="${escapeXmlAttr(d)}" ${attrs} />`;
   }
   if (shape.type === "line") {
     const x1 = shape.x + (shape.x1 ?? 0);

@@ -43,6 +43,11 @@ function selectionLabel(shapes: Shape[], unit: "mm" | "in"): string {
     const preview = (s.text ?? "").slice(0, 24);
     return `Text "${preview}"`;
   }
+  if (s.type === "path") {
+    const count = s.points?.length ?? 0;
+    if (count > 0) return `Path · ${count} node${count === 1 ? "" : "s"}`;
+    return `Path · ${formatDimension(s.width, unit)} × ${formatDimension(s.height, unit)} ${unit}`;
+  }
   return "1 shape selected";
 }
 

@@ -24,6 +24,8 @@ interface CanvasProps {
   cursor: string;
   /** When false, shapes don't intercept pointer events or change the cursor. */
   shapesInteractive: boolean;
+  /** When set, all shapes other than this ID render at 50% opacity. */
+  dimNonId?: string | null;
   onPointerDown: (e: PointerEvent<SVGSVGElement>) => void;
   onPointerMove: (e: PointerEvent<SVGSVGElement>) => void;
   onPointerUp: (e: PointerEvent<SVGSVGElement>) => void;
@@ -45,6 +47,7 @@ export const Canvas = forwardRef<SVGSVGElement, CanvasProps>(function Canvas(
     viewHeightMm,
     cursor,
     shapesInteractive,
+    dimNonId,
     onPointerDown,
     onPointerMove,
     onPointerUp,
@@ -94,15 +97,25 @@ export const Canvas = forwardRef<SVGSVGElement, CanvasProps>(function Canvas(
       />
       <OriginMarker zoomScale={zoomScale} />
       <g>
-        {shapes.map((shape) => (
-          <ShapeRenderer
-            key={shape.id}
-            shape={shape}
-            selected={selectedSet.has(shape.id)}
-            zoomScale={zoomScale}
-            interactive={shapesInteractive}
-          />
-        ))}
+        {shapes.map((shape) => {
+          const dimmed = !!dimNonId && dimNonId !== shape.id;
+          const node = (
+            <ShapeRenderer
+              key={shape.id}
+              shape={shape}
+              selected={selectedSet.has(shape.id)}
+              zoomScale={zoomScale}
+              interactive={shapesInteractive}
+            />
+          );
+          return dimmed ? (
+            <g key={shape.id} opacity={0.4}>
+              {node}
+            </g>
+          ) : (
+            node
+          );
+        })}
       </g>
       {overlay}
     </svg>

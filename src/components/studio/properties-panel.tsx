@@ -22,12 +22,23 @@ interface DocSettings {
   zoom: number;
 }
 
+interface PolygonSettings {
+  sides: number;
+  star: boolean;
+  innerPct: number;
+}
+
 interface PropertiesPanelProps {
   selectedShapes: Shape[];
   unit: "mm" | "in";
   doc: DocSettings;
   /** When set, focuses the text-edit textarea for that shape. */
   editingTextShapeId: string | null;
+  /** When set, the panel shows node-editing controls instead of bbox edits. */
+  nodeEditingShapeId: string | null;
+  /** Polygon-tool settings. The panel shows them when polygonToolActive. */
+  polygonSettings: PolygonSettings;
+  polygonToolActive: boolean;
   onUpdateShape: (next: Shape) => void;
   onDeleteSelected: () => void;
   onSetGridSpacing: (mm: number) => void;
@@ -35,6 +46,11 @@ interface PropertiesPanelProps {
   onSetUnitDisplay: (u: "mm" | "in") => void;
   onFitAll: () => void;
   onTextEditDone: () => void;
+  onEnterNodeEdit: (shapeId: string) => void;
+  onExitNodeEdit: () => void;
+  onSetPolygonSides: (n: number) => void;
+  onSetPolygonStar: (v: boolean) => void;
+  onSetPolygonInnerPct: (n: number) => void;
 }
 
 const SECTION_LABEL =
@@ -92,6 +108,9 @@ function PanelBody({
   unit,
   doc,
   editingTextShapeId,
+  nodeEditingShapeId,
+  polygonSettings,
+  polygonToolActive,
   onUpdateShape,
   onDeleteSelected,
   onSetGridSpacing,
@@ -99,10 +118,79 @@ function PanelBody({
   onSetUnitDisplay,
   onFitAll,
   onTextEditDone,
+  onEnterNodeEdit,
+  onExitNodeEdit,
+  onSetPolygonSides,
+  onSetPolygonStar,
+  onSetPolygonInnerPct,
 }: PropertiesPanelProps) {
+  if (nodeEditingShapeId) {
+    const editing = selectedShapes.find((s) => s.id === nodeEditingShapeId);
+    const count = editing?.points?.length ?? 0;
+    return (
+      <div className="flex flex-col gap-5">
+        <Section label="Node editing">
+          <p className="text-sm text-wood">
+            {count} node{count === 1 ? "" : "s"}
+          </p>
+          <p className="text-[11px] text-wood-light/60">
+            Drag nodes or handles to reshape. Press Esc to finish.
+          </p>
+          <button
+            type="button"
+            onClick={onExitNodeEdit}
+            className="rounded-xl border border-wood/[0.12] bg-white/70 px-3 py-1.5 text-sm text-wood hover:border-forest/40"
+          >
+            Done editing
+          </button>
+        </Section>
+      </div>
+    );
+  }
+
   if (selectedShapes.length === 0) {
     return (
       <div className="flex flex-col gap-6">
+        {polygonToolActive ? (
+          <Section label="Polygon">
+            <NumberField
+              label="N"
+              value={polygonSettings.sides}
+              onCommit={(v) =>
+                onSetPolygonSides(
+                  Math.max(3, Math.min(64, Math.round(v))),
+                )
+              }
+              min={3}
+              max={64}
+              format={(v) => v.toString()}
+              parse={(raw) => Number.parseInt(raw, 10)}
+            />
+            <label className="flex items-center gap-2 text-sm text-wood">
+              <input
+                type="checkbox"
+                checked={polygonSettings.star}
+                onChange={(e) => onSetPolygonStar(e.target.checked)}
+                className="h-3.5 w-3.5 accent-forest"
+              />
+              Star
+            </label>
+            {polygonSettings.star ? (
+              <NumberField
+                label="In%"
+                value={polygonSettings.innerPct}
+                onCommit={(v) =>
+                  onSetPolygonInnerPct(Math.max(10, Math.min(90, v)))
+                }
+                min={10}
+                max={90}
+                format={(v) => v.toString()}
+                parse={(raw) => Number.parseFloat(raw)}
+                suffix="%"
+              />
+            ) : null}
+          </Section>
+        ) : null}
         <EmptyStateHints />
         <Section label="Document">
           <NumberField
@@ -189,6 +277,7 @@ function PanelBody({
       onDelete={onDeleteSelected}
       editingTextShapeId={editingTextShapeId}
       onTextEditDone={onTextEditDone}
+      onEnterNodeEdit={onEnterNodeEdit}
     />
   );
 }
@@ -200,6 +289,7 @@ function SingleShapeEditor({
   onDelete,
   editingTextShapeId,
   onTextEditDone,
+  onEnterNodeEdit,
 }: {
   shape: Shape;
   unit: "mm" | "in";
@@ -207,6 +297,7 @@ function SingleShapeEditor({
   onDelete: () => void;
   editingTextShapeId: string | null;
   onTextEditDone: () => void;
+  onEnterNodeEdit: (shapeId: string) => void;
 }) {
   const formatDim = useCallback(
     (mm: number) => formatDisplay(mm, unit),
@@ -228,6 +319,9 @@ function SingleShapeEditor({
   const isCircle = shape.type === "circle";
   const isLine = shape.type === "line";
   const isText = shape.type === "text";
+  const isPath = shape.type === "path";
+  const pointCount = shape.points?.length ?? 0;
+  const canNodeEdit = isPath && pointCount > 0;
 
   return (
     <div className="flex flex-col gap-5">
@@ -340,6 +434,20 @@ function SingleShapeEditor({
             allowNone={true}
             onChange={(c) => onUpdateShape({ ...shape, fill: c })}
           />
+        </Section>
+      ) : null}
+      {canNodeEdit ? (
+        <Section label="Path">
+          <p className="text-[11px] text-wood-light/60">
+            {pointCount} node{pointCount === 1 ? "" : "s"}
+          </p>
+          <button
+            type="button"
+            onClick={() => onEnterNodeEdit(shape.id)}
+            className="rounded-xl border border-wood/[0.12] bg-white/70 px-3 py-1.5 text-sm text-wood hover:border-forest/40"
+          >
+            Edit nodes
+          </button>
         </Section>
       ) : null}
       <button

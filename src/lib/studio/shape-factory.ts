@@ -1,9 +1,10 @@
-import type { Shape, ShapeType } from "./types";
+import type { PathPoint, Shape, ShapeType } from "./types";
 import {
   DEFAULT_FILL,
   DEFAULT_STROKE,
   DEFAULT_STROKE_WIDTH,
 } from "./constants";
+import { pathDataBounds, pointsBounds } from "./path-ops";
 
 let counter = 0;
 function generateId(): string {
@@ -135,6 +136,46 @@ export function createLine({ x1, y1, x2, y2 }: LineInput): Shape {
     y1: dy1,
     x2: dx2,
     y2: dy2,
+  };
+}
+
+export interface PathInput {
+  points?: PathPoint[];
+  closed?: boolean;
+  pathData?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  fill?: string;
+}
+
+export function createPath({
+  points,
+  closed = false,
+  pathData,
+  stroke,
+  strokeWidth,
+  fill,
+}: PathInput): Shape {
+  const base = baseShape("path");
+  let bounds = null;
+  if (pathData) bounds = pathDataBounds(pathData);
+  else if (points && points.length > 0) bounds = pointsBounds(points);
+  const width = bounds ? bounds.maxX - bounds.minX : 0;
+  const height = bounds ? bounds.maxY - bounds.minY : 0;
+  const cx = bounds ? (bounds.minX + bounds.maxX) / 2 : 0;
+  const cy = bounds ? (bounds.minY + bounds.maxY) / 2 : 0;
+  return {
+    ...base,
+    stroke: stroke ?? base.stroke,
+    strokeWidth: strokeWidth ?? base.strokeWidth,
+    fill: fill ?? base.fill,
+    x: cx,
+    y: cy,
+    width,
+    height,
+    points,
+    pathData,
+    closed,
   };
 }
 

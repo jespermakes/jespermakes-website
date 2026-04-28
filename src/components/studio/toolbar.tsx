@@ -9,6 +9,11 @@ interface ToolbarProps {
   onUndo: () => void;
   onRedo: () => void;
   onExport: () => void;
+  onImport: () => void;
+  onBooleanUnion: () => void;
+  onBooleanDifference: () => void;
+  onBooleanIntersection: () => void;
+  canBoolean: boolean;
   canUndo: boolean;
   canRedo: boolean;
 }
@@ -34,6 +39,24 @@ const TOOLS: ToolDef[] = [
           strokeLinejoin="round"
           strokeWidth="0.5"
         />
+      </svg>
+    ),
+  },
+  {
+    tool: "pen",
+    label: "Pen",
+    shortcut: "P",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <path
+          d="M2 14 C 5 12 9 4 14 2"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+        <circle cx="2" cy="14" r="1.4" fill="currentColor" />
+        <circle cx="14" cy="2" r="1.4" fill="currentColor" />
       </svg>
     ),
   },
@@ -86,6 +109,38 @@ const TOOLS: ToolDef[] = [
           stroke="currentColor"
           strokeWidth="1.5"
           strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    tool: "arc",
+    label: "Arc",
+    shortcut: "A",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <path
+          d="M3 12 A 7 7 0 0 1 13 5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    tool: "polygon",
+    label: "Polygon",
+    shortcut: "G",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <polygon
+          points="8,2 13.6,5.5 13.6,11.5 8,15 2.4,11.5 2.4,5.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
         />
       </svg>
     ),
@@ -163,11 +218,16 @@ export function Toolbar({
   onUndo,
   onRedo,
   onExport,
+  onImport,
+  onBooleanUnion,
+  onBooleanDifference,
+  onBooleanIntersection,
+  canBoolean,
   canUndo,
   canRedo,
 }: ToolbarProps) {
   return (
-    <div className="flex h-full w-12 flex-col items-center gap-1 rounded-r-xl bg-wood py-3 text-cream">
+    <div className="flex h-full w-12 flex-col items-center gap-1 overflow-y-auto rounded-r-xl bg-wood py-3 text-cream">
       <Link
         href="/"
         aria-label="Back to Jesper Makes"
@@ -193,6 +253,103 @@ export function Toolbar({
           {t.icon}
         </ToolButton>
       ))}
+      <Separator />
+      <ToolButton
+        label="Union"
+        disabled={!canBoolean}
+        onClick={onBooleanUnion}
+      >
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <path
+            d="M3 6 A 3 3 0 1 0 9 6 A 3 3 0 1 0 3 6 M7 10 A 3 3 0 1 0 13 10 A 3 3 0 1 0 7 10"
+            fill="currentColor"
+            fillRule="evenodd"
+            opacity={0.3}
+          />
+          <path
+            d="M3 6 A 3 3 0 1 1 9 6 A 3 3 0 1 1 3 6 Z M7 10 A 3 3 0 1 1 13 10 A 3 3 0 1 1 7 10 Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          />
+        </svg>
+      </ToolButton>
+      <ToolButton
+        label="Difference"
+        disabled={!canBoolean}
+        onClick={onBooleanDifference}
+      >
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <defs>
+            <mask id="diff-mask">
+              <rect width="16" height="16" fill="white" />
+              <circle cx="10" cy="10" r="3" fill="black" />
+            </mask>
+          </defs>
+          <circle
+            cx="6"
+            cy="6"
+            r="3"
+            fill="currentColor"
+            fillOpacity={0.45}
+            mask="url(#diff-mask)"
+          />
+          <circle
+            cx="6"
+            cy="6"
+            r="3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          />
+          <circle
+            cx="10"
+            cy="10"
+            r="3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            strokeDasharray="2 1.5"
+          />
+        </svg>
+      </ToolButton>
+      <ToolButton
+        label="Intersection"
+        disabled={!canBoolean}
+        onClick={onBooleanIntersection}
+      >
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <defs>
+            <clipPath id="int-clip-a">
+              <circle cx="6" cy="8" r="3.4" />
+            </clipPath>
+          </defs>
+          <circle
+            cx="10"
+            cy="8"
+            r="3.4"
+            fill="currentColor"
+            fillOpacity={0.5}
+            clipPath="url(#int-clip-a)"
+          />
+          <circle
+            cx="6"
+            cy="8"
+            r="3.4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          />
+          <circle
+            cx="10"
+            cy="8"
+            r="3.4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          />
+        </svg>
+      </ToolButton>
       <Separator />
       <ToolButton
         label="Undo"
@@ -221,6 +378,19 @@ export function Toolbar({
         </svg>
       </ToolButton>
       <div className="flex-1" />
+      <ToolButton label="Import SVG" onClick={onImport}>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <path
+            d="M8 14 L8 6 M5 9 L8 6 L11 9"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path d="M3 2 L13 2 L13 4 L3 4 Z" fill="currentColor" />
+        </svg>
+      </ToolButton>
       <ToolButton label="Export SVG" onClick={onExport}>
         <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
           <path
