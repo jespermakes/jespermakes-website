@@ -20,10 +20,13 @@ import {
 } from "@/components/studio/context-menu";
 import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
+import { AIFloatingButton, AIPanel } from "@/components/studio/ai-panel";
 import { DogboneOverlay } from "@/components/studio/dogbone-overlay";
+import { EmptyCanvas } from "@/components/studio/empty-canvas";
 import { KerfOverlay } from "@/components/studio/kerf-overlay";
 import { MaterialOutline } from "@/components/studio/material-outline";
 import { PlanPanel } from "@/components/studio/plan-panel";
+import { PublishModal } from "@/components/studio/publish-modal";
 import { ReviewPanel } from "@/components/studio/review-panel";
 import { TabOverlay } from "@/components/studio/tab-overlay";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
@@ -180,6 +183,10 @@ export default function StudioPage() {
     targetShapeId: string | null;
   } | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [aiPanelOpen, setAiPanelOpen] = useState(false);
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [publishBusy, setPublishBusy] = useState(false);
+  const [publishError, setPublishError] = useState<string | null>(null);
   // Document metadata used by the design-file format and (in Group 7) cloud
   // save. These default to a fresh "Untitled" design.
   const [designName, setDesignName] = useState("Untitled");
@@ -1594,6 +1601,84 @@ export default function StudioPage() {
     return () => clearInterval(interval);
   }, [isLoggedIn, designId, handleCloudSave, saveStatus]);
 
+  // Workbench import: when redirected from /workbench/[id] via 'Open in
+  // Studio', the design payload is parked in sessionStorage. Load it as an
+  // unsaved design (no designId, so the user's first save creates a new
+  // entry in their account) and capture remixOfId for the eventual publish.
+  const [remixOfId, setRemixOfId] = useState<string | null>(null);
+  useEffect(() => {
+    if (searchParams.get("from") !== "workbench") return;
+    if (typeof window === "undefined") return;
+    let raw: string | null = null;
+    try {
+      raw = sessionStorage.getItem("workbench_open_in_studio");
+      if (raw) sessionStorage.removeItem("workbench_open_in_studio");
+    } catch {
+      return;
+    }
+    if (!raw) return;
+    try {
+      const payload = JSON.parse(raw) as {
+        name?: string;
+        data?: {
+          shapes?: Shape[];
+          canvasSettings?: {
+            gridSpacing?: number;
+            snapToGrid?: boolean;
+            unitDisplay?: "mm" | "in";
+          };
+          createdAt?: string;
+          material?: import("@/lib/studio/types").MaterialSettings;
+          activeTool?: CuttingTool | null;
+        };
+        remixOfId?: string | null;
+      };
+      const data = payload.data ?? {};
+      const settings = data.canvasSettings ?? {};
+      let nextActiveId: string | null | undefined = undefined;
+      if (data.activeTool) {
+        const fileTool = data.activeTool;
+        setTools((prev) => {
+          const exists = prev.some((t) => t.id === fileTool.id);
+          const next = exists
+            ? prev.map((t) => (t.id === fileTool.id ? fileTool : t))
+            : [...prev, fileTool];
+          persistTools(next);
+          return next;
+        });
+        nextActiveId = fileTool.id;
+      }
+      dispatch({
+        type: "LOAD_DESIGN",
+        shapes: Array.isArray(data.shapes) ? data.shapes : [],
+        gridSpacing:
+          typeof settings.gridSpacing === "number" ? settings.gridSpacing : 10,
+        snapToGrid:
+          typeof settings.snapToGrid === "boolean" ? settings.snapToGrid : true,
+        unitDisplay: settings.unitDisplay === "in" ? "in" : "mm",
+        material: data.material,
+        activeToolId: nextActiveId,
+      });
+      setDesignName(payload.name ?? "Untitled");
+      setDesignId(null);
+      setDesignCreatedAt(data.createdAt ?? null);
+      setRemixOfId(payload.remixOfId ?? null);
+      dirtyRef.current = true;
+      setSaveStatus("never-saved");
+    } catch {
+      /* ignore malformed payload */
+    }
+    // Strip ?from=workbench from the URL so a refresh doesn't try to re-import.
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("from");
+      window.history.replaceState({}, "", url.toString());
+    } catch {
+      /* noop */
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Load the design when the URL has ?id=...
   useEffect(() => {
     const id = searchParams.get("id");
@@ -2080,6 +2165,12 @@ export default function StudioPage() {
         } else if (drawing) {
           setDrawing(null);
         }
+        e.preventDefault();
+        return;
+      }
+
+      if (e.key === "/" && !e.metaKey && !e.ctrlKey) {
+        setAiPanelOpen((o) => !o);
         e.preventDefault();
         return;
       }
@@ -2666,6 +2757,109 @@ export default function StudioPage() {
     [doc.shapes, drawing, finalizePenAsOpen],
   );
 
+  const handleAIResult = useCallback(
+    (result: {
+      shapes: Shape[];
+      modifications: string[];
+      message: string;
+      promptText: string;
+    }) => {
+      // Apply modifications + add new shapes as one undo step.
+      if (result.shapes.length === 0 && result.modifications.length === 0) {
+        // The AI returned nothing — surface its message but keep state.
+        if (result.message) showToast(result.message);
+        return;
+      }
+      // Make sure incoming shape ids don't collide with the existing canvas.
+      const existing = new Set(doc.shapes.map((s) => s.id));
+      const safeShapes = result.shapes.map((s) => {
+        if (!existing.has(s.id)) {
+          existing.add(s.id);
+          return s;
+        }
+        const id = `ai-${Date.now().toString(36)}-${Math.random()
+          .toString(36)
+          .slice(2, 7)}`;
+        existing.add(id);
+        return { ...s, id };
+      });
+      dispatch({
+        type: "REPLACE_SHAPES",
+        removeIds: result.modifications,
+        add: safeShapes,
+        selectAdded: true,
+      });
+      // Schedule a fit-all on the next frame so the new bounds are reflected.
+      setTimeout(() => handleFitAll(), 16);
+      if (result.message) showToast(result.message);
+    },
+    [doc.shapes, handleFitAll, showToast],
+  );
+
+  const handleOpenPublish = useCallback(() => {
+    if (doc.shapes.length === 0) {
+      showToast("Nothing to publish.");
+      return;
+    }
+    if (!isLoggedIn) {
+      router.push("/login?callbackUrl=/studio");
+      return;
+    }
+    setPublishError(null);
+    setPublishOpen(true);
+  }, [doc.shapes.length, isLoggedIn, router, showToast]);
+
+  const handlePublish = useCallback(
+    async (input: {
+      name: string;
+      description: string;
+      tags: string[];
+      category: string;
+    }) => {
+      setPublishBusy(true);
+      setPublishError(null);
+      try {
+        const file = buildCurrentDesignFile();
+        const res = await fetch("/api/workbench/designs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sourceDesignId: designId,
+            name: input.name,
+            description: input.description,
+            tags: input.tags,
+            category: input.category,
+            data: file,
+            remixOfId: remixOfId,
+          }),
+        });
+        if (!res.ok) {
+          const json = (await res.json().catch(() => null)) as
+            | { error?: string }
+            | null;
+          throw new Error(json?.error ?? `HTTP ${res.status}`);
+        }
+        const json = (await res.json()) as { design: { id: string } };
+        setPublishOpen(false);
+        showToast("Published to The Workbench");
+        router.push(`/workbench/${json.design.id}`);
+      } catch (err) {
+        setPublishError(
+          err instanceof Error ? err.message : "Publish failed",
+        );
+      } finally {
+        setPublishBusy(false);
+      }
+    },
+    [
+      buildCurrentDesignFile,
+      designId,
+      remixOfId,
+      router,
+      showToast,
+    ],
+  );
+
   const handleExportProfile = useCallback(
     (profile: ExportProfile) => {
       if (doc.shapes.length === 0) {
@@ -2807,6 +3001,7 @@ export default function StudioPage() {
         onRedo={() => dispatch({ type: "REDO" })}
         onExportProfile={handleExportProfile}
         onSaveToFile={handleSaveToFile}
+        onPublishToWorkbench={handleOpenPublish}
         onImport={handleImportClick}
         onBooleanUnion={() => handleBoolean("union")}
         onBooleanDifference={() => handleBoolean("difference")}
@@ -2874,6 +3069,24 @@ export default function StudioPage() {
                   Drop SVG to import
                 </span>
               </div>
+            ) : null}
+            {doc.shapes.length === 0 &&
+            doc.mode === "design" &&
+            !drawing &&
+            !showWelcome ? (
+              <EmptyCanvas
+                onDrawRectangle={() => {
+                  markActive();
+                  setActiveTool("rectangle");
+                }}
+                onAskAI={() => {
+                  markActive();
+                  setAiPanelOpen(true);
+                }}
+              />
+            ) : null}
+            {doc.mode === "design" && !aiPanelOpen ? (
+              <AIFloatingButton onClick={() => setAiPanelOpen(true)} />
             ) : null}
             <Canvas
             ref={svgRef}
@@ -3008,7 +3221,16 @@ export default function StudioPage() {
           onFitAll={handleFitAll}
         />
       </div>
-      {doc.mode === "design" ? (
+      {doc.mode === "design" && aiPanelOpen ? (
+        <AIPanel
+          open={aiPanelOpen}
+          isLoggedIn={isLoggedIn}
+          existingShapes={doc.shapes}
+          material={doc.material}
+          onClose={() => setAiPanelOpen(false)}
+          onResult={handleAIResult}
+        />
+      ) : doc.mode === "design" ? (
         <PropertiesPanel
           selectedShapes={selectedShapes}
           unit={doc.unitDisplay}
@@ -3117,6 +3339,15 @@ export default function StudioPage() {
         />
       ) : null}
       {showWelcome ? <WelcomeOverlay onDismiss={dismissWelcome} /> : null}
+      {publishOpen ? (
+        <PublishModal
+          initialName={designName}
+          busy={publishBusy}
+          error={publishError}
+          onCancel={() => setPublishOpen(false)}
+          onPublish={handlePublish}
+        />
+      ) : null}
       {cursorScreenPos &&
       activeTool !== "select" &&
       !drawing &&

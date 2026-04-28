@@ -7,6 +7,7 @@ import {
   PROFILE_LABELS,
   type ExportProfile,
 } from "@/lib/studio/export-profiles";
+import { RichTooltip } from "./rich-tooltip";
 
 interface ToolbarProps {
   activeTool: Tool;
@@ -20,6 +21,7 @@ interface ToolbarProps {
   onRedo: () => void;
   onExportProfile: (profile: ExportProfile) => void;
   onSaveToFile: () => void;
+  onPublishToWorkbench: () => void;
   onImport: () => void;
   onBooleanUnion: () => void;
   onBooleanDifference: () => void;
@@ -34,6 +36,8 @@ interface ToolDef {
   tool: Tool;
   label: string;
   shortcut: string;
+  description: string;
+  tip?: string;
   icon: React.ReactNode;
 }
 
@@ -42,6 +46,9 @@ const TOOLS: ToolDef[] = [
     tool: "select",
     label: "Select",
     shortcut: "V",
+    description:
+      "Click to select shapes. Shift-click to add to a selection. Drag to move; drag handles to resize.",
+    tip: "Right-click for cut, copy, paste, and more options.",
     icon: (
       <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
         <path
@@ -58,6 +65,9 @@ const TOOLS: ToolDef[] = [
     tool: "pen",
     label: "Pen",
     shortcut: "P",
+    description:
+      "Click to place straight points. Click and drag to pull a curve. Click the first point to close the shape.",
+    tip: "Press Enter or Escape to finish an open path.",
     icon: (
       <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
         <path
@@ -76,6 +86,9 @@ const TOOLS: ToolDef[] = [
     tool: "rectangle",
     label: "Rectangle",
     shortcut: "R",
+    description:
+      "Click and drag to draw a rectangle. Hold Shift to constrain to a square.",
+    tip: "Set a corner radius in the properties panel for rounded corners.",
     icon: (
       <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
         <rect
@@ -94,6 +107,8 @@ const TOOLS: ToolDef[] = [
     tool: "circle",
     label: "Circle",
     shortcut: "C",
+    description:
+      "Click and drag to draw an ellipse. Hold Shift for a perfect circle.",
     icon: (
       <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
         <circle
@@ -111,6 +126,8 @@ const TOOLS: ToolDef[] = [
     tool: "line",
     label: "Line",
     shortcut: "L",
+    description:
+      "Click to set the start point, click again for the end. Hold Shift to snap to 45° angles.",
     icon: (
       <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
         <line
@@ -129,6 +146,9 @@ const TOOLS: ToolDef[] = [
     tool: "arc",
     label: "Arc",
     shortcut: "A",
+    description:
+      "Click for the center, drag to set the radius and start angle, then move to set the sweep. Click to finalise.",
+    tip: "Hold Shift on the final click to snap the sweep to 15° steps.",
     icon: (
       <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
         <path
@@ -145,6 +165,8 @@ const TOOLS: ToolDef[] = [
     tool: "polygon",
     label: "Polygon",
     shortcut: "G",
+    description:
+      "Click and drag from the centre. Set the number of sides in the properties panel; toggle 'Star' for star shapes.",
     icon: (
       <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
         <polygon
@@ -161,6 +183,9 @@ const TOOLS: ToolDef[] = [
     tool: "text",
     label: "Text",
     shortcut: "T",
+    description:
+      "Click to place text. Double-click an existing text shape to edit.",
+    tip: "Use the properties panel for font size, family, and alignment.",
     icon: (
       <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
         <text
@@ -185,6 +210,8 @@ function ToolButton({
   label,
   shortcut,
   showBadge,
+  description,
+  tip,
   onClick,
   children,
 }: {
@@ -194,17 +221,19 @@ function ToolButton({
   shortcut?: string;
   /** Render the shortcut letter as a small persistent badge. */
   showBadge?: boolean;
+  description?: string;
+  tip?: string;
   onClick: () => void;
   children: React.ReactNode;
 }) {
-  return (
+  const button = (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
       aria-label={shortcut ? `${label} (${shortcut})` : label}
       className={[
-        "group relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors",
+        "relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors",
         active ? "bg-white/20 text-cream" : "text-cream/80 hover:bg-white/10 hover:text-cream",
         disabled ? "opacity-30 cursor-not-allowed hover:bg-transparent" : "",
       ].join(" ")}
@@ -218,16 +247,18 @@ function ToolButton({
           {shortcut}
         </span>
       ) : null}
-      <span
-        className="pointer-events-none absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-wood-light px-2 py-1 text-[11px] font-medium text-cream opacity-0 shadow-md transition-opacity group-hover:opacity-100"
-        role="tooltip"
-      >
-        {label}
-        {shortcut ? (
-          <span className="ml-2 opacity-60">{shortcut}</span>
-        ) : null}
-      </span>
     </button>
+  );
+  if (!description) return button;
+  return (
+    <RichTooltip
+      title={label}
+      shortcut={shortcut}
+      description={description}
+      tip={tip}
+    >
+      {button}
+    </RichTooltip>
   );
 }
 
@@ -245,9 +276,11 @@ const PROFILE_ORDER: ExportProfile[] = [
 function ExportButton({
   onExportProfile,
   onSaveToFile,
+  onPublishToWorkbench,
 }: {
   onExportProfile: (p: ExportProfile) => void;
   onSaveToFile: () => void;
+  onPublishToWorkbench: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -270,7 +303,12 @@ function ExportButton({
 
   return (
     <div ref={wrapRef} className="relative">
-      <ToolButton label="Export" onClick={() => setOpen((o) => !o)}>
+      <ToolButton
+        label="Export"
+        description="Download your design for your machine. Pick Generic SVG, Shaper Origin, Laser, or CNC Router."
+        tip="The last-used profile is remembered for next time."
+        onClick={() => setOpen((o) => !o)}
+      >
         <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
           <path
             d="M8 2 L8 10 M5 7 L8 10 L11 7"
@@ -320,6 +358,17 @@ function ExportButton({
           >
             Save to file (.jm)
           </button>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              onPublishToWorkbench();
+              setOpen(false);
+            }}
+            className="block w-full px-4 py-1.5 text-left text-forest transition-colors hover:bg-forest/[0.06]"
+          >
+            Publish to Workbench…
+          </button>
         </div>
       ) : null}
     </div>
@@ -334,6 +383,7 @@ export function Toolbar({
   onRedo,
   onExportProfile,
   onSaveToFile,
+  onPublishToWorkbench,
   onImport,
   onBooleanUnion,
   onBooleanDifference,
@@ -370,6 +420,8 @@ export function Toolbar({
             shortcut={t.shortcut}
             showBadge
             disabled={disabled}
+            description={t.description}
+            tip={t.tip}
             onClick={() => onSelectTool(t.tool)}
           >
             {t.icon}
@@ -379,6 +431,7 @@ export function Toolbar({
       <Separator />
       <ToolButton
         label="Union"
+        description="Combine the selected shapes into one shape covering both areas."
         disabled={!canBoolean}
         onClick={onBooleanUnion}
       >
@@ -399,6 +452,7 @@ export function Toolbar({
       </ToolButton>
       <ToolButton
         label="Difference"
+        description="Subtract the front shape from the one behind it."
         disabled={!canBoolean}
         onClick={onBooleanDifference}
       >
@@ -438,6 +492,7 @@ export function Toolbar({
       </ToolButton>
       <ToolButton
         label="Intersection"
+        description="Keep only the area where the selected shapes overlap."
         disabled={!canBoolean}
         onClick={onBooleanIntersection}
       >
@@ -477,6 +532,7 @@ export function Toolbar({
       <ToolButton
         label="Undo"
         shortcut="Ctrl+Z"
+        description="Step backwards through your edits."
         disabled={!canUndo}
         onClick={onUndo}
       >
@@ -490,6 +546,7 @@ export function Toolbar({
       <ToolButton
         label="Redo"
         shortcut="Ctrl+Shift+Z"
+        description="Reapply an action you just undid."
         disabled={!canRedo}
         onClick={onRedo}
       >
@@ -501,7 +558,11 @@ export function Toolbar({
         </svg>
       </ToolButton>
       <div className="flex-1" />
-      <ToolButton label="Import SVG" onClick={onImport}>
+      <ToolButton
+        label="Import SVG"
+        description="Open an SVG file from your computer. Drag and drop also works anywhere on the canvas."
+        onClick={onImport}
+      >
         <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
           <path
             d="M8 14 L8 6 M5 9 L8 6 L11 9"
@@ -517,8 +578,14 @@ export function Toolbar({
       <ExportButton
         onExportProfile={onExportProfile}
         onSaveToFile={onSaveToFile}
+        onPublishToWorkbench={onPublishToWorkbench}
       />
-      <ToolButton label="Help" shortcut="?" onClick={onShowHelp}>
+      <ToolButton
+        label="Help"
+        shortcut="?"
+        description="Show the welcome card with the core keyboard shortcuts."
+        onClick={onShowHelp}
+      >
         <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
           <text
             x="8"

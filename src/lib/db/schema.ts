@@ -443,3 +443,56 @@ export const studioDesigns = pgTable("studio_designs", {
   createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
 });
+
+export const workbenchDesigns = pgTable("workbench_designs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  // The source design (private, in the author's account). Nullable so the
+  // public listing survives if the author deletes the private original.
+  sourceDesignId: uuid("source_design_id").references(
+    () => studioDesigns.id,
+    { onDelete: "set null" },
+  ),
+  authorId: uuid("author_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  authorName: text("author_name").notNull(),
+  name: text("name").notNull(),
+  description: text("description").notNull().default(""),
+  tags: jsonb("tags").$type<string[]>().notNull().default([]),
+  // Snapshot of the StudioDesignFile at publish time.
+  data: jsonb("data").notNull(),
+  thumbnail: text("thumbnail"),
+  category: text("category").notNull().default("general"),
+  downloadCount: integer("download_count").notNull().default(0),
+  likeCount: integer("like_count").notNull().default(0),
+  remixCount: integer("remix_count").notNull().default(0),
+  // If this publication was forked from another Workbench design.
+  remixOfId: uuid("remix_of_id"),
+  // "published" | "flagged" | "removed"
+  status: text("status").notNull().default("published"),
+  publishedAt: timestamp("published_at", { mode: "date" })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .notNull()
+    .defaultNow(),
+});
+
+export const workbenchLikes = pgTable(
+  "workbench_likes",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    designId: uuid("design_id")
+      .notNull()
+      .references(() => workbenchDesigns.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => ({
+    uniq: index("workbench_likes_user_design_idx").on(t.userId, t.designId),
+  }),
+);
