@@ -26,6 +26,7 @@ import { ModeGuide } from "@/components/studio/mode-guide";
 import { KerfOverlay } from "@/components/studio/kerf-overlay";
 import { MaterialOutline } from "@/components/studio/material-outline";
 import { PlanPanel } from "@/components/studio/plan-panel";
+import { PublishModal } from "@/components/studio/publish-modal";
 import { ReviewPanel } from "@/components/studio/review-panel";
 import { TabOverlay } from "@/components/studio/tab-overlay";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
@@ -183,6 +184,9 @@ export default function StudioPage() {
   } | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
   const [aiPanelOpen, setAiPanelOpen] = useState(false);
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [publishBusy, setPublishBusy] = useState(false);
+  const [publishError, setPublishError] = useState<string | null>(null);
   // Document metadata used by the design-file format and (in Group 7) cloud
   // save. These default to a fresh "Untitled" design.
   const [designName, setDesignName] = useState("Untitled");
@@ -2747,6 +2751,70 @@ export default function StudioPage() {
     [doc.shapes, drawing, finalizePenAsOpen],
   );
 
+  const handleOpenPublish = useCallback(() => {
+    if (doc.shapes.length === 0) {
+      showToast("Nothing to publish.");
+      return;
+    }
+    if (!isLoggedIn) {
+      router.push("/login?callbackUrl=/studio");
+      return;
+    }
+    setPublishError(null);
+    setPublishOpen(true);
+  }, [doc.shapes.length, isLoggedIn, router, showToast]);
+
+  const handlePublish = useCallback(
+    async (input: {
+      name: string;
+      description: string;
+      tags: string[];
+      category: string;
+    }) => {
+      setPublishBusy(true);
+      setPublishError(null);
+      try {
+        const file = buildCurrentDesignFile();
+        const res = await fetch("/api/workbench/designs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sourceDesignId: designId,
+            name: input.name,
+            description: input.description,
+            tags: input.tags,
+            category: input.category,
+            data: file,
+            remixOfId: remixOfId,
+          }),
+        });
+        if (!res.ok) {
+          const json = (await res.json().catch(() => null)) as
+            | { error?: string }
+            | null;
+          throw new Error(json?.error ?? `HTTP ${res.status}`);
+        }
+        const json = (await res.json()) as { design: { id: string } };
+        setPublishOpen(false);
+        showToast("Published to The Workbench");
+        router.push(`/workbench/${json.design.id}`);
+      } catch (err) {
+        setPublishError(
+          err instanceof Error ? err.message : "Publish failed",
+        );
+      } finally {
+        setPublishBusy(false);
+      }
+    },
+    [
+      buildCurrentDesignFile,
+      designId,
+      remixOfId,
+      router,
+      showToast,
+    ],
+  );
+
   const handleExportProfile = useCallback(
     (profile: ExportProfile) => {
       if (doc.shapes.length === 0) {
@@ -2888,6 +2956,7 @@ export default function StudioPage() {
         onRedo={() => dispatch({ type: "REDO" })}
         onExportProfile={handleExportProfile}
         onSaveToFile={handleSaveToFile}
+        onPublishToWorkbench={handleOpenPublish}
         onImport={handleImportClick}
         onBooleanUnion={() => handleBoolean("union")}
         onBooleanDifference={() => handleBoolean("difference")}
@@ -3213,6 +3282,15 @@ export default function StudioPage() {
         />
       ) : null}
       {showWelcome ? <WelcomeOverlay onDismiss={dismissWelcome} /> : null}
+      {publishOpen ? (
+        <PublishModal
+          initialName={designName}
+          busy={publishBusy}
+          error={publishError}
+          onCancel={() => setPublishOpen(false)}
+          onPublish={handlePublish}
+        />
+      ) : null}
       {cursorScreenPos &&
       activeTool !== "select" &&
       !drawing &&

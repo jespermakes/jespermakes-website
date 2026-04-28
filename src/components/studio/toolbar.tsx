@@ -21,6 +21,7 @@ interface ToolbarProps {
   onRedo: () => void;
   onExportProfile: (profile: ExportProfile) => void;
   onSaveToFile: () => void;
+  onPublishToWorkbench: () => void;
   onImport: () => void;
   onBooleanUnion: () => void;
   onBooleanDifference: () => void;
@@ -275,9 +276,11 @@ const PROFILE_ORDER: ExportProfile[] = [
 function ExportButton({
   onExportProfile,
   onSaveToFile,
+  onPublishToWorkbench,
 }: {
   onExportProfile: (p: ExportProfile) => void;
   onSaveToFile: () => void;
+  onPublishToWorkbench: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -355,6 +358,17 @@ function ExportButton({
           >
             Save to file (.jm)
           </button>
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              onPublishToWorkbench();
+              setOpen(false);
+            }}
+            className="block w-full px-4 py-1.5 text-left text-forest transition-colors hover:bg-forest/[0.06]"
+          >
+            Publish to Workbench…
+          </button>
         </div>
       ) : null}
     </div>
@@ -369,6 +383,7 @@ export function Toolbar({
   onRedo,
   onExportProfile,
   onSaveToFile,
+  onPublishToWorkbench,
   onImport,
   onBooleanUnion,
   onBooleanDifference,
@@ -563,6 +578,7 @@ export function Toolbar({
       <ExportButton
         onExportProfile={onExportProfile}
         onSaveToFile={onSaveToFile}
+        onPublishToWorkbench={onPublishToWorkbench}
       />
       <ToolButton
         label="Help"
