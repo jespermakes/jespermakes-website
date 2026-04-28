@@ -2,6 +2,7 @@
 
 import type { ReviewSummary } from "@/lib/studio/review-checks";
 import type { CuttingTool, MaterialSettings, StudioMode } from "@/lib/studio/types";
+import { ModeGuide } from "./mode-guide";
 
 interface ReviewPanelProps {
   summary: ReviewSummary;
@@ -33,6 +34,7 @@ export function ReviewPanel({
       <div className="flex items-center justify-between px-4 pb-3 pt-4">
         <span className={SECTION_LABEL}>Review</span>
       </div>
+      <ModeGuide mode="review" />
       <div className="flex-1 overflow-y-auto px-4 pb-6">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-1.5 text-sm">

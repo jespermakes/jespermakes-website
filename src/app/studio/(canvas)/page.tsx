@@ -21,6 +21,8 @@ import {
 import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
 import { DogboneOverlay } from "@/components/studio/dogbone-overlay";
+import { EmptyCanvas } from "@/components/studio/empty-canvas";
+import { ModeGuide } from "@/components/studio/mode-guide";
 import { KerfOverlay } from "@/components/studio/kerf-overlay";
 import { MaterialOutline } from "@/components/studio/material-outline";
 import { PlanPanel } from "@/components/studio/plan-panel";
@@ -180,6 +182,7 @@ export default function StudioPage() {
     targetShapeId: string | null;
   } | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [aiPanelOpen, setAiPanelOpen] = useState(false);
   // Document metadata used by the design-file format and (in Group 7) cloud
   // save. These default to a fresh "Untitled" design.
   const [designName, setDesignName] = useState("Untitled");
@@ -2874,6 +2877,21 @@ export default function StudioPage() {
                   Drop SVG to import
                 </span>
               </div>
+            ) : null}
+            {doc.shapes.length === 0 &&
+            doc.mode === "design" &&
+            !drawing &&
+            !showWelcome ? (
+              <EmptyCanvas
+                onDrawRectangle={() => {
+                  markActive();
+                  setActiveTool("rectangle");
+                }}
+                onAskAI={() => {
+                  markActive();
+                  setAiPanelOpen(true);
+                }}
+              />
             ) : null}
             <Canvas
             ref={svgRef}

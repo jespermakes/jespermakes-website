@@ -7,6 +7,7 @@ import {
   formatDisplay,
   mmToDisplay,
 } from "@/lib/studio/geometry";
+import { ModeGuide } from "./mode-guide";
 import {
   newToolId,
 } from "@/lib/studio/tool-library";
@@ -51,6 +52,7 @@ export function PlanPanel(props: PlanPanelProps) {
       <div className="flex items-center justify-between px-4 pb-3 pt-4">
         <span className={SECTION_LABEL}>Plan</span>
       </div>
+      <ModeGuide mode="plan" />
       <div className="flex-1 overflow-y-auto px-4 pb-6">
         <div className="flex flex-col gap-6">
           <MaterialSection
