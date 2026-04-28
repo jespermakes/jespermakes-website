@@ -51,6 +51,7 @@ import {
 } from "@/lib/studio/transform";
 import {
   applyNodeDrag,
+  generateArcPoints,
   generatePolygonPoints,
   syncPathBounds,
 } from "@/lib/studio/path-ops";
@@ -215,6 +216,21 @@ export default function StudioPage() {
         centerDocY: number;
         currentDocX: number;
         currentDocY: number;
+        shift: boolean;
+      }
+    | {
+        kind: "arc";
+        tool: "arc";
+        stage: "radius" | "sweep";
+        pointerId: number | null;
+        centerDocX: number;
+        centerDocY: number;
+        currentDocX: number;
+        currentDocY: number;
+        radius: number;
+        startAngleDeg: number;
+        sweepDeg: number;
+        prevAngleDeg: number;
         shift: boolean;
       };
   const [drawing, setDrawing] = useState<DrawingState | null>(null);
@@ -564,6 +580,52 @@ export default function StudioPage() {
         return;
       }
 
+      if (activeTool === "arc") {
+        // If we're already in stage 2 (sweeping), this click finalizes.
+        if (drawing && drawing.kind === "arc" && drawing.stage === "sweep") {
+          let sweep = drawing.sweepDeg;
+          if (e.shiftKey || drawing.shift) {
+            sweep = Math.round(sweep / 15) * 15;
+          }
+          if (Math.abs(sweep) > 0.01) {
+            const points = generateArcPoints(
+              drawing.centerDocX,
+              drawing.centerDocY,
+              drawing.radius,
+              drawing.startAngleDeg,
+              sweep,
+            );
+            if (points.length >= 2) {
+              const shape = createPath({ points, closed: false });
+              dispatch({ type: "ADD_SHAPE", shape, selectAfter: true });
+              setActiveTool("select");
+            }
+          }
+          setDrawing(null);
+          e.preventDefault();
+          return;
+        }
+        // Otherwise begin stage 1 (drag for radius + start angle).
+        setDrawing({
+          kind: "arc",
+          tool: "arc",
+          stage: "radius",
+          pointerId: e.pointerId,
+          centerDocX: docPoint.x,
+          centerDocY: docPoint.y,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+          radius: 0,
+          startAngleDeg: 0,
+          sweepDeg: 0,
+          prevAngleDeg: 0,
+          shift: e.shiftKey,
+        });
+        (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+        e.preventDefault();
+        return;
+      }
+
       if (activeTool === "pen") {
         const HOVER_THRESHOLD_MM = 8 / Math.max(0.0001, doc.zoom);
         // Already drawing a pen path?
@@ -769,6 +831,35 @@ export default function StudioPage() {
           ...drawing,
           currentDocX: docPoint.x,
           currentDocY: docPoint.y,
+          shift: e.shiftKey,
+        });
+        return;
+      }
+      if (drawing.kind === "arc") {
+        if (drawing.stage === "radius") {
+          if (drawing.pointerId !== e.pointerId) return;
+          setDrawing({
+            ...drawing,
+            currentDocX: docPoint.x,
+            currentDocY: docPoint.y,
+            shift: e.shiftKey,
+          });
+          return;
+        }
+        // stage === "sweep" — accumulate winding from prevAngleDeg
+        const dx = docPoint.x - drawing.centerDocX;
+        const dy = docPoint.y - drawing.centerDocY;
+        const newAngleDeg = (Math.atan2(dy, dx) * 180) / Math.PI;
+        let delta = newAngleDeg - drawing.prevAngleDeg;
+        // Shortest-signed delta in (-180, 180]
+        delta = ((((delta + 180) % 360) + 360) % 360) - 180;
+        const nextSweep = drawing.sweepDeg + delta;
+        setDrawing({
+          ...drawing,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+          sweepDeg: nextSweep,
+          prevAngleDeg: newAngleDeg,
           shift: e.shiftKey,
         });
         return;
@@ -981,6 +1072,33 @@ export default function StudioPage() {
           }
         }
         setNodeDrag(null);
+        (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+        return;
+      }
+
+      if (
+        drawing &&
+        drawing.kind === "arc" &&
+        drawing.stage === "radius" &&
+        drawing.pointerId === e.pointerId
+      ) {
+        const dx = drawing.currentDocX - drawing.centerDocX;
+        const dy = drawing.currentDocY - drawing.centerDocY;
+        const radius = Math.hypot(dx, dy);
+        if (radius < 0.0001) {
+          // Cancel — too small.
+          setDrawing(null);
+        } else {
+          const startAngleDeg = (Math.atan2(dy, dx) * 180) / Math.PI;
+          setDrawing({
+            ...drawing,
+            stage: "sweep",
+            pointerId: null,
+            radius,
+            startAngleDeg,
+            prevAngleDeg: startAngleDeg,
+          });
+        }
         (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
         return;
       }
@@ -1462,6 +1580,33 @@ export default function StudioPage() {
   const previewShape = useMemo<Shape | null>(() => {
     if (!drawing) return null;
     if (drawing.kind === "pen") return null;
+    if (drawing.kind === "arc") {
+      if (drawing.stage === "radius") {
+        const dx = drawing.currentDocX - drawing.centerDocX;
+        const dy = drawing.currentDocY - drawing.centerDocY;
+        const radius = Math.hypot(dx, dy);
+        if (radius < 0.0001) return null;
+        // Show a single radius line as the preview during stage 1.
+        return createLine({
+          x1: drawing.centerDocX,
+          y1: drawing.centerDocY,
+          x2: drawing.currentDocX,
+          y2: drawing.currentDocY,
+        });
+      }
+      let sweep = drawing.sweepDeg;
+      if (drawing.shift) sweep = Math.round(sweep / 15) * 15;
+      if (Math.abs(sweep) < 0.001) return null;
+      const points = generateArcPoints(
+        drawing.centerDocX,
+        drawing.centerDocY,
+        drawing.radius,
+        drawing.startAngleDeg,
+        sweep,
+      );
+      if (points.length < 2) return null;
+      return createPath({ points, closed: false });
+    }
     if (drawing.kind === "drag-radius") {
       const dx = drawing.currentDocX - drawing.centerDocX;
       const dy = drawing.currentDocY - drawing.centerDocY;

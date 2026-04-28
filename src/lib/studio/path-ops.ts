@@ -281,6 +281,39 @@ export function applyNodeDrag(
   return next;
 }
 
+export function generateArcPoints(
+  cx: number,
+  cy: number,
+  radius: number,
+  startAngleDeg: number,
+  sweepDeg: number,
+): PathPoint[] {
+  if (radius <= 0 || sweepDeg === 0) return [];
+  const segCount = Math.max(1, Math.ceil(Math.abs(sweepDeg) / 90));
+  const segSweepDeg = sweepDeg / segCount;
+  const segSweepRad = (segSweepDeg * Math.PI) / 180;
+  const handleLen = ((4 / 3) * Math.tan(segSweepRad / 4)) * radius;
+  const points: PathPoint[] = [];
+  for (let i = 0; i <= segCount; i++) {
+    const aDeg = startAngleDeg + segSweepDeg * i;
+    const a = (aDeg * Math.PI) / 180;
+    const px = cx + radius * Math.cos(a);
+    const py = cy + radius * Math.sin(a);
+    const tx = -Math.sin(a);
+    const ty = Math.cos(a);
+    const handleIn =
+      i > 0
+        ? { x: px - tx * handleLen, y: py - ty * handleLen }
+        : undefined;
+    const handleOut =
+      i < segCount
+        ? { x: px + tx * handleLen, y: py + ty * handleLen }
+        : undefined;
+    points.push({ x: px, y: py, handleIn, handleOut });
+  }
+  return points;
+}
+
 export function generatePolygonPoints(
   cx: number,
   cy: number,
