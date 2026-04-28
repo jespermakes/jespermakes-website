@@ -20,6 +20,8 @@ import {
 } from "@/components/studio/context-menu";
 import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
+import { MaterialOutline } from "@/components/studio/material-outline";
+import { PlanPanel } from "@/components/studio/plan-panel";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
 import { Ruler, RulerCorner } from "@/components/studio/ruler";
 import { SelectionHandles } from "@/components/studio/selection-handles";
@@ -66,6 +68,11 @@ import {
   shapeToPath,
   syncPathBounds,
 } from "@/lib/studio/path-ops";
+import {
+  findActiveTool,
+  loadTools,
+  saveTools as persistTools,
+} from "@/lib/studio/tool-library";
 import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
 import {
   buildDesignFile,
@@ -84,7 +91,12 @@ import {
   type GuideLine,
 } from "@/lib/studio/guides";
 import type { LineEndpointHandle, ResizeHandle } from "@/lib/studio/geometry";
-import type { PathPoint, Shape, Tool } from "@/lib/studio/types";
+import type {
+  CuttingTool,
+  PathPoint,
+  Shape,
+  Tool,
+} from "@/lib/studio/types";
 
 // Module-level clipboard: shapes copied within the app, not the system
 // clipboard. Persists across mount cycles within a single page session.
@@ -164,6 +176,24 @@ export default function StudioPage() {
   const [designName, setDesignName] = useState("Untitled");
   const [designId, setDesignId] = useState<string | null>(null);
   const [designCreatedAt, setDesignCreatedAt] = useState<string | null>(null);
+
+  // Tool library — persisted in localStorage so the same shop set follows
+  // the user across designs.
+  const [tools, setTools] = useState<CuttingTool[]>([]);
+  useEffect(() => {
+    setTools(loadTools());
+  }, []);
+  const activeCuttingTool = useMemo(
+    () => findActiveTool(tools, doc.activeToolId),
+    [tools, doc.activeToolId],
+  );
+  // Default the document's activeToolId to the first tool the first time
+  // the library loads (otherwise the kerf section reads 0).
+  useEffect(() => {
+    if (!doc.activeToolId && tools.length > 0) {
+      dispatch({ type: "SET_ACTIVE_TOOL_ID", toolId: tools[0].id });
+    }
+  }, [tools, doc.activeToolId]);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("never-saved");
   // Tracks whether the document has changed since the last successful save.
   // Set on every shape mutation, cleared after a successful save.
@@ -2686,6 +2716,13 @@ export default function StudioPage() {
             onDoubleClick={handleDoubleClick}
             overlay={
               <>
+                {doc.mode !== "design" ? (
+                  <MaterialOutline
+                    material={doc.material}
+                    zoomScale={1 / doc.zoom}
+                    unit={doc.unitDisplay}
+                  />
+                ) : null}
                 {selectedSingleShape &&
                 !drawing &&
                 !nodeEditingShapeId &&
@@ -2752,50 +2789,87 @@ export default function StudioPage() {
           onFitAll={handleFitAll}
         />
       </div>
-      <PropertiesPanel
-        selectedShapes={selectedShapes}
-        unit={doc.unitDisplay}
-        doc={{
-          gridSpacing: doc.gridSpacing,
-          snapToGrid: doc.snapToGrid,
-          unitDisplay: doc.unitDisplay,
-          zoom: doc.zoom,
-        }}
-        editingTextShapeId={editingTextShapeId}
-        nodeEditingShapeId={nodeEditingShapeId}
-        polygonSettings={{
-          sides: polygonSides,
-          star: polygonStar,
-          innerPct: polygonInnerPct,
-        }}
-        polygonToolActive={activeTool === "polygon"}
-        onTextEditDone={() => setEditingTextShapeId(null)}
-        onEnterNodeEdit={(id) => {
-          setNodeEditingShapeId(id);
-          setSelectedNodeIndices([]);
-        }}
-        onExitNodeEdit={() => {
-          setNodeEditingShapeId(null);
-          setSelectedNodeIndices([]);
-        }}
-        onSetPolygonSides={setPolygonSides}
-        onSetPolygonStar={setPolygonStar}
-        onSetPolygonInnerPct={setPolygonInnerPct}
-        onUpdateShape={(next) =>
-          dispatch({ type: "UPDATE_SHAPES", shapes: [next] })
-        }
-        onDeleteSelected={() => dispatch({ type: "DELETE_SELECTED" })}
-        onSetGridSpacing={(mm) =>
-          dispatch({ type: "SET_GRID_SPACING", gridSpacing: mm })
-        }
-        onSetSnapToGrid={(v) =>
-          dispatch({ type: "SET_SNAP_TO_GRID", snapToGrid: v })
-        }
-        onSetUnitDisplay={(u) =>
-          dispatch({ type: "SET_UNIT_DISPLAY", unitDisplay: u })
-        }
-        onFitAll={handleFitAll}
-      />
+      {doc.mode === "design" ? (
+        <PropertiesPanel
+          selectedShapes={selectedShapes}
+          unit={doc.unitDisplay}
+          doc={{
+            gridSpacing: doc.gridSpacing,
+            snapToGrid: doc.snapToGrid,
+            unitDisplay: doc.unitDisplay,
+            zoom: doc.zoom,
+          }}
+          editingTextShapeId={editingTextShapeId}
+          nodeEditingShapeId={nodeEditingShapeId}
+          polygonSettings={{
+            sides: polygonSides,
+            star: polygonStar,
+            innerPct: polygonInnerPct,
+          }}
+          polygonToolActive={activeTool === "polygon"}
+          onTextEditDone={() => setEditingTextShapeId(null)}
+          onEnterNodeEdit={(id) => {
+            setNodeEditingShapeId(id);
+            setSelectedNodeIndices([]);
+          }}
+          onExitNodeEdit={() => {
+            setNodeEditingShapeId(null);
+            setSelectedNodeIndices([]);
+          }}
+          onSetPolygonSides={setPolygonSides}
+          onSetPolygonStar={setPolygonStar}
+          onSetPolygonInnerPct={setPolygonInnerPct}
+          onUpdateShape={(next) =>
+            dispatch({ type: "UPDATE_SHAPES", shapes: [next] })
+          }
+          onDeleteSelected={() => dispatch({ type: "DELETE_SELECTED" })}
+          onSetGridSpacing={(mm) =>
+            dispatch({ type: "SET_GRID_SPACING", gridSpacing: mm })
+          }
+          onSetSnapToGrid={(v) =>
+            dispatch({ type: "SET_SNAP_TO_GRID", snapToGrid: v })
+          }
+          onSetUnitDisplay={(u) =>
+            dispatch({ type: "SET_UNIT_DISPLAY", unitDisplay: u })
+          }
+          onFitAll={handleFitAll}
+        />
+      ) : doc.mode === "plan" ? (
+        <PlanPanel
+          selectedShapes={selectedShapes}
+          unit={doc.unitDisplay}
+          material={doc.material}
+          tools={tools}
+          activeTool={activeCuttingTool}
+          showKerfCompensation={doc.showKerfCompensation}
+          onSetMaterial={(m) => dispatch({ type: "SET_MATERIAL", material: m })}
+          onSetActiveTool={(id) => {
+            dispatch({ type: "SET_ACTIVE_TOOL_ID", toolId: id });
+          }}
+          onUpsertTool={(t) => {
+            const next = tools.some((x) => x.id === t.id)
+              ? tools.map((x) => (x.id === t.id ? t : x))
+              : [...tools, t];
+            setTools(next);
+            persistTools(next);
+            dispatch({ type: "SET_ACTIVE_TOOL_ID", toolId: t.id });
+          }}
+          onDeleteTool={(id) => {
+            const next = tools.filter((x) => x.id !== id);
+            setTools(next);
+            persistTools(next);
+            if (doc.activeToolId === id) {
+              dispatch({
+                type: "SET_ACTIVE_TOOL_ID",
+                toolId: next[0]?.id ?? null,
+              });
+            }
+          }}
+          onSetKerfCompensation={(v) =>
+            dispatch({ type: "SET_KERF_COMPENSATION", show: v })
+          }
+        />
+      ) : null}
       </div>
       {contextMenu ? (
         <ContextMenu
