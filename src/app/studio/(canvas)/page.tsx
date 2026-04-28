@@ -20,6 +20,7 @@ import {
 } from "@/components/studio/context-menu";
 import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
+import { DogboneOverlay } from "@/components/studio/dogbone-overlay";
 import { KerfOverlay } from "@/components/studio/kerf-overlay";
 import { MaterialOutline } from "@/components/studio/material-outline";
 import { PlanPanel } from "@/components/studio/plan-panel";
@@ -75,6 +76,7 @@ import {
   saveTools as persistTools,
 } from "@/lib/studio/tool-library";
 import { shapesWithCutTypeColors } from "@/lib/studio/cut-types";
+import { defaultDogboneCorners } from "@/lib/studio/dogbones";
 import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
 import {
   buildDesignFile,
@@ -1784,12 +1786,26 @@ export default function StudioPage() {
 
   const handleApplyDogbones = useCallback(
     (_style: "standard" | "tbone") => {
-      // Implemented in the dogbone group; placeholder for now so the
-      // panel button doesn't dangle.
       void _style;
-      showToast("Dogbones — coming next");
+      if (doc.selectedIds.length === 0) return;
+      const updated: Shape[] = [];
+      for (const s of doc.shapes) {
+        if (!doc.selectedIds.includes(s.id)) continue;
+        if (s.cutType !== "inside" && s.cutType !== "pocket") continue;
+        const corners = defaultDogboneCorners(s);
+        if (corners.length === 0) continue;
+        updated.push({ ...s, dogboneCorners: corners });
+      }
+      if (updated.length === 0) {
+        showToast("Dogbones apply only to inside/pocket shapes with corners.");
+        return;
+      }
+      dispatch({ type: "UPDATE_SHAPES", shapes: updated });
+      showToast(
+        `Dogbones on ${updated.length} shape${updated.length === 1 ? "" : "s"}`,
+      );
     },
-    [showToast],
+    [doc.shapes, doc.selectedIds, showToast],
   );
 
   const handleAutoTabs = useCallback(
@@ -2795,6 +2811,13 @@ export default function StudioPage() {
                   <KerfOverlay
                     shapes={displayShapes}
                     kerfMm={activeCuttingTool.kerf}
+                    zoomScale={1 / doc.zoom}
+                  />
+                ) : null}
+                {doc.mode !== "design" && activeCuttingTool ? (
+                  <DogboneOverlay
+                    shapes={displayShapes}
+                    toolDiameter={activeCuttingTool.diameter}
                     zoomScale={1 / doc.zoom}
                   />
                 ) : null}
