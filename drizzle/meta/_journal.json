@@ -71,6 +71,13 @@
       "when": 1777005379899,
       "tag": "0009_majestic_onslaught",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1777366348970,
+      "tag": "0010_sour_leper_queen",
+      "breakpoints": true
     }
   ]
 }

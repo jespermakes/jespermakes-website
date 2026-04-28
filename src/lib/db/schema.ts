@@ -430,3 +430,16 @@ export const mcpActivity = pgTable("mcp_activity", {
   ipAddress: text("ip_address"),
   createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
 });
+
+export const studioDesigns = pgTable("studio_designs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull().default("Untitled"),
+  description: text("description").default(""),
+  data: jsonb("data").notNull(),
+  thumbnail: text("thumbnail"),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+});
