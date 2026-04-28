@@ -1620,17 +1620,17 @@ export default function StudioPage() {
     }
   }, [doc.unitDisplay]);
 
+  const handleOpenFromFile = useCallback(() => {
+    designFileInputRef.current?.click();
+  }, []);
+
   const handleOpenDesigns = useCallback(() => {
     if (isLoggedIn) {
       router.push("/studio/designs");
     } else {
       handleOpenFromFile();
     }
-  }, [isLoggedIn, router]);
-
-  const handleOpenFromFile = useCallback(() => {
-    designFileInputRef.current?.click();
-  }, []);
+  }, [isLoggedIn, router, handleOpenFromFile]);
 
   const handleDesignFileSelected = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
