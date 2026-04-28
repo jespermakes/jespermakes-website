@@ -398,6 +398,10 @@ export default function StudioPage() {
     (e: ReactPointerEvent<SVGSVGElement>) => {
       setIdle(false);
       const isMiddle = e.button === 1;
+      // In Review mode all interactions except pan are disabled.
+      if (doc.mode === "review" && !spaceHeld && !isMiddle) {
+        return;
+      }
       const wantsPan = spaceHeld || isMiddle;
       const screen = screenPointFromEvent(e);
       if (wantsPan) {
@@ -514,10 +518,13 @@ export default function StudioPage() {
 
       if (activeTool === "select") {
         const targetEl = e.target as Element | null;
+        const planMode = doc.mode !== "design";
         // Handle clicks (resize, rotate, line endpoint) take priority.
-        const handleEl = targetEl?.closest?.("[data-handle]") as
-          | (HTMLElement | SVGElement)
-          | null;
+        const handleEl = !planMode
+          ? (targetEl?.closest?.("[data-handle]") as
+              | (HTMLElement | SVGElement)
+              | null)
+          : null;
         const handleKey = handleEl?.dataset?.handle;
         if (handleKey && doc.selectedIds.length === 1) {
           const targetId = doc.selectedIds[0];
@@ -580,28 +587,30 @@ export default function StudioPage() {
             e.preventDefault();
             return;
           }
-          // No shift: select if not already, then prime a move.
+          // No shift: select if not already, then prime a move (Design only).
           let nextSelected = doc.selectedIds;
           if (!doc.selectedIds.includes(shapeId)) {
             dispatch({ type: "SELECT", ids: [shapeId] });
             nextSelected = [shapeId];
           }
-          const originals = new Map<string, { x: number; y: number }>();
-          for (const id of nextSelected) {
-            const s = doc.shapes.find((sh) => sh.id === id);
-            if (s) originals.set(id, { x: s.x, y: s.y });
-          }
-          if (originals.size > 0) {
-            setTransform({
-              kind: "move",
-              pointerId: e.pointerId,
-              startDocX: docPoint.x,
-              startDocY: docPoint.y,
-              currentDocX: docPoint.x,
-              currentDocY: docPoint.y,
-              originals,
-            });
-            (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+          if (!planMode) {
+            const originals = new Map<string, { x: number; y: number }>();
+            for (const id of nextSelected) {
+              const s = doc.shapes.find((sh) => sh.id === id);
+              if (s) originals.set(id, { x: s.x, y: s.y });
+            }
+            if (originals.size > 0) {
+              setTransform({
+                kind: "move",
+                pointerId: e.pointerId,
+                startDocX: docPoint.x,
+                startDocY: docPoint.y,
+                currentDocX: docPoint.x,
+                currentDocY: docPoint.y,
+                originals,
+              });
+              (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+            }
           }
           e.preventDefault();
           return;
@@ -1889,31 +1898,42 @@ export default function StudioPage() {
           break;
         case "r":
         case "R":
-          setActiveTool("rectangle");
+          if (doc.mode === "design") setActiveTool("rectangle");
           break;
         case "c":
         case "C":
-          setActiveTool("circle");
+          if (doc.mode === "design") setActiveTool("circle");
           break;
         case "l":
         case "L":
-          setActiveTool("line");
+          if (doc.mode === "design") setActiveTool("line");
           break;
         case "t":
         case "T":
-          setActiveTool("text");
+          if (doc.mode === "design") setActiveTool("text");
           break;
         case "p":
         case "P":
-          setActiveTool("pen");
+          if (doc.mode === "design") setActiveTool("pen");
           break;
         case "g":
         case "G":
-          setActiveTool("polygon");
+          if (doc.mode === "design") setActiveTool("polygon");
           break;
         case "a":
         case "A":
-          setActiveTool("arc");
+          if (doc.mode === "design") setActiveTool("arc");
+          break;
+        case "1":
+          dispatch({ type: "SET_MODE", mode: "design" });
+          break;
+        case "2":
+          dispatch({ type: "SET_MODE", mode: "plan" });
+          if (activeTool !== "select") setActiveTool("select");
+          break;
+        case "3":
+          dispatch({ type: "SET_MODE", mode: "review" });
+          if (activeTool !== "select") setActiveTool("select");
           break;
         case "Delete":
         case "Backspace":
@@ -2549,6 +2569,13 @@ export default function StudioPage() {
         saveStatus={saveStatus}
         isLoggedIn={isLoggedIn}
         userInitial={userInitial}
+        mode={doc.mode}
+        onModeChange={(m) => {
+          dispatch({ type: "SET_MODE", mode: m });
+          if (m !== "design" && activeTool !== "select") {
+            setActiveTool("select");
+          }
+        }}
         onSave={handleCloudSave}
         onNewDesign={handleNewDesign}
         onOpenDesigns={handleOpenDesigns}
@@ -2556,6 +2583,7 @@ export default function StudioPage() {
       <div className="flex min-h-0 w-full flex-1">
       <Toolbar
         activeTool={activeTool}
+        drawingDisabled={doc.mode !== "design"}
         onSelectTool={(t) => {
           markActive();
           setActiveTool(t);
@@ -2658,7 +2686,10 @@ export default function StudioPage() {
             onDoubleClick={handleDoubleClick}
             overlay={
               <>
-                {selectedSingleShape && !drawing && !nodeEditingShapeId ? (
+                {selectedSingleShape &&
+                !drawing &&
+                !nodeEditingShapeId &&
+                doc.mode === "design" ? (
                   <SelectionHandles
                     shape={selectedSingleShape}
                     zoomScale={1 / doc.zoom}

@@ -10,6 +10,31 @@ export type Tool =
   | "polygon"
   | "arc";
 
+export type StudioMode = "design" | "plan" | "review";
+
+export type CutType = "inside" | "outside" | "online" | "pocket" | "guide";
+
+export interface MaterialSettings {
+  width: number;
+  height: number;
+  thickness: number;
+  name: string;
+}
+
+export interface CuttingTool {
+  id: string;
+  name: string;
+  type: "router_bit" | "laser";
+  diameter: number;
+  kerf: number;
+}
+
+export interface TabDefinition {
+  position: number;
+  width: number;
+  height: number;
+}
+
 export interface PathPoint {
   x: number;
   y: number;
@@ -49,6 +74,15 @@ export interface Shape {
    * import. When present, it takes precedence over `points` for rendering.
    */
   pathData?: string;
+  // Manufacturing (Phase 5)
+  cutType?: CutType;
+  cutDepth?: number;
+  /**
+   * Indices into points[] where dogbone fillets are applied (for path
+   * shapes); for rectangles a non-empty array means "all four corners".
+   */
+  dogboneCorners?: number[];
+  tabs?: TabDefinition[];
 }
 
 export interface StudioDocument {
@@ -60,6 +94,13 @@ export interface StudioDocument {
   gridSpacing: number;
   snapToGrid: boolean;
   unitDisplay: "mm" | "in";
+  // Phase 5 — manufacturing context
+  mode: StudioMode;
+  material: MaterialSettings;
+  /** Currently active cutting tool (also persisted in localStorage). */
+  activeToolId: string | null;
+  /** Whether kerf compensation preview is shown in Plan mode. */
+  showKerfCompensation: boolean;
 }
 
 export interface StudioHistory {

@@ -1,8 +1,10 @@
 import type {
   HistorySnapshot,
+  MaterialSettings,
   Shape,
   StudioDocument,
   StudioHistory,
+  StudioMode,
 } from "./types";
 import {
   DEFAULT_GRID_SPACING,
@@ -47,6 +49,10 @@ export type StudioAction =
   | { type: "SET_GRID_SPACING"; gridSpacing: number }
   | { type: "SET_SNAP_TO_GRID"; snapToGrid: boolean }
   | { type: "SET_UNIT_DISPLAY"; unitDisplay: "mm" | "in" }
+  | { type: "SET_MODE"; mode: StudioMode }
+  | { type: "SET_MATERIAL"; material: MaterialSettings }
+  | { type: "SET_ACTIVE_TOOL_ID"; toolId: string | null }
+  | { type: "SET_KERF_COMPENSATION"; show: boolean }
   | { type: "UNDO" }
   | { type: "REDO" };
 
@@ -60,6 +66,13 @@ const ACTIONS_THAT_MODIFY_SHAPES: StudioAction["type"][] = [
   "SEND_TO_BACK",
 ];
 
+export const DEFAULT_MATERIAL: MaterialSettings = {
+  width: 600,
+  height: 400,
+  thickness: 6,
+  name: "Plywood",
+};
+
 export function emptyDocument(): StudioDocument {
   return {
     shapes: [],
@@ -70,6 +83,10 @@ export function emptyDocument(): StudioDocument {
     gridSpacing: DEFAULT_GRID_SPACING,
     snapToGrid: true,
     unitDisplay: "mm",
+    mode: "design",
+    material: { ...DEFAULT_MATERIAL },
+    activeToolId: null,
+    showKerfCompensation: true,
   };
 }
 
@@ -268,6 +285,21 @@ export function reducer(state: StudioState, action: StudioAction): StudioState {
       return {
         ...state,
         document: { ...doc, unitDisplay: action.unitDisplay },
+      };
+
+    case "SET_MODE":
+      return { ...state, document: { ...doc, mode: action.mode } };
+
+    case "SET_MATERIAL":
+      return { ...state, document: { ...doc, material: action.material } };
+
+    case "SET_ACTIVE_TOOL_ID":
+      return { ...state, document: { ...doc, activeToolId: action.toolId } };
+
+    case "SET_KERF_COMPENSATION":
+      return {
+        ...state,
+        document: { ...doc, showKerfCompensation: action.show },
       };
 
     case "UNDO": {
