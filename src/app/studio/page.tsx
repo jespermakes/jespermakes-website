@@ -12,6 +12,7 @@ import {
   type WheelEvent as ReactWheelEvent,
 } from "react";
 import { Canvas } from "@/components/studio/canvas";
+import { PenOverlay } from "@/components/studio/pen-overlay";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
 import { Ruler, RulerCorner } from "@/components/studio/ruler";
 import { SelectionHandles } from "@/components/studio/selection-handles";
@@ -36,6 +37,7 @@ import {
 import {
   createCircle,
   createLine,
+  createPath,
   createRectangle,
   createText,
   generateId,
@@ -52,7 +54,7 @@ import {
   type GuideLine,
 } from "@/lib/studio/guides";
 import type { LineEndpointHandle, ResizeHandle } from "@/lib/studio/geometry";
-import type { Shape, Tool } from "@/lib/studio/types";
+import type { PathPoint, Shape, Tool } from "@/lib/studio/types";
 
 // Module-level clipboard: shapes copied within the app, not the system
 // clipboard. Persists across mount cycles within a single page session.
@@ -135,7 +137,8 @@ export default function StudioPage() {
     | null
   >(null);
 
-  // Active drawing operation (rectangle/circle drag, or line two-click).
+  // Active drawing operation (rectangle/circle drag, or line two-click,
+  // or pen click-by-click + drag for handles).
   type DrawingState =
     | {
         kind: "drag";
@@ -155,6 +158,18 @@ export default function StudioPage() {
         currentDocX: number;
         currentDocY: number;
         shift: boolean;
+      }
+    | {
+        kind: "pen";
+        tool: "pen";
+        points: PathPoint[];
+        currentDocX: number;
+        currentDocY: number;
+        startScreenX: number;
+        startScreenY: number;
+        dragging: { pointerId: number; pointIndex: number; alt: boolean } | null;
+        shift: boolean;
+        hoveringFirstPoint: boolean;
       };
   const [drawing, setDrawing] = useState<DrawingState | null>(null);
 
@@ -392,6 +407,80 @@ export default function StudioPage() {
         return;
       }
 
+      if (activeTool === "pen") {
+        const HOVER_THRESHOLD_MM = 8 / Math.max(0.0001, doc.zoom);
+        // Already drawing a pen path?
+        if (drawing && drawing.kind === "pen") {
+          const first = drawing.points[0];
+          const distFirst = first
+            ? Math.hypot(docPoint.x - first.x, docPoint.y - first.y)
+            : Infinity;
+          if (distFirst <= HOVER_THRESHOLD_MM && drawing.points.length >= 2) {
+            // Close the path.
+            const shape = createPath({
+              points: drawing.points,
+              closed: true,
+            });
+            dispatch({ type: "ADD_SHAPE", shape, selectAfter: true });
+            setActiveTool("select");
+            setDrawing(null);
+            e.preventDefault();
+            return;
+          }
+          // Add a new corner point. Optionally constrain angle from previous.
+          const last = drawing.points[drawing.points.length - 1];
+          let nx = docPoint.x;
+          let ny = docPoint.y;
+          if (e.shiftKey && last) {
+            const dx = nx - last.x;
+            const dy = ny - last.y;
+            const len = Math.hypot(dx, dy);
+            if (len > 0) {
+              const angle = Math.atan2(dy, dx);
+              const stepped =
+                Math.round(angle / (Math.PI / 4)) * (Math.PI / 4);
+              nx = last.x + Math.cos(stepped) * len;
+              ny = last.y + Math.sin(stepped) * len;
+            }
+          }
+          const newIdx = drawing.points.length;
+          setDrawing({
+            ...drawing,
+            points: [...drawing.points, { x: nx, y: ny }],
+            currentDocX: nx,
+            currentDocY: ny,
+            startScreenX: screen.x,
+            startScreenY: screen.y,
+            dragging: {
+              pointerId: e.pointerId,
+              pointIndex: newIdx,
+              alt: e.altKey,
+            },
+            shift: e.shiftKey,
+            hoveringFirstPoint: false,
+          });
+          (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+          e.preventDefault();
+          return;
+        }
+        // First click: begin a new pen path.
+        setDrawing({
+          kind: "pen",
+          tool: "pen",
+          points: [{ x: docPoint.x, y: docPoint.y }],
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+          startScreenX: screen.x,
+          startScreenY: screen.y,
+          dragging: { pointerId: e.pointerId, pointIndex: 0, alt: e.altKey },
+          shift: e.shiftKey,
+          hoveringFirstPoint: false,
+        });
+        (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+        e.preventDefault();
+        return;
+      }
+
       if (activeTool === "line") {
         if (!drawing) {
           // First click — record start, await the second click.
@@ -503,6 +592,44 @@ export default function StudioPage() {
       }
 
       if (!drawing) return;
+      if (drawing.kind === "pen") {
+        const HOVER_THRESHOLD_MM = 8 / Math.max(0.0001, doc.zoom);
+        const first = drawing.points[0];
+        const distFirst = first
+          ? Math.hypot(docPoint.x - first.x, docPoint.y - first.y)
+          : Infinity;
+        const hoveringFirstPoint =
+          drawing.points.length >= 2 && distFirst <= HOVER_THRESHOLD_MM;
+
+        let nextPoints = drawing.points;
+        const dragging = drawing.dragging;
+        if (dragging) {
+          const idx = dragging.pointIndex;
+          const target = drawing.points[idx];
+          if (target) {
+            const handleOut = { x: docPoint.x, y: docPoint.y };
+            const handleIn =
+              dragging.alt || e.altKey
+                ? target.handleIn
+                : { x: 2 * target.x - docPoint.x, y: 2 * target.y - docPoint.y };
+            nextPoints = drawing.points.slice();
+            nextPoints[idx] = { ...target, handleIn, handleOut };
+          }
+        }
+
+        setDrawing({
+          ...drawing,
+          points: nextPoints,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+          shift: e.shiftKey,
+          hoveringFirstPoint,
+          dragging: drawing.dragging
+            ? { ...drawing.dragging, alt: drawing.dragging.alt || e.altKey }
+            : null,
+        });
+        return;
+      }
       const matchesDrag =
         drawing.kind === "drag" && drawing.pointerId === e.pointerId;
       const matchesTwoClick = drawing.kind === "two-click";
@@ -646,6 +773,41 @@ export default function StudioPage() {
           dispatch({ type: "SELECT", ids: next });
         }
         setSelectInteraction(null);
+        (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+        return;
+      }
+
+      if (
+        drawing &&
+        drawing.kind === "pen" &&
+        drawing.dragging &&
+        drawing.dragging.pointerId === e.pointerId
+      ) {
+        // If the user barely moved, treat the latest point as a corner — drop
+        // its handles so it stays a sharp corner.
+        const screen = screenPointFromEvent(e);
+        const dragDistPx = Math.hypot(
+          screen.x - drawing.startScreenX,
+          screen.y - drawing.startScreenY,
+        );
+        let nextPoints = drawing.points;
+        if (dragDistPx < 2) {
+          const idx = drawing.dragging.pointIndex;
+          const t = drawing.points[idx];
+          if (t) {
+            nextPoints = drawing.points.slice();
+            nextPoints[idx] = {
+              ...t,
+              handleIn: undefined,
+              handleOut: undefined,
+            };
+          }
+        }
+        setDrawing({
+          ...drawing,
+          points: nextPoints,
+          dragging: null,
+        });
         (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
         return;
       }
@@ -808,6 +970,16 @@ export default function StudioPage() {
     dispatch({ type: "DELETE_SELECTED" });
   }, [doc.shapes, doc.selectedIds, showToast]);
 
+  const finalizePenAsOpen = useCallback(() => {
+    if (!drawing || drawing.kind !== "pen") return;
+    if (drawing.points.length >= 2) {
+      const shape = createPath({ points: drawing.points, closed: false });
+      dispatch({ type: "ADD_SHAPE", shape, selectAfter: true });
+    }
+    setDrawing(null);
+    setActiveTool("select");
+  }, [drawing, setActiveTool]);
+
   const handleZoomIn = useCallback(() => zoomCentered(1.25), [zoomCentered]);
   const handleZoomOut = useCallback(() => zoomCentered(1 / 1.25), [zoomCentered]);
   const handleZoomReset = useCallback(() => {
@@ -896,8 +1068,26 @@ export default function StudioPage() {
         return;
       }
 
+      if (e.key === "Enter") {
+        if (drawing && drawing.kind === "pen") {
+          finalizePenAsOpen();
+          e.preventDefault();
+          return;
+        }
+      }
+
       if (e.key === "Escape") {
         // Priority order per Phase 2 spec.
+        if (drawing && drawing.kind === "pen") {
+          if (drawing.points.length >= 2) {
+            finalizePenAsOpen();
+          } else {
+            setDrawing(null);
+            setActiveTool("select");
+          }
+          e.preventDefault();
+          return;
+        }
         if (editingTextShapeId) {
           setEditingTextShapeId(null);
         } else if (doc.selectedIds.length > 0) {
@@ -933,6 +1123,18 @@ export default function StudioPage() {
         case "T":
           setActiveTool("text");
           break;
+        case "p":
+        case "P":
+          setActiveTool("pen");
+          break;
+        case "g":
+        case "G":
+          setActiveTool("polygon");
+          break;
+        case "a":
+        case "A":
+          setActiveTool("arc");
+          break;
         case "Delete":
         case "Backspace":
           dispatch({ type: "DELETE_SELECTED" });
@@ -959,6 +1161,7 @@ export default function StudioPage() {
     handlePaste,
     handleDuplicate,
     handleCut,
+    finalizePenAsOpen,
     activeTool,
     drawing,
     editingTextShapeId,
@@ -974,6 +1177,7 @@ export default function StudioPage() {
 
   const previewShape = useMemo<Shape | null>(() => {
     if (!drawing) return null;
+    if (drawing.kind === "pen") return null;
     if (drawing.kind === "drag") {
       const { startDocX: ax, startDocY: ay } = drawing;
       let bx = drawing.currentDocX;
@@ -1117,6 +1321,11 @@ export default function StudioPage() {
 
   const handleDoubleClick = useCallback(
     (e: React.MouseEvent<SVGSVGElement>) => {
+      // Finalize an in-progress pen path on double-click.
+      if (drawing && drawing.kind === "pen") {
+        finalizePenAsOpen();
+        return;
+      }
       const targetEl = e.target as Element | null;
       const shapeTarget = targetEl?.closest?.("[data-shape-id]") as
         | (HTMLElement | SVGElement)
@@ -1128,7 +1337,7 @@ export default function StudioPage() {
       dispatch({ type: "SELECT", ids: [shapeId] });
       setEditingTextShapeId(shapeId);
     },
-    [doc.shapes],
+    [doc.shapes, drawing, finalizePenAsOpen],
   );
 
   const handleExport = useCallback(() => {
@@ -1217,6 +1426,18 @@ export default function StudioPage() {
                     height: viewHeightMm,
                   }}
                 />
+                {drawing && drawing.kind === "pen" ? (
+                  <PenOverlay
+                    points={drawing.points}
+                    cursorDoc={{
+                      x: drawing.currentDocX,
+                      y: drawing.currentDocY,
+                    }}
+                    dragging={!!drawing.dragging}
+                    hoveringFirstPoint={drawing.hoveringFirstPoint}
+                    zoomScale={1 / doc.zoom}
+                  />
+                ) : null}
               </>
             }
           />

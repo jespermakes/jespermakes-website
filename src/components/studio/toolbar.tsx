@@ -38,6 +38,24 @@ const TOOLS: ToolDef[] = [
     ),
   },
   {
+    tool: "pen",
+    label: "Pen",
+    shortcut: "P",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <path
+          d="M2 14 C 5 12 9 4 14 2"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+        <circle cx="2" cy="14" r="1.4" fill="currentColor" />
+        <circle cx="14" cy="2" r="1.4" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
     tool: "rectangle",
     label: "Rectangle",
     shortcut: "R",
@@ -86,6 +104,38 @@ const TOOLS: ToolDef[] = [
           stroke="currentColor"
           strokeWidth="1.5"
           strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    tool: "arc",
+    label: "Arc",
+    shortcut: "A",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <path
+          d="M3 12 A 7 7 0 0 1 13 5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+  {
+    tool: "polygon",
+    label: "Polygon",
+    shortcut: "G",
+    icon: (
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+        <polygon
+          points="8,2 13.6,5.5 13.6,11.5 8,15 2.4,11.5 2.4,5.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
         />
       </svg>
     ),
