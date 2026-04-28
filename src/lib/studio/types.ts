@@ -39,6 +39,8 @@ export interface Shape {
   fontSize?: number;
   fontFamily?: string;
   textAnchor?: "start" | "middle" | "end";
+  // Rectangle-specific (only for type === "rectangle")
+  cornerRadius?: number;
   // Path-specific (only for type === "path")
   points?: PathPoint[];
   closed?: boolean;

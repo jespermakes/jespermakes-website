@@ -41,7 +41,12 @@ function shapeToSvg(shape: Shape): string | null {
   if (shape.type === "rectangle") {
     const x = shape.x - shape.width / 2;
     const y = shape.y - shape.height / 2;
-    return `<rect x="${formatNumber(x)}" y="${formatNumber(y)}" width="${formatNumber(shape.width)}" height="${formatNumber(shape.height)}" ${attrs} />`;
+    const maxR = Math.min(shape.width, shape.height) / 2;
+    const r = shape.cornerRadius
+      ? Math.max(0, Math.min(maxR, shape.cornerRadius))
+      : 0;
+    const radii = r > 0 ? ` rx="${formatNumber(r)}" ry="${formatNumber(r)}"` : "";
+    return `<rect x="${formatNumber(x)}" y="${formatNumber(y)}" width="${formatNumber(shape.width)}" height="${formatNumber(shape.height)}"${radii} ${attrs} />`;
   }
   if (shape.type === "circle") {
     const rx = shape.width / 2;
