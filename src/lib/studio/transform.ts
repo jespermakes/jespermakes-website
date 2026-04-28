@@ -5,6 +5,7 @@ import {
   type LineEndpointHandle,
   type ResizeHandle,
 } from "./geometry";
+import { transformPathD, type Matrix2D } from "./path-ops";
 import type { PathPoint, Shape } from "./types";
 
 const MIN_DIM = 0.0001;
@@ -120,6 +121,73 @@ export function resizeLineEndpoint(
     x2: e2.x - cx,
     y2: e2.y - cy,
   };
+}
+
+/** Translate a shape; for paths this also moves points/pathData. */
+export function translateShape(
+  s: Shape,
+  newX: number,
+  newY: number,
+): Shape {
+  const dx = newX - s.x;
+  const dy = newY - s.y;
+  if (dx === 0 && dy === 0) return { ...s, x: newX, y: newY };
+  const next: Shape = { ...s, x: newX, y: newY };
+  if (s.type === "path") {
+    if (s.points && s.points.length > 0) {
+      next.points = s.points.map((p) => ({
+        x: p.x + dx,
+        y: p.y + dy,
+        handleIn: p.handleIn
+          ? { x: p.handleIn.x + dx, y: p.handleIn.y + dy }
+          : undefined,
+        handleOut: p.handleOut
+          ? { x: p.handleOut.x + dx, y: p.handleOut.y + dy }
+          : undefined,
+      }));
+    }
+    if (s.pathData) {
+      next.pathData = transformPathD(s.pathData, [1, 0, 0, 1, dx, dy]);
+    }
+  }
+  return next;
+}
+
+function pathBoundsMatrix(orig: Shape, next: Shape): Matrix2D {
+  const sx = orig.width === 0 ? 1 : next.width / orig.width;
+  const sy = orig.height === 0 ? 1 : next.height / orig.height;
+  const angle = (orig.rotation * Math.PI) / 180;
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  // M = T(next) · R(angle) · S(sx,sy) · R(-angle) · T(-orig)
+  // Build via matrix multiplication.
+  const t1: Matrix2D = [1, 0, 0, 1, -orig.x, -orig.y];
+  const r1: Matrix2D = [cos, -sin, sin, cos, 0, 0];
+  const s: Matrix2D = [sx, 0, 0, sy, 0, 0];
+  const r2: Matrix2D = [cos, sin, -sin, cos, 0, 0];
+  const t2: Matrix2D = [1, 0, 0, 1, next.x, next.y];
+  return mul(t2, mul(r2, mul(s, mul(r1, t1))));
+}
+
+function mul(a: Matrix2D, b: Matrix2D): Matrix2D {
+  return [
+    a[0] * b[0] + a[2] * b[1],
+    a[1] * b[0] + a[3] * b[1],
+    a[0] * b[2] + a[2] * b[3],
+    a[1] * b[2] + a[3] * b[3],
+    a[0] * b[4] + a[2] * b[5] + a[4],
+    a[1] * b[4] + a[3] * b[5] + a[5],
+  ];
+}
+
+/** Rescale compound-path d data when its bounding box resizes. */
+export function rescalePathDataToBounds(
+  orig: Shape,
+  next: Shape,
+  pathData: string,
+): string {
+  const m = pathBoundsMatrix(orig, next);
+  return transformPathD(pathData, m);
 }
 
 /**

@@ -227,7 +227,7 @@ export function Toolbar({
   canRedo,
 }: ToolbarProps) {
   return (
-    <div className="flex h-full w-12 flex-col items-center gap-1 rounded-r-xl bg-wood py-3 text-cream">
+    <div className="flex h-full w-12 flex-col items-center gap-1 overflow-y-auto rounded-r-xl bg-wood py-3 text-cream">
       <Link
         href="/"
         aria-label="Back to Jesper Makes"

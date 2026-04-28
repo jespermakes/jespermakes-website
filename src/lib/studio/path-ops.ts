@@ -172,6 +172,201 @@ export function shapeToPath(shape: Shape): {
   }
 }
 
+/* ------------------------- Path d-string transform --------------------- */
+
+export type Matrix2D = [number, number, number, number, number, number];
+const IDENTITY: Matrix2D = [1, 0, 0, 1, 0, 0];
+
+function applyMatrix(m: Matrix2D, x: number, y: number): { x: number; y: number } {
+  return { x: m[0] * x + m[2] * y + m[4], y: m[1] * x + m[3] * y + m[5] };
+}
+
+function uniformScale(m: Matrix2D): { sx: number; sy: number } {
+  return { sx: Math.hypot(m[0], m[1]), sy: Math.hypot(m[2], m[3]) };
+}
+
+const PATH_TOKEN_RE =
+  /[MmLlHhVvCcSsQqTtAaZz]|-?\d*\.?\d+(?:[eE][-+]?\d+)?/g;
+
+interface ParsedSegment {
+  cmd: string; // always uppercase = absolute
+  args: number[];
+}
+
+/** Parse a path d-string and convert all commands to absolute. */
+export function parsePathD(d: string): ParsedSegment[] {
+  const tokens = d.match(PATH_TOKEN_RE) ?? [];
+  const segments: ParsedSegment[] = [];
+  let i = 0;
+  let cx = 0;
+  let cy = 0;
+  let startX = 0;
+  let startY = 0;
+  let lastCmd = "";
+
+  const next = () => Number.parseFloat(tokens[i++]);
+  const eat = (n: number): number[] => {
+    const out: number[] = [];
+    for (let k = 0; k < n; k++) out.push(next());
+    return out;
+  };
+
+  while (i < tokens.length) {
+    const tok = tokens[i];
+    let cmd: string;
+    if (/^[MmLlHhVvCcSsQqTtAaZz]$/.test(tok)) {
+      cmd = tok;
+      i++;
+    } else {
+      cmd = lastCmd === "M" ? "L" : lastCmd === "m" ? "l" : lastCmd || "L";
+    }
+    lastCmd = cmd;
+    const upper = cmd.toUpperCase();
+    const isRel = cmd !== upper;
+
+    switch (upper) {
+      case "M": {
+        const [x, y] = eat(2);
+        const ax = isRel ? cx + x : x;
+        const ay = isRel ? cy + y : y;
+        segments.push({ cmd: "M", args: [ax, ay] });
+        cx = ax;
+        cy = ay;
+        startX = ax;
+        startY = ay;
+        break;
+      }
+      case "L": {
+        const [x, y] = eat(2);
+        const ax = isRel ? cx + x : x;
+        const ay = isRel ? cy + y : y;
+        segments.push({ cmd: "L", args: [ax, ay] });
+        cx = ax;
+        cy = ay;
+        break;
+      }
+      case "H": {
+        const [x] = eat(1);
+        const ax = isRel ? cx + x : x;
+        segments.push({ cmd: "L", args: [ax, cy] });
+        cx = ax;
+        break;
+      }
+      case "V": {
+        const [y] = eat(1);
+        const ay = isRel ? cy + y : y;
+        segments.push({ cmd: "L", args: [cx, ay] });
+        cy = ay;
+        break;
+      }
+      case "C": {
+        const [x1, y1, x2, y2, x, y] = eat(6);
+        const ax1 = isRel ? cx + x1 : x1;
+        const ay1 = isRel ? cy + y1 : y1;
+        const ax2 = isRel ? cx + x2 : x2;
+        const ay2 = isRel ? cy + y2 : y2;
+        const ax = isRel ? cx + x : x;
+        const ay = isRel ? cy + y : y;
+        segments.push({ cmd: "C", args: [ax1, ay1, ax2, ay2, ax, ay] });
+        cx = ax;
+        cy = ay;
+        break;
+      }
+      case "S": {
+        const [x2, y2, x, y] = eat(4);
+        const ax2 = isRel ? cx + x2 : x2;
+        const ay2 = isRel ? cy + y2 : y2;
+        const ax = isRel ? cx + x : x;
+        const ay = isRel ? cy + y : y;
+        const prev = segments[segments.length - 1];
+        let ax1 = cx;
+        let ay1 = cy;
+        if (prev && (prev.cmd === "C" || prev.cmd === "S")) {
+          ax1 = 2 * cx - prev.args[prev.args.length - 4];
+          ay1 = 2 * cy - prev.args[prev.args.length - 3];
+        }
+        segments.push({ cmd: "C", args: [ax1, ay1, ax2, ay2, ax, ay] });
+        cx = ax;
+        cy = ay;
+        break;
+      }
+      case "Q": {
+        const [x1, y1, x, y] = eat(4);
+        const ax1 = isRel ? cx + x1 : x1;
+        const ay1 = isRel ? cy + y1 : y1;
+        const ax = isRel ? cx + x : x;
+        const ay = isRel ? cy + y : y;
+        segments.push({ cmd: "Q", args: [ax1, ay1, ax, ay] });
+        cx = ax;
+        cy = ay;
+        break;
+      }
+      case "T": {
+        const [x, y] = eat(2);
+        const ax = isRel ? cx + x : x;
+        const ay = isRel ? cy + y : y;
+        const prev = segments[segments.length - 1];
+        let ax1 = cx;
+        let ay1 = cy;
+        if (prev && prev.cmd === "Q") {
+          ax1 = 2 * cx - prev.args[0];
+          ay1 = 2 * cy - prev.args[1];
+        }
+        segments.push({ cmd: "Q", args: [ax1, ay1, ax, ay] });
+        cx = ax;
+        cy = ay;
+        break;
+      }
+      case "A": {
+        const [rx, ry, xRot, large, sweep, x, y] = eat(7);
+        const ax = isRel ? cx + x : x;
+        const ay = isRel ? cy + y : y;
+        segments.push({ cmd: "A", args: [rx, ry, xRot, large, sweep, ax, ay] });
+        cx = ax;
+        cy = ay;
+        break;
+      }
+      case "Z": {
+        segments.push({ cmd: "Z", args: [] });
+        cx = startX;
+        cy = startY;
+        break;
+      }
+      default:
+        return segments;
+    }
+  }
+  return segments;
+}
+
+export function transformPathD(d: string, m: Matrix2D): string {
+  if (m === IDENTITY) return d;
+  const segs = parsePathD(d);
+  const parts: string[] = [];
+  for (const s of segs) {
+    if (s.cmd === "Z") {
+      parts.push("Z");
+      continue;
+    }
+    if (s.cmd === "A") {
+      const [rx, ry, xRot, large, sweep, x, y] = s.args;
+      const p = applyMatrix(m, x, y);
+      const sc = uniformScale(m);
+      parts.push(
+        `A${num(rx * sc.sx)} ${num(ry * sc.sy)} ${num(xRot)} ${large} ${sweep} ${num(p.x)} ${num(p.y)}`,
+      );
+      continue;
+    }
+    const out: number[] = [];
+    for (let i = 0; i < s.args.length; i += 2) {
+      const p = applyMatrix(m, s.args[i], s.args[i + 1]);
+      out.push(p.x, p.y);
+    }
+    parts.push(`${s.cmd}${out.map(num).join(" ")}`);
+  }
+  return parts.join(" ");
+}
+
 /* ----------------------------- Mutations ----------------------------- */
 
 /** Translate every point and handle by (dx, dy). */

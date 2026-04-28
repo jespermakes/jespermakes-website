@@ -44,10 +44,12 @@ import {
   generateId,
 } from "@/lib/studio/shape-factory";
 import {
+  rescalePathDataToBounds,
   rescalePathToBounds,
   resizeLineEndpoint,
   resizeRectLikeShape,
   rotateShape,
+  translateShape,
 } from "@/lib/studio/transform";
 import {
   applyNodeDrag,
@@ -759,6 +761,8 @@ export default function StudioPage() {
       doc.snapToGrid,
       doc.selectedIds,
       doc.shapes,
+      nodeEditingShapeId,
+      selectedNodeIndices,
       screenPointFromEvent,
       setActiveTool,
     ],
@@ -923,6 +927,7 @@ export default function StudioPage() {
       drawing,
       selectInteraction,
       transform,
+      nodeDrag,
       screenPointFromEvent,
     ],
   );
@@ -963,11 +968,9 @@ export default function StudioPage() {
             t.originals.forEach((orig, id) => {
               const s = doc.shapes.find((sh) => sh.id === id);
               if (!s) return;
-              updated.push({
-                ...s,
-                x: orig.x + result.dx,
-                y: orig.y + result.dy,
-              });
+              updated.push(
+                translateShape(s, orig.x + result.dx, orig.y + result.dy),
+              );
             });
             if (updated.length > 0)
               dispatch({ type: "UPDATE_SHAPES", shapes: updated });
@@ -976,13 +979,34 @@ export default function StudioPage() {
           const cursor = snapped
             ? snapPoint(t.currentDocX, t.currentDocY, grid, true)
             : { x: t.currentDocX, y: t.currentDocY };
-          const next = resizeRectLikeShape(
+          let next = resizeRectLikeShape(
             t.original,
             t.handle,
             cursor.x,
             cursor.y,
             shiftAtUp || t.shift,
           );
+          if (next.type === "path") {
+            if (t.original.points && t.original.points.length > 0) {
+              next = {
+                ...next,
+                points: rescalePathToBounds(
+                  t.original,
+                  next,
+                  t.original.points,
+                ),
+              };
+            } else if (t.original.pathData) {
+              next = {
+                ...next,
+                pathData: rescalePathDataToBounds(
+                  t.original,
+                  next,
+                  t.original.pathData,
+                ),
+              };
+            }
+          }
           dispatch({ type: "UPDATE_SHAPES", shapes: [next] });
         } else if (t.kind === "resize-line") {
           const cursor = snapped
@@ -1214,10 +1238,15 @@ export default function StudioPage() {
       doc.zoom,
       doc.shapes,
       doc.selectedIds,
+      nodeDrag,
+      nodeEditingShapeId,
+      polygonSides,
+      polygonStar,
+      polygonInnerPct,
+      screenPointFromEvent,
       setActiveTool,
     ],
   );
-  // Note: doc.zoom + applyMoveSnap dep already in scope via state above.
 
   const handleWheel = useCallback(
     (e: ReactWheelEvent<SVGSVGElement>) => {
@@ -1696,21 +1725,41 @@ export default function StudioPage() {
       transform.originals.forEach((orig, id) => {
         const s = doc.shapes.find((sh) => sh.id === id);
         if (!s) return;
-        overrides.set(id, {
-          ...s,
-          x: orig.x + result.dx,
-          y: orig.y + result.dy,
-        });
+        overrides.set(
+          id,
+          translateShape(s, orig.x + result.dx, orig.y + result.dy),
+        );
       });
       guides.push(...result.guides);
     } else if (transform.kind === "resize") {
-      const next = resizeRectLikeShape(
+      let next = resizeRectLikeShape(
         transform.original,
         transform.handle,
         transform.currentDocX,
         transform.currentDocY,
         transform.shift,
       );
+      if (next.type === "path") {
+        if (transform.original.points && transform.original.points.length > 0) {
+          next = {
+            ...next,
+            points: rescalePathToBounds(
+              transform.original,
+              next,
+              transform.original.points,
+            ),
+          };
+        } else if (transform.original.pathData) {
+          next = {
+            ...next,
+            pathData: rescalePathDataToBounds(
+              transform.original,
+              next,
+              transform.original.pathData,
+            ),
+          };
+        }
+      }
       overrides.set(transform.targetId, next);
     } else if (transform.kind === "resize-line") {
       const next = resizeLineEndpoint(
