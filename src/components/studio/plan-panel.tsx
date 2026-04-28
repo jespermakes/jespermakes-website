@@ -120,7 +120,7 @@ function NestingSection({
         Nest parts
       </button>
       <p className="text-[11px] text-wood-light/60">
-        Strip-packs outside-cut parts within the material; v1 doesn't
+        Strip-packs outside-cut parts within the material; v1 does not
         rotate parts.
       </p>
     </Section>

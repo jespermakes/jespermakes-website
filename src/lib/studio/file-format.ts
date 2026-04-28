@@ -1,10 +1,10 @@
-import type { Shape } from "./types";
+import type { CuttingTool, MaterialSettings, Shape } from "./types";
 
 /** Bumped any time a new field is added that older readers should reject. */
-export const FILE_FORMAT_VERSION = 1;
+export const FILE_FORMAT_VERSION = 2;
 
 export interface StudioDesignFile {
-  version: 1;
+  version: 1 | 2;
   name: string;
   description?: string;
   createdAt: string;
@@ -15,6 +15,9 @@ export interface StudioDesignFile {
     unitDisplay: "mm" | "in";
   };
   shapes: Shape[];
+  // v2: manufacturing context
+  material?: MaterialSettings;
+  activeTool?: CuttingTool | null;
 }
 
 export function buildDesignFile(input: {
@@ -25,6 +28,8 @@ export function buildDesignFile(input: {
   gridSpacing: number;
   snapToGrid: boolean;
   unitDisplay: "mm" | "in";
+  material?: MaterialSettings;
+  activeTool?: CuttingTool | null;
 }): StudioDesignFile {
   const now = new Date().toISOString();
   return {
@@ -39,6 +44,8 @@ export function buildDesignFile(input: {
       unitDisplay: input.unitDisplay,
     },
     shapes: input.shapes,
+    material: input.material,
+    activeTool: input.activeTool ?? null,
   };
 }
 
@@ -63,7 +70,8 @@ export function parseDesignFile(json: string): ParseResult | ParseError {
     return { ok: false, error: "Not a design file." };
   }
   const obj = data as Record<string, unknown>;
-  if (obj.version !== FILE_FORMAT_VERSION) {
+  // Accept both v1 (shapes only) and v2 (shapes + material/activeTool).
+  if (obj.version !== 1 && obj.version !== 2) {
     return {
       ok: false,
       error: `Unsupported file version: ${String(obj.version)}`,
@@ -73,10 +81,11 @@ export function parseDesignFile(json: string): ParseResult | ParseError {
     return { ok: false, error: "Missing shapes array." };
   }
   const settings = obj.canvasSettings as Record<string, unknown> | undefined;
+  const versionLiteral = obj.version === 2 ? 2 : 1;
   return {
     ok: true,
     file: {
-      version: 1,
+      version: versionLiteral,
       name: typeof obj.name === "string" ? obj.name : "Untitled",
       description:
         typeof obj.description === "string" ? obj.description : undefined,
@@ -101,6 +110,14 @@ export function parseDesignFile(json: string): ParseResult | ParseError {
           settings?.unitDisplay === "in" ? "in" : "mm",
       },
       shapes: obj.shapes as Shape[],
+      material:
+        obj.material && typeof obj.material === "object"
+          ? (obj.material as MaterialSettings)
+          : undefined,
+      activeTool:
+        obj.activeTool && typeof obj.activeTool === "object"
+          ? (obj.activeTool as CuttingTool)
+          : null,
     },
   };
 }

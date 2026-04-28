@@ -894,6 +894,7 @@ export default function StudioPage() {
       doc.snapToGrid,
       doc.selectedIds,
       doc.shapes,
+      doc.mode,
       nodeEditingShapeId,
       selectedNodeIndices,
       screenPointFromEvent,
@@ -1505,11 +1506,15 @@ export default function StudioPage() {
         gridSpacing: doc.gridSpacing,
         snapToGrid: doc.snapToGrid,
         unitDisplay: doc.unitDisplay,
+        material: doc.material,
+        activeTool: activeCuttingTool,
       }),
     [
+      activeCuttingTool,
       designCreatedAt,
       designName,
       doc.gridSpacing,
+      doc.material,
       doc.shapes,
       doc.snapToGrid,
       doc.unitDisplay,
@@ -1609,13 +1614,36 @@ export default function StudioPage() {
           design: {
             id: string;
             name: string;
-            data: { canvasSettings?: { gridSpacing?: number; snapToGrid?: boolean; unitDisplay?: "mm" | "in" }; shapes?: Shape[]; createdAt?: string };
+            data: {
+              canvasSettings?: {
+                gridSpacing?: number;
+                snapToGrid?: boolean;
+                unitDisplay?: "mm" | "in";
+              };
+              shapes?: Shape[];
+              createdAt?: string;
+              material?: import("@/lib/studio/types").MaterialSettings;
+              activeTool?: CuttingTool | null;
+            };
             createdAt?: string;
           };
         };
         if (cancelled) return;
         const data = json.design.data;
         const settings = data.canvasSettings ?? {};
+        let nextActiveId: string | null | undefined = undefined;
+        if (data.activeTool) {
+          const fileTool = data.activeTool;
+          setTools((prev) => {
+            const exists = prev.some((t) => t.id === fileTool.id);
+            const next = exists
+              ? prev.map((t) => (t.id === fileTool.id ? fileTool : t))
+              : [...prev, fileTool];
+            persistTools(next);
+            return next;
+          });
+          nextActiveId = fileTool.id;
+        }
         dispatch({
           type: "LOAD_DESIGN",
           shapes: Array.isArray(data.shapes) ? data.shapes : [],
@@ -1624,6 +1652,8 @@ export default function StudioPage() {
           snapToGrid:
             typeof settings.snapToGrid === "boolean" ? settings.snapToGrid : true,
           unitDisplay: settings.unitDisplay === "in" ? "in" : "mm",
+          material: data.material,
+          activeToolId: nextActiveId,
         });
         setDesignName(json.design.name || "Untitled");
         setDesignId(json.design.id);
@@ -1692,12 +1722,29 @@ export default function StudioPage() {
           showToast(parsed.error);
           return;
         }
+        // If the file shipped a tool, ensure it's in the local library so
+        // the active selector resolves it.
+        let nextActiveId: string | null | undefined = undefined;
+        if (parsed.file.activeTool) {
+          const fileTool = parsed.file.activeTool;
+          setTools((prev) => {
+            const exists = prev.some((t) => t.id === fileTool.id);
+            const next = exists
+              ? prev.map((t) => (t.id === fileTool.id ? fileTool : t))
+              : [...prev, fileTool];
+            persistTools(next);
+            return next;
+          });
+          nextActiveId = parsed.file.activeTool.id;
+        }
         dispatch({
           type: "LOAD_DESIGN",
           shapes: parsed.file.shapes,
           gridSpacing: parsed.file.canvasSettings.gridSpacing,
           snapToGrid: parsed.file.canvasSettings.snapToGrid,
           unitDisplay: parsed.file.canvasSettings.unitDisplay,
+          material: parsed.file.material,
+          activeToolId: nextActiveId,
         });
         setDesignName(parsed.file.name);
         setDesignCreatedAt(parsed.file.createdAt);
@@ -2148,6 +2195,7 @@ export default function StudioPage() {
     editingTextShapeId,
     doc.selectedIds,
     doc.shapes,
+    doc.mode,
     nodeEditingShapeId,
     selectedNodeIndices,
   ]);
@@ -2625,9 +2673,12 @@ export default function StudioPage() {
         return;
       }
       rememberProfile(profile);
-      downloadProfileExport(doc.shapes, profile, designName);
+      downloadProfileExport(doc.shapes, profile, designName, {
+        activeTool: activeCuttingTool,
+        material: doc.material,
+      });
     },
-    [doc.shapes, designName, showToast],
+    [doc.shapes, doc.material, designName, activeCuttingTool, showToast],
   );
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);

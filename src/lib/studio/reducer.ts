@@ -38,6 +38,8 @@ export type StudioAction =
       gridSpacing: number;
       snapToGrid: boolean;
       unitDisplay: "mm" | "in";
+      material?: MaterialSettings;
+      activeToolId?: string | null;
     }
   | { type: "SELECT"; ids: string[] }
   | { type: "TOGGLE_SELECT"; id: string }
@@ -327,6 +329,11 @@ export function reducer(state: StudioState, action: StudioAction): StudioState {
         gridSpacing: action.gridSpacing,
         snapToGrid: action.snapToGrid,
         unitDisplay: action.unitDisplay,
+        material: action.material ?? doc.material,
+        activeToolId:
+          action.activeToolId !== undefined
+            ? action.activeToolId
+            : doc.activeToolId,
       };
       const snap = snapshot(next);
       return {

@@ -1,4 +1,4 @@
-import { circleToPoints, rectangleToPoints } from "./path-ops";
+import { rectangleToPoints } from "./path-ops";
 import type { PathPoint, Shape, TabDefinition } from "./types";
 
 interface PerimeterSegment {
