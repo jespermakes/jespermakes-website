@@ -12,6 +12,10 @@ import {
   type WheelEvent as ReactWheelEvent,
 } from "react";
 import { Canvas } from "@/components/studio/canvas";
+import {
+  ContextMenu,
+  type ContextMenuItemOrSeparator,
+} from "@/components/studio/context-menu";
 import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
@@ -55,6 +59,7 @@ import {
   applyNodeDrag,
   generateArcPoints,
   generatePolygonPoints,
+  shapeToPath,
   syncPathBounds,
 } from "@/lib/studio/path-ops";
 import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
@@ -128,6 +133,12 @@ export default function StudioPage() {
   const [nodeDrag, setNodeDrag] = useState<NodeDrag | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [contextMenu, setContextMenu] = useState<{
+    x: number;
+    y: number;
+    targetShapeId: string | null;
+  } | null>(null);
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);
@@ -1362,6 +1373,78 @@ export default function StudioPage() {
     dispatch({ type: "DELETE_SELECTED" });
   }, [doc.shapes, doc.selectedIds, showToast]);
 
+  const handleConvertToPath = useCallback(
+    (shapeId: string) => {
+      const shape = doc.shapes.find((s) => s.id === shapeId);
+      if (!shape) return;
+      if (
+        shape.type !== "rectangle" &&
+        shape.type !== "circle" &&
+        shape.type !== "line"
+      ) {
+        return;
+      }
+      const { points, closed } = shapeToPath(shape);
+      if (points.length === 0) return;
+      const newShape = createPath({
+        points,
+        closed,
+        stroke: shape.stroke,
+        strokeWidth: shape.strokeWidth,
+        fill: shape.fill,
+      });
+      newShape.rotation = shape.rotation;
+      dispatch({
+        type: "REPLACE_SHAPES",
+        removeIds: [shape.id],
+        add: [newShape],
+        selectAdded: true,
+      });
+    },
+    [doc.shapes],
+  );
+
+  const handleContextMenu = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      const targetEl = e.target as Element | null;
+      const shapeTarget = targetEl?.closest?.("[data-shape-id]") as
+        | (HTMLElement | SVGElement)
+        | null;
+      const shapeId = shapeTarget?.dataset?.shapeId ?? null;
+      if (shapeId && !doc.selectedIds.includes(shapeId)) {
+        dispatch({ type: "SELECT", ids: [shapeId] });
+      }
+      setContextMenu({
+        x: e.clientX,
+        y: e.clientY,
+        targetShapeId: shapeId,
+      });
+    },
+    [doc.selectedIds],
+  );
+
+  const closeContextMenu = useCallback(() => setContextMenu(null), []);
+
+  const handleBoolean = useCallback(
+    (op: BooleanOp) => {
+      const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
+      if (sel.length < 2) return;
+      const result = applyBoolean(sel, op);
+      if (!result) {
+        showToast("Shapes don't overlap.");
+        return;
+      }
+      dispatch({
+        type: "REPLACE_SHAPES",
+        removeIds: sel.map((s) => s.id),
+        add: [result],
+        selectAdded: true,
+      });
+    },
+    [doc.shapes, doc.selectedIds, showToast],
+  );
+
   const finalizePenAsOpen = useCallback(() => {
     if (!drawing || drawing.kind !== "pen") return;
     if (drawing.points.length >= 2) {
@@ -1818,6 +1901,187 @@ export default function StudioPage() {
     return displayShapes.find((s) => s.id === id) ?? null;
   }, [doc.selectedIds, displayShapes]);
 
+  const contextMenuItems = useMemo<ContextMenuItemOrSeparator[]>(() => {
+    if (!contextMenu) return [];
+    const hasSelection = doc.selectedIds.length > 0;
+    const multiSelected = doc.selectedIds.length > 1;
+    const target =
+      contextMenu.targetShapeId ?? (hasSelection ? doc.selectedIds[0] : null);
+    const targetShape = target
+      ? doc.shapes.find((s) => s.id === target) ?? null
+      : null;
+    const canPaste = clipboard !== null && clipboard.length > 0;
+
+    if (multiSelected) {
+      return [
+        {
+          key: "cut",
+          label: "Cut",
+          shortcut: "Ctrl+X",
+          onSelect: handleCut,
+        },
+        {
+          key: "copy",
+          label: "Copy",
+          shortcut: "Ctrl+C",
+          onSelect: handleCopy,
+        },
+        {
+          key: "duplicate",
+          label: "Duplicate",
+          shortcut: "Ctrl+D",
+          onSelect: handleDuplicate,
+        },
+        { separator: true },
+        {
+          key: "delete",
+          label: "Delete",
+          shortcut: "Del",
+          onSelect: () => dispatch({ type: "DELETE_SELECTED" }),
+        },
+        { separator: true },
+        {
+          key: "union",
+          label: "Union",
+          onSelect: () => handleBoolean("union"),
+        },
+        {
+          key: "difference",
+          label: "Difference",
+          onSelect: () => handleBoolean("difference"),
+        },
+        {
+          key: "intersection",
+          label: "Intersection",
+          onSelect: () => handleBoolean("intersection"),
+        },
+        { separator: true },
+        {
+          key: "front",
+          label: "Bring to Front",
+          onSelect: () =>
+            dispatch({ type: "BRING_TO_FRONT", ids: doc.selectedIds }),
+        },
+        {
+          key: "back",
+          label: "Send to Back",
+          onSelect: () =>
+            dispatch({ type: "SEND_TO_BACK", ids: doc.selectedIds }),
+        },
+      ];
+    }
+
+    if (targetShape) {
+      const isPath =
+        targetShape.type === "path" &&
+        targetShape.points &&
+        targetShape.points.length > 0;
+      const isConvertible =
+        targetShape.type === "rectangle" ||
+        targetShape.type === "circle" ||
+        targetShape.type === "line";
+      return [
+        {
+          key: "cut",
+          label: "Cut",
+          shortcut: "Ctrl+X",
+          onSelect: handleCut,
+        },
+        {
+          key: "copy",
+          label: "Copy",
+          shortcut: "Ctrl+C",
+          onSelect: handleCopy,
+        },
+        {
+          key: "paste",
+          label: "Paste",
+          shortcut: "Ctrl+V",
+          disabled: !canPaste,
+          onSelect: handlePaste,
+        },
+        {
+          key: "duplicate",
+          label: "Duplicate",
+          shortcut: "Ctrl+D",
+          onSelect: handleDuplicate,
+        },
+        { separator: true },
+        {
+          key: "delete",
+          label: "Delete",
+          shortcut: "Del",
+          onSelect: () => dispatch({ type: "DELETE_SELECTED" }),
+        },
+        { separator: true },
+        {
+          key: "edit-nodes",
+          label: "Edit Nodes",
+          shortcut: "Enter",
+          disabled: !isPath,
+          onSelect: () => {
+            setNodeEditingShapeId(targetShape.id);
+            setSelectedNodeIndices([]);
+          },
+        },
+        {
+          key: "convert",
+          label: "Convert to Path",
+          disabled: !isConvertible,
+          onSelect: () => handleConvertToPath(targetShape.id),
+        },
+        { separator: true },
+        {
+          key: "front",
+          label: "Bring to Front",
+          onSelect: () =>
+            dispatch({ type: "BRING_TO_FRONT", ids: [targetShape.id] }),
+        },
+        {
+          key: "back",
+          label: "Send to Back",
+          onSelect: () =>
+            dispatch({ type: "SEND_TO_BACK", ids: [targetShape.id] }),
+        },
+      ];
+    }
+
+    // Empty canvas / no target.
+    return [
+      {
+        key: "paste",
+        label: "Paste",
+        shortcut: "Ctrl+V",
+        disabled: !canPaste,
+        onSelect: handlePaste,
+      },
+      { separator: true },
+      {
+        key: "select-all",
+        label: "Select All",
+        shortcut: "Ctrl+A",
+        onSelect: () => dispatch({ type: "SELECT_ALL" }),
+      },
+      {
+        key: "fit-all",
+        label: "Fit All",
+        shortcut: "Ctrl+0",
+        onSelect: handleFitAll,
+      },
+    ];
+  }, [
+    contextMenu,
+    doc.selectedIds,
+    doc.shapes,
+    handleCopy,
+    handleCut,
+    handleDuplicate,
+    handlePaste,
+    handleBoolean,
+    handleConvertToPath,
+    handleFitAll,
+  ]);
+
   const marqueeRect = useMemo(() => {
     if (!selectInteraction || selectInteraction.kind !== "marquee") return null;
     const r = rectFromCorners(
@@ -1969,25 +2233,6 @@ export default function StudioPage() {
     setIsDragging(false);
   }, []);
 
-  const handleBoolean = useCallback(
-    (op: BooleanOp) => {
-      const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
-      if (sel.length < 2) return;
-      const result = applyBoolean(sel, op);
-      if (!result) {
-        showToast("Shapes don't overlap.");
-        return;
-      }
-      dispatch({
-        type: "REPLACE_SHAPES",
-        removeIds: sel.map((s) => s.id),
-        add: [result],
-        selectAdded: true,
-      });
-    },
-    [doc.shapes, doc.selectedIds, showToast],
-  );
-
   return (
     <div className="flex h-full w-full">
       <Toolbar
@@ -2042,6 +2287,7 @@ export default function StudioPage() {
             onDragOver={handleCanvasDragOver}
             onDragLeave={handleCanvasDragLeave}
             onDrop={handleCanvasDrop}
+            onContextMenu={handleContextMenu}
           >
             {toast ? (
               <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-lg bg-wood/90 px-3 py-1 text-xs font-medium text-cream shadow-lg">
@@ -2184,6 +2430,14 @@ export default function StudioPage() {
         }
         onFitAll={handleFitAll}
       />
+      {contextMenu ? (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          items={contextMenuItems}
+          onClose={closeContextMenu}
+        />
+      ) : null}
     </div>
   );
 }
