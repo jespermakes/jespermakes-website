@@ -56,6 +56,7 @@ import {
   syncPathBounds,
 } from "@/lib/studio/path-ops";
 import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
+import { parseSVG, recenterImportedShapes } from "@/lib/studio/svg-import";
 import {
   applyMoveSnap,
   snapThresholdMm,
@@ -1824,6 +1825,100 @@ export default function StudioPage() {
     downloadSVG(svg, "design.svg");
   }, [doc.shapes]);
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const importSVGString = useCallback(
+    (svgText: string) => {
+      const result = parseSVG(svgText);
+      if (result.shapes.length === 0) {
+        showToast("Couldn't read that SVG.");
+        return;
+      }
+      // Center on the current viewport.
+      const viewportCenterX =
+        doc.viewportX + (canvasSize.width / 2) / Math.max(0.0001, doc.zoom);
+      const viewportCenterY =
+        doc.viewportY + (canvasSize.height / 2) / Math.max(0.0001, doc.zoom);
+      const centered = recenterImportedShapes(
+        result.shapes,
+        viewportCenterX,
+        viewportCenterY,
+      );
+      dispatch({
+        type: "ADD_SHAPES",
+        shapes: centered,
+        selectAfter: true,
+      });
+      const skippedMsg =
+        result.skipped.length > 0
+          ? `Imported ${centered.length} shape${centered.length === 1 ? "" : "s"} — skipped ${result.skipped.join(", ")}.`
+          : `Imported ${centered.length} shape${centered.length === 1 ? "" : "s"}.`;
+      showToast(skippedMsg);
+    },
+    [
+      canvasSize.height,
+      canvasSize.width,
+      doc.viewportX,
+      doc.viewportY,
+      doc.zoom,
+      showToast,
+    ],
+  );
+
+  const handleImportClick = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
+
+  const handleFileSelected = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      e.target.value = ""; // allow re-importing the same file
+      if (!file) return;
+      try {
+        const text = await file.text();
+        importSVGString(text);
+      } catch {
+        showToast("Failed to read file.");
+      }
+    },
+    [importSVGString, showToast],
+  );
+
+  const handleCanvasDrop = useCallback(
+    async (e: React.DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setIsDragging(false);
+      const file = e.dataTransfer?.files?.[0];
+      if (!file) return;
+      if (!/svg/i.test(file.type) && !file.name.toLowerCase().endsWith(".svg")) {
+        showToast("Drop an SVG file.");
+        return;
+      }
+      try {
+        const text = await file.text();
+        importSVGString(text);
+      } catch {
+        showToast("Failed to read file.");
+      }
+    },
+    [importSVGString, showToast],
+  );
+
+  const handleCanvasDragOver = useCallback(
+    (e: React.DragEvent<HTMLDivElement>) => {
+      if (e.dataTransfer?.types?.includes("Files")) {
+        e.preventDefault();
+        setIsDragging(true);
+      }
+    },
+    [],
+  );
+
+  const handleCanvasDragLeave = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
   return (
     <div className="flex h-full w-full">
       <Toolbar
@@ -1832,8 +1927,16 @@ export default function StudioPage() {
         onUndo={() => dispatch({ type: "UNDO" })}
         onRedo={() => dispatch({ type: "REDO" })}
         onExport={handleExport}
+        onImport={handleImportClick}
         canUndo={canUndo(state)}
         canRedo={canRedo(state)}
+      />
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".svg,image/svg+xml"
+        className="hidden"
+        onChange={handleFileSelected}
       />
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <div className="grid flex-1 overflow-hidden" style={{ gridTemplateColumns: "24px 1fr", gridTemplateRows: "24px 1fr" }}>
@@ -1860,10 +1963,23 @@ export default function StudioPage() {
             unit={doc.unitDisplay}
             cursorDocPos={cursorDocPos?.y ?? null}
           />
-          <div ref={containerRef} className="relative overflow-hidden">
+          <div
+            ref={containerRef}
+            className="relative overflow-hidden"
+            onDragOver={handleCanvasDragOver}
+            onDragLeave={handleCanvasDragLeave}
+            onDrop={handleCanvasDrop}
+          >
             {toast ? (
               <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-lg bg-wood/90 px-3 py-1 text-xs font-medium text-cream shadow-lg">
                 {toast}
+              </div>
+            ) : null}
+            {isDragging ? (
+              <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center bg-forest/10 ring-2 ring-inset ring-forest/40">
+                <span className="rounded-full bg-cream px-4 py-2 text-sm font-medium text-forest shadow-md">
+                  Drop SVG to import
+                </span>
               </div>
             ) : null}
             <Canvas

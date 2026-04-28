@@ -9,6 +9,7 @@ interface ToolbarProps {
   onUndo: () => void;
   onRedo: () => void;
   onExport: () => void;
+  onImport: () => void;
   canUndo: boolean;
   canRedo: boolean;
 }
@@ -213,6 +214,7 @@ export function Toolbar({
   onUndo,
   onRedo,
   onExport,
+  onImport,
   canUndo,
   canRedo,
 }: ToolbarProps) {
@@ -271,6 +273,19 @@ export function Toolbar({
         </svg>
       </ToolButton>
       <div className="flex-1" />
+      <ToolButton label="Import SVG" onClick={onImport}>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <path
+            d="M8 14 L8 6 M5 9 L8 6 L11 9"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path d="M3 2 L13 2 L13 4 L3 4 Z" fill="currentColor" />
+        </svg>
+      </ToolButton>
       <ToolButton label="Export SVG" onClick={onExport}>
         <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
           <path
