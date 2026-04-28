@@ -1,18 +1,25 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { Tool } from "@/lib/studio/types";
+import {
+  PROFILE_LABELS,
+  type ExportProfile,
+} from "@/lib/studio/export-profiles";
 
 interface ToolbarProps {
   activeTool: Tool;
   onSelectTool: (tool: Tool) => void;
   onUndo: () => void;
   onRedo: () => void;
-  onExport: () => void;
+  onExportProfile: (profile: ExportProfile) => void;
+  onSaveToFile: () => void;
   onImport: () => void;
   onBooleanUnion: () => void;
   onBooleanDifference: () => void;
   onBooleanIntersection: () => void;
+  onShowHelp: () => void;
   canBoolean: boolean;
   canUndo: boolean;
   canRedo: boolean;
@@ -172,6 +179,7 @@ function ToolButton({
   disabled,
   label,
   shortcut,
+  showBadge,
   onClick,
   children,
 }: {
@@ -179,6 +187,8 @@ function ToolButton({
   disabled?: boolean;
   label: string;
   shortcut?: string;
+  /** Render the shortcut letter as a small persistent badge. */
+  showBadge?: boolean;
   onClick: () => void;
   children: React.ReactNode;
 }) {
@@ -195,6 +205,14 @@ function ToolButton({
       ].join(" ")}
     >
       {children}
+      {showBadge && shortcut ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute bottom-0.5 right-0.5 flex h-3 min-w-[12px] items-center justify-center rounded-sm bg-white/15 px-0.5 font-mono text-[8px] leading-none text-cream/70"
+        >
+          {shortcut}
+        </span>
+      ) : null}
       <span
         className="pointer-events-none absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-wood-light px-2 py-1 text-[11px] font-medium text-cream opacity-0 shadow-md transition-opacity group-hover:opacity-100"
         role="tooltip"
@@ -212,16 +230,109 @@ function Separator() {
   return <div className="my-1 h-px w-6 bg-cream/15" />;
 }
 
+const PROFILE_ORDER: ExportProfile[] = [
+  "generic",
+  "shaper-origin",
+  "laser",
+  "cnc-router",
+];
+
+function ExportButton({
+  onExportProfile,
+  onSaveToFile,
+}: {
+  onExportProfile: (p: ExportProfile) => void;
+  onSaveToFile: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={wrapRef} className="relative">
+      <ToolButton label="Export" onClick={() => setOpen((o) => !o)}>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <path
+            d="M8 2 L8 10 M5 7 L8 10 L11 7"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M3 12 L13 12 L13 14 L3 14 Z"
+            fill="currentColor"
+          />
+        </svg>
+      </ToolButton>
+      {open ? (
+        <div
+          role="menu"
+          className="absolute left-12 bottom-0 z-40 min-w-[200px] rounded-xl border border-wood/[0.08] bg-white py-1 text-sm text-wood shadow-xl"
+        >
+          <div className="px-4 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-wood-light/40">
+            Export as…
+          </div>
+          {PROFILE_ORDER.map((p) => (
+            <button
+              key={p}
+              type="button"
+              role="menuitem"
+              onClick={() => {
+                onExportProfile(p);
+                setOpen(false);
+              }}
+              className="block w-full px-4 py-1.5 text-left transition-colors hover:bg-wood/[0.04]"
+            >
+              {PROFILE_LABELS[p]}
+            </button>
+          ))}
+          <div className="my-1 h-px bg-wood/[0.06]" />
+          <button
+            type="button"
+            role="menuitem"
+            onClick={() => {
+              onSaveToFile();
+              setOpen(false);
+            }}
+            className="block w-full px-4 py-1.5 text-left transition-colors hover:bg-wood/[0.04]"
+          >
+            Save to file (.jm)
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function Toolbar({
   activeTool,
   onSelectTool,
   onUndo,
   onRedo,
-  onExport,
+  onExportProfile,
+  onSaveToFile,
   onImport,
   onBooleanUnion,
   onBooleanDifference,
   onBooleanIntersection,
+  onShowHelp,
   canBoolean,
   canUndo,
   canRedo,
@@ -248,6 +359,7 @@ export function Toolbar({
           active={activeTool === t.tool}
           label={t.label}
           shortcut={t.shortcut}
+          showBadge
           onClick={() => onSelectTool(t.tool)}
         >
           {t.icon}
@@ -391,20 +503,23 @@ export function Toolbar({
           <path d="M3 2 L13 2 L13 4 L3 4 Z" fill="currentColor" />
         </svg>
       </ToolButton>
-      <ToolButton label="Export SVG" onClick={onExport}>
+      <ExportButton
+        onExportProfile={onExportProfile}
+        onSaveToFile={onSaveToFile}
+      />
+      <ToolButton label="Help" shortcut="?" onClick={onShowHelp}>
         <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
-          <path
-            d="M8 2 L8 10 M5 7 L8 10 L11 7"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M3 12 L13 12 L13 14 L3 14 Z"
+          <text
+            x="8"
+            y="11.5"
+            fontSize="11"
+            fontFamily="Inter, sans-serif"
+            fontWeight="700"
+            textAnchor="middle"
             fill="currentColor"
-          />
+          >
+            ?
+          </text>
         </svg>
       </ToolButton>
     </div>

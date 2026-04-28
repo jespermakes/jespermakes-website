@@ -13,7 +13,9 @@ export function ConditionalChrome({
   children: ReactNode;
 }) {
   const pathname = usePathname();
-  const hideChrome = pathname?.startsWith("/studio") ?? false;
+  // Only the canvas (exactly /studio) is full-viewport. Sub-routes like
+  // /studio/designs use the site's normal header/footer.
+  const hideChrome = pathname === "/studio";
 
   if (hideChrome) {
     return <>{children}</>;

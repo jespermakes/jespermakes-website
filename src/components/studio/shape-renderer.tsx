@@ -6,6 +6,13 @@ import {
 } from "@/lib/studio/constants";
 import { pointsToSVGPath } from "@/lib/studio/path-ops";
 
+export function clampCornerRadius(shape: Shape): number {
+  if (shape.type !== "rectangle") return 0;
+  const max = Math.min(shape.width, shape.height) / 2;
+  if (!shape.cornerRadius || shape.cornerRadius <= 0) return 0;
+  return Math.min(max, shape.cornerRadius);
+}
+
 interface ShapeRendererProps {
   shape: Shape;
   selected?: boolean;
@@ -40,12 +47,15 @@ export function ShapeElement({
   } as const;
 
   if (shape.type === "rectangle") {
+    const r = clampCornerRadius(shape);
     return (
       <rect
         x={shape.x - shape.width / 2}
         y={shape.y - shape.height / 2}
         width={shape.width}
         height={shape.height}
+        rx={r > 0 ? r : undefined}
+        ry={r > 0 ? r : undefined}
         {...common}
       />
     );
@@ -163,12 +173,15 @@ function ShapeSelectionOverlay({
   };
 
   if (shape.type === "rectangle") {
+    const r = clampCornerRadius(shape);
     return (
       <rect
         x={shape.x - shape.width / 2}
         y={shape.y - shape.height / 2}
         width={shape.width}
         height={shape.height}
+        rx={r > 0 ? r : undefined}
+        ry={r > 0 ? r : undefined}
         {...common}
       />
     );

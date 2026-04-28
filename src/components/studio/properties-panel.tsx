@@ -395,6 +395,15 @@ function SingleShapeEditor({
             min={0}
             suffix={unit}
           />
+          {shape.type === "rectangle" ? (
+            <CornerRadiusField
+              shape={shape}
+              unit={unit}
+              formatDim={formatDim}
+              parseDim={parseDim}
+              onUpdateShape={onUpdateShape}
+            />
+          ) : null}
         </Section>
       )}
       {!isLine ? (
@@ -457,6 +466,52 @@ function SingleShapeEditor({
       >
         Delete shape
       </button>
+    </div>
+  );
+}
+
+function CornerRadiusField({
+  shape,
+  unit,
+  formatDim,
+  parseDim,
+  onUpdateShape,
+}: {
+  shape: Shape;
+  unit: "mm" | "in";
+  formatDim: (mm: number) => string;
+  parseDim: (raw: string) => number;
+  onUpdateShape: (s: Shape) => void;
+}) {
+  const max = Math.min(shape.width, shape.height) / 2;
+  const value = Math.max(0, Math.min(max, shape.cornerRadius ?? 0));
+  const apply = (v: number) =>
+    onUpdateShape({
+      ...shape,
+      cornerRadius: Math.max(0, Math.min(max, v)),
+    });
+  return (
+    <div className="flex flex-col gap-2">
+      <NumberField
+        label="R"
+        value={value}
+        onCommit={apply}
+        min={0}
+        max={max}
+        format={formatDim}
+        parse={parseDim}
+        suffix={unit}
+      />
+      <input
+        type="range"
+        min={0}
+        max={max}
+        step={Math.max(0.1, max / 100)}
+        value={value}
+        onChange={(e) => apply(Number.parseFloat(e.target.value))}
+        className="w-full accent-forest"
+        aria-label="Corner radius"
+      />
     </div>
   );
 }

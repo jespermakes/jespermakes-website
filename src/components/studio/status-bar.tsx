@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { mmToDisplay } from "@/lib/studio/geometry";
 import type { Shape } from "@/lib/studio/types";
 
@@ -8,11 +9,21 @@ interface StatusBarProps {
   unit: "mm" | "in";
   selectedShapes: Shape[];
   zoom: number;
+  /** True until the user performs any action; controls the hint cycling. */
+  showIdleHints: boolean;
   onZoomIn: () => void;
   onZoomOut: () => void;
   onZoomReset: () => void;
   onFitAll: () => void;
 }
+
+const IDLE_HINTS = [
+  "Right-click for options",
+  "Space + drag to pan the canvas",
+  "Ctrl+D to duplicate selected shapes",
+  "Double-click a shape to edit its nodes",
+  "Ctrl+Z to undo",
+];
 
 const ZOOM_REFERENCE = 3.78;
 
@@ -56,20 +67,38 @@ export function StatusBar({
   unit,
   selectedShapes,
   zoom,
+  showIdleHints,
   onZoomIn,
   onZoomOut,
   onZoomReset,
   onFitAll,
 }: StatusBarProps) {
   const zoomPercent = Math.round((zoom / ZOOM_REFERENCE) * 100);
+  const selLabel = selectionLabel(selectedShapes, unit);
+
+  const idle =
+    showIdleHints &&
+    !cursorDocPos &&
+    selectedShapes.length === 0;
+
+  const [hintIdx, setHintIdx] = useState(0);
+  useEffect(() => {
+    if (!idle) return;
+    const t = setInterval(() => {
+      setHintIdx((i) => (i + 1) % IDLE_HINTS.length);
+    }, 8000);
+    return () => clearInterval(t);
+  }, [idle]);
+
   const cursorLabel = cursorDocPos
     ? `X: ${formatCoord(cursorDocPos.x, unit)}  Y: ${formatCoord(cursorDocPos.y, unit)} ${unit}`
-    : "—";
-  const selLabel = selectionLabel(selectedShapes, unit);
+    : idle
+      ? IDLE_HINTS[hintIdx]
+      : "—";
 
   return (
     <div className="flex h-7 items-center gap-4 border-t border-wood/[0.08] bg-[#F5F0E8] px-3 font-mono text-[11px] text-wood-light/60">
-      <span className="tabular-nums" aria-label="Cursor position">
+      <span className="tabular-nums transition-opacity" aria-label="Cursor position">
         {cursorLabel}
       </span>
       {selLabel ? (

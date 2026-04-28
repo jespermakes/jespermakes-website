@@ -28,6 +28,15 @@ export type StudioAction =
     }
   | { type: "UPDATE_SHAPES"; shapes: Shape[] }
   | { type: "DELETE_SELECTED" }
+  | { type: "BRING_TO_FRONT"; ids: string[] }
+  | { type: "SEND_TO_BACK"; ids: string[] }
+  | {
+      type: "LOAD_DESIGN";
+      shapes: Shape[];
+      gridSpacing: number;
+      snapToGrid: boolean;
+      unitDisplay: "mm" | "in";
+    }
   | { type: "SELECT"; ids: string[] }
   | { type: "TOGGLE_SELECT"; id: string }
   | { type: "SELECT_ALL" }
@@ -47,6 +56,8 @@ const ACTIONS_THAT_MODIFY_SHAPES: StudioAction["type"][] = [
   "REPLACE_SHAPES",
   "UPDATE_SHAPES",
   "DELETE_SELECTED",
+  "BRING_TO_FRONT",
+  "SEND_TO_BACK",
 ];
 
 export function emptyDocument(): StudioDocument {
@@ -140,6 +151,34 @@ export function reducer(state: StudioState, action: StudioAction): StudioState {
       const updates = new Map(action.shapes.map((s) => [s.id, s]));
       const nextShapes = doc.shapes.map((s) => updates.get(s.id) ?? s);
       const next: StudioDocument = { ...doc, shapes: nextShapes };
+      return applyShapeMutation(state, next);
+    }
+
+    case "BRING_TO_FRONT": {
+      const ids = new Set(action.ids);
+      if (ids.size === 0) return state;
+      const moved: Shape[] = [];
+      const kept: Shape[] = [];
+      for (const s of doc.shapes) {
+        if (ids.has(s.id)) moved.push(s);
+        else kept.push(s);
+      }
+      if (moved.length === 0) return state;
+      const next: StudioDocument = { ...doc, shapes: [...kept, ...moved] };
+      return applyShapeMutation(state, next);
+    }
+
+    case "SEND_TO_BACK": {
+      const ids = new Set(action.ids);
+      if (ids.size === 0) return state;
+      const moved: Shape[] = [];
+      const kept: Shape[] = [];
+      for (const s of doc.shapes) {
+        if (ids.has(s.id)) moved.push(s);
+        else kept.push(s);
+      }
+      if (moved.length === 0) return state;
+      const next: StudioDocument = { ...doc, shapes: [...moved, ...kept] };
       return applyShapeMutation(state, next);
     }
 
@@ -243,6 +282,24 @@ export function reducer(state: StudioState, action: StudioAction): StudioState {
           selectedIds: previous.selectedIds,
         },
         history: { past, present: previous, future },
+      };
+    }
+
+    case "LOAD_DESIGN": {
+      // Replaces the whole document. History resets to a single snapshot
+      // (loading a design is not undoable).
+      const next: StudioDocument = {
+        ...doc,
+        shapes: action.shapes,
+        selectedIds: [],
+        gridSpacing: action.gridSpacing,
+        snapToGrid: action.snapToGrid,
+        unitDisplay: action.unitDisplay,
+      };
+      const snap = snapshot(next);
+      return {
+        document: next,
+        history: { past: [], present: snap, future: [] },
       };
     }
 

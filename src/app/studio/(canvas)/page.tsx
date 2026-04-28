@@ -11,7 +11,13 @@ import {
   type PointerEvent as ReactPointerEvent,
   type WheelEvent as ReactWheelEvent,
 } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Canvas } from "@/components/studio/canvas";
+import {
+  ContextMenu,
+  type ContextMenuItemOrSeparator,
+} from "@/components/studio/context-menu";
 import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
@@ -20,6 +26,8 @@ import { SelectionHandles } from "@/components/studio/selection-handles";
 import { StatusBar } from "@/components/studio/status-bar";
 import { Toolbar } from "@/components/studio/toolbar";
 import { ToolOverlay } from "@/components/studio/tool-overlay";
+import { TopBar, type SaveStatus } from "@/components/studio/top-bar";
+import { WelcomeOverlay } from "@/components/studio/welcome-overlay";
 import {
   canRedo,
   canUndo,
@@ -55,10 +63,20 @@ import {
   applyNodeDrag,
   generateArcPoints,
   generatePolygonPoints,
+  shapeToPath,
   syncPathBounds,
 } from "@/lib/studio/path-ops";
-import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
 import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
+import {
+  buildDesignFile,
+  downloadDesignFile,
+  parseDesignFile,
+} from "@/lib/studio/file-format";
+import {
+  downloadProfileExport,
+  rememberProfile,
+  type ExportProfile,
+} from "@/lib/studio/export-profiles";
 import { parseSVG, recenterImportedShapes } from "@/lib/studio/svg-import";
 import {
   applyMoveSnap,
@@ -74,6 +92,12 @@ let clipboard: Shape[] | null = null;
 const PASTE_OFFSET_MM = 10;
 
 export default function StudioPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user?.id;
+  const userInitial = session?.user?.name?.[0]?.toUpperCase() ?? null;
+
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
   const { document: doc } = state;
 
@@ -128,6 +152,66 @@ export default function StudioPage() {
   const [nodeDrag, setNodeDrag] = useState<NodeDrag | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [contextMenu, setContextMenu] = useState<{
+    x: number;
+    y: number;
+    targetShapeId: string | null;
+  } | null>(null);
+  const [showWelcome, setShowWelcome] = useState(false);
+  // Document metadata used by the design-file format and (in Group 7) cloud
+  // save. These default to a fresh "Untitled" design.
+  const [designName, setDesignName] = useState("Untitled");
+  const [designId, setDesignId] = useState<string | null>(null);
+  const [designCreatedAt, setDesignCreatedAt] = useState<string | null>(null);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("never-saved");
+  // Tracks whether the document has changed since the last successful save.
+  // Set on every shape mutation, cleared after a successful save.
+  const dirtyRef = useRef(false);
+  const isInitialDocRef = useRef(true);
+
+  useEffect(() => {
+    // Skip the very first run (initial mount).
+    if (isInitialDocRef.current) {
+      isInitialDocRef.current = false;
+      return;
+    }
+    dirtyRef.current = true;
+    setSaveStatus((s) => (s === "saving" ? s : designId ? "dirty" : s));
+  }, [doc.shapes, designName, doc.gridSpacing, doc.snapToGrid, doc.unitDisplay, designId]);
+  // Idle for hints — flips false after the first user action.
+  const [idle, setIdle] = useState(true);
+  // Cursor screen position (for the floating tool-hint label). Null when the
+  // pointer is outside the canvas.
+  const [cursorScreenPos, setCursorScreenPos] = useState<
+    { x: number; y: number } | null
+  >(null);
+
+  // First-visit welcome overlay.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      if (!localStorage.getItem("studio_onboarding_seen")) {
+        setShowWelcome(true);
+      }
+    } catch {
+      // Ignore localStorage failures (private mode etc.).
+    }
+  }, []);
+
+  const dismissWelcome = useCallback(() => {
+    try {
+      localStorage.setItem("studio_onboarding_seen", "1");
+    } catch {
+      /* noop */
+    }
+    setShowWelcome(false);
+  }, []);
+
+  // Mark idle false on first user action of any kind.
+  const markActive = useCallback(() => {
+    setIdle(false);
+  }, []);
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);
@@ -312,6 +396,7 @@ export default function StudioPage() {
 
   const handlePointerDown = useCallback(
     (e: ReactPointerEvent<SVGSVGElement>) => {
+      setIdle(false);
       const isMiddle = e.button === 1;
       const wantsPan = spaceHeld || isMiddle;
       const screen = screenPointFromEvent(e);
@@ -779,6 +864,7 @@ export default function StudioPage() {
         doc.zoom,
       );
       setCursorDocPos(docPoint);
+      setCursorScreenPos({ x: e.clientX, y: e.clientY });
 
       if (panRef.current && panRef.current.pointerId === e.pointerId) {
         const dxMm = (screen.x - panRef.current.startScreenX) / doc.zoom;
@@ -1362,6 +1448,292 @@ export default function StudioPage() {
     dispatch({ type: "DELETE_SELECTED" });
   }, [doc.shapes, doc.selectedIds, showToast]);
 
+  const buildCurrentDesignFile = useCallback(
+    () =>
+      buildDesignFile({
+        name: designName,
+        createdAt: designCreatedAt ?? undefined,
+        shapes: doc.shapes,
+        gridSpacing: doc.gridSpacing,
+        snapToGrid: doc.snapToGrid,
+        unitDisplay: doc.unitDisplay,
+      }),
+    [
+      designCreatedAt,
+      designName,
+      doc.gridSpacing,
+      doc.shapes,
+      doc.snapToGrid,
+      doc.unitDisplay,
+    ],
+  );
+
+  const handleSaveToFile = useCallback(() => {
+    const file = buildCurrentDesignFile();
+    if (!designCreatedAt) setDesignCreatedAt(file.createdAt);
+    downloadDesignFile(file);
+    showToast("Saved to file");
+  }, [buildCurrentDesignFile, designCreatedAt, showToast]);
+
+  const handleCloudSave = useCallback(async () => {
+    if (!isLoggedIn) {
+      // Not logged in — fall back to local file save.
+      handleSaveToFile();
+      return;
+    }
+    setSaveStatus("saving");
+    const file = buildCurrentDesignFile();
+    if (!designCreatedAt) setDesignCreatedAt(file.createdAt);
+    try {
+      if (!designId) {
+        const res = await fetch("/api/studio/designs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: designName, data: file }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = (await res.json()) as {
+          design: { id: string };
+        };
+        setDesignId(json.design.id);
+        // Update URL so refresh keeps the design loaded.
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set("id", json.design.id);
+          window.history.replaceState({}, "", url.toString());
+        } catch {
+          /* noop */
+        }
+      } else {
+        const res = await fetch(`/api/studio/designs/${designId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: designName, data: file }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      }
+      dirtyRef.current = false;
+      setSaveStatus("saved");
+    } catch (err) {
+      console.error("studio cloud save failed:", err);
+      setSaveStatus("error");
+      showToast("Save failed");
+    }
+  }, [
+    buildCurrentDesignFile,
+    designCreatedAt,
+    designId,
+    designName,
+    handleSaveToFile,
+    isLoggedIn,
+    showToast,
+  ]);
+
+  // Auto-save every 30 seconds if there are unsaved changes and the design
+  // already has an ID.
+  useEffect(() => {
+    if (!isLoggedIn || !designId) return;
+    const interval = setInterval(() => {
+      if (dirtyRef.current && saveStatus !== "saving") {
+        void handleCloudSave();
+      }
+    }, 30_000);
+    return () => clearInterval(interval);
+  }, [isLoggedIn, designId, handleCloudSave, saveStatus]);
+
+  // Load the design when the URL has ?id=...
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (!id || id === designId) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/studio/designs/${id}`);
+        if (!res.ok) {
+          if (res.status === 401) {
+            // Not logged in — drop the id, leave canvas empty.
+            return;
+          }
+          showToast("Couldn't load design.");
+          return;
+        }
+        const json = (await res.json()) as {
+          design: {
+            id: string;
+            name: string;
+            data: { canvasSettings?: { gridSpacing?: number; snapToGrid?: boolean; unitDisplay?: "mm" | "in" }; shapes?: Shape[]; createdAt?: string };
+            createdAt?: string;
+          };
+        };
+        if (cancelled) return;
+        const data = json.design.data;
+        const settings = data.canvasSettings ?? {};
+        dispatch({
+          type: "LOAD_DESIGN",
+          shapes: Array.isArray(data.shapes) ? data.shapes : [],
+          gridSpacing:
+            typeof settings.gridSpacing === "number" ? settings.gridSpacing : 10,
+          snapToGrid:
+            typeof settings.snapToGrid === "boolean" ? settings.snapToGrid : true,
+          unitDisplay: settings.unitDisplay === "in" ? "in" : "mm",
+        });
+        setDesignName(json.design.name || "Untitled");
+        setDesignId(json.design.id);
+        setDesignCreatedAt(data.createdAt ?? json.design.createdAt ?? null);
+        dirtyRef.current = false;
+        setSaveStatus("saved");
+      } catch (err) {
+        console.error("studio load failed:", err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  const handleNewDesign = useCallback(() => {
+    if (dirtyRef.current) {
+      const ok = window.confirm(
+        "You have unsaved changes. Discard them and start a new design?",
+      );
+      if (!ok) return;
+    }
+    dispatch({
+      type: "LOAD_DESIGN",
+      shapes: [],
+      gridSpacing: 10,
+      snapToGrid: true,
+      unitDisplay: doc.unitDisplay,
+    });
+    setDesignName("Untitled");
+    setDesignId(null);
+    setDesignCreatedAt(null);
+    dirtyRef.current = false;
+    setSaveStatus("never-saved");
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("id");
+      window.history.replaceState({}, "", url.toString());
+    } catch {
+      /* noop */
+    }
+  }, [doc.unitDisplay]);
+
+  const handleOpenFromFile = useCallback(() => {
+    designFileInputRef.current?.click();
+  }, []);
+
+  const handleOpenDesigns = useCallback(() => {
+    if (isLoggedIn) {
+      router.push("/studio/designs");
+    } else {
+      handleOpenFromFile();
+    }
+  }, [isLoggedIn, router, handleOpenFromFile]);
+
+  const handleDesignFileSelected = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      e.target.value = "";
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const parsed = parseDesignFile(text);
+        if (!parsed.ok) {
+          showToast(parsed.error);
+          return;
+        }
+        dispatch({
+          type: "LOAD_DESIGN",
+          shapes: parsed.file.shapes,
+          gridSpacing: parsed.file.canvasSettings.gridSpacing,
+          snapToGrid: parsed.file.canvasSettings.snapToGrid,
+          unitDisplay: parsed.file.canvasSettings.unitDisplay,
+        });
+        setDesignName(parsed.file.name);
+        setDesignCreatedAt(parsed.file.createdAt);
+        setDesignId(null);
+        showToast("Loaded design");
+      } catch {
+        showToast("Failed to read file.");
+      }
+    },
+    [showToast],
+  );
+
+  const handleConvertToPath = useCallback(
+    (shapeId: string) => {
+      const shape = doc.shapes.find((s) => s.id === shapeId);
+      if (!shape) return;
+      if (
+        shape.type !== "rectangle" &&
+        shape.type !== "circle" &&
+        shape.type !== "line"
+      ) {
+        return;
+      }
+      const { points, closed } = shapeToPath(shape);
+      if (points.length === 0) return;
+      const newShape = createPath({
+        points,
+        closed,
+        stroke: shape.stroke,
+        strokeWidth: shape.strokeWidth,
+        fill: shape.fill,
+      });
+      newShape.rotation = shape.rotation;
+      dispatch({
+        type: "REPLACE_SHAPES",
+        removeIds: [shape.id],
+        add: [newShape],
+        selectAdded: true,
+      });
+    },
+    [doc.shapes],
+  );
+
+  const handleContextMenu = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      const targetEl = e.target as Element | null;
+      const shapeTarget = targetEl?.closest?.("[data-shape-id]") as
+        | (HTMLElement | SVGElement)
+        | null;
+      const shapeId = shapeTarget?.dataset?.shapeId ?? null;
+      if (shapeId && !doc.selectedIds.includes(shapeId)) {
+        dispatch({ type: "SELECT", ids: [shapeId] });
+      }
+      setContextMenu({
+        x: e.clientX,
+        y: e.clientY,
+        targetShapeId: shapeId,
+      });
+    },
+    [doc.selectedIds],
+  );
+
+  const closeContextMenu = useCallback(() => setContextMenu(null), []);
+
+  const handleBoolean = useCallback(
+    (op: BooleanOp) => {
+      const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
+      if (sel.length < 2) return;
+      const result = applyBoolean(sel, op);
+      if (!result) {
+        showToast("Shapes don't overlap.");
+        return;
+      }
+      dispatch({
+        type: "REPLACE_SHAPES",
+        removeIds: sel.map((s) => s.id),
+        add: [result],
+        selectAdded: true,
+      });
+    },
+    [doc.shapes, doc.selectedIds, showToast],
+  );
+
   const finalizePenAsOpen = useCallback(() => {
     if (!drawing || drawing.kind !== "pen") return;
     if (drawing.points.length >= 2) {
@@ -1456,6 +1828,16 @@ export default function StudioPage() {
       }
       if (meta && (e.key === "x" || e.key === "X")) {
         handleCut();
+        e.preventDefault();
+        return;
+      }
+      if (meta && (e.key === "s" || e.key === "S")) {
+        void handleCloudSave();
+        e.preventDefault();
+        return;
+      }
+      if (meta && (e.key === "o" || e.key === "O")) {
+        handleOpenFromFile();
         e.preventDefault();
         return;
       }
@@ -1591,6 +1973,8 @@ export default function StudioPage() {
     handlePaste,
     handleDuplicate,
     handleCut,
+    handleCloudSave,
+    handleOpenFromFile,
     finalizePenAsOpen,
     activeTool,
     drawing,
@@ -1818,6 +2202,187 @@ export default function StudioPage() {
     return displayShapes.find((s) => s.id === id) ?? null;
   }, [doc.selectedIds, displayShapes]);
 
+  const contextMenuItems = useMemo<ContextMenuItemOrSeparator[]>(() => {
+    if (!contextMenu) return [];
+    const hasSelection = doc.selectedIds.length > 0;
+    const multiSelected = doc.selectedIds.length > 1;
+    const target =
+      contextMenu.targetShapeId ?? (hasSelection ? doc.selectedIds[0] : null);
+    const targetShape = target
+      ? doc.shapes.find((s) => s.id === target) ?? null
+      : null;
+    const canPaste = clipboard !== null && clipboard.length > 0;
+
+    if (multiSelected) {
+      return [
+        {
+          key: "cut",
+          label: "Cut",
+          shortcut: "Ctrl+X",
+          onSelect: handleCut,
+        },
+        {
+          key: "copy",
+          label: "Copy",
+          shortcut: "Ctrl+C",
+          onSelect: handleCopy,
+        },
+        {
+          key: "duplicate",
+          label: "Duplicate",
+          shortcut: "Ctrl+D",
+          onSelect: handleDuplicate,
+        },
+        { separator: true },
+        {
+          key: "delete",
+          label: "Delete",
+          shortcut: "Del",
+          onSelect: () => dispatch({ type: "DELETE_SELECTED" }),
+        },
+        { separator: true },
+        {
+          key: "union",
+          label: "Union",
+          onSelect: () => handleBoolean("union"),
+        },
+        {
+          key: "difference",
+          label: "Difference",
+          onSelect: () => handleBoolean("difference"),
+        },
+        {
+          key: "intersection",
+          label: "Intersection",
+          onSelect: () => handleBoolean("intersection"),
+        },
+        { separator: true },
+        {
+          key: "front",
+          label: "Bring to Front",
+          onSelect: () =>
+            dispatch({ type: "BRING_TO_FRONT", ids: doc.selectedIds }),
+        },
+        {
+          key: "back",
+          label: "Send to Back",
+          onSelect: () =>
+            dispatch({ type: "SEND_TO_BACK", ids: doc.selectedIds }),
+        },
+      ];
+    }
+
+    if (targetShape) {
+      const isPath =
+        targetShape.type === "path" &&
+        targetShape.points &&
+        targetShape.points.length > 0;
+      const isConvertible =
+        targetShape.type === "rectangle" ||
+        targetShape.type === "circle" ||
+        targetShape.type === "line";
+      return [
+        {
+          key: "cut",
+          label: "Cut",
+          shortcut: "Ctrl+X",
+          onSelect: handleCut,
+        },
+        {
+          key: "copy",
+          label: "Copy",
+          shortcut: "Ctrl+C",
+          onSelect: handleCopy,
+        },
+        {
+          key: "paste",
+          label: "Paste",
+          shortcut: "Ctrl+V",
+          disabled: !canPaste,
+          onSelect: handlePaste,
+        },
+        {
+          key: "duplicate",
+          label: "Duplicate",
+          shortcut: "Ctrl+D",
+          onSelect: handleDuplicate,
+        },
+        { separator: true },
+        {
+          key: "delete",
+          label: "Delete",
+          shortcut: "Del",
+          onSelect: () => dispatch({ type: "DELETE_SELECTED" }),
+        },
+        { separator: true },
+        {
+          key: "edit-nodes",
+          label: "Edit Nodes",
+          shortcut: "Enter",
+          disabled: !isPath,
+          onSelect: () => {
+            setNodeEditingShapeId(targetShape.id);
+            setSelectedNodeIndices([]);
+          },
+        },
+        {
+          key: "convert",
+          label: "Convert to Path",
+          disabled: !isConvertible,
+          onSelect: () => handleConvertToPath(targetShape.id),
+        },
+        { separator: true },
+        {
+          key: "front",
+          label: "Bring to Front",
+          onSelect: () =>
+            dispatch({ type: "BRING_TO_FRONT", ids: [targetShape.id] }),
+        },
+        {
+          key: "back",
+          label: "Send to Back",
+          onSelect: () =>
+            dispatch({ type: "SEND_TO_BACK", ids: [targetShape.id] }),
+        },
+      ];
+    }
+
+    // Empty canvas / no target.
+    return [
+      {
+        key: "paste",
+        label: "Paste",
+        shortcut: "Ctrl+V",
+        disabled: !canPaste,
+        onSelect: handlePaste,
+      },
+      { separator: true },
+      {
+        key: "select-all",
+        label: "Select All",
+        shortcut: "Ctrl+A",
+        onSelect: () => dispatch({ type: "SELECT_ALL" }),
+      },
+      {
+        key: "fit-all",
+        label: "Fit All",
+        shortcut: "Ctrl+0",
+        onSelect: handleFitAll,
+      },
+    ];
+  }, [
+    contextMenu,
+    doc.selectedIds,
+    doc.shapes,
+    handleCopy,
+    handleCut,
+    handleDuplicate,
+    handlePaste,
+    handleBoolean,
+    handleConvertToPath,
+    handleFitAll,
+  ]);
+
   const marqueeRect = useMemo(() => {
     if (!selectInteraction || selectInteraction.kind !== "marquee") return null;
     const r = rectFromCorners(
@@ -1869,13 +2434,20 @@ export default function StudioPage() {
     [doc.shapes, drawing, finalizePenAsOpen],
   );
 
-  const handleExport = useCallback(() => {
-    if (doc.shapes.length === 0) return;
-    const svg = exportSVG(doc.shapes);
-    downloadSVG(svg, "design.svg");
-  }, [doc.shapes]);
+  const handleExportProfile = useCallback(
+    (profile: ExportProfile) => {
+      if (doc.shapes.length === 0) {
+        showToast("Nothing to export.");
+        return;
+      }
+      rememberProfile(profile);
+      downloadProfileExport(doc.shapes, profile, designName);
+    },
+    [doc.shapes, designName, showToast],
+  );
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const designFileInputRef = useRef<HTMLInputElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   const importSVGString = useCallback(
@@ -1969,37 +2541,34 @@ export default function StudioPage() {
     setIsDragging(false);
   }, []);
 
-  const handleBoolean = useCallback(
-    (op: BooleanOp) => {
-      const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
-      if (sel.length < 2) return;
-      const result = applyBoolean(sel, op);
-      if (!result) {
-        showToast("Shapes don't overlap.");
-        return;
-      }
-      dispatch({
-        type: "REPLACE_SHAPES",
-        removeIds: sel.map((s) => s.id),
-        add: [result],
-        selectAdded: true,
-      });
-    },
-    [doc.shapes, doc.selectedIds, showToast],
-  );
-
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-full w-full flex-col">
+      <TopBar
+        designName={designName}
+        onRenameCommit={(n) => setDesignName(n)}
+        saveStatus={saveStatus}
+        isLoggedIn={isLoggedIn}
+        userInitial={userInitial}
+        onSave={handleCloudSave}
+        onNewDesign={handleNewDesign}
+        onOpenDesigns={handleOpenDesigns}
+      />
+      <div className="flex min-h-0 w-full flex-1">
       <Toolbar
         activeTool={activeTool}
-        onSelectTool={setActiveTool}
+        onSelectTool={(t) => {
+          markActive();
+          setActiveTool(t);
+        }}
         onUndo={() => dispatch({ type: "UNDO" })}
         onRedo={() => dispatch({ type: "REDO" })}
-        onExport={handleExport}
+        onExportProfile={handleExportProfile}
+        onSaveToFile={handleSaveToFile}
         onImport={handleImportClick}
         onBooleanUnion={() => handleBoolean("union")}
         onBooleanDifference={() => handleBoolean("difference")}
         onBooleanIntersection={() => handleBoolean("intersection")}
+        onShowHelp={() => setShowWelcome(true)}
         canBoolean={selectedShapes.length >= 2}
         canUndo={canUndo(state)}
         canRedo={canRedo(state)}
@@ -2010,6 +2579,13 @@ export default function StudioPage() {
         accept=".svg,image/svg+xml"
         className="hidden"
         onChange={handleFileSelected}
+      />
+      <input
+        ref={designFileInputRef}
+        type="file"
+        accept=".json,application/json"
+        className="hidden"
+        onChange={handleDesignFileSelected}
       />
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <div className="grid flex-1 overflow-hidden" style={{ gridTemplateColumns: "24px 1fr", gridTemplateRows: "24px 1fr" }}>
@@ -2042,6 +2618,7 @@ export default function StudioPage() {
             onDragOver={handleCanvasDragOver}
             onDragLeave={handleCanvasDragLeave}
             onDrop={handleCanvasDrop}
+            onContextMenu={handleContextMenu}
           >
             {toast ? (
               <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-lg bg-wood/90 px-3 py-1 text-xs font-medium text-cream shadow-lg">
@@ -2073,7 +2650,10 @@ export default function StudioPage() {
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
-            onPointerLeave={() => setCursorDocPos(null)}
+            onPointerLeave={() => {
+              setCursorDocPos(null);
+              setCursorScreenPos(null);
+            }}
             onWheel={handleWheel}
             onDoubleClick={handleDoubleClick}
             overlay={
@@ -2134,6 +2714,7 @@ export default function StudioPage() {
           unit={doc.unitDisplay}
           selectedShapes={selectedShapes}
           zoom={doc.zoom}
+          showIdleHints={idle}
           onZoomIn={handleZoomIn}
           onZoomOut={handleZoomOut}
           onZoomReset={handleZoomReset}
@@ -2184,6 +2765,52 @@ export default function StudioPage() {
         }
         onFitAll={handleFitAll}
       />
+      </div>
+      {contextMenu ? (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          items={contextMenuItems}
+          onClose={closeContextMenu}
+        />
+      ) : null}
+      {showWelcome ? <WelcomeOverlay onDismiss={dismissWelcome} /> : null}
+      {cursorScreenPos &&
+      activeTool !== "select" &&
+      !drawing &&
+      !nodeEditingShapeId &&
+      !showWelcome &&
+      cursorHintForTool(activeTool) ? (
+        <div
+          className="pointer-events-none fixed z-30 rounded bg-wood/80 px-2 py-1 text-xs text-cream shadow-sm"
+          style={{
+            left: cursorScreenPos.x + 14,
+            top: cursorScreenPos.y + 14,
+          }}
+        >
+          {cursorHintForTool(activeTool)}
+        </div>
+      ) : null}
     </div>
   );
+}
+
+function cursorHintForTool(tool: Tool): string | null {
+  switch (tool) {
+    case "rectangle":
+    case "circle":
+      return "Click and drag to draw";
+    case "line":
+      return "Click to set start point";
+    case "pen":
+      return "Click to place points, drag for curves";
+    case "text":
+      return "Click to place text";
+    case "polygon":
+      return "Click and drag to draw";
+    case "arc":
+      return "Click and drag for radius";
+    default:
+      return null;
+  }
 }
