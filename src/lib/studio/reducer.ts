@@ -1,8 +1,10 @@
 import type {
   HistorySnapshot,
+  MaterialSettings,
   Shape,
   StudioDocument,
   StudioHistory,
+  StudioMode,
 } from "./types";
 import {
   DEFAULT_GRID_SPACING,
@@ -36,6 +38,8 @@ export type StudioAction =
       gridSpacing: number;
       snapToGrid: boolean;
       unitDisplay: "mm" | "in";
+      material?: MaterialSettings;
+      activeToolId?: string | null;
     }
   | { type: "SELECT"; ids: string[] }
   | { type: "TOGGLE_SELECT"; id: string }
@@ -47,6 +51,10 @@ export type StudioAction =
   | { type: "SET_GRID_SPACING"; gridSpacing: number }
   | { type: "SET_SNAP_TO_GRID"; snapToGrid: boolean }
   | { type: "SET_UNIT_DISPLAY"; unitDisplay: "mm" | "in" }
+  | { type: "SET_MODE"; mode: StudioMode }
+  | { type: "SET_MATERIAL"; material: MaterialSettings }
+  | { type: "SET_ACTIVE_TOOL_ID"; toolId: string | null }
+  | { type: "SET_KERF_COMPENSATION"; show: boolean }
   | { type: "UNDO" }
   | { type: "REDO" };
 
@@ -60,6 +68,13 @@ const ACTIONS_THAT_MODIFY_SHAPES: StudioAction["type"][] = [
   "SEND_TO_BACK",
 ];
 
+export const DEFAULT_MATERIAL: MaterialSettings = {
+  width: 600,
+  height: 400,
+  thickness: 6,
+  name: "Plywood",
+};
+
 export function emptyDocument(): StudioDocument {
   return {
     shapes: [],
@@ -70,6 +85,10 @@ export function emptyDocument(): StudioDocument {
     gridSpacing: DEFAULT_GRID_SPACING,
     snapToGrid: true,
     unitDisplay: "mm",
+    mode: "design",
+    material: { ...DEFAULT_MATERIAL },
+    activeToolId: null,
+    showKerfCompensation: true,
   };
 }
 
@@ -270,6 +289,21 @@ export function reducer(state: StudioState, action: StudioAction): StudioState {
         document: { ...doc, unitDisplay: action.unitDisplay },
       };
 
+    case "SET_MODE":
+      return { ...state, document: { ...doc, mode: action.mode } };
+
+    case "SET_MATERIAL":
+      return { ...state, document: { ...doc, material: action.material } };
+
+    case "SET_ACTIVE_TOOL_ID":
+      return { ...state, document: { ...doc, activeToolId: action.toolId } };
+
+    case "SET_KERF_COMPENSATION":
+      return {
+        ...state,
+        document: { ...doc, showKerfCompensation: action.show },
+      };
+
     case "UNDO": {
       if (state.history.past.length === 0) return state;
       const previous = state.history.past[state.history.past.length - 1];
@@ -295,6 +329,11 @@ export function reducer(state: StudioState, action: StudioAction): StudioState {
         gridSpacing: action.gridSpacing,
         snapToGrid: action.snapToGrid,
         unitDisplay: action.unitDisplay,
+        material: action.material ?? doc.material,
+        activeToolId:
+          action.activeToolId !== undefined
+            ? action.activeToolId
+            : doc.activeToolId,
       };
       const snap = snapshot(next);
       return {

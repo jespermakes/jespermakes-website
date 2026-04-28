@@ -20,6 +20,12 @@ import {
 } from "@/components/studio/context-menu";
 import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
+import { DogboneOverlay } from "@/components/studio/dogbone-overlay";
+import { KerfOverlay } from "@/components/studio/kerf-overlay";
+import { MaterialOutline } from "@/components/studio/material-outline";
+import { PlanPanel } from "@/components/studio/plan-panel";
+import { ReviewPanel } from "@/components/studio/review-panel";
+import { TabOverlay } from "@/components/studio/tab-overlay";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
 import { Ruler, RulerCorner } from "@/components/studio/ruler";
 import { SelectionHandles } from "@/components/studio/selection-handles";
@@ -66,6 +72,16 @@ import {
   shapeToPath,
   syncPathBounds,
 } from "@/lib/studio/path-ops";
+import {
+  findActiveTool,
+  loadTools,
+  saveTools as persistTools,
+} from "@/lib/studio/tool-library";
+import { shapesWithCutTypeColors } from "@/lib/studio/cut-types";
+import { defaultDogboneCorners } from "@/lib/studio/dogbones";
+import { applyNestTranslations, nestParts } from "@/lib/studio/nesting";
+import { computeReview } from "@/lib/studio/review-checks";
+import { autoPlaceTabs } from "@/lib/studio/tabs";
 import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
 import {
   buildDesignFile,
@@ -84,7 +100,12 @@ import {
   type GuideLine,
 } from "@/lib/studio/guides";
 import type { LineEndpointHandle, ResizeHandle } from "@/lib/studio/geometry";
-import type { PathPoint, Shape, Tool } from "@/lib/studio/types";
+import type {
+  CuttingTool,
+  PathPoint,
+  Shape,
+  Tool,
+} from "@/lib/studio/types";
 
 // Module-level clipboard: shapes copied within the app, not the system
 // clipboard. Persists across mount cycles within a single page session.
@@ -164,6 +185,24 @@ export default function StudioPage() {
   const [designName, setDesignName] = useState("Untitled");
   const [designId, setDesignId] = useState<string | null>(null);
   const [designCreatedAt, setDesignCreatedAt] = useState<string | null>(null);
+
+  // Tool library — persisted in localStorage so the same shop set follows
+  // the user across designs.
+  const [tools, setTools] = useState<CuttingTool[]>([]);
+  useEffect(() => {
+    setTools(loadTools());
+  }, []);
+  const activeCuttingTool = useMemo(
+    () => findActiveTool(tools, doc.activeToolId),
+    [tools, doc.activeToolId],
+  );
+  // Default the document's activeToolId to the first tool the first time
+  // the library loads (otherwise the kerf section reads 0).
+  useEffect(() => {
+    if (!doc.activeToolId && tools.length > 0) {
+      dispatch({ type: "SET_ACTIVE_TOOL_ID", toolId: tools[0].id });
+    }
+  }, [tools, doc.activeToolId]);
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("never-saved");
   // Tracks whether the document has changed since the last successful save.
   // Set on every shape mutation, cleared after a successful save.
@@ -398,6 +437,10 @@ export default function StudioPage() {
     (e: ReactPointerEvent<SVGSVGElement>) => {
       setIdle(false);
       const isMiddle = e.button === 1;
+      // In Review mode all interactions except pan are disabled.
+      if (doc.mode === "review" && !spaceHeld && !isMiddle) {
+        return;
+      }
       const wantsPan = spaceHeld || isMiddle;
       const screen = screenPointFromEvent(e);
       if (wantsPan) {
@@ -514,10 +557,13 @@ export default function StudioPage() {
 
       if (activeTool === "select") {
         const targetEl = e.target as Element | null;
+        const planMode = doc.mode !== "design";
         // Handle clicks (resize, rotate, line endpoint) take priority.
-        const handleEl = targetEl?.closest?.("[data-handle]") as
-          | (HTMLElement | SVGElement)
-          | null;
+        const handleEl = !planMode
+          ? (targetEl?.closest?.("[data-handle]") as
+              | (HTMLElement | SVGElement)
+              | null)
+          : null;
         const handleKey = handleEl?.dataset?.handle;
         if (handleKey && doc.selectedIds.length === 1) {
           const targetId = doc.selectedIds[0];
@@ -580,28 +626,30 @@ export default function StudioPage() {
             e.preventDefault();
             return;
           }
-          // No shift: select if not already, then prime a move.
+          // No shift: select if not already, then prime a move (Design only).
           let nextSelected = doc.selectedIds;
           if (!doc.selectedIds.includes(shapeId)) {
             dispatch({ type: "SELECT", ids: [shapeId] });
             nextSelected = [shapeId];
           }
-          const originals = new Map<string, { x: number; y: number }>();
-          for (const id of nextSelected) {
-            const s = doc.shapes.find((sh) => sh.id === id);
-            if (s) originals.set(id, { x: s.x, y: s.y });
-          }
-          if (originals.size > 0) {
-            setTransform({
-              kind: "move",
-              pointerId: e.pointerId,
-              startDocX: docPoint.x,
-              startDocY: docPoint.y,
-              currentDocX: docPoint.x,
-              currentDocY: docPoint.y,
-              originals,
-            });
-            (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+          if (!planMode) {
+            const originals = new Map<string, { x: number; y: number }>();
+            for (const id of nextSelected) {
+              const s = doc.shapes.find((sh) => sh.id === id);
+              if (s) originals.set(id, { x: s.x, y: s.y });
+            }
+            if (originals.size > 0) {
+              setTransform({
+                kind: "move",
+                pointerId: e.pointerId,
+                startDocX: docPoint.x,
+                startDocY: docPoint.y,
+                currentDocX: docPoint.x,
+                currentDocY: docPoint.y,
+                originals,
+              });
+              (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+            }
           }
           e.preventDefault();
           return;
@@ -846,6 +894,7 @@ export default function StudioPage() {
       doc.snapToGrid,
       doc.selectedIds,
       doc.shapes,
+      doc.mode,
       nodeEditingShapeId,
       selectedNodeIndices,
       screenPointFromEvent,
@@ -1457,11 +1506,15 @@ export default function StudioPage() {
         gridSpacing: doc.gridSpacing,
         snapToGrid: doc.snapToGrid,
         unitDisplay: doc.unitDisplay,
+        material: doc.material,
+        activeTool: activeCuttingTool,
       }),
     [
+      activeCuttingTool,
       designCreatedAt,
       designName,
       doc.gridSpacing,
+      doc.material,
       doc.shapes,
       doc.snapToGrid,
       doc.unitDisplay,
@@ -1561,13 +1614,36 @@ export default function StudioPage() {
           design: {
             id: string;
             name: string;
-            data: { canvasSettings?: { gridSpacing?: number; snapToGrid?: boolean; unitDisplay?: "mm" | "in" }; shapes?: Shape[]; createdAt?: string };
+            data: {
+              canvasSettings?: {
+                gridSpacing?: number;
+                snapToGrid?: boolean;
+                unitDisplay?: "mm" | "in";
+              };
+              shapes?: Shape[];
+              createdAt?: string;
+              material?: import("@/lib/studio/types").MaterialSettings;
+              activeTool?: CuttingTool | null;
+            };
             createdAt?: string;
           };
         };
         if (cancelled) return;
         const data = json.design.data;
         const settings = data.canvasSettings ?? {};
+        let nextActiveId: string | null | undefined = undefined;
+        if (data.activeTool) {
+          const fileTool = data.activeTool;
+          setTools((prev) => {
+            const exists = prev.some((t) => t.id === fileTool.id);
+            const next = exists
+              ? prev.map((t) => (t.id === fileTool.id ? fileTool : t))
+              : [...prev, fileTool];
+            persistTools(next);
+            return next;
+          });
+          nextActiveId = fileTool.id;
+        }
         dispatch({
           type: "LOAD_DESIGN",
           shapes: Array.isArray(data.shapes) ? data.shapes : [],
@@ -1576,6 +1652,8 @@ export default function StudioPage() {
           snapToGrid:
             typeof settings.snapToGrid === "boolean" ? settings.snapToGrid : true,
           unitDisplay: settings.unitDisplay === "in" ? "in" : "mm",
+          material: data.material,
+          activeToolId: nextActiveId,
         });
         setDesignName(json.design.name || "Untitled");
         setDesignId(json.design.id);
@@ -1644,12 +1722,29 @@ export default function StudioPage() {
           showToast(parsed.error);
           return;
         }
+        // If the file shipped a tool, ensure it's in the local library so
+        // the active selector resolves it.
+        let nextActiveId: string | null | undefined = undefined;
+        if (parsed.file.activeTool) {
+          const fileTool = parsed.file.activeTool;
+          setTools((prev) => {
+            const exists = prev.some((t) => t.id === fileTool.id);
+            const next = exists
+              ? prev.map((t) => (t.id === fileTool.id ? fileTool : t))
+              : [...prev, fileTool];
+            persistTools(next);
+            return next;
+          });
+          nextActiveId = parsed.file.activeTool.id;
+        }
         dispatch({
           type: "LOAD_DESIGN",
           shapes: parsed.file.shapes,
           gridSpacing: parsed.file.canvasSettings.gridSpacing,
           snapToGrid: parsed.file.canvasSettings.snapToGrid,
           unitDisplay: parsed.file.canvasSettings.unitDisplay,
+          material: parsed.file.material,
+          activeToolId: nextActiveId,
         });
         setDesignName(parsed.file.name);
         setDesignCreatedAt(parsed.file.createdAt);
@@ -1714,6 +1809,114 @@ export default function StudioPage() {
   );
 
   const closeContextMenu = useCallback(() => setContextMenu(null), []);
+
+  const handleAssignCutType = useCallback(
+    (cutType: import("@/lib/studio/types").CutType) => {
+      if (doc.selectedIds.length === 0) return;
+      const updated = doc.shapes
+        .filter((s) => doc.selectedIds.includes(s.id))
+        .map((s) => ({ ...s, cutType }));
+      if (updated.length > 0) {
+        dispatch({ type: "UPDATE_SHAPES", shapes: updated });
+      }
+    },
+    [doc.shapes, doc.selectedIds],
+  );
+
+  const handleSetCutDepth = useCallback(
+    (depth: number) => {
+      if (doc.selectedIds.length === 0) return;
+      const updated = doc.shapes
+        .filter((s) => doc.selectedIds.includes(s.id))
+        .map((s) => ({ ...s, cutDepth: depth }));
+      if (updated.length > 0) {
+        dispatch({ type: "UPDATE_SHAPES", shapes: updated });
+      }
+    },
+    [doc.shapes, doc.selectedIds],
+  );
+
+  const handleApplyDogbones = useCallback(
+    (_style: "standard" | "tbone") => {
+      void _style;
+      if (doc.selectedIds.length === 0) return;
+      const updated: Shape[] = [];
+      for (const s of doc.shapes) {
+        if (!doc.selectedIds.includes(s.id)) continue;
+        if (s.cutType !== "inside" && s.cutType !== "pocket") continue;
+        const corners = defaultDogboneCorners(s);
+        if (corners.length === 0) continue;
+        updated.push({ ...s, dogboneCorners: corners });
+      }
+      if (updated.length === 0) {
+        showToast("Dogbones apply only to inside/pocket shapes with corners.");
+        return;
+      }
+      dispatch({ type: "UPDATE_SHAPES", shapes: updated });
+      showToast(
+        `Dogbones on ${updated.length} shape${updated.length === 1 ? "" : "s"}`,
+      );
+    },
+    [doc.shapes, doc.selectedIds, showToast],
+  );
+
+  const handleAutoTabs = useCallback(
+    (count: number) => {
+      if (doc.selectedIds.length === 0) return;
+      const updated: Shape[] = [];
+      const tabHeight = Math.max(0.5, doc.material.thickness / 2);
+      for (const s of doc.shapes) {
+        if (!doc.selectedIds.includes(s.id)) continue;
+        if (s.cutType !== "outside") continue;
+        updated.push({
+          ...s,
+          tabs: autoPlaceTabs(count, 5, tabHeight),
+        });
+      }
+      if (updated.length === 0) {
+        showToast("Tabs apply only to outside-cut shapes.");
+        return;
+      }
+      dispatch({ type: "UPDATE_SHAPES", shapes: updated });
+    },
+    [doc.shapes, doc.selectedIds, doc.material.thickness, showToast],
+  );
+
+  const handleNestParts = useCallback(
+    (spacingMm: number) => {
+      const result = nestParts(doc.shapes, doc.material, spacingMm);
+      if (result.translations.size === 0) {
+        showToast("No outside-cut parts to nest.");
+        return;
+      }
+      const updated = applyNestTranslations(doc.shapes, result.translations);
+      const moved = updated.filter(
+        (s) => result.translations.has(s.id) && s !== doc.shapes.find((o) => o.id === s.id),
+      );
+      if (moved.length === 0) {
+        showToast("Nothing moved.");
+        return;
+      }
+      dispatch({ type: "UPDATE_SHAPES", shapes: moved });
+      const pct = Math.round(result.usage * 100);
+      const overflow =
+        result.overflow > 0
+          ? ` (${result.overflow} didn't fit)`
+          : "";
+      showToast(`Nested · ${pct}% material usage${overflow}`);
+    },
+    [doc.shapes, doc.material, showToast],
+  );
+
+  const handleClearTabs = useCallback(() => {
+    if (doc.selectedIds.length === 0) return;
+    const updated = doc.shapes
+      .filter((s) => doc.selectedIds.includes(s.id))
+      .map((s) => ({ ...s, tabs: [] }));
+    if (updated.length > 0) {
+      dispatch({ type: "UPDATE_SHAPES", shapes: updated });
+    }
+  }, [doc.shapes, doc.selectedIds]);
 
   const handleBoolean = useCallback(
     (op: BooleanOp) => {
@@ -1889,31 +2092,42 @@ export default function StudioPage() {
           break;
         case "r":
         case "R":
-          setActiveTool("rectangle");
+          if (doc.mode === "design") setActiveTool("rectangle");
           break;
         case "c":
         case "C":
-          setActiveTool("circle");
+          if (doc.mode === "design") setActiveTool("circle");
           break;
         case "l":
         case "L":
-          setActiveTool("line");
+          if (doc.mode === "design") setActiveTool("line");
           break;
         case "t":
         case "T":
-          setActiveTool("text");
+          if (doc.mode === "design") setActiveTool("text");
           break;
         case "p":
         case "P":
-          setActiveTool("pen");
+          if (doc.mode === "design") setActiveTool("pen");
           break;
         case "g":
         case "G":
-          setActiveTool("polygon");
+          if (doc.mode === "design") setActiveTool("polygon");
           break;
         case "a":
         case "A":
-          setActiveTool("arc");
+          if (doc.mode === "design") setActiveTool("arc");
+          break;
+        case "1":
+          dispatch({ type: "SET_MODE", mode: "design" });
+          break;
+        case "2":
+          dispatch({ type: "SET_MODE", mode: "plan" });
+          if (activeTool !== "select") setActiveTool("select");
+          break;
+        case "3":
+          dispatch({ type: "SET_MODE", mode: "review" });
+          if (activeTool !== "select") setActiveTool("select");
           break;
         case "Delete":
         case "Backspace":
@@ -1981,6 +2195,7 @@ export default function StudioPage() {
     editingTextShapeId,
     doc.selectedIds,
     doc.shapes,
+    doc.mode,
     nodeEditingShapeId,
     selectedNodeIndices,
   ]);
@@ -2187,14 +2402,26 @@ export default function StudioPage() {
   }, [nodeDrag, nodeEditingShapeId, doc.shapes]);
 
   const displayShapes = useMemo<Shape[]>(() => {
-    if (liveShapeOverrides.size === 0 && !liveNodePoints) return doc.shapes;
-    return doc.shapes.map((s) => {
-      if (liveNodePoints && s.id === nodeEditingShapeId) {
-        return { ...s, points: liveNodePoints };
-      }
-      return liveShapeOverrides.get(s.id) ?? s;
-    });
-  }, [doc.shapes, liveShapeOverrides, liveNodePoints, nodeEditingShapeId]);
+    let shapes = doc.shapes;
+    if (liveShapeOverrides.size > 0 || liveNodePoints) {
+      shapes = doc.shapes.map((s) => {
+        if (liveNodePoints && s.id === nodeEditingShapeId) {
+          return { ...s, points: liveNodePoints };
+        }
+        return liveShapeOverrides.get(s.id) ?? s;
+      });
+    }
+    if (doc.mode !== "design") {
+      shapes = shapesWithCutTypeColors(shapes);
+    }
+    return shapes;
+  }, [
+    doc.shapes,
+    doc.mode,
+    liveShapeOverrides,
+    liveNodePoints,
+    nodeEditingShapeId,
+  ]);
 
   const selectedSingleShape = useMemo<Shape | null>(() => {
     if (doc.selectedIds.length !== 1) return null;
@@ -2405,6 +2632,11 @@ export default function StudioPage() {
     [doc.shapes, doc.selectedIds],
   );
 
+  const reviewSummary = useMemo(
+    () => computeReview(doc.shapes, doc.material, activeCuttingTool),
+    [doc.shapes, doc.material, activeCuttingTool],
+  );
+
   const handleDoubleClick = useCallback(
     (e: React.MouseEvent<SVGSVGElement>) => {
       // Finalize an in-progress pen path on double-click.
@@ -2441,9 +2673,12 @@ export default function StudioPage() {
         return;
       }
       rememberProfile(profile);
-      downloadProfileExport(doc.shapes, profile, designName);
+      downloadProfileExport(doc.shapes, profile, designName, {
+        activeTool: activeCuttingTool,
+        material: doc.material,
+      });
     },
-    [doc.shapes, designName, showToast],
+    [doc.shapes, doc.material, designName, activeCuttingTool, showToast],
   );
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -2549,6 +2784,13 @@ export default function StudioPage() {
         saveStatus={saveStatus}
         isLoggedIn={isLoggedIn}
         userInitial={userInitial}
+        mode={doc.mode}
+        onModeChange={(m) => {
+          dispatch({ type: "SET_MODE", mode: m });
+          if (m !== "design" && activeTool !== "select") {
+            setActiveTool("select");
+          }
+        }}
         onSave={handleCloudSave}
         onNewDesign={handleNewDesign}
         onOpenDesigns={handleOpenDesigns}
@@ -2556,6 +2798,7 @@ export default function StudioPage() {
       <div className="flex min-h-0 w-full flex-1">
       <Toolbar
         activeTool={activeTool}
+        drawingDisabled={doc.mode !== "design"}
         onSelectTool={(t) => {
           markActive();
           setActiveTool(t);
@@ -2656,9 +2899,53 @@ export default function StudioPage() {
             }}
             onWheel={handleWheel}
             onDoubleClick={handleDoubleClick}
+            background={
+              doc.mode === "review" ? (
+                <rect
+                  x={-doc.material.width / 2}
+                  y={-doc.material.height / 2}
+                  width={doc.material.width}
+                  height={doc.material.height}
+                  fill="#E8D5B7"
+                  stroke="rgba(74, 50, 40, 0.3)"
+                  strokeWidth={1 / doc.zoom}
+                  pointerEvents="none"
+                />
+              ) : null
+            }
             overlay={
               <>
-                {selectedSingleShape && !drawing && !nodeEditingShapeId ? (
+                {doc.mode !== "design" ? (
+                  <MaterialOutline
+                    material={doc.material}
+                    zoomScale={1 / doc.zoom}
+                    unit={doc.unitDisplay}
+                  />
+                ) : null}
+                {doc.mode === "plan" && doc.showKerfCompensation && activeCuttingTool ? (
+                  <KerfOverlay
+                    shapes={displayShapes}
+                    kerfMm={activeCuttingTool.kerf}
+                    zoomScale={1 / doc.zoom}
+                  />
+                ) : null}
+                {doc.mode !== "design" && activeCuttingTool ? (
+                  <DogboneOverlay
+                    shapes={displayShapes}
+                    toolDiameter={activeCuttingTool.diameter}
+                    zoomScale={1 / doc.zoom}
+                  />
+                ) : null}
+                {doc.mode !== "design" ? (
+                  <TabOverlay
+                    shapes={displayShapes}
+                    zoomScale={1 / doc.zoom}
+                  />
+                ) : null}
+                {selectedSingleShape &&
+                !drawing &&
+                !nodeEditingShapeId &&
+                doc.mode === "design" ? (
                   <SelectionHandles
                     shape={selectedSingleShape}
                     zoomScale={1 / doc.zoom}
@@ -2721,50 +3008,105 @@ export default function StudioPage() {
           onFitAll={handleFitAll}
         />
       </div>
-      <PropertiesPanel
-        selectedShapes={selectedShapes}
-        unit={doc.unitDisplay}
-        doc={{
-          gridSpacing: doc.gridSpacing,
-          snapToGrid: doc.snapToGrid,
-          unitDisplay: doc.unitDisplay,
-          zoom: doc.zoom,
-        }}
-        editingTextShapeId={editingTextShapeId}
-        nodeEditingShapeId={nodeEditingShapeId}
-        polygonSettings={{
-          sides: polygonSides,
-          star: polygonStar,
-          innerPct: polygonInnerPct,
-        }}
-        polygonToolActive={activeTool === "polygon"}
-        onTextEditDone={() => setEditingTextShapeId(null)}
-        onEnterNodeEdit={(id) => {
-          setNodeEditingShapeId(id);
-          setSelectedNodeIndices([]);
-        }}
-        onExitNodeEdit={() => {
-          setNodeEditingShapeId(null);
-          setSelectedNodeIndices([]);
-        }}
-        onSetPolygonSides={setPolygonSides}
-        onSetPolygonStar={setPolygonStar}
-        onSetPolygonInnerPct={setPolygonInnerPct}
-        onUpdateShape={(next) =>
-          dispatch({ type: "UPDATE_SHAPES", shapes: [next] })
-        }
-        onDeleteSelected={() => dispatch({ type: "DELETE_SELECTED" })}
-        onSetGridSpacing={(mm) =>
-          dispatch({ type: "SET_GRID_SPACING", gridSpacing: mm })
-        }
-        onSetSnapToGrid={(v) =>
-          dispatch({ type: "SET_SNAP_TO_GRID", snapToGrid: v })
-        }
-        onSetUnitDisplay={(u) =>
-          dispatch({ type: "SET_UNIT_DISPLAY", unitDisplay: u })
-        }
-        onFitAll={handleFitAll}
-      />
+      {doc.mode === "design" ? (
+        <PropertiesPanel
+          selectedShapes={selectedShapes}
+          unit={doc.unitDisplay}
+          doc={{
+            gridSpacing: doc.gridSpacing,
+            snapToGrid: doc.snapToGrid,
+            unitDisplay: doc.unitDisplay,
+            zoom: doc.zoom,
+          }}
+          editingTextShapeId={editingTextShapeId}
+          nodeEditingShapeId={nodeEditingShapeId}
+          polygonSettings={{
+            sides: polygonSides,
+            star: polygonStar,
+            innerPct: polygonInnerPct,
+          }}
+          polygonToolActive={activeTool === "polygon"}
+          onTextEditDone={() => setEditingTextShapeId(null)}
+          onEnterNodeEdit={(id) => {
+            setNodeEditingShapeId(id);
+            setSelectedNodeIndices([]);
+          }}
+          onExitNodeEdit={() => {
+            setNodeEditingShapeId(null);
+            setSelectedNodeIndices([]);
+          }}
+          onSetPolygonSides={setPolygonSides}
+          onSetPolygonStar={setPolygonStar}
+          onSetPolygonInnerPct={setPolygonInnerPct}
+          onUpdateShape={(next) =>
+            dispatch({ type: "UPDATE_SHAPES", shapes: [next] })
+          }
+          onDeleteSelected={() => dispatch({ type: "DELETE_SELECTED" })}
+          onSetGridSpacing={(mm) =>
+            dispatch({ type: "SET_GRID_SPACING", gridSpacing: mm })
+          }
+          onSetSnapToGrid={(v) =>
+            dispatch({ type: "SET_SNAP_TO_GRID", snapToGrid: v })
+          }
+          onSetUnitDisplay={(u) =>
+            dispatch({ type: "SET_UNIT_DISPLAY", unitDisplay: u })
+          }
+          onFitAll={handleFitAll}
+        />
+      ) : doc.mode === "plan" ? (
+        <PlanPanel
+          selectedShapes={selectedShapes}
+          unit={doc.unitDisplay}
+          material={doc.material}
+          tools={tools}
+          activeTool={activeCuttingTool}
+          showKerfCompensation={doc.showKerfCompensation}
+          onSetMaterial={(m) => dispatch({ type: "SET_MATERIAL", material: m })}
+          onSetActiveTool={(id) => {
+            dispatch({ type: "SET_ACTIVE_TOOL_ID", toolId: id });
+          }}
+          onUpsertTool={(t) => {
+            const next = tools.some((x) => x.id === t.id)
+              ? tools.map((x) => (x.id === t.id ? t : x))
+              : [...tools, t];
+            setTools(next);
+            persistTools(next);
+            dispatch({ type: "SET_ACTIVE_TOOL_ID", toolId: t.id });
+          }}
+          onDeleteTool={(id) => {
+            const next = tools.filter((x) => x.id !== id);
+            setTools(next);
+            persistTools(next);
+            if (doc.activeToolId === id) {
+              dispatch({
+                type: "SET_ACTIVE_TOOL_ID",
+                toolId: next[0]?.id ?? null,
+              });
+            }
+          }}
+          onSetKerfCompensation={(v) =>
+            dispatch({ type: "SET_KERF_COMPENSATION", show: v })
+          }
+          onAssignCutType={handleAssignCutType}
+          onSetCutDepth={handleSetCutDepth}
+          onApplyDogbones={handleApplyDogbones}
+          onAutoTabs={handleAutoTabs}
+          onClearTabs={handleClearTabs}
+          onNestParts={handleNestParts}
+        />
+      ) : doc.mode === "review" ? (
+        <ReviewPanel
+          summary={reviewSummary}
+          material={doc.material}
+          activeTool={activeCuttingTool}
+          unit={doc.unitDisplay}
+          onHighlightShape={(id) => dispatch({ type: "SELECT", ids: [id] })}
+          onModeChange={(m) => dispatch({ type: "SET_MODE", mode: m })}
+          onExport={() =>
+            handleExportProfile("generic")
+          }
+        />
+      ) : null}
       </div>
       {contextMenu ? (
         <ContextMenu

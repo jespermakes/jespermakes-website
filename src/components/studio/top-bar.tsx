@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import type { StudioMode } from "@/lib/studio/types";
 
 export type SaveStatus =
   | "never-saved"
@@ -17,10 +18,18 @@ interface TopBarProps {
   saveStatus: SaveStatus;
   isLoggedIn: boolean;
   userInitial?: string | null;
+  mode: StudioMode;
+  onModeChange: (mode: StudioMode) => void;
   onSave: () => void;
   onNewDesign: () => void;
   onOpenDesigns: () => void;
 }
+
+const MODE_TABS: { mode: StudioMode; label: string; shortcut: string }[] = [
+  { mode: "design", label: "Design", shortcut: "1" },
+  { mode: "plan", label: "Plan", shortcut: "2" },
+  { mode: "review", label: "Review", shortcut: "3" },
+];
 
 export function TopBar({
   designName,
@@ -28,6 +37,8 @@ export function TopBar({
   saveStatus,
   isLoggedIn,
   userInitial,
+  mode,
+  onModeChange,
   onSave,
   onNewDesign,
   onOpenDesigns,
@@ -112,6 +123,32 @@ export function TopBar({
           </button>
         )}
         <SaveStatusLabel status={saveStatus} isLoggedIn={isLoggedIn} />
+      </div>
+      <div
+        role="tablist"
+        aria-label="Studio mode"
+        className="mr-2 flex items-center gap-0.5 rounded-md bg-cream/60 p-0.5"
+      >
+        {MODE_TABS.map((t) => {
+          const active = mode === t.mode;
+          return (
+            <button
+              key={t.mode}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              onClick={() => onModeChange(t.mode)}
+              title={`${t.label} (${t.shortcut})`}
+              className={`rounded px-3 py-1 text-[12px] font-medium transition-colors ${
+                active
+                  ? "bg-wood text-cream shadow-sm"
+                  : "text-wood-light hover:text-wood"
+              }`}
+            >
+              {t.label}
+            </button>
+          );
+        })}
       </div>
       <button
         type="button"

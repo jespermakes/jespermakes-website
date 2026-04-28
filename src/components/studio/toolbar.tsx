@@ -10,6 +10,11 @@ import {
 
 interface ToolbarProps {
   activeTool: Tool;
+  /**
+   * When true, all drawing tool buttons render grayed-out and are not
+   * clickable. Used for Plan and Review modes.
+   */
+  drawingDisabled?: boolean;
   onSelectTool: (tool: Tool) => void;
   onUndo: () => void;
   onRedo: () => void;
@@ -323,6 +328,7 @@ function ExportButton({
 
 export function Toolbar({
   activeTool,
+  drawingDisabled,
   onSelectTool,
   onUndo,
   onRedo,
@@ -353,18 +359,23 @@ export function Toolbar({
         </span>
       </Link>
       <Separator />
-      {TOOLS.map((t) => (
-        <ToolButton
-          key={t.tool}
-          active={activeTool === t.tool}
-          label={t.label}
-          shortcut={t.shortcut}
-          showBadge
-          onClick={() => onSelectTool(t.tool)}
-        >
-          {t.icon}
-        </ToolButton>
-      ))}
+      {TOOLS.map((t) => {
+        const isSelect = t.tool === "select";
+        const disabled = drawingDisabled && !isSelect;
+        return (
+          <ToolButton
+            key={t.tool}
+            active={activeTool === t.tool}
+            label={t.label}
+            shortcut={t.shortcut}
+            showBadge
+            disabled={disabled}
+            onClick={() => onSelectTool(t.tool)}
+          >
+            {t.icon}
+          </ToolButton>
+        );
+      })}
       <Separator />
       <ToolButton
         label="Union"

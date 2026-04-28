@@ -32,6 +32,9 @@ interface CanvasProps {
   onPointerLeave?: (e: PointerEvent<SVGSVGElement>) => void;
   onWheel: (e: WheelEvent<SVGSVGElement>) => void;
   onDoubleClick?: (e: MouseEvent<SVGSVGElement>) => void;
+  /** Rendered between the grid and the shapes — used by Review mode for
+   *  the filled material background. */
+  background?: ReactNode;
   overlay?: ReactNode;
 }
 
@@ -54,6 +57,7 @@ export const Canvas = forwardRef<SVGSVGElement, CanvasProps>(function Canvas(
     onPointerLeave,
     onWheel,
     onDoubleClick,
+    background,
     overlay,
   },
   ref,
@@ -96,6 +100,7 @@ export const Canvas = forwardRef<SVGSVGElement, CanvasProps>(function Canvas(
         zoom={zoom}
       />
       <OriginMarker zoomScale={zoomScale} />
+      {background}
       <g>
         {shapes.map((shape) => {
           const dimmed = !!dimNonId && dimNonId !== shape.id;
