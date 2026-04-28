@@ -13,6 +13,7 @@ interface ToolbarProps {
   onBooleanUnion: () => void;
   onBooleanDifference: () => void;
   onBooleanIntersection: () => void;
+  onShowHelp: () => void;
   canBoolean: boolean;
   canUndo: boolean;
   canRedo: boolean;
@@ -172,6 +173,7 @@ function ToolButton({
   disabled,
   label,
   shortcut,
+  showBadge,
   onClick,
   children,
 }: {
@@ -179,6 +181,8 @@ function ToolButton({
   disabled?: boolean;
   label: string;
   shortcut?: string;
+  /** Render the shortcut letter as a small persistent badge. */
+  showBadge?: boolean;
   onClick: () => void;
   children: React.ReactNode;
 }) {
@@ -195,6 +199,14 @@ function ToolButton({
       ].join(" ")}
     >
       {children}
+      {showBadge && shortcut ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute bottom-0.5 right-0.5 flex h-3 min-w-[12px] items-center justify-center rounded-sm bg-white/15 px-0.5 font-mono text-[8px] leading-none text-cream/70"
+        >
+          {shortcut}
+        </span>
+      ) : null}
       <span
         className="pointer-events-none absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-wood-light px-2 py-1 text-[11px] font-medium text-cream opacity-0 shadow-md transition-opacity group-hover:opacity-100"
         role="tooltip"
@@ -222,6 +234,7 @@ export function Toolbar({
   onBooleanUnion,
   onBooleanDifference,
   onBooleanIntersection,
+  onShowHelp,
   canBoolean,
   canUndo,
   canRedo,
@@ -248,6 +261,7 @@ export function Toolbar({
           active={activeTool === t.tool}
           label={t.label}
           shortcut={t.shortcut}
+          showBadge
           onClick={() => onSelectTool(t.tool)}
         >
           {t.icon}
@@ -405,6 +419,21 @@ export function Toolbar({
             d="M3 12 L13 12 L13 14 L3 14 Z"
             fill="currentColor"
           />
+        </svg>
+      </ToolButton>
+      <ToolButton label="Help" shortcut="?" onClick={onShowHelp}>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <text
+            x="8"
+            y="11.5"
+            fontSize="11"
+            fontFamily="Inter, sans-serif"
+            fontWeight="700"
+            textAnchor="middle"
+            fill="currentColor"
+          >
+            ?
+          </text>
         </svg>
       </ToolButton>
     </div>

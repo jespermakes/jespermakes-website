@@ -24,6 +24,7 @@ import { SelectionHandles } from "@/components/studio/selection-handles";
 import { StatusBar } from "@/components/studio/status-bar";
 import { Toolbar } from "@/components/studio/toolbar";
 import { ToolOverlay } from "@/components/studio/tool-overlay";
+import { WelcomeOverlay } from "@/components/studio/welcome-overlay";
 import {
   canRedo,
   canUndo,
@@ -139,6 +140,40 @@ export default function StudioPage() {
     y: number;
     targetShapeId: string | null;
   } | null>(null);
+  const [showWelcome, setShowWelcome] = useState(false);
+  // Idle for hints — flips false after the first user action.
+  const [idle, setIdle] = useState(true);
+  // Cursor screen position (for the floating tool-hint label). Null when the
+  // pointer is outside the canvas.
+  const [cursorScreenPos, setCursorScreenPos] = useState<
+    { x: number; y: number } | null
+  >(null);
+
+  // First-visit welcome overlay.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      if (!localStorage.getItem("studio_onboarding_seen")) {
+        setShowWelcome(true);
+      }
+    } catch {
+      // Ignore localStorage failures (private mode etc.).
+    }
+  }, []);
+
+  const dismissWelcome = useCallback(() => {
+    try {
+      localStorage.setItem("studio_onboarding_seen", "1");
+    } catch {
+      /* noop */
+    }
+    setShowWelcome(false);
+  }, []);
+
+  // Mark idle false on first user action of any kind.
+  const markActive = useCallback(() => {
+    setIdle(false);
+  }, []);
 
   const showToast = useCallback((msg: string) => {
     setToast(msg);
@@ -323,6 +358,7 @@ export default function StudioPage() {
 
   const handlePointerDown = useCallback(
     (e: ReactPointerEvent<SVGSVGElement>) => {
+      setIdle(false);
       const isMiddle = e.button === 1;
       const wantsPan = spaceHeld || isMiddle;
       const screen = screenPointFromEvent(e);
@@ -790,6 +826,7 @@ export default function StudioPage() {
         doc.zoom,
       );
       setCursorDocPos(docPoint);
+      setCursorScreenPos({ x: e.clientX, y: e.clientY });
 
       if (panRef.current && panRef.current.pointerId === e.pointerId) {
         const dxMm = (screen.x - panRef.current.startScreenX) / doc.zoom;
@@ -2237,7 +2274,10 @@ export default function StudioPage() {
     <div className="flex h-full w-full">
       <Toolbar
         activeTool={activeTool}
-        onSelectTool={setActiveTool}
+        onSelectTool={(t) => {
+          markActive();
+          setActiveTool(t);
+        }}
         onUndo={() => dispatch({ type: "UNDO" })}
         onRedo={() => dispatch({ type: "REDO" })}
         onExport={handleExport}
@@ -2245,6 +2285,7 @@ export default function StudioPage() {
         onBooleanUnion={() => handleBoolean("union")}
         onBooleanDifference={() => handleBoolean("difference")}
         onBooleanIntersection={() => handleBoolean("intersection")}
+        onShowHelp={() => setShowWelcome(true)}
         canBoolean={selectedShapes.length >= 2}
         canUndo={canUndo(state)}
         canRedo={canRedo(state)}
@@ -2319,7 +2360,10 @@ export default function StudioPage() {
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
-            onPointerLeave={() => setCursorDocPos(null)}
+            onPointerLeave={() => {
+              setCursorDocPos(null);
+              setCursorScreenPos(null);
+            }}
             onWheel={handleWheel}
             onDoubleClick={handleDoubleClick}
             overlay={
@@ -2380,6 +2424,7 @@ export default function StudioPage() {
           unit={doc.unitDisplay}
           selectedShapes={selectedShapes}
           zoom={doc.zoom}
+          showIdleHints={idle}
           onZoomIn={handleZoomIn}
           onZoomOut={handleZoomOut}
           onZoomReset={handleZoomReset}
@@ -2438,6 +2483,43 @@ export default function StudioPage() {
           onClose={closeContextMenu}
         />
       ) : null}
+      {showWelcome ? <WelcomeOverlay onDismiss={dismissWelcome} /> : null}
+      {cursorScreenPos &&
+      activeTool !== "select" &&
+      !drawing &&
+      !nodeEditingShapeId &&
+      !showWelcome &&
+      cursorHintForTool(activeTool) ? (
+        <div
+          className="pointer-events-none fixed z-30 rounded bg-wood/80 px-2 py-1 text-xs text-cream shadow-sm"
+          style={{
+            left: cursorScreenPos.x + 14,
+            top: cursorScreenPos.y + 14,
+          }}
+        >
+          {cursorHintForTool(activeTool)}
+        </div>
+      ) : null}
     </div>
   );
+}
+
+function cursorHintForTool(tool: Tool): string | null {
+  switch (tool) {
+    case "rectangle":
+    case "circle":
+      return "Click and drag to draw";
+    case "line":
+      return "Click to set start point";
+    case "pen":
+      return "Click to place points, drag for curves";
+    case "text":
+      return "Click to place text";
+    case "polygon":
+      return "Click and drag to draw";
+    case "arc":
+      return "Click and drag for radius";
+    default:
+      return null;
+  }
 }
