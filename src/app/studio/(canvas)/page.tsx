@@ -79,6 +79,7 @@ import {
 } from "@/lib/studio/tool-library";
 import { shapesWithCutTypeColors } from "@/lib/studio/cut-types";
 import { defaultDogboneCorners } from "@/lib/studio/dogbones";
+import { applyNestTranslations, nestParts } from "@/lib/studio/nesting";
 import { computeReview } from "@/lib/studio/review-checks";
 import { autoPlaceTabs } from "@/lib/studio/tabs";
 import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
@@ -1834,6 +1835,32 @@ export default function StudioPage() {
     [doc.shapes, doc.selectedIds, doc.material.thickness, showToast],
   );
 
+  const handleNestParts = useCallback(
+    (spacingMm: number) => {
+      const result = nestParts(doc.shapes, doc.material, spacingMm);
+      if (result.translations.size === 0) {
+        showToast("No outside-cut parts to nest.");
+        return;
+      }
+      const updated = applyNestTranslations(doc.shapes, result.translations);
+      const moved = updated.filter(
+        (s) => result.translations.has(s.id) && s !== doc.shapes.find((o) => o.id === s.id),
+      );
+      if (moved.length === 0) {
+        showToast("Nothing moved.");
+        return;
+      }
+      dispatch({ type: "UPDATE_SHAPES", shapes: moved });
+      const pct = Math.round(result.usage * 100);
+      const overflow =
+        result.overflow > 0
+          ? ` (${result.overflow} didn't fit)`
+          : "";
+      showToast(`Nested · ${pct}% material usage${overflow}`);
+    },
+    [doc.shapes, doc.material, showToast],
+  );
+
   const handleClearTabs = useCallback(() => {
     if (doc.selectedIds.length === 0) return;
     const updated = doc.shapes
@@ -3014,6 +3041,7 @@ export default function StudioPage() {
           onApplyDogbones={handleApplyDogbones}
           onAutoTabs={handleAutoTabs}
           onClearTabs={handleClearTabs}
+          onNestParts={handleNestParts}
         />
       ) : doc.mode === "review" ? (
         <ReviewPanel

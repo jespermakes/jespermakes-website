@@ -39,6 +39,7 @@ interface PlanPanelProps {
   onApplyDogbones: (style: "standard" | "tbone") => void;
   onAutoTabs: (count: number) => void;
   onClearTabs: () => void;
+  onNestParts: (spacingMm: number) => void;
 }
 
 const SECTION_LABEL =
@@ -87,9 +88,42 @@ export function PlanPanel(props: PlanPanelProps) {
               Select a shape to assign a cut type.
             </p>
           )}
+          <NestingSection onNestParts={props.onNestParts} />
         </div>
       </div>
     </aside>
+  );
+}
+
+function NestingSection({
+  onNestParts,
+}: {
+  onNestParts: (spacingMm: number) => void;
+}) {
+  const [spacing, setSpacing] = useState(2);
+  return (
+    <Section label="Nesting">
+      <NumberField
+        label="Sp"
+        value={spacing}
+        onCommit={(v) => setSpacing(Math.max(0, v))}
+        min={0}
+        format={(v) => v.toString()}
+        parse={(raw) => Number.parseFloat(raw)}
+        suffix="mm"
+      />
+      <button
+        type="button"
+        onClick={() => onNestParts(spacing)}
+        className="rounded-xl bg-wood px-3 py-1.5 text-sm font-medium text-cream hover:bg-wood-light"
+      >
+        Nest parts
+      </button>
+      <p className="text-[11px] text-wood-light/60">
+        Strip-packs outside-cut parts within the material; v1 doesn't
+        rotate parts.
+      </p>
+    </Section>
   );
 }
 
