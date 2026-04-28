@@ -56,6 +56,7 @@ import {
   syncPathBounds,
 } from "@/lib/studio/path-ops";
 import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
+import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
 import { parseSVG, recenterImportedShapes } from "@/lib/studio/svg-import";
 import {
   applyMoveSnap,
@@ -1919,6 +1920,25 @@ export default function StudioPage() {
     setIsDragging(false);
   }, []);
 
+  const handleBoolean = useCallback(
+    (op: BooleanOp) => {
+      const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
+      if (sel.length < 2) return;
+      const result = applyBoolean(sel, op);
+      if (!result) {
+        showToast("Shapes don't overlap.");
+        return;
+      }
+      dispatch({
+        type: "REPLACE_SHAPES",
+        removeIds: sel.map((s) => s.id),
+        add: [result],
+        selectAdded: true,
+      });
+    },
+    [doc.shapes, doc.selectedIds, showToast],
+  );
+
   return (
     <div className="flex h-full w-full">
       <Toolbar
@@ -1928,6 +1948,10 @@ export default function StudioPage() {
         onRedo={() => dispatch({ type: "REDO" })}
         onExport={handleExport}
         onImport={handleImportClick}
+        onBooleanUnion={() => handleBoolean("union")}
+        onBooleanDifference={() => handleBoolean("difference")}
+        onBooleanIntersection={() => handleBoolean("intersection")}
+        canBoolean={selectedShapes.length >= 2}
         canUndo={canUndo(state)}
         canRedo={canRedo(state)}
       />

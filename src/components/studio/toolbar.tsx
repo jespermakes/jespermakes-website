@@ -10,6 +10,10 @@ interface ToolbarProps {
   onRedo: () => void;
   onExport: () => void;
   onImport: () => void;
+  onBooleanUnion: () => void;
+  onBooleanDifference: () => void;
+  onBooleanIntersection: () => void;
+  canBoolean: boolean;
   canUndo: boolean;
   canRedo: boolean;
 }
@@ -215,6 +219,10 @@ export function Toolbar({
   onRedo,
   onExport,
   onImport,
+  onBooleanUnion,
+  onBooleanDifference,
+  onBooleanIntersection,
+  canBoolean,
   canUndo,
   canRedo,
 }: ToolbarProps) {
@@ -245,6 +253,103 @@ export function Toolbar({
           {t.icon}
         </ToolButton>
       ))}
+      <Separator />
+      <ToolButton
+        label="Union"
+        disabled={!canBoolean}
+        onClick={onBooleanUnion}
+      >
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <path
+            d="M3 6 A 3 3 0 1 0 9 6 A 3 3 0 1 0 3 6 M7 10 A 3 3 0 1 0 13 10 A 3 3 0 1 0 7 10"
+            fill="currentColor"
+            fillRule="evenodd"
+            opacity={0.3}
+          />
+          <path
+            d="M3 6 A 3 3 0 1 1 9 6 A 3 3 0 1 1 3 6 Z M7 10 A 3 3 0 1 1 13 10 A 3 3 0 1 1 7 10 Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          />
+        </svg>
+      </ToolButton>
+      <ToolButton
+        label="Difference"
+        disabled={!canBoolean}
+        onClick={onBooleanDifference}
+      >
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <defs>
+            <mask id="diff-mask">
+              <rect width="16" height="16" fill="white" />
+              <circle cx="10" cy="10" r="3" fill="black" />
+            </mask>
+          </defs>
+          <circle
+            cx="6"
+            cy="6"
+            r="3"
+            fill="currentColor"
+            fillOpacity={0.45}
+            mask="url(#diff-mask)"
+          />
+          <circle
+            cx="6"
+            cy="6"
+            r="3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          />
+          <circle
+            cx="10"
+            cy="10"
+            r="3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            strokeDasharray="2 1.5"
+          />
+        </svg>
+      </ToolButton>
+      <ToolButton
+        label="Intersection"
+        disabled={!canBoolean}
+        onClick={onBooleanIntersection}
+      >
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <defs>
+            <clipPath id="int-clip-a">
+              <circle cx="6" cy="8" r="3.4" />
+            </clipPath>
+          </defs>
+          <circle
+            cx="10"
+            cy="8"
+            r="3.4"
+            fill="currentColor"
+            fillOpacity={0.5}
+            clipPath="url(#int-clip-a)"
+          />
+          <circle
+            cx="6"
+            cy="8"
+            r="3.4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          />
+          <circle
+            cx="10"
+            cy="8"
+            r="3.4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          />
+        </svg>
+      </ToolButton>
       <Separator />
       <ToolButton
         label="Undo"
