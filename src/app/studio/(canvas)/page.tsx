@@ -20,6 +20,7 @@ import {
 } from "@/components/studio/context-menu";
 import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
+import { KerfOverlay } from "@/components/studio/kerf-overlay";
 import { MaterialOutline } from "@/components/studio/material-outline";
 import { PlanPanel } from "@/components/studio/plan-panel";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
@@ -2788,6 +2789,13 @@ export default function StudioPage() {
                     material={doc.material}
                     zoomScale={1 / doc.zoom}
                     unit={doc.unitDisplay}
+                  />
+                ) : null}
+                {doc.mode === "plan" && doc.showKerfCompensation && activeCuttingTool ? (
+                  <KerfOverlay
+                    shapes={displayShapes}
+                    kerfMm={activeCuttingTool.kerf}
+                    zoomScale={1 / doc.zoom}
                   />
                 ) : null}
                 {selectedSingleShape &&
