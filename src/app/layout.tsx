@@ -127,6 +127,12 @@ async function Header() {
             </div>
           </div>
           <Link
+            href="/workbench"
+            className="text-wood-light hover:text-forest transition-colors"
+          >
+            Workbench
+          </Link>
+          <Link
             href="/blog"
             className="text-wood-light hover:text-forest transition-colors"
           >

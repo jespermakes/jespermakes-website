@@ -1597,6 +1597,84 @@ export default function StudioPage() {
     return () => clearInterval(interval);
   }, [isLoggedIn, designId, handleCloudSave, saveStatus]);
 
+  // Workbench import: when redirected from /workbench/[id] via 'Open in
+  // Studio', the design payload is parked in sessionStorage. Load it as an
+  // unsaved design (no designId, so the user's first save creates a new
+  // entry in their account) and capture remixOfId for the eventual publish.
+  const [remixOfId, setRemixOfId] = useState<string | null>(null);
+  useEffect(() => {
+    if (searchParams.get("from") !== "workbench") return;
+    if (typeof window === "undefined") return;
+    let raw: string | null = null;
+    try {
+      raw = sessionStorage.getItem("workbench_open_in_studio");
+      if (raw) sessionStorage.removeItem("workbench_open_in_studio");
+    } catch {
+      return;
+    }
+    if (!raw) return;
+    try {
+      const payload = JSON.parse(raw) as {
+        name?: string;
+        data?: {
+          shapes?: Shape[];
+          canvasSettings?: {
+            gridSpacing?: number;
+            snapToGrid?: boolean;
+            unitDisplay?: "mm" | "in";
+          };
+          createdAt?: string;
+          material?: import("@/lib/studio/types").MaterialSettings;
+          activeTool?: CuttingTool | null;
+        };
+        remixOfId?: string | null;
+      };
+      const data = payload.data ?? {};
+      const settings = data.canvasSettings ?? {};
+      let nextActiveId: string | null | undefined = undefined;
+      if (data.activeTool) {
+        const fileTool = data.activeTool;
+        setTools((prev) => {
+          const exists = prev.some((t) => t.id === fileTool.id);
+          const next = exists
+            ? prev.map((t) => (t.id === fileTool.id ? fileTool : t))
+            : [...prev, fileTool];
+          persistTools(next);
+          return next;
+        });
+        nextActiveId = fileTool.id;
+      }
+      dispatch({
+        type: "LOAD_DESIGN",
+        shapes: Array.isArray(data.shapes) ? data.shapes : [],
+        gridSpacing:
+          typeof settings.gridSpacing === "number" ? settings.gridSpacing : 10,
+        snapToGrid:
+          typeof settings.snapToGrid === "boolean" ? settings.snapToGrid : true,
+        unitDisplay: settings.unitDisplay === "in" ? "in" : "mm",
+        material: data.material,
+        activeToolId: nextActiveId,
+      });
+      setDesignName(payload.name ?? "Untitled");
+      setDesignId(null);
+      setDesignCreatedAt(data.createdAt ?? null);
+      setRemixOfId(payload.remixOfId ?? null);
+      dirtyRef.current = true;
+      setSaveStatus("never-saved");
+    } catch {
+      /* ignore malformed payload */
+    }
+    // Strip ?from=workbench from the URL so a refresh doesn't try to re-import.
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("from");
+      window.history.replaceState({}, "", url.toString());
+    } catch {
+      /* noop */
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Load the design when the URL has ?id=...
   useEffect(() => {
     const id = searchParams.get("id");
