@@ -30,6 +30,13 @@ export type StudioAction =
   | { type: "DELETE_SELECTED" }
   | { type: "BRING_TO_FRONT"; ids: string[] }
   | { type: "SEND_TO_BACK"; ids: string[] }
+  | {
+      type: "LOAD_DESIGN";
+      shapes: Shape[];
+      gridSpacing: number;
+      snapToGrid: boolean;
+      unitDisplay: "mm" | "in";
+    }
   | { type: "SELECT"; ids: string[] }
   | { type: "TOGGLE_SELECT"; id: string }
   | { type: "SELECT_ALL" }
@@ -275,6 +282,24 @@ export function reducer(state: StudioState, action: StudioAction): StudioState {
           selectedIds: previous.selectedIds,
         },
         history: { past, present: previous, future },
+      };
+    }
+
+    case "LOAD_DESIGN": {
+      // Replaces the whole document. History resets to a single snapshot
+      // (loading a design is not undoable).
+      const next: StudioDocument = {
+        ...doc,
+        shapes: action.shapes,
+        selectedIds: [],
+        gridSpacing: action.gridSpacing,
+        snapToGrid: action.snapToGrid,
+        unitDisplay: action.unitDisplay,
+      };
+      const snap = snapshot(next);
+      return {
+        document: next,
+        history: { past: [], present: snap, future: [] },
       };
     }
 

@@ -65,6 +65,11 @@ import {
 } from "@/lib/studio/path-ops";
 import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
 import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
+import {
+  buildDesignFile,
+  downloadDesignFile,
+  parseDesignFile,
+} from "@/lib/studio/file-format";
 import { parseSVG, recenterImportedShapes } from "@/lib/studio/svg-import";
 import {
   applyMoveSnap,
@@ -141,6 +146,11 @@ export default function StudioPage() {
     targetShapeId: string | null;
   } | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
+  // Document metadata used by the design-file format and (in Group 7) cloud
+  // save. These default to a fresh "Untitled" design.
+  const [designName, setDesignName] = useState("Untitled");
+  const [designId, setDesignId] = useState<string | null>(null);
+  const [designCreatedAt, setDesignCreatedAt] = useState<string | null>(null);
   // Idle for hints — flips false after the first user action.
   const [idle, setIdle] = useState(true);
   // Cursor screen position (for the floating tool-hint label). Null when the
@@ -1410,6 +1420,62 @@ export default function StudioPage() {
     dispatch({ type: "DELETE_SELECTED" });
   }, [doc.shapes, doc.selectedIds, showToast]);
 
+  const handleSaveToFile = useCallback(() => {
+    const file = buildDesignFile({
+      name: designName,
+      createdAt: designCreatedAt ?? undefined,
+      shapes: doc.shapes,
+      gridSpacing: doc.gridSpacing,
+      snapToGrid: doc.snapToGrid,
+      unitDisplay: doc.unitDisplay,
+    });
+    if (!designCreatedAt) setDesignCreatedAt(file.createdAt);
+    downloadDesignFile(file);
+    showToast("Saved to file");
+  }, [
+    designCreatedAt,
+    designName,
+    doc.gridSpacing,
+    doc.shapes,
+    doc.snapToGrid,
+    doc.unitDisplay,
+    showToast,
+  ]);
+
+  const handleOpenFromFile = useCallback(() => {
+    designFileInputRef.current?.click();
+  }, []);
+
+  const handleDesignFileSelected = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      e.target.value = "";
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const parsed = parseDesignFile(text);
+        if (!parsed.ok) {
+          showToast(parsed.error);
+          return;
+        }
+        dispatch({
+          type: "LOAD_DESIGN",
+          shapes: parsed.file.shapes,
+          gridSpacing: parsed.file.canvasSettings.gridSpacing,
+          snapToGrid: parsed.file.canvasSettings.snapToGrid,
+          unitDisplay: parsed.file.canvasSettings.unitDisplay,
+        });
+        setDesignName(parsed.file.name);
+        setDesignCreatedAt(parsed.file.createdAt);
+        setDesignId(null);
+        showToast("Loaded design");
+      } catch {
+        showToast("Failed to read file.");
+      }
+    },
+    [showToast],
+  );
+
   const handleConvertToPath = useCallback(
     (shapeId: string) => {
       const shape = doc.shapes.find((s) => s.id === shapeId);
@@ -1579,6 +1645,17 @@ export default function StudioPage() {
         e.preventDefault();
         return;
       }
+      if (meta && (e.key === "s" || e.key === "S")) {
+        // Group 7 will route this through cloud save when logged in.
+        handleSaveToFile();
+        e.preventDefault();
+        return;
+      }
+      if (meta && (e.key === "o" || e.key === "O")) {
+        handleOpenFromFile();
+        e.preventDefault();
+        return;
+      }
 
       if (e.key === "Enter") {
         if (drawing && drawing.kind === "pen") {
@@ -1711,6 +1788,8 @@ export default function StudioPage() {
     handlePaste,
     handleDuplicate,
     handleCut,
+    handleSaveToFile,
+    handleOpenFromFile,
     finalizePenAsOpen,
     activeTool,
     drawing,
@@ -2177,6 +2256,7 @@ export default function StudioPage() {
   }, [doc.shapes]);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const designFileInputRef = useRef<HTMLInputElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   const importSVGString = useCallback(
@@ -2296,6 +2376,13 @@ export default function StudioPage() {
         accept=".svg,image/svg+xml"
         className="hidden"
         onChange={handleFileSelected}
+      />
+      <input
+        ref={designFileInputRef}
+        type="file"
+        accept=".json,application/json"
+        className="hidden"
+        onChange={handleDesignFileSelected}
       />
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <div className="grid flex-1 overflow-hidden" style={{ gridTemplateColumns: "24px 1fr", gridTemplateRows: "24px 1fr" }}>
