@@ -5,7 +5,7 @@ import {
   type LineEndpointHandle,
   type ResizeHandle,
 } from "./geometry";
-import type { Shape } from "./types";
+import type { PathPoint, Shape } from "./types";
 
 const MIN_DIM = 0.0001;
 
@@ -120,6 +120,44 @@ export function resizeLineEndpoint(
     x2: e2.x - cx,
     y2: e2.y - cy,
   };
+}
+
+/**
+ * Re-position a path's points so the path scales with its bounding-box
+ * resize. Operates in the shape's local frame so rotation is preserved.
+ */
+export function rescalePathToBounds(
+  orig: Shape,
+  next: Shape,
+  points: PathPoint[],
+): PathPoint[] {
+  const sx = orig.width === 0 ? 1 : next.width / orig.width;
+  const sy = orig.height === 0 ? 1 : next.height / orig.height;
+  const angle = (orig.rotation * Math.PI) / 180;
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+
+  const transform = (px: number, py: number) => {
+    const dx = px - orig.x;
+    const dy = py - orig.y;
+    // Rotate into local frame.
+    const lx = dx * cos + dy * sin;
+    const ly = -dx * sin + dy * cos;
+    // Scale.
+    const lxs = lx * sx;
+    const lys = ly * sy;
+    // Rotate back and translate to the new center.
+    return {
+      x: next.x + lxs * cos - lys * sin,
+      y: next.y + lxs * sin + lys * cos,
+    };
+  };
+
+  return points.map((p) => ({
+    ...transform(p.x, p.y),
+    handleIn: p.handleIn ? transform(p.handleIn.x, p.handleIn.y) : undefined,
+    handleOut: p.handleOut ? transform(p.handleOut.x, p.handleOut.y) : undefined,
+  }));
 }
 
 export function rotateShape(

@@ -4,6 +4,7 @@ import {
   SELECTION_STROKE,
   SELECTION_STROKE_WIDTH,
 } from "@/lib/studio/constants";
+import { pointsToSVGPath } from "@/lib/studio/path-ops";
 
 interface ShapeRendererProps {
   shape: Shape;
@@ -66,6 +67,25 @@ export function ShapeElement({
         y2={shape.y + (shape.y2 ?? 0)}
         stroke={shape.stroke}
         strokeWidth={shape.strokeWidth}
+        strokeLinecap="round"
+        transform={transform}
+        data-shape-id={shape.id}
+        style={{ cursor }}
+        pointerEvents={pointerEvents}
+      />
+    );
+  }
+  if (shape.type === "path") {
+    const d =
+      shape.pathData ??
+      pointsToSVGPath(shape.points ?? [], shape.closed ?? false);
+    return (
+      <path
+        d={d}
+        stroke={shape.stroke}
+        strokeWidth={shape.strokeWidth}
+        fill={shape.fill}
+        strokeLinejoin="round"
         strokeLinecap="round"
         transform={transform}
         data-shape-id={shape.id}
@@ -184,6 +204,21 @@ function ShapeSelectionOverlay({
         width={shape.width}
         height={shape.height}
         {...common}
+      />
+    );
+  }
+  if (shape.type === "path") {
+    const d =
+      shape.pathData ??
+      pointsToSVGPath(shape.points ?? [], shape.closed ?? false);
+    return (
+      <path
+        d={d}
+        stroke={stroke}
+        strokeWidth={strokeWidth}
+        fill={SELECTION_FILL}
+        pointerEvents="none"
+        transform={transform}
       />
     );
   }

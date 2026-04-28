@@ -1,6 +1,23 @@
-export type ShapeType = "rectangle" | "circle" | "line" | "text";
+export type ShapeType = "rectangle" | "circle" | "line" | "text" | "path";
 
-export type Tool = "select" | "rectangle" | "circle" | "line" | "text";
+export type Tool =
+  | "select"
+  | "rectangle"
+  | "circle"
+  | "line"
+  | "text"
+  | "pen"
+  | "polygon"
+  | "arc";
+
+export interface PathPoint {
+  x: number;
+  y: number;
+  /** Cubic-bezier control point coming INTO this point (in absolute mm). */
+  handleIn?: { x: number; y: number };
+  /** Cubic-bezier control point going OUT of this point (in absolute mm). */
+  handleOut?: { x: number; y: number };
+}
 
 export interface Shape {
   id: string;
@@ -22,6 +39,14 @@ export interface Shape {
   fontSize?: number;
   fontFamily?: string;
   textAnchor?: "start" | "middle" | "end";
+  // Path-specific (only for type === "path")
+  points?: PathPoint[];
+  closed?: boolean;
+  /**
+   * Raw SVG path data — used for compound paths produced by booleans or SVG
+   * import. When present, it takes precedence over `points` for rendering.
+   */
+  pathData?: string;
 }
 
 export interface StudioDocument {
