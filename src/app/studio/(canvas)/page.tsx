@@ -24,6 +24,7 @@ import { DogboneOverlay } from "@/components/studio/dogbone-overlay";
 import { KerfOverlay } from "@/components/studio/kerf-overlay";
 import { MaterialOutline } from "@/components/studio/material-outline";
 import { PlanPanel } from "@/components/studio/plan-panel";
+import { ReviewPanel } from "@/components/studio/review-panel";
 import { TabOverlay } from "@/components/studio/tab-overlay";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
 import { Ruler, RulerCorner } from "@/components/studio/ruler";
@@ -78,6 +79,7 @@ import {
 } from "@/lib/studio/tool-library";
 import { shapesWithCutTypeColors } from "@/lib/studio/cut-types";
 import { defaultDogboneCorners } from "@/lib/studio/dogbones";
+import { computeReview } from "@/lib/studio/review-checks";
 import { autoPlaceTabs } from "@/lib/studio/tabs";
 import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
 import {
@@ -2555,6 +2557,11 @@ export default function StudioPage() {
     [doc.shapes, doc.selectedIds],
   );
 
+  const reviewSummary = useMemo(
+    () => computeReview(doc.shapes, doc.material, activeCuttingTool),
+    [doc.shapes, doc.material, activeCuttingTool],
+  );
+
   const handleDoubleClick = useCallback(
     (e: React.MouseEvent<SVGSVGElement>) => {
       // Finalize an in-progress pen path on double-click.
@@ -2814,6 +2821,20 @@ export default function StudioPage() {
             }}
             onWheel={handleWheel}
             onDoubleClick={handleDoubleClick}
+            background={
+              doc.mode === "review" ? (
+                <rect
+                  x={-doc.material.width / 2}
+                  y={-doc.material.height / 2}
+                  width={doc.material.width}
+                  height={doc.material.height}
+                  fill="#E8D5B7"
+                  stroke="rgba(74, 50, 40, 0.3)"
+                  strokeWidth={1 / doc.zoom}
+                  pointerEvents="none"
+                />
+              ) : null
+            }
             overlay={
               <>
                 {doc.mode !== "design" ? (
@@ -2993,6 +3014,18 @@ export default function StudioPage() {
           onApplyDogbones={handleApplyDogbones}
           onAutoTabs={handleAutoTabs}
           onClearTabs={handleClearTabs}
+        />
+      ) : doc.mode === "review" ? (
+        <ReviewPanel
+          summary={reviewSummary}
+          material={doc.material}
+          activeTool={activeCuttingTool}
+          unit={doc.unitDisplay}
+          onHighlightShape={(id) => dispatch({ type: "SELECT", ids: [id] })}
+          onModeChange={(m) => dispatch({ type: "SET_MODE", mode: m })}
+          onExport={() =>
+            handleExportProfile("generic")
+          }
         />
       ) : null}
       </div>
