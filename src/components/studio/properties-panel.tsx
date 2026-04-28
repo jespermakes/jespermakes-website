@@ -28,6 +28,8 @@ interface PropertiesPanelProps {
   doc: DocSettings;
   /** When set, focuses the text-edit textarea for that shape. */
   editingTextShapeId: string | null;
+  /** When set, the panel shows node-editing controls instead of bbox edits. */
+  nodeEditingShapeId: string | null;
   onUpdateShape: (next: Shape) => void;
   onDeleteSelected: () => void;
   onSetGridSpacing: (mm: number) => void;
@@ -35,6 +37,8 @@ interface PropertiesPanelProps {
   onSetUnitDisplay: (u: "mm" | "in") => void;
   onFitAll: () => void;
   onTextEditDone: () => void;
+  onEnterNodeEdit: (shapeId: string) => void;
+  onExitNodeEdit: () => void;
 }
 
 const SECTION_LABEL =
@@ -92,6 +96,7 @@ function PanelBody({
   unit,
   doc,
   editingTextShapeId,
+  nodeEditingShapeId,
   onUpdateShape,
   onDeleteSelected,
   onSetGridSpacing,
@@ -99,7 +104,33 @@ function PanelBody({
   onSetUnitDisplay,
   onFitAll,
   onTextEditDone,
+  onEnterNodeEdit,
+  onExitNodeEdit,
 }: PropertiesPanelProps) {
+  if (nodeEditingShapeId) {
+    const editing = selectedShapes.find((s) => s.id === nodeEditingShapeId);
+    const count = editing?.points?.length ?? 0;
+    return (
+      <div className="flex flex-col gap-5">
+        <Section label="Node editing">
+          <p className="text-sm text-wood">
+            {count} node{count === 1 ? "" : "s"}
+          </p>
+          <p className="text-[11px] text-wood-light/60">
+            Drag nodes or handles to reshape. Press Esc to finish.
+          </p>
+          <button
+            type="button"
+            onClick={onExitNodeEdit}
+            className="rounded-xl border border-wood/[0.12] bg-white/70 px-3 py-1.5 text-sm text-wood hover:border-forest/40"
+          >
+            Done editing
+          </button>
+        </Section>
+      </div>
+    );
+  }
+
   if (selectedShapes.length === 0) {
     return (
       <div className="flex flex-col gap-6">
@@ -189,6 +220,7 @@ function PanelBody({
       onDelete={onDeleteSelected}
       editingTextShapeId={editingTextShapeId}
       onTextEditDone={onTextEditDone}
+      onEnterNodeEdit={onEnterNodeEdit}
     />
   );
 }
@@ -200,6 +232,7 @@ function SingleShapeEditor({
   onDelete,
   editingTextShapeId,
   onTextEditDone,
+  onEnterNodeEdit,
 }: {
   shape: Shape;
   unit: "mm" | "in";
@@ -207,6 +240,7 @@ function SingleShapeEditor({
   onDelete: () => void;
   editingTextShapeId: string | null;
   onTextEditDone: () => void;
+  onEnterNodeEdit: (shapeId: string) => void;
 }) {
   const formatDim = useCallback(
     (mm: number) => formatDisplay(mm, unit),
@@ -228,6 +262,9 @@ function SingleShapeEditor({
   const isCircle = shape.type === "circle";
   const isLine = shape.type === "line";
   const isText = shape.type === "text";
+  const isPath = shape.type === "path";
+  const pointCount = shape.points?.length ?? 0;
+  const canNodeEdit = isPath && pointCount > 0;
 
   return (
     <div className="flex flex-col gap-5">
@@ -340,6 +377,20 @@ function SingleShapeEditor({
             allowNone={true}
             onChange={(c) => onUpdateShape({ ...shape, fill: c })}
           />
+        </Section>
+      ) : null}
+      {canNodeEdit ? (
+        <Section label="Path">
+          <p className="text-[11px] text-wood-light/60">
+            {pointCount} node{pointCount === 1 ? "" : "s"}
+          </p>
+          <button
+            type="button"
+            onClick={() => onEnterNodeEdit(shape.id)}
+            className="rounded-xl border border-wood/[0.12] bg-white/70 px-3 py-1.5 text-sm text-wood hover:border-forest/40"
+          >
+            Edit nodes
+          </button>
         </Section>
       ) : null}
       <button

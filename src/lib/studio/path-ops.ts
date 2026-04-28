@@ -218,6 +218,69 @@ export function scalePoints(
   }));
 }
 
+export function applyNodeDrag(
+  drag:
+    | {
+        kind: "node";
+        nodeIndex: number;
+        origPoints: PathPoint[];
+      }
+    | {
+        kind: "handle";
+        nodeIndex: number;
+        which: "in" | "out";
+        origPoints: PathPoint[];
+        alt: boolean;
+      },
+  currentPoints: PathPoint[],
+  dx: number,
+  dy: number,
+  altNow: boolean,
+): PathPoint[] {
+  if (drag.kind === "node") {
+    if (dx === 0 && dy === 0) return currentPoints;
+    const idx = drag.nodeIndex;
+    const orig = drag.origPoints[idx];
+    if (!orig) return currentPoints;
+    const next = currentPoints.slice();
+    next[idx] = {
+      x: orig.x + dx,
+      y: orig.y + dy,
+      handleIn: orig.handleIn
+        ? { x: orig.handleIn.x + dx, y: orig.handleIn.y + dy }
+        : undefined,
+      handleOut: orig.handleOut
+        ? { x: orig.handleOut.x + dx, y: orig.handleOut.y + dy }
+        : undefined,
+    };
+    return next;
+  }
+  // handle drag
+  const idx = drag.nodeIndex;
+  const orig = drag.origPoints[idx];
+  if (!orig) return currentPoints;
+  const breakSym = drag.alt || altNow;
+  const next = currentPoints.slice();
+  if (drag.which === "out") {
+    const baseOut = orig.handleOut ?? { x: orig.x, y: orig.y };
+    const newOut = { x: baseOut.x + dx, y: baseOut.y + dy };
+    let newIn = orig.handleIn;
+    if (!breakSym && orig.handleIn) {
+      newIn = { x: 2 * orig.x - newOut.x, y: 2 * orig.y - newOut.y };
+    }
+    next[idx] = { ...orig, handleOut: newOut, handleIn: newIn };
+  } else {
+    const baseIn = orig.handleIn ?? { x: orig.x, y: orig.y };
+    const newIn = { x: baseIn.x + dx, y: baseIn.y + dy };
+    let newOut = orig.handleOut;
+    if (!breakSym && orig.handleOut) {
+      newOut = { x: 2 * orig.x - newIn.x, y: 2 * orig.y - newIn.y };
+    }
+    next[idx] = { ...orig, handleIn: newIn, handleOut: newOut };
+  }
+  return next;
+}
+
 /** Recompute width/height/x/y on a path shape from its points or pathData. */
 export function syncPathBounds(shape: Shape): Shape {
   if (shape.type !== "path") return shape;

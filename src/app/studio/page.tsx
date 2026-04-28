@@ -12,6 +12,7 @@ import {
   type WheelEvent as ReactWheelEvent,
 } from "react";
 import { Canvas } from "@/components/studio/canvas";
+import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
 import { PropertiesPanel } from "@/components/studio/properties-panel";
 import { Ruler, RulerCorner } from "@/components/studio/ruler";
@@ -43,10 +44,12 @@ import {
   generateId,
 } from "@/lib/studio/shape-factory";
 import {
+  rescalePathToBounds,
   resizeLineEndpoint,
   resizeRectLikeShape,
   rotateShape,
 } from "@/lib/studio/transform";
+import { applyNodeDrag, syncPathBounds } from "@/lib/studio/path-ops";
 import { downloadSVG, exportSVG } from "@/lib/studio/export-svg";
 import {
   applyMoveSnap,
@@ -85,6 +88,35 @@ export default function StudioPage() {
   const [editingTextShapeId, setEditingTextShapeId] = useState<string | null>(
     null,
   );
+  const [nodeEditingShapeId, setNodeEditingShapeId] = useState<string | null>(
+    null,
+  );
+  const [selectedNodeIndices, setSelectedNodeIndices] = useState<number[]>([]);
+  /** Tracks an in-progress node or handle drag while in node editing mode. */
+  type NodeDrag =
+    | {
+        kind: "node";
+        pointerId: number;
+        nodeIndex: number;
+        startDocX: number;
+        startDocY: number;
+        currentDocX: number;
+        currentDocY: number;
+        origPoints: PathPoint[];
+      }
+    | {
+        kind: "handle";
+        pointerId: number;
+        nodeIndex: number;
+        which: "in" | "out";
+        startDocX: number;
+        startDocY: number;
+        currentDocX: number;
+        currentDocY: number;
+        origPoints: PathPoint[];
+        alt: boolean;
+      };
+  const [nodeDrag, setNodeDrag] = useState<NodeDrag | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -265,6 +297,96 @@ export default function StudioPage() {
         doc.viewportY,
         doc.zoom,
       );
+
+      // Node-editing mode intercepts pointer events on its target shape.
+      if (nodeEditingShapeId) {
+        const targetEl = e.target as Element | null;
+        const handleEl = targetEl?.closest?.("[data-node-handle]") as
+          | (HTMLElement | SVGElement)
+          | null;
+        if (handleEl) {
+          const which = handleEl.dataset?.nodeHandle as "in" | "out";
+          const idx = Number(handleEl.dataset?.nodeIndex);
+          const editingShape = doc.shapes.find(
+            (s) => s.id === nodeEditingShapeId,
+          );
+          if (editingShape && editingShape.points && Number.isFinite(idx)) {
+            setNodeDrag({
+              kind: "handle",
+              pointerId: e.pointerId,
+              nodeIndex: idx,
+              which,
+              startDocX: docPoint.x,
+              startDocY: docPoint.y,
+              currentDocX: docPoint.x,
+              currentDocY: docPoint.y,
+              origPoints: editingShape.points,
+              alt: e.altKey,
+            });
+            (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+            e.preventDefault();
+            return;
+          }
+        }
+        const nodeEl = targetEl?.closest?.("[data-node-index]") as
+          | (HTMLElement | SVGElement)
+          | null;
+        if (nodeEl && !handleEl) {
+          const idx = Number(nodeEl.dataset?.nodeIndex);
+          if (Number.isFinite(idx)) {
+            // Update node selection.
+            if (e.shiftKey) {
+              setSelectedNodeIndices((prev) =>
+                prev.includes(idx)
+                  ? prev.filter((i) => i !== idx)
+                  : [...prev, idx],
+              );
+            } else if (!selectedNodeIndices.includes(idx)) {
+              setSelectedNodeIndices([idx]);
+            }
+            const editingShape = doc.shapes.find(
+              (s) => s.id === nodeEditingShapeId,
+            );
+            if (editingShape && editingShape.points) {
+              setNodeDrag({
+                kind: "node",
+                pointerId: e.pointerId,
+                nodeIndex: idx,
+                startDocX: docPoint.x,
+                startDocY: docPoint.y,
+                currentDocX: docPoint.x,
+                currentDocY: docPoint.y,
+                origPoints: editingShape.points,
+              });
+              (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+            }
+            e.preventDefault();
+            return;
+          }
+        }
+        // Click on a different shape exits node editing and selects it.
+        const shapeTarget = targetEl?.closest?.("[data-shape-id]") as
+          | (HTMLElement | SVGElement)
+          | null;
+        const shapeId = shapeTarget?.dataset?.shapeId;
+        if (shapeId && shapeId !== nodeEditingShapeId) {
+          setNodeEditingShapeId(null);
+          setSelectedNodeIndices([]);
+          dispatch({ type: "SELECT", ids: [shapeId] });
+          e.preventDefault();
+          return;
+        }
+        // Click on empty canvas: deselect nodes (don't exit editing on a
+        // single click — Escape exits).
+        if (!shapeId) {
+          setSelectedNodeIndices([]);
+          e.preventDefault();
+          return;
+        }
+        // Click on the editing shape itself but not on a node — no-op.
+        e.preventDefault();
+        return;
+      }
 
       if (activeTool === "select") {
         const targetEl = e.target as Element | null;
@@ -566,6 +688,18 @@ export default function StudioPage() {
         return;
       }
 
+      if (nodeDrag && nodeDrag.pointerId === e.pointerId) {
+        setNodeDrag({
+          ...nodeDrag,
+          currentDocX: docPoint.x,
+          currentDocY: docPoint.y,
+          ...(nodeDrag.kind === "handle"
+            ? { alt: nodeDrag.alt || e.altKey }
+            : {}),
+        } as NodeDrag);
+        return;
+      }
+
       if (transform && transform.pointerId === e.pointerId) {
         setTransform({
           ...transform,
@@ -773,6 +907,33 @@ export default function StudioPage() {
           dispatch({ type: "SELECT", ids: next });
         }
         setSelectInteraction(null);
+        (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+        return;
+      }
+
+      if (nodeDrag && nodeDrag.pointerId === e.pointerId) {
+        const editingShape = doc.shapes.find(
+          (s) => s.id === nodeEditingShapeId,
+        );
+        if (editingShape && editingShape.points) {
+          const dx = nodeDrag.currentDocX - nodeDrag.startDocX;
+          const dy = nodeDrag.currentDocY - nodeDrag.startDocY;
+          const next = applyNodeDrag(
+            nodeDrag,
+            editingShape.points,
+            dx,
+            dy,
+            e.altKey,
+          );
+          if (next !== editingShape.points) {
+            const updated = syncPathBounds({
+              ...editingShape,
+              points: next,
+            });
+            dispatch({ type: "UPDATE_SHAPES", shapes: [updated] });
+          }
+        }
+        setNodeDrag(null);
         (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
         return;
       }
@@ -1077,7 +1238,13 @@ export default function StudioPage() {
       }
 
       if (e.key === "Escape") {
-        // Priority order per Phase 2 spec.
+        // Priority order per Phase 2 spec, plus node editing (highest).
+        if (nodeEditingShapeId) {
+          setNodeEditingShapeId(null);
+          setSelectedNodeIndices([]);
+          e.preventDefault();
+          return;
+        }
         if (drawing && drawing.kind === "pen") {
           if (drawing.points.length >= 2) {
             finalizePenAsOpen();
@@ -1137,6 +1304,38 @@ export default function StudioPage() {
           break;
         case "Delete":
         case "Backspace":
+          if (nodeEditingShapeId && selectedNodeIndices.length > 0) {
+            const editingShape = doc.shapes.find(
+              (s) => s.id === nodeEditingShapeId,
+            );
+            if (editingShape && editingShape.points) {
+              const remove = new Set(selectedNodeIndices);
+              const nextPts = editingShape.points.filter(
+                (_, i) => !remove.has(i),
+              );
+              if (nextPts.length === 0) {
+                // Delete the whole shape and exit node editing.
+                dispatch({ type: "SELECT", ids: [editingShape.id] });
+                dispatch({ type: "DELETE_SELECTED" });
+                setNodeEditingShapeId(null);
+                setSelectedNodeIndices([]);
+              } else {
+                const closed =
+                  editingShape.closed && nextPts.length >= 3
+                    ? true
+                    : false;
+                const updated = syncPathBounds({
+                  ...editingShape,
+                  points: nextPts,
+                  closed,
+                });
+                dispatch({ type: "UPDATE_SHAPES", shapes: [updated] });
+                setSelectedNodeIndices([]);
+              }
+              e.preventDefault();
+              break;
+            }
+          }
           dispatch({ type: "DELETE_SELECTED" });
           e.preventDefault();
           break;
@@ -1166,6 +1365,9 @@ export default function StudioPage() {
     drawing,
     editingTextShapeId,
     doc.selectedIds,
+    doc.shapes,
+    nodeEditingShapeId,
+    selectedNodeIndices,
   ]);
 
   const cursor = useMemo(() => {
@@ -1286,10 +1488,32 @@ export default function StudioPage() {
   const liveShapeOverrides = liveTransform.overrides;
   const activeGuides = liveTransform.guides;
 
+  // Apply a live override for the path shape currently being node-edited
+  // while a node/handle drag is in progress.
+  const liveNodePoints = useMemo<PathPoint[] | null>(() => {
+    if (!nodeDrag || !nodeEditingShapeId) return null;
+    const editingShape = doc.shapes.find((s) => s.id === nodeEditingShapeId);
+    if (!editingShape || !editingShape.points) return null;
+    const dx = nodeDrag.currentDocX - nodeDrag.startDocX;
+    const dy = nodeDrag.currentDocY - nodeDrag.startDocY;
+    return applyNodeDrag(
+      nodeDrag,
+      editingShape.points,
+      dx,
+      dy,
+      nodeDrag.kind === "handle" ? nodeDrag.alt : false,
+    );
+  }, [nodeDrag, nodeEditingShapeId, doc.shapes]);
+
   const displayShapes = useMemo<Shape[]>(() => {
-    if (liveShapeOverrides.size === 0) return doc.shapes;
-    return doc.shapes.map((s) => liveShapeOverrides.get(s.id) ?? s);
-  }, [doc.shapes, liveShapeOverrides]);
+    if (liveShapeOverrides.size === 0 && !liveNodePoints) return doc.shapes;
+    return doc.shapes.map((s) => {
+      if (liveNodePoints && s.id === nodeEditingShapeId) {
+        return { ...s, points: liveNodePoints };
+      }
+      return liveShapeOverrides.get(s.id) ?? s;
+    });
+  }, [doc.shapes, liveShapeOverrides, liveNodePoints, nodeEditingShapeId]);
 
   const selectedSingleShape = useMemo<Shape | null>(() => {
     if (doc.selectedIds.length !== 1) return null;
@@ -1333,9 +1557,17 @@ export default function StudioPage() {
       const shapeId = shapeTarget?.dataset?.shapeId;
       if (!shapeId) return;
       const shape = doc.shapes.find((s) => s.id === shapeId);
-      if (!shape || shape.type !== "text") return;
-      dispatch({ type: "SELECT", ids: [shapeId] });
-      setEditingTextShapeId(shapeId);
+      if (!shape) return;
+      if (shape.type === "text") {
+        dispatch({ type: "SELECT", ids: [shapeId] });
+        setEditingTextShapeId(shapeId);
+        return;
+      }
+      if (shape.type === "path" && shape.points && shape.points.length > 0) {
+        dispatch({ type: "SELECT", ids: [shapeId] });
+        setNodeEditingShapeId(shapeId);
+        setSelectedNodeIndices([]);
+      }
     },
     [doc.shapes, drawing, finalizePenAsOpen],
   );
@@ -1399,7 +1631,10 @@ export default function StudioPage() {
             viewWidthMm={viewWidthMm}
             viewHeightMm={viewHeightMm}
             cursor={cursor}
-            shapesInteractive={activeTool === "select"}
+            shapesInteractive={
+              activeTool === "select" || nodeEditingShapeId !== null
+            }
+            dimNonId={nodeEditingShapeId}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
@@ -1408,12 +1643,28 @@ export default function StudioPage() {
             onDoubleClick={handleDoubleClick}
             overlay={
               <>
-                {selectedSingleShape && !drawing ? (
+                {selectedSingleShape && !drawing && !nodeEditingShapeId ? (
                   <SelectionHandles
                     shape={selectedSingleShape}
                     zoomScale={1 / doc.zoom}
                   />
                 ) : null}
+                {nodeEditingShapeId
+                  ? (() => {
+                      const editingShape = displayShapes.find(
+                        (s) => s.id === nodeEditingShapeId,
+                      );
+                      const pts = editingShape?.points;
+                      if (!pts || pts.length === 0) return null;
+                      return (
+                        <NodeOverlay
+                          points={pts}
+                          selectedNodeIndices={selectedNodeIndices}
+                          zoomScale={1 / doc.zoom}
+                        />
+                      );
+                    })()
+                  : null}
                 <ToolOverlay
                   preview={previewShape}
                   zoomScale={1 / doc.zoom}
@@ -1464,7 +1715,16 @@ export default function StudioPage() {
           zoom: doc.zoom,
         }}
         editingTextShapeId={editingTextShapeId}
+        nodeEditingShapeId={nodeEditingShapeId}
         onTextEditDone={() => setEditingTextShapeId(null)}
+        onEnterNodeEdit={(id) => {
+          setNodeEditingShapeId(id);
+          setSelectedNodeIndices([]);
+        }}
+        onExitNodeEdit={() => {
+          setNodeEditingShapeId(null);
+          setSelectedNodeIndices([]);
+        }}
         onUpdateShape={(next) =>
           dispatch({ type: "UPDATE_SHAPES", shapes: [next] })
         }
