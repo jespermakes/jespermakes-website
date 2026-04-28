@@ -20,9 +20,9 @@ import {
 } from "@/components/studio/context-menu";
 import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
+import { AIFloatingButton, AIPanel } from "@/components/studio/ai-panel";
 import { DogboneOverlay } from "@/components/studio/dogbone-overlay";
 import { EmptyCanvas } from "@/components/studio/empty-canvas";
-import { ModeGuide } from "@/components/studio/mode-guide";
 import { KerfOverlay } from "@/components/studio/kerf-overlay";
 import { MaterialOutline } from "@/components/studio/material-outline";
 import { PlanPanel } from "@/components/studio/plan-panel";
@@ -2169,6 +2169,12 @@ export default function StudioPage() {
         return;
       }
 
+      if (e.key === "/" && !e.metaKey && !e.ctrlKey) {
+        setAiPanelOpen((o) => !o);
+        e.preventDefault();
+        return;
+      }
+
       switch (e.key) {
         case "v":
         case "V":
@@ -2751,6 +2757,45 @@ export default function StudioPage() {
     [doc.shapes, drawing, finalizePenAsOpen],
   );
 
+  const handleAIResult = useCallback(
+    (result: {
+      shapes: Shape[];
+      modifications: string[];
+      message: string;
+      promptText: string;
+    }) => {
+      // Apply modifications + add new shapes as one undo step.
+      if (result.shapes.length === 0 && result.modifications.length === 0) {
+        // The AI returned nothing — surface its message but keep state.
+        if (result.message) showToast(result.message);
+        return;
+      }
+      // Make sure incoming shape ids don't collide with the existing canvas.
+      const existing = new Set(doc.shapes.map((s) => s.id));
+      const safeShapes = result.shapes.map((s) => {
+        if (!existing.has(s.id)) {
+          existing.add(s.id);
+          return s;
+        }
+        const id = `ai-${Date.now().toString(36)}-${Math.random()
+          .toString(36)
+          .slice(2, 7)}`;
+        existing.add(id);
+        return { ...s, id };
+      });
+      dispatch({
+        type: "REPLACE_SHAPES",
+        removeIds: result.modifications,
+        add: safeShapes,
+        selectAdded: true,
+      });
+      // Schedule a fit-all on the next frame so the new bounds are reflected.
+      setTimeout(() => handleFitAll(), 16);
+      if (result.message) showToast(result.message);
+    },
+    [doc.shapes, handleFitAll, showToast],
+  );
+
   const handleOpenPublish = useCallback(() => {
     if (doc.shapes.length === 0) {
       showToast("Nothing to publish.");
@@ -3040,6 +3085,9 @@ export default function StudioPage() {
                 }}
               />
             ) : null}
+            {doc.mode === "design" && !aiPanelOpen ? (
+              <AIFloatingButton onClick={() => setAiPanelOpen(true)} />
+            ) : null}
             <Canvas
             ref={svgRef}
             shapes={displayShapes}
@@ -3173,7 +3221,16 @@ export default function StudioPage() {
           onFitAll={handleFitAll}
         />
       </div>
-      {doc.mode === "design" ? (
+      {doc.mode === "design" && aiPanelOpen ? (
+        <AIPanel
+          open={aiPanelOpen}
+          isLoggedIn={isLoggedIn}
+          existingShapes={doc.shapes}
+          material={doc.material}
+          onClose={() => setAiPanelOpen(false)}
+          onResult={handleAIResult}
+        />
+      ) : doc.mode === "design" ? (
         <PropertiesPanel
           selectedShapes={selectedShapes}
           unit={doc.unitDisplay}
