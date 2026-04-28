@@ -10,7 +10,13 @@ import {
 import {
   newToolId,
 } from "@/lib/studio/tool-library";
+import {
+  CUT_TYPE_COLORS,
+  CUT_TYPE_LABELS,
+  CUT_TYPE_ORDER,
+} from "@/lib/studio/cut-types";
 import type {
+  CutType,
   CuttingTool,
   MaterialSettings,
   Shape,
@@ -28,6 +34,11 @@ interface PlanPanelProps {
   onUpsertTool: (tool: CuttingTool) => void;
   onDeleteTool: (toolId: string) => void;
   onSetKerfCompensation: (show: boolean) => void;
+  onAssignCutType: (cutType: CutType) => void;
+  onSetCutDepth: (depth: number) => void;
+  onApplyDogbones: (style: "standard" | "tbone") => void;
+  onAutoTabs: (count: number) => void;
+  onClearTabs: () => void;
 }
 
 const SECTION_LABEL =
@@ -59,9 +70,199 @@ export function PlanPanel(props: PlanPanelProps) {
             kerfMm={props.activeTool?.kerf ?? 0}
             onChange={props.onSetKerfCompensation}
           />
+          {props.selectedShapes.length > 0 ? (
+            <SelectionSection
+              shapes={props.selectedShapes}
+              unit={props.unit}
+              materialThickness={props.material.thickness}
+              isLaser={props.activeTool?.type === "laser"}
+              onAssignCutType={props.onAssignCutType}
+              onSetCutDepth={props.onSetCutDepth}
+              onApplyDogbones={props.onApplyDogbones}
+              onAutoTabs={props.onAutoTabs}
+              onClearTabs={props.onClearTabs}
+            />
+          ) : (
+            <p className="text-[11px] text-wood-light/50">
+              Select a shape to assign a cut type.
+            </p>
+          )}
         </div>
       </div>
     </aside>
+  );
+}
+
+function SelectionSection({
+  shapes,
+  unit,
+  materialThickness,
+  isLaser,
+  onAssignCutType,
+  onSetCutDepth,
+  onApplyDogbones,
+  onAutoTabs,
+  onClearTabs,
+}: {
+  shapes: Shape[];
+  unit: "mm" | "in";
+  materialThickness: number;
+  isLaser: boolean;
+  onAssignCutType: (cutType: CutType) => void;
+  onSetCutDepth: (depth: number) => void;
+  onApplyDogbones: (style: "standard" | "tbone") => void;
+  onAutoTabs: (count: number) => void;
+  onClearTabs: () => void;
+}) {
+  const formatDim = (mm: number) => formatDisplay(mm, unit);
+  const parseDim = (raw: string) => {
+    const n = Number.parseFloat(raw);
+    if (Number.isNaN(n)) return Number.NaN;
+    return displayToMm(n, unit);
+  };
+
+  // Are all selected shapes the same cut type?
+  const firstCut = shapes[0]?.cutType;
+  const sharedCut = shapes.every((s) => s.cutType === firstCut)
+    ? firstCut
+    : undefined;
+  const sharedDepth = (() => {
+    const first = shapes[0]?.cutDepth;
+    return shapes.every((s) => s.cutDepth === first) ? first : undefined;
+  })();
+  const isThrough =
+    sharedDepth !== undefined &&
+    Math.abs((sharedDepth ?? -1) - materialThickness) < 1e-3;
+
+  const showDepth = !isLaser && sharedCut && sharedCut !== "guide";
+  const showDogbones =
+    !isLaser && (sharedCut === "inside" || sharedCut === "pocket");
+  const showTabs = !isLaser && sharedCut === "outside";
+
+  const [tabCount, setTabCount] = useState(4);
+  const [dogboneStyle, setDogboneStyle] = useState<"standard" | "tbone">(
+    "standard",
+  );
+
+  return (
+    <Section
+      label={
+        shapes.length === 1
+          ? "Cut type"
+          : `Cut type · ${shapes.length} shapes`
+      }
+    >
+      <div className="grid grid-cols-3 gap-1.5">
+        {CUT_TYPE_ORDER.map((ct) => {
+          const active = sharedCut === ct;
+          return (
+            <button
+              key={ct}
+              type="button"
+              onClick={() => onAssignCutType(ct)}
+              className={`rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
+                active
+                  ? "bg-wood text-cream"
+                  : "border border-wood/[0.12] bg-white text-wood-light hover:border-forest/40"
+              }`}
+              style={
+                active
+                  ? { backgroundColor: CUT_TYPE_COLORS[ct], color: "white" }
+                  : undefined
+              }
+            >
+              {CUT_TYPE_LABELS[ct]}
+            </button>
+          );
+        })}
+      </div>
+      {showDepth ? (
+        <div className="mt-2 flex flex-col gap-2">
+          <NumberField
+            label="Z"
+            value={sharedDepth ?? materialThickness}
+            onCommit={(v) => onSetCutDepth(Math.max(0, v))}
+            min={0}
+            format={formatDim}
+            parse={parseDim}
+            suffix={unit}
+          />
+          <label className="flex items-center gap-2 text-sm text-wood">
+            <input
+              type="checkbox"
+              checked={isThrough}
+              onChange={(e) =>
+                onSetCutDepth(e.target.checked ? materialThickness : 0)
+              }
+              className="h-3.5 w-3.5 accent-forest"
+            />
+            Through (= material thickness)
+          </label>
+        </div>
+      ) : null}
+      {showDogbones ? (
+        <div className="mt-2 flex flex-col gap-2 rounded-md bg-cream/50 p-2">
+          <span className={SECTION_LABEL}>Dogbones</span>
+          <div className="flex gap-1.5">
+            {(
+              [
+                { v: "standard" as const, label: "Standard" },
+                { v: "tbone" as const, label: "T-bone" },
+              ]
+            ).map((o) => (
+              <button
+                key={o.v}
+                type="button"
+                onClick={() => setDogboneStyle(o.v)}
+                className={`flex-1 rounded-md px-2 py-1 text-[11px] transition-colors ${
+                  dogboneStyle === o.v
+                    ? "bg-wood text-cream"
+                    : "border border-wood/[0.12] bg-white text-wood-light"
+                }`}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => onApplyDogbones(dogboneStyle)}
+            className="rounded-md bg-wood px-3 py-1 text-xs font-medium text-cream hover:bg-wood-light"
+          >
+            Apply dogbones
+          </button>
+        </div>
+      ) : null}
+      {showTabs ? (
+        <div className="mt-2 flex flex-col gap-2 rounded-md bg-cream/50 p-2">
+          <span className={SECTION_LABEL}>Tabs</span>
+          <NumberField
+            label="N"
+            value={tabCount}
+            onCommit={(v) => setTabCount(Math.max(0, Math.round(v)))}
+            min={0}
+            format={(v) => v.toString()}
+            parse={(raw) => Number.parseInt(raw, 10)}
+          />
+          <div className="flex gap-1.5">
+            <button
+              type="button"
+              onClick={() => onAutoTabs(tabCount)}
+              className="flex-1 rounded-md bg-wood px-3 py-1 text-xs font-medium text-cream hover:bg-wood-light"
+            >
+              Auto-place
+            </button>
+            <button
+              type="button"
+              onClick={onClearTabs}
+              className="flex-1 rounded-md border border-wood/[0.12] bg-white px-3 py-1 text-xs text-wood-light hover:border-forest/40"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      ) : null}
+    </Section>
   );
 }
 

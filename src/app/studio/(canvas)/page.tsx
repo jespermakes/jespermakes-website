@@ -73,6 +73,7 @@ import {
   loadTools,
   saveTools as persistTools,
 } from "@/lib/studio/tool-library";
+import { shapesWithCutTypeColors } from "@/lib/studio/cut-types";
 import { applyBoolean, type BooleanOp } from "@/lib/studio/boolean-ops";
 import {
   buildDesignFile,
@@ -1754,6 +1755,60 @@ export default function StudioPage() {
 
   const closeContextMenu = useCallback(() => setContextMenu(null), []);
 
+  const handleAssignCutType = useCallback(
+    (cutType: import("@/lib/studio/types").CutType) => {
+      if (doc.selectedIds.length === 0) return;
+      const updated = doc.shapes
+        .filter((s) => doc.selectedIds.includes(s.id))
+        .map((s) => ({ ...s, cutType }));
+      if (updated.length > 0) {
+        dispatch({ type: "UPDATE_SHAPES", shapes: updated });
+      }
+    },
+    [doc.shapes, doc.selectedIds],
+  );
+
+  const handleSetCutDepth = useCallback(
+    (depth: number) => {
+      if (doc.selectedIds.length === 0) return;
+      const updated = doc.shapes
+        .filter((s) => doc.selectedIds.includes(s.id))
+        .map((s) => ({ ...s, cutDepth: depth }));
+      if (updated.length > 0) {
+        dispatch({ type: "UPDATE_SHAPES", shapes: updated });
+      }
+    },
+    [doc.shapes, doc.selectedIds],
+  );
+
+  const handleApplyDogbones = useCallback(
+    (_style: "standard" | "tbone") => {
+      // Implemented in the dogbone group; placeholder for now so the
+      // panel button doesn't dangle.
+      void _style;
+      showToast("Dogbones — coming next");
+    },
+    [showToast],
+  );
+
+  const handleAutoTabs = useCallback(
+    (_count: number) => {
+      void _count;
+      showToast("Tabs — coming next");
+    },
+    [showToast],
+  );
+
+  const handleClearTabs = useCallback(() => {
+    if (doc.selectedIds.length === 0) return;
+    const updated = doc.shapes
+      .filter((s) => doc.selectedIds.includes(s.id))
+      .map((s) => ({ ...s, tabs: [] }));
+    if (updated.length > 0) {
+      dispatch({ type: "UPDATE_SHAPES", shapes: updated });
+    }
+  }, [doc.shapes, doc.selectedIds]);
+
   const handleBoolean = useCallback(
     (op: BooleanOp) => {
       const sel = doc.shapes.filter((s) => doc.selectedIds.includes(s.id));
@@ -2237,14 +2292,26 @@ export default function StudioPage() {
   }, [nodeDrag, nodeEditingShapeId, doc.shapes]);
 
   const displayShapes = useMemo<Shape[]>(() => {
-    if (liveShapeOverrides.size === 0 && !liveNodePoints) return doc.shapes;
-    return doc.shapes.map((s) => {
-      if (liveNodePoints && s.id === nodeEditingShapeId) {
-        return { ...s, points: liveNodePoints };
-      }
-      return liveShapeOverrides.get(s.id) ?? s;
-    });
-  }, [doc.shapes, liveShapeOverrides, liveNodePoints, nodeEditingShapeId]);
+    let shapes = doc.shapes;
+    if (liveShapeOverrides.size > 0 || liveNodePoints) {
+      shapes = doc.shapes.map((s) => {
+        if (liveNodePoints && s.id === nodeEditingShapeId) {
+          return { ...s, points: liveNodePoints };
+        }
+        return liveShapeOverrides.get(s.id) ?? s;
+      });
+    }
+    if (doc.mode !== "design") {
+      shapes = shapesWithCutTypeColors(shapes);
+    }
+    return shapes;
+  }, [
+    doc.shapes,
+    doc.mode,
+    liveShapeOverrides,
+    liveNodePoints,
+    nodeEditingShapeId,
+  ]);
 
   const selectedSingleShape = useMemo<Shape | null>(() => {
     if (doc.selectedIds.length !== 1) return null;
@@ -2868,6 +2935,11 @@ export default function StudioPage() {
           onSetKerfCompensation={(v) =>
             dispatch({ type: "SET_KERF_COMPENSATION", show: v })
           }
+          onAssignCutType={handleAssignCutType}
+          onSetCutDepth={handleSetCutDepth}
+          onApplyDogbones={handleApplyDogbones}
+          onAutoTabs={handleAutoTabs}
+          onClearTabs={handleClearTabs}
         />
       ) : null}
       </div>
