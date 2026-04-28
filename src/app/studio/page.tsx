@@ -11,6 +11,8 @@ import {
   type PointerEvent as ReactPointerEvent,
   type WheelEvent as ReactWheelEvent,
 } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { Canvas } from "@/components/studio/canvas";
 import {
   ContextMenu,
@@ -24,6 +26,7 @@ import { SelectionHandles } from "@/components/studio/selection-handles";
 import { StatusBar } from "@/components/studio/status-bar";
 import { Toolbar } from "@/components/studio/toolbar";
 import { ToolOverlay } from "@/components/studio/tool-overlay";
+import { TopBar, type SaveStatus } from "@/components/studio/top-bar";
 import { WelcomeOverlay } from "@/components/studio/welcome-overlay";
 import {
   canRedo,
@@ -89,6 +92,12 @@ let clipboard: Shape[] | null = null;
 const PASTE_OFFSET_MM = 10;
 
 export default function StudioPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user?.id;
+  const userInitial = session?.user?.name?.[0]?.toUpperCase() ?? null;
+
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
   const { document: doc } = state;
 
@@ -155,6 +164,21 @@ export default function StudioPage() {
   const [designName, setDesignName] = useState("Untitled");
   const [designId, setDesignId] = useState<string | null>(null);
   const [designCreatedAt, setDesignCreatedAt] = useState<string | null>(null);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("never-saved");
+  // Tracks whether the document has changed since the last successful save.
+  // Set on every shape mutation, cleared after a successful save.
+  const dirtyRef = useRef(false);
+  const isInitialDocRef = useRef(true);
+
+  useEffect(() => {
+    // Skip the very first run (initial mount).
+    if (isInitialDocRef.current) {
+      isInitialDocRef.current = false;
+      return;
+    }
+    dirtyRef.current = true;
+    setSaveStatus((s) => (s === "saving" ? s : designId ? "dirty" : s));
+  }, [doc.shapes, designName, doc.gridSpacing, doc.snapToGrid, doc.unitDisplay, designId]);
   // Idle for hints — flips false after the first user action.
   const [idle, setIdle] = useState(true);
   // Cursor screen position (for the floating tool-hint label). Null when the
@@ -1424,27 +1448,185 @@ export default function StudioPage() {
     dispatch({ type: "DELETE_SELECTED" });
   }, [doc.shapes, doc.selectedIds, showToast]);
 
+  const buildCurrentDesignFile = useCallback(
+    () =>
+      buildDesignFile({
+        name: designName,
+        createdAt: designCreatedAt ?? undefined,
+        shapes: doc.shapes,
+        gridSpacing: doc.gridSpacing,
+        snapToGrid: doc.snapToGrid,
+        unitDisplay: doc.unitDisplay,
+      }),
+    [
+      designCreatedAt,
+      designName,
+      doc.gridSpacing,
+      doc.shapes,
+      doc.snapToGrid,
+      doc.unitDisplay,
+    ],
+  );
+
   const handleSaveToFile = useCallback(() => {
-    const file = buildDesignFile({
-      name: designName,
-      createdAt: designCreatedAt ?? undefined,
-      shapes: doc.shapes,
-      gridSpacing: doc.gridSpacing,
-      snapToGrid: doc.snapToGrid,
-      unitDisplay: doc.unitDisplay,
-    });
+    const file = buildCurrentDesignFile();
     if (!designCreatedAt) setDesignCreatedAt(file.createdAt);
     downloadDesignFile(file);
     showToast("Saved to file");
+  }, [buildCurrentDesignFile, designCreatedAt, showToast]);
+
+  const handleCloudSave = useCallback(async () => {
+    if (!isLoggedIn) {
+      // Not logged in — fall back to local file save.
+      handleSaveToFile();
+      return;
+    }
+    setSaveStatus("saving");
+    const file = buildCurrentDesignFile();
+    if (!designCreatedAt) setDesignCreatedAt(file.createdAt);
+    try {
+      if (!designId) {
+        const res = await fetch("/api/studio/designs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: designName, data: file }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = (await res.json()) as {
+          design: { id: string };
+        };
+        setDesignId(json.design.id);
+        // Update URL so refresh keeps the design loaded.
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set("id", json.design.id);
+          window.history.replaceState({}, "", url.toString());
+        } catch {
+          /* noop */
+        }
+      } else {
+        const res = await fetch(`/api/studio/designs/${designId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: designName, data: file }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      }
+      dirtyRef.current = false;
+      setSaveStatus("saved");
+    } catch (err) {
+      console.error("studio cloud save failed:", err);
+      setSaveStatus("error");
+      showToast("Save failed");
+    }
   }, [
+    buildCurrentDesignFile,
     designCreatedAt,
+    designId,
     designName,
-    doc.gridSpacing,
-    doc.shapes,
-    doc.snapToGrid,
-    doc.unitDisplay,
+    handleSaveToFile,
+    isLoggedIn,
     showToast,
   ]);
+
+  // Auto-save every 30 seconds if there are unsaved changes and the design
+  // already has an ID.
+  useEffect(() => {
+    if (!isLoggedIn || !designId) return;
+    const interval = setInterval(() => {
+      if (dirtyRef.current && saveStatus !== "saving") {
+        void handleCloudSave();
+      }
+    }, 30_000);
+    return () => clearInterval(interval);
+  }, [isLoggedIn, designId, handleCloudSave, saveStatus]);
+
+  // Load the design when the URL has ?id=...
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (!id || id === designId) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/studio/designs/${id}`);
+        if (!res.ok) {
+          if (res.status === 401) {
+            // Not logged in — drop the id, leave canvas empty.
+            return;
+          }
+          showToast("Couldn't load design.");
+          return;
+        }
+        const json = (await res.json()) as {
+          design: {
+            id: string;
+            name: string;
+            data: { canvasSettings?: { gridSpacing?: number; snapToGrid?: boolean; unitDisplay?: "mm" | "in" }; shapes?: Shape[]; createdAt?: string };
+            createdAt?: string;
+          };
+        };
+        if (cancelled) return;
+        const data = json.design.data;
+        const settings = data.canvasSettings ?? {};
+        dispatch({
+          type: "LOAD_DESIGN",
+          shapes: Array.isArray(data.shapes) ? data.shapes : [],
+          gridSpacing:
+            typeof settings.gridSpacing === "number" ? settings.gridSpacing : 10,
+          snapToGrid:
+            typeof settings.snapToGrid === "boolean" ? settings.snapToGrid : true,
+          unitDisplay: settings.unitDisplay === "in" ? "in" : "mm",
+        });
+        setDesignName(json.design.name || "Untitled");
+        setDesignId(json.design.id);
+        setDesignCreatedAt(data.createdAt ?? json.design.createdAt ?? null);
+        dirtyRef.current = false;
+        setSaveStatus("saved");
+      } catch (err) {
+        console.error("studio load failed:", err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  const handleNewDesign = useCallback(() => {
+    if (dirtyRef.current) {
+      const ok = window.confirm(
+        "You have unsaved changes. Discard them and start a new design?",
+      );
+      if (!ok) return;
+    }
+    dispatch({
+      type: "LOAD_DESIGN",
+      shapes: [],
+      gridSpacing: 10,
+      snapToGrid: true,
+      unitDisplay: doc.unitDisplay,
+    });
+    setDesignName("Untitled");
+    setDesignId(null);
+    setDesignCreatedAt(null);
+    dirtyRef.current = false;
+    setSaveStatus("never-saved");
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("id");
+      window.history.replaceState({}, "", url.toString());
+    } catch {
+      /* noop */
+    }
+  }, [doc.unitDisplay]);
+
+  const handleOpenDesigns = useCallback(() => {
+    if (isLoggedIn) {
+      router.push("/studio/designs");
+    } else {
+      handleOpenFromFile();
+    }
+  }, [isLoggedIn, router]);
 
   const handleOpenFromFile = useCallback(() => {
     designFileInputRef.current?.click();
@@ -1650,8 +1832,7 @@ export default function StudioPage() {
         return;
       }
       if (meta && (e.key === "s" || e.key === "S")) {
-        // Group 7 will route this through cloud save when logged in.
-        handleSaveToFile();
+        void handleCloudSave();
         e.preventDefault();
         return;
       }
@@ -1792,7 +1973,7 @@ export default function StudioPage() {
     handlePaste,
     handleDuplicate,
     handleCut,
-    handleSaveToFile,
+    handleCloudSave,
     handleOpenFromFile,
     finalizePenAsOpen,
     activeTool,
@@ -2361,7 +2542,18 @@ export default function StudioPage() {
   }, []);
 
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-full w-full flex-col">
+      <TopBar
+        designName={designName}
+        onRenameCommit={(n) => setDesignName(n)}
+        saveStatus={saveStatus}
+        isLoggedIn={isLoggedIn}
+        userInitial={userInitial}
+        onSave={handleCloudSave}
+        onNewDesign={handleNewDesign}
+        onOpenDesigns={handleOpenDesigns}
+      />
+      <div className="flex min-h-0 w-full flex-1">
       <Toolbar
         activeTool={activeTool}
         onSelectTool={(t) => {
@@ -2573,6 +2765,7 @@ export default function StudioPage() {
         }
         onFitAll={handleFitAll}
       />
+      </div>
       {contextMenu ? (
         <ContextMenu
           x={contextMenu.x}
