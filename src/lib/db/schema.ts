@@ -27,6 +27,13 @@ export const users = pgTable("users", {
   newsletterSubscribed: boolean("newsletter_subscribed").default(false),
   guildTier: text("guild_tier").default("free"),
   guildJoinedAt: timestamp("guild_joined_at", { mode: "date" }),
+  // Public maker profile (Phase 7)
+  displayName: text("display_name"),
+  bio: text("bio"),
+  avatarUrl: text("avatar_url"),
+  website: text("website"),
+  location: text("location"),
+  isAdmin: boolean("is_admin").notNull().default(false),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });
@@ -496,3 +503,139 @@ export const workbenchLikes = pgTable(
     uniq: index("workbench_likes_user_design_idx").on(t.userId, t.designId),
   }),
 );
+
+export const workbenchComments = pgTable("workbench_comments", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  designId: uuid("design_id")
+    .notNull()
+    .references(() => workbenchDesigns.id, { onDelete: "cascade" }),
+  authorId: uuid("author_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  authorName: text("author_name").notNull(),
+  content: text("content").notNull(),
+  // Reply threading is one level deep — a reply's parentId points to a
+  // top-level comment, never to another reply.
+  parentId: uuid("parent_id"),
+  status: text("status").notNull().default("published"),
+  createdAt: timestamp("created_at", { mode: "date" })
+    .notNull()
+    .defaultNow(),
+});
+
+export const designCollections = pgTable("design_collections", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  description: text("description").notNull().default(""),
+  isPublic: boolean("is_public").notNull().default(false),
+  createdAt: timestamp("created_at", { mode: "date" })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .notNull()
+    .defaultNow(),
+});
+
+export const collectionItems = pgTable(
+  "collection_items",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    collectionId: uuid("collection_id")
+      .notNull()
+      .references(() => designCollections.id, { onDelete: "cascade" }),
+    studioDesignId: uuid("studio_design_id").references(
+      () => studioDesigns.id,
+      { onDelete: "cascade" },
+    ),
+    workbenchDesignId: uuid("workbench_design_id").references(
+      () => workbenchDesigns.id,
+      { onDelete: "cascade" },
+    ),
+    addedAt: timestamp("added_at", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => ({
+    byCollection: index("collection_items_collection_idx").on(t.collectionId),
+  }),
+);
+
+export const follows = pgTable(
+  "follows",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    followerId: uuid("follower_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    followingId: uuid("following_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => ({
+    uniq: index("follows_follower_following_idx").on(
+      t.followerId,
+      t.followingId,
+    ),
+  }),
+);
+
+export const notifications = pgTable(
+  "notifications",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: text("type").notNull(),
+    actorId: uuid("actor_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    actorName: text("actor_name"),
+    designId: uuid("design_id").references(() => workbenchDesigns.id, {
+      onDelete: "cascade",
+    }),
+    commentId: uuid("comment_id").references(() => workbenchComments.id, {
+      onDelete: "cascade",
+    }),
+    message: text("message").notNull(),
+    read: boolean("read").notNull().default(false),
+    createdAt: timestamp("created_at", { mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => ({
+    byUser: index("notifications_user_idx").on(t.userId, t.read),
+  }),
+);
+
+export const workbenchVersions = pgTable("workbench_versions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  designId: uuid("design_id")
+    .notNull()
+    .references(() => workbenchDesigns.id, { onDelete: "cascade" }),
+  versionNumber: integer("version_number").notNull(),
+  data: jsonb("data").notNull(),
+  changelog: text("changelog").notNull().default(""),
+  createdAt: timestamp("created_at", { mode: "date" })
+    .notNull()
+    .defaultNow(),
+});
+
+export const studioEvents = pgTable("studio_events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  eventType: text("event_type").notNull(),
+  designId: uuid("design_id"),
+  country: text("country"),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at", { mode: "date" })
+    .notNull()
+    .defaultNow(),
+});
