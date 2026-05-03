@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { users, workbenchDesigns } from "@/lib/db/schema";
+import { follows, users, workbenchDesigns } from "@/lib/db/schema";
+import { createNotification } from "@/lib/notifications";
 
 export const dynamic = "force-dynamic";
 
@@ -176,7 +177,7 @@ export async function POST(request: NextRequest) {
       publishedAt: workbenchDesigns.publishedAt,
     });
 
-  // Increment the parent's remix count if this is a remix.
+  // Increment the parent's remix count + notify the parent's author.
   if (remixOfId) {
     await db
       .update(workbenchDesigns)
@@ -184,6 +185,40 @@ export async function POST(request: NextRequest) {
         remixCount: sql`${workbenchDesigns.remixCount} + 1`,
       })
       .where(eq(workbenchDesigns.id, remixOfId));
+    const [parent] = await db
+      .select({
+        authorId: workbenchDesigns.authorId,
+        name: workbenchDesigns.name,
+      })
+      .from(workbenchDesigns)
+      .where(eq(workbenchDesigns.id, remixOfId))
+      .limit(1);
+    if (parent) {
+      await createNotification({
+        userId: parent.authorId,
+        actorId: session.user.id,
+        actorName: authorName,
+        type: "remix",
+        designId: row.id,
+        message: `${authorName} remixed your design "${parent.name}" as "${row.name}"`,
+      });
+    }
+  }
+
+  // Notify everyone following the author.
+  const followers = await db
+    .select({ followerId: follows.followerId })
+    .from(follows)
+    .where(eq(follows.followingId, session.user.id));
+  for (const f of followers) {
+    await createNotification({
+      userId: f.followerId,
+      actorId: session.user.id,
+      actorName: authorName,
+      type: "new_design",
+      designId: row.id,
+      message: `${authorName} published "${row.name}"`,
+    });
   }
 
   return NextResponse.json({ design: row }, { status: 201 });

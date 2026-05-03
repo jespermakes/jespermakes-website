@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { studioDesigns } from "@/lib/db/schema";
 import { desc, eq } from "drizzle-orm";
+import { CollectionsPanel } from "@/components/studio/collections-panel";
 import { DesignsGrid, type DesignSummary } from "./designs-grid";
 
 export const dynamic = "force-dynamic";
@@ -38,6 +39,7 @@ export default async function MyDesignsPage() {
   return (
     <main className="mx-auto max-w-5xl px-6 py-12">
       <DesignsGrid initialDesigns={designs} />
+      <CollectionsPanel />
     </main>
   );
 }

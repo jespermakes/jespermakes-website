@@ -5,6 +5,7 @@ export interface WorkbenchDesignSummary {
   name: string;
   description: string;
   authorName: string;
+  authorId?: string | null;
   thumbnail: string | null;
   tags: string[];
   category: string;
@@ -24,11 +25,11 @@ export function DesignCard({ design }: DesignCardProps) {
       ? design.publishedAt
       : design.publishedAt.toISOString();
   return (
-    <Link
-      href={`/workbench/${design.id}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-wood/[0.08] bg-white transition-shadow hover:shadow-md"
-    >
-      <div className="aspect-[4/3] overflow-hidden bg-cream/60">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-wood/[0.08] bg-white transition-shadow hover:shadow-md">
+      <Link
+        href={`/workbench/${design.id}`}
+        className="block aspect-[4/3] overflow-hidden bg-cream/60"
+      >
         {design.thumbnail ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -39,15 +40,28 @@ export function DesignCard({ design }: DesignCardProps) {
         ) : (
           <PlaceholderThumb />
         )}
-      </div>
+      </Link>
       <div className="flex flex-1 flex-col gap-1.5 px-3 py-3">
-        <h3
-          className="truncate text-sm font-semibold text-wood group-hover:text-forest"
+        <Link
+          href={`/workbench/${design.id}`}
+          className="truncate text-sm font-semibold text-wood hover:text-forest"
           title={design.name}
         >
           {design.name || "Untitled"}
-        </h3>
-        <p className="text-[11px] text-wood-light/60">by {design.authorName}</p>
+        </Link>
+        <p className="text-[11px] text-wood-light/60">
+          by{" "}
+          {design.authorId ? (
+            <Link
+              href={`/profile/${design.authorId}`}
+              className="hover:text-forest"
+            >
+              {design.authorName}
+            </Link>
+          ) : (
+            design.authorName
+          )}
+        </p>
         {design.description ? (
           <p
             className="line-clamp-2 text-[12px] leading-snug text-wood-light"
@@ -76,7 +90,7 @@ export function DesignCard({ design }: DesignCardProps) {
           <span className="ml-auto">{relativeTime(date)}</span>
         </div>
       </div>
-    </Link>
+    </article>
   );
 }
 

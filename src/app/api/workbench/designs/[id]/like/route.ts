@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { and, eq, sql } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { workbenchDesigns, workbenchLikes } from "@/lib/db/schema";
+import {
+  users,
+  workbenchDesigns,
+  workbenchLikes,
+} from "@/lib/db/schema";
+import { createNotification } from "@/lib/notifications";
+import { publicDisplayName } from "@/lib/profile";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +30,11 @@ export async function POST(_req: NextRequest, ctx: Ctx) {
 
   // Confirm the design exists.
   const [design] = await db
-    .select({ id: workbenchDesigns.id })
+    .select({
+      id: workbenchDesigns.id,
+      authorId: workbenchDesigns.authorId,
+      name: workbenchDesigns.name,
+    })
     .from(workbenchDesigns)
     .where(eq(workbenchDesigns.id, id))
     .limit(1);
@@ -57,6 +67,25 @@ export async function POST(_req: NextRequest, ctx: Ctx) {
       .set({ likeCount: sql`${workbenchDesigns.likeCount} + 1` })
       .where(eq(workbenchDesigns.id, id));
     liked = true;
+    // Notify the design's author (skips self via createNotification's guard).
+    const [actor] = await db
+      .select({
+        displayName: users.displayName,
+        name: users.name,
+        email: users.email,
+      })
+      .from(users)
+      .where(eq(users.id, userId))
+      .limit(1);
+    const actorName = publicDisplayName(actor ?? null);
+    await createNotification({
+      userId: design.authorId,
+      actorId: userId,
+      actorName,
+      type: "like",
+      designId: id,
+      message: `${actorName} liked your design "${design.name}"`,
+    });
   }
 
   const [updated] = await db

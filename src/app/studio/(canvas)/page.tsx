@@ -96,6 +96,7 @@ import {
   rememberProfile,
   type ExportProfile,
 } from "@/lib/studio/export-profiles";
+import { trackStudio } from "@/lib/studio-track";
 import { parseSVG, recenterImportedShapes } from "@/lib/studio/svg-import";
 import {
   applyMoveSnap,
@@ -232,6 +233,11 @@ export default function StudioPage() {
   const [cursorScreenPos, setCursorScreenPos] = useState<
     { x: number; y: number } | null
   >(null);
+
+  // Track a single page view per page load.
+  useEffect(() => {
+    trackStudio({ eventType: "page_view" });
+  }, []);
 
   // First-visit welcome overlay.
   useEffect(() => {
@@ -1574,6 +1580,11 @@ export default function StudioPage() {
       }
       dirtyRef.current = false;
       setSaveStatus("saved");
+      trackStudio({
+        eventType: "design_saved",
+        designId: designId,
+        metadata: { shapeCount: doc.shapes.length },
+      });
     } catch (err) {
       console.error("studio cloud save failed:", err);
       setSaveStatus("error");
@@ -1584,6 +1595,7 @@ export default function StudioPage() {
     designCreatedAt,
     designId,
     designName,
+    doc.shapes.length,
     handleSaveToFile,
     isLoggedIn,
     showToast,
@@ -2851,6 +2863,11 @@ export default function StudioPage() {
         const json = (await res.json()) as { design: { id: string } };
         setPublishOpen(false);
         showToast("Published to The Workbench");
+        trackStudio({
+          eventType: "workbench_publish",
+          designId: json.design.id,
+          metadata: { shapeCount: doc.shapes.length },
+        });
         router.push(`/workbench/${json.design.id}`);
       } catch (err) {
         setPublishError(
@@ -2863,6 +2880,7 @@ export default function StudioPage() {
     [
       buildCurrentDesignFile,
       designId,
+      doc.shapes.length,
       remixOfId,
       router,
       showToast,
@@ -2880,8 +2898,28 @@ export default function StudioPage() {
         activeTool: activeCuttingTool,
         material: doc.material,
       });
+      const eventType =
+        profile === "shaper-origin"
+          ? "shaper_export"
+          : profile === "laser"
+            ? "laser_export"
+            : profile === "cnc-router"
+              ? "cnc_export"
+              : "svg_export";
+      trackStudio({
+        eventType,
+        designId: designId,
+        metadata: { profile, shapeCount: doc.shapes.length },
+      });
     },
-    [doc.shapes, doc.material, designName, activeCuttingTool, showToast],
+    [
+      doc.shapes,
+      doc.material,
+      designName,
+      designId,
+      activeCuttingTool,
+      showToast,
+    ],
   );
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -3237,7 +3275,13 @@ export default function StudioPage() {
           existingShapes={doc.shapes}
           material={doc.material}
           onClose={() => setAiPanelOpen(false)}
-          onResult={handleAIResult}
+          onResult={(r) => {
+        trackStudio({
+          eventType: "ai_request",
+          metadata: { tool: r.toolName, prompt: r.promptText.slice(0, 200) },
+        });
+        handleAIResult(r);
+      }}
         />
       ) : doc.mode === "design" ? (
         <PropertiesPanel
