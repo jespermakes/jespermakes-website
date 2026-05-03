@@ -1,12 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  isGeneratorTool,
+  runGenerator,
+  type GeneratorResult,
+} from "@/lib/studio/generators";
 import type { MaterialSettings, Shape } from "@/lib/studio/types";
 
 export interface AIHistoryEntry {
   id: string;
   prompt: string;
   message: string;
+  toolName: string;
   shapeCount: number;
   modificationsCount: number;
 }
@@ -18,12 +24,12 @@ interface AIPanelProps {
   material: MaterialSettings;
   onClose: () => void;
   /**
-   * Resolves with the assistant's shapes + message. The caller is
-   * responsible for dispatching them into the document.
+   * Receives the result of running the AI's chosen generator. The caller
+   * is responsible for dispatching shapes into the document.
    */
   onResult: (result: {
-    shapes: Shape[];
-    modifications: string[];
+    toolName: string;
+    generated: GeneratorResult;
     message: string;
     promptText: string;
   }) => void;
@@ -84,8 +90,8 @@ export function AIPanel({
         }),
       });
       const json = (await res.json()) as {
-        shapes?: Shape[];
-        modifications?: string[];
+        tool?: string;
+        params?: Record<string, unknown>;
         message?: string;
         error?: string;
       };
@@ -93,14 +99,40 @@ export function AIPanel({
         setError(json.error ?? "AI request failed.");
         return;
       }
-      const shapes = Array.isArray(json.shapes) ? json.shapes : [];
-      const modifications = Array.isArray(json.modifications)
-        ? json.modifications
-        : [];
       const message = json.message ?? "";
+      const toolName = json.tool ?? "clarify";
+      if (toolName === "clarify") {
+        // Just push the message into history; nothing to dispatch.
+        setHistory((prev) => [
+          ...prev,
+          {
+            id: `${Date.now()}`,
+            prompt: text,
+            message,
+            toolName,
+            shapeCount: 0,
+            modificationsCount: 0,
+          },
+        ]);
+        setPrompt("");
+        return;
+      }
+      if (!isGeneratorTool(toolName)) {
+        setError(`Unknown tool: ${toolName}`);
+        return;
+      }
+      const generated = runGenerator(toolName, json.params ?? {}, {
+        shapes: existingShapes,
+        materialThickness: material.thickness,
+        unit: "mm",
+      });
+      if (!generated) {
+        setError("Generator failed to run.");
+        return;
+      }
       onResult({
-        shapes,
-        modifications,
+        toolName,
+        generated,
         message,
         promptText: text,
       });
@@ -110,8 +142,11 @@ export function AIPanel({
           id: `${Date.now()}`,
           prompt: text,
           message,
-          shapeCount: shapes.length,
-          modificationsCount: modifications.length,
+          toolName,
+          shapeCount: generated.shapesToAdd?.length ?? 0,
+          modificationsCount:
+            (generated.shapesToRemove?.length ?? 0) +
+            (generated.shapesToUpdate?.length ?? 0),
         },
       ]);
       setPrompt("");
@@ -215,10 +250,17 @@ export function AIPanel({
                     <p className="text-wood">“{h.prompt}”</p>
                     <p className="mt-1 text-wood-light">{h.message}</p>
                     <p className="mt-1 text-[10px] text-wood-light/60">
-                      {h.shapeCount} shape{h.shapeCount === 1 ? "" : "s"}
-                      {h.modificationsCount > 0
-                        ? ` · ${h.modificationsCount} replaced`
-                        : ""}
+                      {h.toolName !== "clarify" ? (
+                        <>
+                          {h.toolName} · {h.shapeCount} shape
+                          {h.shapeCount === 1 ? "" : "s"}
+                          {h.modificationsCount > 0
+                            ? ` · ${h.modificationsCount} changed`
+                            : ""}
+                        </>
+                      ) : (
+                        "needs clarification"
+                      )}
                     </p>
                   </li>
                 ))}

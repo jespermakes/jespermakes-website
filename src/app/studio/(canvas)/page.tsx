@@ -2759,20 +2759,23 @@ export default function StudioPage() {
 
   const handleAIResult = useCallback(
     (result: {
-      shapes: Shape[];
-      modifications: string[];
+      toolName: string;
+      generated: import("@/lib/studio/generators").GeneratorResult;
       message: string;
       promptText: string;
     }) => {
-      // Apply modifications + add new shapes as one undo step.
-      if (result.shapes.length === 0 && result.modifications.length === 0) {
-        // The AI returned nothing — surface its message but keep state.
-        if (result.message) showToast(result.message);
+      const { generated } = result;
+      const toAdd = generated.shapesToAdd ?? [];
+      const toRemove = generated.shapesToRemove ?? [];
+      const toUpdate = generated.shapesToUpdate ?? [];
+      if (toAdd.length === 0 && toRemove.length === 0 && toUpdate.length === 0) {
+        if (generated.message) showToast(generated.message);
+        else if (result.message) showToast(result.message);
         return;
       }
       // Make sure incoming shape ids don't collide with the existing canvas.
       const existing = new Set(doc.shapes.map((s) => s.id));
-      const safeShapes = result.shapes.map((s) => {
+      const safeShapes = toAdd.map((s) => {
         if (!existing.has(s.id)) {
           existing.add(s.id);
           return s;
@@ -2783,14 +2786,20 @@ export default function StudioPage() {
         existing.add(id);
         return { ...s, id };
       });
+      // Apply updates first via REPLACE_SHAPES (remove + add), then add new
+      // shapes. Combine all into one history step.
+      const removeIds = [...toRemove, ...toUpdate.map((s) => s.id)];
+      const adds = [...toUpdate, ...safeShapes];
       dispatch({
         type: "REPLACE_SHAPES",
-        removeIds: result.modifications,
-        add: safeShapes,
-        selectAdded: true,
+        removeIds,
+        add: adds,
+        selectAdded: safeShapes.length > 0,
       });
       // Schedule a fit-all on the next frame so the new bounds are reflected.
-      setTimeout(() => handleFitAll(), 16);
+      if (safeShapes.length > 0) {
+        setTimeout(() => handleFitAll(), 16);
+      }
       if (result.message) showToast(result.message);
     },
     [doc.shapes, handleFitAll, showToast],

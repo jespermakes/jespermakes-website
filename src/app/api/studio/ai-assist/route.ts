@@ -3,8 +3,7 @@ import { auth } from "@/lib/auth";
 import {
   AI_SYSTEM_PROMPT,
   buildUserMessage,
-  coerceAIShape,
-  parseAIResponse,
+  parseAIResult,
   type AIRequestContext,
 } from "@/lib/studio/ai-prompts";
 import type { Shape } from "@/lib/studio/types";
@@ -14,8 +13,6 @@ export const dynamic = "force-dynamic";
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const MODEL = "anthropic/claude-sonnet-4";
 
-// Simple in-memory rate limiter: 10 requests per minute per user.
-// Resets when the process restarts; good enough for cost control.
 const RATE_WINDOW_MS = 60_000;
 const RATE_MAX = 10;
 const recentByUser = new Map<string, number[]>();
@@ -59,13 +56,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
   const obj = (body ?? {}) as Record<string, unknown>;
-  const prompt =
-    typeof obj.prompt === "string" ? obj.prompt.trim() : "";
+  const prompt = typeof obj.prompt === "string" ? obj.prompt.trim() : "";
   if (!prompt) {
-    return NextResponse.json(
-      { error: "prompt is required" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "prompt is required" }, { status: 400 });
   }
   const existingShapes = Array.isArray(obj.existingShapes)
     ? (obj.existingShapes as Shape[])
@@ -108,8 +101,8 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify({
           model: MODEL,
-          max_tokens: 4000,
-          temperature: 0.4,
+          max_tokens: 1500,
+          temperature: 0.2,
           messages,
         }),
       },
@@ -135,28 +128,17 @@ export async function POST(request: NextRequest) {
     choices?: { message?: { content?: string } }[];
   };
   const text = data.choices?.[0]?.message?.content ?? "";
-  const parsed = parseAIResponse(text);
+  const parsed = parseAIResult(text);
   if (!parsed) {
     return NextResponse.json(
       {
         error:
-          "I had trouble generating that design. Try rephrasing your request.",
+          "I had trouble understanding that. Try rephrasing your request.",
         rawText: text.slice(0, 4000),
       },
       { status: 502 },
     );
   }
 
-  const validShapes: Shape[] = [];
-  for (const raw of parsed.shapes) {
-    const s = coerceAIShape(raw);
-    if (s) validShapes.push(s);
-  }
-
-  return NextResponse.json({
-    shapes: validShapes,
-    message: parsed.message,
-    modifications: parsed.modifications ?? [],
-    rawShapeCount: parsed.shapes.length,
-  });
+  return NextResponse.json(parsed);
 }
