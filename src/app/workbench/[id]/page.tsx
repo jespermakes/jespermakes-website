@@ -1,9 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { and, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { workbenchDesigns, workbenchLikes } from "@/lib/db/schema";
+import {
+  workbenchDesigns,
+  workbenchLikes,
+  workbenchVersions,
+} from "@/lib/db/schema";
+import { CommentsSection } from "@/components/workbench/comments-section";
 import { DesignDetail } from "@/components/workbench/design-detail";
 import type { StudioDesignFile } from "@/lib/studio/file-format";
 
@@ -111,6 +116,60 @@ export default async function WorkbenchDetailPage({ params }: PageProps) {
         isAuthor={isAuthor}
         initialLiked={initialLiked}
       />
+      <VersionHistory designId={row.id} />
+      <CommentsSection
+        designId={row.id}
+        isLoggedIn={isLoggedIn}
+        currentUserId={session?.user?.id ?? null}
+      />
     </main>
+  );
+}
+
+async function VersionHistory({ designId }: { designId: string }) {
+  const versions = await db
+    .select({
+      id: workbenchVersions.id,
+      versionNumber: workbenchVersions.versionNumber,
+      changelog: workbenchVersions.changelog,
+      createdAt: workbenchVersions.createdAt,
+    })
+    .from(workbenchVersions)
+    .where(eq(workbenchVersions.designId, designId))
+    .orderBy(desc(workbenchVersions.versionNumber))
+    .limit(20);
+  if (versions.length === 0) return null;
+  return (
+    <section className="mt-12 border-t border-wood/[0.06] pt-8">
+      <h2 className="font-serif text-xl text-wood">Version history</h2>
+      <ul className="mt-4 flex flex-col gap-3 text-sm">
+        {versions.map((v) => (
+          <li
+            key={v.id}
+            className="rounded-md border border-wood/[0.06] bg-cream/50 px-3 py-2"
+          >
+            <p className="font-medium text-wood">
+              v{v.versionNumber} ·{" "}
+              <span className="font-normal text-wood-light/70">
+                {new Date(v.createdAt).toLocaleDateString(undefined, {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
+            </p>
+            {v.changelog ? (
+              <p className="mt-1 whitespace-pre-line text-[13px] text-wood-light">
+                {v.changelog}
+              </p>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3 text-[11px] text-wood-light/60">
+        Older snapshots are kept; opening older versions in the studio
+        lands in a future polish pass.
+      </p>
+    </section>
   );
 }

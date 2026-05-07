@@ -8,6 +8,7 @@ import { auth } from "@/lib/auth";
 import { SiteJsonLd } from "@/components/site-json-ld";
 import { MobileNav } from "@/components/mobile-nav";
 import { ConditionalChrome } from "@/components/conditional-chrome";
+import { NotificationsBell } from "@/components/notifications-bell";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -146,12 +147,15 @@ async function Header() {
             Contact
           </Link>
           {session?.user ? (
-            <Link
-              href="/account"
-              className="text-forest hover:text-forest-dark transition-colors font-medium"
-            >
-              {session.user.name?.split(" ")[0] || "Account"}
-            </Link>
+            <>
+              <NotificationsBell hasSession />
+              <Link
+                href="/account"
+                className="text-forest hover:text-forest-dark transition-colors font-medium"
+              >
+                {session.user.name?.split(" ")[0] || "Account"}
+              </Link>
+            </>
           ) : (
             <Link
               href="/login"

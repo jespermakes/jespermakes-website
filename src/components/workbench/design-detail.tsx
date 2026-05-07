@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { downloadDesignFile } from "@/lib/studio/file-format";
 import type { StudioDesignFile } from "@/lib/studio/file-format";
+import { trackStudio } from "@/lib/studio-track";
 
 export interface WorkbenchDesignDetail {
   id: string;
@@ -59,6 +60,12 @@ export function DesignDetail({
         const json = (await res.json()) as { liked: boolean; likeCount: number };
         setLiked(json.liked);
         setLikeCount(json.likeCount);
+        if (json.liked) {
+          trackStudio({
+            eventType: "workbench_like",
+            designId: design.id,
+          });
+        }
       }
     } finally {
       setBusy(false);
@@ -84,6 +91,11 @@ export function DesignDetail({
 
   const handleDownload = () => {
     downloadDesignFile(design.data);
+    trackStudio({
+      eventType: "workbench_download",
+      designId: design.id,
+      metadata: { format: "jm" },
+    });
   };
 
   const handleDelete = async () => {
@@ -213,6 +225,8 @@ export function DesignDetail({
           >
             Remove from Workbench
           </button>
+        ) : isLoggedIn ? (
+          <ReportLink designId={design.id} />
         ) : null}
         <p className="mt-4 border-t border-wood/[0.06] pt-3 text-[11px] text-wood-light/60">
           Designs on The Workbench are shared under{" "}
@@ -228,6 +242,39 @@ export function DesignDetail({
         </p>
       </div>
     </article>
+  );
+}
+
+function ReportLink({ designId }: { designId: string }) {
+  const [done, setDone] = useState(false);
+  const submit = async () => {
+    const reason = window.prompt(
+      "Why are you reporting this design? (spam / inappropriate / copyright / other)",
+      "other",
+    );
+    if (reason == null) return;
+    const res = await fetch(`/api/workbench/designs/${designId}/report`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ reason: reason.trim().toLowerCase() || "other" }),
+    });
+    if (res.ok) setDone(true);
+  };
+  if (done) {
+    return (
+      <p className="text-[11px] text-wood-light/70">
+        Thanks — we&apos;ll review it.
+      </p>
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={submit}
+      className="self-start text-[11px] text-wood-light/60 underline hover:text-red-700"
+    >
+      Report this design
+    </button>
   );
 }
 

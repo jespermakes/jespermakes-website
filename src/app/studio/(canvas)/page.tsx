@@ -96,6 +96,7 @@ import {
   rememberProfile,
   type ExportProfile,
 } from "@/lib/studio/export-profiles";
+import { trackStudio } from "@/lib/studio-track";
 import { parseSVG, recenterImportedShapes } from "@/lib/studio/svg-import";
 import {
   applyMoveSnap,
@@ -232,6 +233,11 @@ export default function StudioPage() {
   const [cursorScreenPos, setCursorScreenPos] = useState<
     { x: number; y: number } | null
   >(null);
+
+  // Track a single page view per page load.
+  useEffect(() => {
+    trackStudio({ eventType: "page_view" });
+  }, []);
 
   // First-visit welcome overlay.
   useEffect(() => {
@@ -1574,6 +1580,11 @@ export default function StudioPage() {
       }
       dirtyRef.current = false;
       setSaveStatus("saved");
+      trackStudio({
+        eventType: "design_saved",
+        designId: designId,
+        metadata: { shapeCount: doc.shapes.length },
+      });
     } catch (err) {
       console.error("studio cloud save failed:", err);
       setSaveStatus("error");
@@ -1584,6 +1595,7 @@ export default function StudioPage() {
     designCreatedAt,
     designId,
     designName,
+    doc.shapes.length,
     handleSaveToFile,
     isLoggedIn,
     showToast,
@@ -2759,20 +2771,23 @@ export default function StudioPage() {
 
   const handleAIResult = useCallback(
     (result: {
-      shapes: Shape[];
-      modifications: string[];
+      toolName: string;
+      generated: import("@/lib/studio/generators").GeneratorResult;
       message: string;
       promptText: string;
     }) => {
-      // Apply modifications + add new shapes as one undo step.
-      if (result.shapes.length === 0 && result.modifications.length === 0) {
-        // The AI returned nothing — surface its message but keep state.
-        if (result.message) showToast(result.message);
+      const { generated } = result;
+      const toAdd = generated.shapesToAdd ?? [];
+      const toRemove = generated.shapesToRemove ?? [];
+      const toUpdate = generated.shapesToUpdate ?? [];
+      if (toAdd.length === 0 && toRemove.length === 0 && toUpdate.length === 0) {
+        if (generated.message) showToast(generated.message);
+        else if (result.message) showToast(result.message);
         return;
       }
       // Make sure incoming shape ids don't collide with the existing canvas.
       const existing = new Set(doc.shapes.map((s) => s.id));
-      const safeShapes = result.shapes.map((s) => {
+      const safeShapes = toAdd.map((s) => {
         if (!existing.has(s.id)) {
           existing.add(s.id);
           return s;
@@ -2783,14 +2798,20 @@ export default function StudioPage() {
         existing.add(id);
         return { ...s, id };
       });
+      // Apply updates first via REPLACE_SHAPES (remove + add), then add new
+      // shapes. Combine all into one history step.
+      const removeIds = [...toRemove, ...toUpdate.map((s) => s.id)];
+      const adds = [...toUpdate, ...safeShapes];
       dispatch({
         type: "REPLACE_SHAPES",
-        removeIds: result.modifications,
-        add: safeShapes,
-        selectAdded: true,
+        removeIds,
+        add: adds,
+        selectAdded: safeShapes.length > 0,
       });
       // Schedule a fit-all on the next frame so the new bounds are reflected.
-      setTimeout(() => handleFitAll(), 16);
+      if (safeShapes.length > 0) {
+        setTimeout(() => handleFitAll(), 16);
+      }
       if (result.message) showToast(result.message);
     },
     [doc.shapes, handleFitAll, showToast],
@@ -2842,6 +2863,11 @@ export default function StudioPage() {
         const json = (await res.json()) as { design: { id: string } };
         setPublishOpen(false);
         showToast("Published to The Workbench");
+        trackStudio({
+          eventType: "workbench_publish",
+          designId: json.design.id,
+          metadata: { shapeCount: doc.shapes.length },
+        });
         router.push(`/workbench/${json.design.id}`);
       } catch (err) {
         setPublishError(
@@ -2854,6 +2880,7 @@ export default function StudioPage() {
     [
       buildCurrentDesignFile,
       designId,
+      doc.shapes.length,
       remixOfId,
       router,
       showToast,
@@ -2871,8 +2898,28 @@ export default function StudioPage() {
         activeTool: activeCuttingTool,
         material: doc.material,
       });
+      const eventType =
+        profile === "shaper-origin"
+          ? "shaper_export"
+          : profile === "laser"
+            ? "laser_export"
+            : profile === "cnc-router"
+              ? "cnc_export"
+              : "svg_export";
+      trackStudio({
+        eventType,
+        designId: designId,
+        metadata: { profile, shapeCount: doc.shapes.length },
+      });
     },
-    [doc.shapes, doc.material, designName, activeCuttingTool, showToast],
+    [
+      doc.shapes,
+      doc.material,
+      designName,
+      designId,
+      activeCuttingTool,
+      showToast,
+    ],
   );
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -3228,7 +3275,13 @@ export default function StudioPage() {
           existingShapes={doc.shapes}
           material={doc.material}
           onClose={() => setAiPanelOpen(false)}
-          onResult={handleAIResult}
+          onResult={(r) => {
+        trackStudio({
+          eventType: "ai_request",
+          metadata: { tool: r.toolName, prompt: r.promptText.slice(0, 200) },
+        });
+        handleAIResult(r);
+      }}
         />
       ) : doc.mode === "design" ? (
         <PropertiesPanel
