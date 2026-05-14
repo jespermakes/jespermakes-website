@@ -149,7 +149,7 @@ export function NotificationsBell({ hasSession }: NotificationsBellProps) {
                 {items.map((n) => {
                   const href =
                     n.designId
-                      ? `/workbench/${n.designId}`
+                      ? `/marketplace/${n.designId}`
                       : n.actorId
                         ? `/profile/${n.actorId}`
                         : "/account/notifications";

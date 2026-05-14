@@ -57,7 +57,7 @@ export async function GET(_req: NextRequest, ctx: Ctx) {
 }
 
 /**
- * Author-only update: snapshots the existing data into workbench_versions
+ * Author-only update: snapshots the existing data into marketplace versions
  * (next sequential version_number) before applying the change. Body fields
  * accepted: name, description, tags, category, data, thumbnail, changelog.
  */
@@ -107,7 +107,7 @@ export async function PATCH(request: NextRequest, ctx: Ctx) {
           typeof obj.changelog === "string" ? obj.changelog : "",
       })
       .catch((err) => {
-        console.error("workbench version snapshot failed:", err);
+        console.error("marketplace version snapshot failed:", err);
       });
   }
 

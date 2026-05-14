@@ -34,7 +34,7 @@ export default async function ProfileEditPage() {
     <main className="mx-auto max-w-2xl px-6 py-12">
       <h1 className="font-serif text-3xl text-wood">Your maker profile</h1>
       <p className="mt-1 text-sm text-wood-light">
-        This is the public face you show on The Workbench and on comments.
+        This is the public face you show on the Marketplace and on comments.
       </p>
       <div className="mt-8">
         <ProfileForm

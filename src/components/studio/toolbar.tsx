@@ -21,7 +21,7 @@ interface ToolbarProps {
   onRedo: () => void;
   onExportProfile: (profile: ExportProfile) => void;
   onSaveToFile: () => void;
-  onPublishToWorkbench: () => void;
+  onPublishToMarketplace: () => void;
   onImport: () => void;
   onBooleanUnion: () => void;
   onBooleanDifference: () => void;
@@ -276,11 +276,11 @@ const PROFILE_ORDER: ExportProfile[] = [
 function ExportButton({
   onExportProfile,
   onSaveToFile,
-  onPublishToWorkbench,
+  onPublishToMarketplace,
 }: {
   onExportProfile: (p: ExportProfile) => void;
   onSaveToFile: () => void;
-  onPublishToWorkbench: () => void;
+  onPublishToMarketplace: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -362,12 +362,12 @@ function ExportButton({
             type="button"
             role="menuitem"
             onClick={() => {
-              onPublishToWorkbench();
+              onPublishToMarketplace();
               setOpen(false);
             }}
             className="block w-full px-4 py-1.5 text-left text-forest transition-colors hover:bg-forest/[0.06]"
           >
-            Publish to Workbench…
+            Publish to Marketplace…
           </button>
         </div>
       ) : null}
@@ -383,7 +383,7 @@ export function Toolbar({
   onRedo,
   onExportProfile,
   onSaveToFile,
-  onPublishToWorkbench,
+  onPublishToMarketplace,
   onImport,
   onBooleanUnion,
   onBooleanDifference,
@@ -558,6 +558,27 @@ export function Toolbar({
         </svg>
       </ToolButton>
       <div className="flex-1" />
+      <Link
+        href="/marketplace"
+        target="_blank"
+        className="group flex h-9 w-9 items-center justify-center rounded-lg text-wood/60 transition-all hover:bg-wood/[0.06] hover:text-wood"
+        title="Browse Marketplace"
+      >
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+          <path
+            d="M2 3 L8 1 L14 3 L14 5 L2 5 Z"
+            fill="currentColor"
+            opacity="0.6"
+          />
+          <path
+            d="M3 6 L3 12 L13 12 L13 6"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            fill="none"
+          />
+          <path d="M6 8 L10 8 L10 10 L6 10 Z" fill="currentColor" />
+        </svg>
+      </Link>
       <ToolButton
         label="Import SVG"
         description="Open an SVG file from your computer. Drag and drop also works anywhere on the canvas."
@@ -578,7 +599,7 @@ export function Toolbar({
       <ExportButton
         onExportProfile={onExportProfile}
         onSaveToFile={onSaveToFile}
-        onPublishToWorkbench={onPublishToWorkbench}
+        onPublishToMarketplace={onPublishToMarketplace}
       />
       <ToolButton
         label="Help"

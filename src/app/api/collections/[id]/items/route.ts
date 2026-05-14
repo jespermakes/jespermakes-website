@@ -11,7 +11,7 @@ interface Ctx {
 }
 
 /**
- * Add an item to a collection. Body: { studioDesignId? | workbenchDesignId? }
+ * Add an item to a collection. Body: { studioDesignId? | workbenchDesignId? (marketplace) }
  * Exactly one of the ID fields must be set.
  */
 export async function POST(request: NextRequest, ctx: Ctx) {

@@ -20,7 +20,6 @@ import {
 } from "@/components/studio/context-menu";
 import { NodeOverlay } from "@/components/studio/node-overlay";
 import { PenOverlay } from "@/components/studio/pen-overlay";
-import { AIFloatingButton, AIPanel } from "@/components/studio/ai-panel";
 import { DogboneOverlay } from "@/components/studio/dogbone-overlay";
 import { EmptyCanvas } from "@/components/studio/empty-canvas";
 import { KerfOverlay } from "@/components/studio/kerf-overlay";
@@ -184,7 +183,6 @@ export default function StudioPage() {
     targetShapeId: string | null;
   } | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
-  const [aiPanelOpen, setAiPanelOpen] = useState(false);
   const [publishOpen, setPublishOpen] = useState(false);
   const [publishBusy, setPublishBusy] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
@@ -1613,18 +1611,18 @@ export default function StudioPage() {
     return () => clearInterval(interval);
   }, [isLoggedIn, designId, handleCloudSave, saveStatus]);
 
-  // Workbench import: when redirected from /workbench/[id] via 'Open in
+  // Marketplace import: when redirected from /marketplace/[id] via 'Open in
   // Studio', the design payload is parked in sessionStorage. Load it as an
   // unsaved design (no designId, so the user's first save creates a new
   // entry in their account) and capture remixOfId for the eventual publish.
   const [remixOfId, setRemixOfId] = useState<string | null>(null);
   useEffect(() => {
-    if (searchParams.get("from") !== "workbench") return;
+    if (searchParams.get("from") !== "marketplace") return;
     if (typeof window === "undefined") return;
     let raw: string | null = null;
     try {
-      raw = sessionStorage.getItem("workbench_open_in_studio");
-      if (raw) sessionStorage.removeItem("workbench_open_in_studio");
+      raw = sessionStorage.getItem("marketplace_open_in_studio");
+      if (raw) sessionStorage.removeItem("marketplace_open_in_studio");
     } catch {
       return;
     }
@@ -1680,7 +1678,7 @@ export default function StudioPage() {
     } catch {
       /* ignore malformed payload */
     }
-    // Strip ?from=workbench from the URL so a refresh doesn't try to re-import.
+    // Strip ?from=marketplace from the URL so a refresh doesn't try to re-import.
     try {
       const url = new URL(window.location.href);
       url.searchParams.delete("from");
@@ -2181,11 +2179,6 @@ export default function StudioPage() {
         return;
       }
 
-      if (e.key === "/" && !e.metaKey && !e.ctrlKey) {
-        setAiPanelOpen((o) => !o);
-        e.preventDefault();
-        return;
-      }
 
       switch (e.key) {
         case "v":
@@ -2769,54 +2762,6 @@ export default function StudioPage() {
     [doc.shapes, drawing, finalizePenAsOpen],
   );
 
-  const handleAIResult = useCallback(
-    (result: {
-      toolName: string;
-      generated: import("@/lib/studio/generators").GeneratorResult;
-      message: string;
-      promptText: string;
-    }) => {
-      const { generated } = result;
-      const toAdd = generated.shapesToAdd ?? [];
-      const toRemove = generated.shapesToRemove ?? [];
-      const toUpdate = generated.shapesToUpdate ?? [];
-      if (toAdd.length === 0 && toRemove.length === 0 && toUpdate.length === 0) {
-        if (generated.message) showToast(generated.message);
-        else if (result.message) showToast(result.message);
-        return;
-      }
-      // Make sure incoming shape ids don't collide with the existing canvas.
-      const existing = new Set(doc.shapes.map((s) => s.id));
-      const safeShapes = toAdd.map((s) => {
-        if (!existing.has(s.id)) {
-          existing.add(s.id);
-          return s;
-        }
-        const id = `ai-${Date.now().toString(36)}-${Math.random()
-          .toString(36)
-          .slice(2, 7)}`;
-        existing.add(id);
-        return { ...s, id };
-      });
-      // Apply updates first via REPLACE_SHAPES (remove + add), then add new
-      // shapes. Combine all into one history step.
-      const removeIds = [...toRemove, ...toUpdate.map((s) => s.id)];
-      const adds = [...toUpdate, ...safeShapes];
-      dispatch({
-        type: "REPLACE_SHAPES",
-        removeIds,
-        add: adds,
-        selectAdded: safeShapes.length > 0,
-      });
-      // Schedule a fit-all on the next frame so the new bounds are reflected.
-      if (safeShapes.length > 0) {
-        setTimeout(() => handleFitAll(), 16);
-      }
-      if (result.message) showToast(result.message);
-    },
-    [doc.shapes, handleFitAll, showToast],
-  );
-
   const handleOpenPublish = useCallback(() => {
     if (doc.shapes.length === 0) {
       showToast("Nothing to publish.");
@@ -2841,7 +2786,7 @@ export default function StudioPage() {
       setPublishError(null);
       try {
         const file = buildCurrentDesignFile();
-        const res = await fetch("/api/workbench/designs", {
+        const res = await fetch("/api/marketplace/designs", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -2862,13 +2807,13 @@ export default function StudioPage() {
         }
         const json = (await res.json()) as { design: { id: string } };
         setPublishOpen(false);
-        showToast("Published to The Workbench");
+        showToast("Published to Marketplace");
         trackStudio({
-          eventType: "workbench_publish",
+          eventType: "marketplace_publish",
           designId: json.design.id,
           metadata: { shapeCount: doc.shapes.length },
         });
-        router.push(`/workbench/${json.design.id}`);
+        router.push(`/marketplace/${json.design.id}`);
       } catch (err) {
         setPublishError(
           err instanceof Error ? err.message : "Publish failed",
@@ -3048,7 +2993,7 @@ export default function StudioPage() {
         onRedo={() => dispatch({ type: "REDO" })}
         onExportProfile={handleExportProfile}
         onSaveToFile={handleSaveToFile}
-        onPublishToWorkbench={handleOpenPublish}
+        onPublishToMarketplace={handleOpenPublish}
         onImport={handleImportClick}
         onBooleanUnion={() => handleBoolean("union")}
         onBooleanDifference={() => handleBoolean("difference")}
@@ -3126,14 +3071,7 @@ export default function StudioPage() {
                   markActive();
                   setActiveTool("rectangle");
                 }}
-                onAskAI={() => {
-                  markActive();
-                  setAiPanelOpen(true);
-                }}
               />
-            ) : null}
-            {doc.mode === "design" && !aiPanelOpen ? (
-              <AIFloatingButton onClick={() => setAiPanelOpen(true)} />
             ) : null}
             <Canvas
             ref={svgRef}
@@ -3268,22 +3206,7 @@ export default function StudioPage() {
           onFitAll={handleFitAll}
         />
       </div>
-      {doc.mode === "design" && aiPanelOpen ? (
-        <AIPanel
-          open={aiPanelOpen}
-          isLoggedIn={isLoggedIn}
-          existingShapes={doc.shapes}
-          material={doc.material}
-          onClose={() => setAiPanelOpen(false)}
-          onResult={(r) => {
-        trackStudio({
-          eventType: "ai_request",
-          metadata: { tool: r.toolName, prompt: r.promptText.slice(0, 200) },
-        });
-        handleAIResult(r);
-      }}
-        />
-      ) : doc.mode === "design" ? (
+      {doc.mode === "design" ? (
         <PropertiesPanel
           selectedShapes={selectedShapes}
           unit={doc.unitDisplay}

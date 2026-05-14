@@ -8,8 +8,8 @@ import {
   workbenchLikes,
   workbenchVersions,
 } from "@/lib/db/schema";
-import { CommentsSection } from "@/components/workbench/comments-section";
-import { DesignDetail } from "@/components/workbench/design-detail";
+import { CommentsSection } from "@/components/marketplace/comments-section";
+import { DesignDetail } from "@/components/marketplace/design-detail";
 import type { StudioDesignFile } from "@/lib/studio/file-format";
 
 export const dynamic = "force-dynamic";
@@ -25,14 +25,14 @@ export async function generateMetadata({ params }: PageProps) {
     .from(workbenchDesigns)
     .where(eq(workbenchDesigns.id, id))
     .limit(1);
-  if (!row) return { title: "Workbench Design" };
+  if (!row) return { title: "Marketplace Design" };
   return {
-    title: `${row.name} — The Workbench`,
-    description: (row.description || "").slice(0, 160) || "Community design on The Workbench.",
+    title: `${row.name} — Marketplace`,
+    description: (row.description || "").slice(0, 160) || "Community design on Marketplace.",
   };
 }
 
-export default async function WorkbenchDetailPage({ params }: PageProps) {
+export default async function MarketplaceDetailPage({ params }: PageProps) {
   const { id } = await params;
   const [row] = await db
     .select()
@@ -89,8 +89,8 @@ export default async function WorkbenchDetailPage({ params }: PageProps) {
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
       <nav className="mb-6 text-sm text-wood-light">
-        <Link href="/workbench" className="hover:text-forest">
-          ← Back to The Workbench
+        <Link href="/marketplace" className="hover:text-forest">
+          ← Back to Marketplace
         </Link>
       </nav>
       <DesignDetail

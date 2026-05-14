@@ -76,7 +76,7 @@ export function PublishModal({
           id="publish-modal-title"
           className="font-serif text-xl text-wood"
         >
-          Publish to The Workbench
+          Publish to Marketplace
         </h2>
         <p className="mt-1 text-[12px] text-wood-light">
           Share your design with other makers. Free to use, modify, and remix

@@ -7,7 +7,7 @@ import { downloadDesignFile } from "@/lib/studio/file-format";
 import type { StudioDesignFile } from "@/lib/studio/file-format";
 import { trackStudio } from "@/lib/studio-track";
 
-export interface WorkbenchDesignDetail {
+export interface MarketplaceDesignDetail {
   id: string;
   name: string;
   description: string;
@@ -27,13 +27,13 @@ export interface WorkbenchDesignDetail {
 }
 
 interface DesignDetailProps {
-  design: WorkbenchDesignDetail;
+  design: MarketplaceDesignDetail;
   isLoggedIn: boolean;
   isAuthor: boolean;
   initialLiked: boolean;
 }
 
-const STORAGE_KEY = "workbench_open_in_studio";
+const STORAGE_KEY = "marketplace_open_in_studio";
 
 export function DesignDetail({
   design,
@@ -48,12 +48,12 @@ export function DesignDetail({
 
   const handleLike = async () => {
     if (!isLoggedIn) {
-      router.push(`/login?callbackUrl=/workbench/${design.id}`);
+      router.push(`/login?callbackUrl=/marketplace/${design.id}`);
       return;
     }
     setBusy(true);
     try {
-      const res = await fetch(`/api/workbench/designs/${design.id}/like`, {
+      const res = await fetch(`/api/marketplace/designs/${design.id}/like`, {
         method: "POST",
       });
       if (res.ok) {
@@ -62,7 +62,7 @@ export function DesignDetail({
         setLikeCount(json.likeCount);
         if (json.liked) {
           trackStudio({
-            eventType: "workbench_like",
+            eventType: "marketplace_like",
             designId: design.id,
           });
         }
@@ -86,27 +86,27 @@ export function DesignDetail({
     } catch {
       /* noop */
     }
-    router.push("/studio?from=workbench");
+    router.push("/studio?from=marketplace");
   };
 
   const handleDownload = () => {
     downloadDesignFile(design.data);
     trackStudio({
-      eventType: "workbench_download",
+      eventType: "marketplace_download",
       designId: design.id,
       metadata: { format: "jm" },
     });
   };
 
   const handleDelete = async () => {
-    if (!window.confirm("Remove this design from The Workbench?")) return;
+    if (!window.confirm("Remove this design from Marketplace?")) return;
     setBusy(true);
     try {
-      const res = await fetch(`/api/workbench/designs/${design.id}`, {
+      const res = await fetch(`/api/marketplace/designs/${design.id}`, {
         method: "DELETE",
       });
       if (res.ok) {
-        router.push("/workbench");
+        router.push("/marketplace");
       }
     } finally {
       setBusy(false);
@@ -205,7 +205,7 @@ export function DesignDetail({
           <p className="text-[12px] text-wood-light/70">
             Remixed from{" "}
             <Link
-              href={`/workbench/${design.remixOfId}`}
+              href={`/marketplace/${design.remixOfId}`}
               className="font-medium text-wood-light underline hover:text-forest"
             >
               {design.remixOfName}
@@ -223,13 +223,13 @@ export function DesignDetail({
             disabled={busy}
             className="self-start rounded-xl border border-red-200 bg-red-50/70 px-4 py-1.5 text-[12px] text-red-700 hover:border-red-400"
           >
-            Remove from Workbench
+            Remove from Marketplace
           </button>
         ) : isLoggedIn ? (
           <ReportLink designId={design.id} />
         ) : null}
         <p className="mt-4 border-t border-wood/[0.06] pt-3 text-[11px] text-wood-light/60">
-          Designs on The Workbench are shared under{" "}
+          Designs on Marketplace are shared under{" "}
           <a
             href="https://creativecommons.org/licenses/by/4.0/"
             target="_blank"
@@ -253,7 +253,7 @@ function ReportLink({ designId }: { designId: string }) {
       "other",
     );
     if (reason == null) return;
-    const res = await fetch(`/api/workbench/designs/${designId}/report`, {
+    const res = await fetch(`/api/marketplace/designs/${designId}/report`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ reason: reason.trim().toLowerCase() || "other" }),

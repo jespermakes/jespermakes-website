@@ -37,7 +37,7 @@ export function CommentsSection({
     (async () => {
       try {
         const res = await fetch(
-          `/api/workbench/designs/${designId}/comments`,
+          `/api/marketplace/designs/${designId}/comments`,
         );
         if (!res.ok) return;
         const json = (await res.json()) as { comments: CommentRow[] };
@@ -57,14 +57,14 @@ export function CommentsSection({
     const text = draft.trim();
     if (!text || busy) return;
     if (!isLoggedIn) {
-      router.push(`/login?callbackUrl=/workbench/${designId}`);
+      router.push(`/login?callbackUrl=/marketplace/${designId}`);
       return;
     }
     setBusy(true);
     setError(null);
     try {
       const res = await fetch(
-        `/api/workbench/designs/${designId}/comments`,
+        `/api/marketplace/designs/${designId}/comments`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -90,7 +90,7 @@ export function CommentsSection({
   const remove = async (id: string) => {
     if (!window.confirm("Delete this comment?")) return;
     try {
-      const res = await fetch(`/api/workbench/comments/${id}`, {
+      const res = await fetch(`/api/marketplace/comments/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {
@@ -180,7 +180,7 @@ export function CommentsSection({
         {!isLoggedIn ? (
           <p className="text-[11px] text-wood-light/60">
             <Link
-              href={`/login?callbackUrl=/workbench/${designId}`}
+              href={`/login?callbackUrl=/marketplace/${designId}`}
               className="underline hover:text-wood"
             >
               Sign in

@@ -6,9 +6,9 @@ import { db } from "@/lib/db";
 import { follows, users, workbenchDesigns } from "@/lib/db/schema";
 import {
   DesignCard,
-  type WorkbenchDesignSummary,
-} from "@/components/workbench/design-card";
-import { FollowButton } from "@/components/workbench/follow-button";
+  type MarketplaceDesignSummary,
+} from "@/components/marketplace/design-card";
+import { FollowButton } from "@/components/marketplace/follow-button";
 import { publicDisplayName } from "@/lib/profile";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps) {
   const dn = publicDisplayName(u);
   return {
     title: `${dn} — Jesper Makes`,
-    description: `Designs by ${dn} on The Workbench.`,
+    description: `Designs by ${dn} on Marketplace.`,
   };
 }
 
@@ -112,7 +112,7 @@ export default async function ProfilePage({ params }: PageProps) {
     isFollowing = !!existing;
   }
 
-  const designs: WorkbenchDesignSummary[] = designsRows.map((r) => ({
+  const designs: MarketplaceDesignSummary[] = designsRows.map((r) => ({
     id: r.id,
     name: r.name,
     description: r.description ?? "",

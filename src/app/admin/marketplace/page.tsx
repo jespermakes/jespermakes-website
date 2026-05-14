@@ -11,10 +11,10 @@ export const metadata = {
   title: "Workbench Moderation — Admin",
 };
 
-export default async function WorkbenchModerationPage() {
+export default async function MarketplaceModerationPage() {
   const session = await auth();
   if (!session?.user?.id) {
-    redirect("/login?callbackUrl=/admin/workbench");
+    redirect("/login?callbackUrl=/admin/marketplace");
   }
   const [me] = await db
     .select({ isAdmin: users.isAdmin })
@@ -42,9 +42,9 @@ export default async function WorkbenchModerationPage() {
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-12">
-      <h1 className="font-serif text-3xl text-wood">Workbench moderation</h1>
+      <h1 className="font-serif text-3xl text-wood">Marketplace moderation</h1>
       <p className="mt-1 text-sm text-wood-light">
-        Designs flagged for review. Approve to put back on the Workbench;
+        Designs flagged for review. Approve to put back on the Marketplace;
         remove to hide; ban author to remove all of their designs.
       </p>
       {flagged.length === 0 ? (

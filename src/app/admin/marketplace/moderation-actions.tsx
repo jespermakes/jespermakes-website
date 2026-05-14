@@ -23,7 +23,7 @@ export function ModerationActions({ designId }: ModerationActionsProps) {
     }
     setBusy(true);
     try {
-      const res = await fetch(`/api/admin/workbench/${designId}/moderate`, {
+      const res = await fetch(`/api/admin/marketplace/${designId}/moderate`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action }),

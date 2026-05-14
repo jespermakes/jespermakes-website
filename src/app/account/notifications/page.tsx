@@ -34,7 +34,7 @@ export default async function NotificationsPage() {
         <ul className="mt-6 divide-y divide-wood/[0.06] rounded-2xl border border-wood/[0.08] bg-white">
           {rows.map((n) => {
             const href = n.designId
-              ? `/workbench/${n.designId}`
+              ? `/marketplace/${n.designId}`
               : n.actorId
                 ? `/profile/${n.actorId}`
                 : "#";

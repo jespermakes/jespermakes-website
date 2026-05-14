@@ -2,7 +2,7 @@ import type { users } from "./db/schema";
 
 type UserRow = typeof users.$inferSelect;
 
-/** The display name we show on profile pages, comments, and Workbench cards. */
+/** The display name we show on profile pages, comments, and Marketplace cards. */
 export function publicDisplayName(
   user: Pick<UserRow, "displayName" | "name" | "email"> | null,
 ): string {

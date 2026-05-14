@@ -13,11 +13,10 @@ const ALLOWED = new Set([
   "shaper_export",
   "laser_export",
   "cnc_export",
-  "ai_request",
-  "workbench_publish",
-  "workbench_download",
-  "workbench_like",
-  "workbench_comment",
+  "marketplace_publish",
+  "marketplace_download",
+  "marketplace_like",
+  "marketplace_comment",
 ]);
 
 export async function POST(request: NextRequest) {
