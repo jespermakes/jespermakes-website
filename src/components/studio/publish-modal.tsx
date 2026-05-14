@@ -13,6 +13,7 @@ const CATEGORIES = [
   "mechanical",
   "laser",
   "cnc",
+  "lamp",
 ];
 
 interface PublishModalProps {

@@ -130,6 +130,7 @@ const CATEGORY_ICONS: Record<string, string> = {
   laser: "\u{1F4A1}",
   cnc: "\u{1F3ED}",
   general: "\u{1F4D0}",
+  lamp: "\u{1FA94}",
 };
 
 function PlaceholderThumb() {

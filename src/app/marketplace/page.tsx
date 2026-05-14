@@ -29,6 +29,7 @@ const VALID_CATEGORIES = new Set([
   "mechanical",
   "laser",
   "cnc",
+  "lamp",
 ]);
 
 interface SearchParams {

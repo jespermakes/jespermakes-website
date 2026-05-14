@@ -14,6 +14,7 @@ const CATEGORIES = [
   { slug: "mechanical", label: "Mechanical", icon: "\u{2699}\uFE0F" },
   { slug: "laser", label: "Laser", icon: "\u{1F4A1}" },
   { slug: "cnc", label: "CNC", icon: "\u{1F3ED}" },
+  { slug: "lamp", label: "Lamp", icon: "\u{1FA94}" },
 ];
 
 const SORTS = [

@@ -20,6 +20,7 @@ const VALID_CATEGORIES = new Set([
   "mechanical",
   "laser",
   "cnc",
+  "lamp",
 ]);
 
 export async function GET(request: NextRequest) {
