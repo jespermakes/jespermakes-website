@@ -1,18 +1,198 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
+import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { generateAllParts, type Part } from "@/lib/cone-lamp/parts";
 import { generateCutSheetSVG } from "@/lib/cone-lamp/cut-sheet";
 import { trackConeLamp } from "@/lib/cone-lamp-track";
 import { TOP_INNER_PATHS, BOTTOM_HOLE } from "@/lib/cone-lamp/constants";
+import {
+  LampDesignerTopBar,
+  type SaveStatus,
+} from "@/components/lamp-designer/top-bar";
+import { LampDesignsDialog } from "@/components/lamp-designer/designs-dialog";
 
 const ASSEMBLY_GUIDE_URL = "/downloads/cone-lamp-assembly-guide.pdf";
+const DEFAULT_THICKNESS = 6.4;
 
 export default function ConeLampPage() {
-  const [thicknessMM, setThicknessMM] = useState(6.4);
+  const searchParams = useSearchParams();
+  const { data: session } = useSession();
+  const isLoggedIn = !!session?.user?.id;
+  const userInitial = session?.user?.name?.[0]?.toUpperCase() ?? null;
+
+  const [thicknessMM, setThicknessMM] = useState(DEFAULT_THICKNESS);
+  const [designId, setDesignId] = useState<string | null>(null);
+  const [designName, setDesignName] = useState("Untitled");
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("never-saved");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const dirtyRef = useRef(false);
+  const initialLoadRef = useRef(true);
+
+  // Load design from URL ?id= parameter
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (!id) {
+      initialLoadRef.current = false;
+      return;
+    }
+    (async () => {
+      try {
+        const res = await fetch(`/api/lamp-designer/designs/${id}`);
+        if (!res.ok) return;
+        const json = (await res.json()) as {
+          design: {
+            id: string;
+            name: string;
+            parameters: { thicknessMM?: number };
+          };
+        };
+        setDesignId(json.design.id);
+        setDesignName(json.design.name);
+        if (typeof json.design.parameters?.thicknessMM === "number") {
+          setThicknessMM(json.design.parameters.thicknessMM);
+        }
+        setSaveStatus("saved");
+        dirtyRef.current = false;
+      } catch {
+        // Failed to load — start fresh
+      } finally {
+        initialLoadRef.current = false;
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Mark dirty when thickness changes (skip initial load)
+  useEffect(() => {
+    if (initialLoadRef.current) return;
+    if (saveStatus === "saving") return;
+    dirtyRef.current = true;
+    setSaveStatus((s) => (s === "never-saved" ? "never-saved" : "dirty"));
+  }, [thicknessMM, saveStatus]);
 
   useEffect(() => {
     trackConeLamp({ eventType: "page_view" });
+  }, []);
+
+  const handleSave = useCallback(async () => {
+    if (!isLoggedIn) return;
+    setSaveStatus("saving");
+    try {
+      const res = await fetch("/api/lamp-designer/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: designId,
+          name: designName,
+          parameters: { thicknessMM },
+        }),
+      });
+      if (!res.ok) {
+        setSaveStatus("error");
+        return;
+      }
+      const json = (await res.json()) as {
+        design: { id: string; name: string };
+      };
+      setDesignId(json.design.id);
+      setSaveStatus("saved");
+      dirtyRef.current = false;
+      // Update URL to include id for shareability
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set("id", json.design.id);
+        window.history.replaceState({}, "", url.toString());
+      } catch {
+        /* noop */
+      }
+    } catch {
+      setSaveStatus("error");
+    }
+  }, [isLoggedIn, designId, designName, thicknessMM]);
+
+  // Ctrl+S keyboard shortcut
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+        e.preventDefault();
+        handleSave();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [handleSave]);
+
+  const handleNewDesign = useCallback(() => {
+    if (dirtyRef.current) {
+      const ok = window.confirm(
+        "You have unsaved changes. Discard them and start a new design?",
+      );
+      if (!ok) return;
+    }
+    setThicknessMM(DEFAULT_THICKNESS);
+    setDesignId(null);
+    setDesignName("Untitled");
+    setSaveStatus("never-saved");
+    dirtyRef.current = false;
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("id");
+      window.history.replaceState({}, "", url.toString());
+    } catch {
+      /* noop */
+    }
+  }, []);
+
+  const handleOpenDesigns = useCallback(() => {
+    if (!isLoggedIn) return;
+    setDialogOpen(true);
+  }, [isLoggedIn]);
+
+  const handleSelectDesign = useCallback(
+    async (id: string) => {
+      setDialogOpen(false);
+      try {
+        const res = await fetch(`/api/lamp-designer/designs/${id}`);
+        if (!res.ok) return;
+        const json = (await res.json()) as {
+          design: {
+            id: string;
+            name: string;
+            parameters: { thicknessMM?: number };
+          };
+        };
+        initialLoadRef.current = true;
+        setDesignId(json.design.id);
+        setDesignName(json.design.name);
+        if (typeof json.design.parameters?.thicknessMM === "number") {
+          setThicknessMM(json.design.parameters.thicknessMM);
+        }
+        setSaveStatus("saved");
+        dirtyRef.current = false;
+        // Use setTimeout to ensure initialLoadRef blocks the dirty-marking effect
+        setTimeout(() => {
+          initialLoadRef.current = false;
+        }, 0);
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set("id", json.design.id);
+          window.history.replaceState({}, "", url.toString());
+        } catch {
+          /* noop */
+        }
+      } catch {
+        /* Failed to load */
+      }
+    },
+    [],
+  );
+
+  const handleRenameCommit = useCallback((name: string) => {
+    setDesignName(name);
+    dirtyRef.current = true;
+    setSaveStatus((s) => (s === "never-saved" ? "never-saved" : "dirty"));
   }, []);
 
   const parts = useMemo(() => generateAllParts(thicknessMM), [thicknessMM]);
@@ -43,6 +223,16 @@ export default function ConeLampPage() {
 
   return (
     <div className="min-h-screen bg-cream text-wood">
+      <LampDesignerTopBar
+        designName={designName}
+        onRenameCommit={handleRenameCommit}
+        saveStatus={saveStatus}
+        isLoggedIn={isLoggedIn}
+        userInitial={userInitial}
+        onSave={handleSave}
+        onNewDesign={handleNewDesign}
+        onOpenDesigns={handleOpenDesigns}
+      />
       <div className="max-w-5xl mx-auto px-6 py-10 md:py-16">
         {/* Header */}
         <div className="mb-10">
@@ -177,6 +367,12 @@ export default function ConeLampPage() {
           <strong>@jespermakes</strong> if you build one.
         </div>
       </div>
+
+      <LampDesignsDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onSelect={handleSelectDesign}
+      />
     </div>
   );
 }
