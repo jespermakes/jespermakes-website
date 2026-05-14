@@ -6,12 +6,23 @@ import type {
   ShapeParameters,
   LampDesignerState,
   LampParameters,
+  LampContext,
+  TemplateId,
+  LightParameters,
+  PatternId,
 } from "@/lib/lamp-designer/types";
 import { STEP_IDS } from "@/lib/lamp-designer/types";
 import { getTemplate } from "@/lib/lamp-designer/templates";
 import { StepNav } from "@/components/lamp-designer/step-nav";
 import { LampSceneDynamic } from "@/components/lamp-designer/scene-dynamic";
+import { ContextStep } from "@/components/lamp-designer/steps/context-step";
+import { FormStep } from "@/components/lamp-designer/steps/form-step";
 import { ShapeStep } from "@/components/lamp-designer/steps/shape-step";
+import { LightStep } from "@/components/lamp-designer/steps/light-step";
+import { PatternStep } from "@/components/lamp-designer/steps/pattern-step";
+import { CheckStep } from "@/components/lamp-designer/steps/check-step";
+import { RevealStep } from "@/components/lamp-designer/steps/reveal-step";
+import { ExportStep } from "@/components/lamp-designer/steps/export-step";
 
 const DEFAULT_TEMPLATE = getTemplate("cone");
 
@@ -57,13 +68,6 @@ export default function LampDesignerPage() {
     });
   }, []);
 
-  const updateShape = useCallback((shape: ShapeParameters) => {
-    setState((prev) => ({
-      ...prev,
-      parameters: { ...prev.parameters, shape },
-    }));
-  }, []);
-
   const goBack = useCallback(() => {
     setState((prev) => {
       const idx = STEP_IDS.indexOf(prev.currentStep);
@@ -72,11 +76,105 @@ export default function LampDesignerPage() {
     });
   }, []);
 
+  const updateContext = useCallback((context: LampContext) => {
+    setState((prev) => ({
+      ...prev,
+      parameters: { ...prev.parameters, context },
+    }));
+  }, []);
+
+  const updateTemplate = useCallback((templateId: TemplateId) => {
+    const template = getTemplate(templateId);
+    setState((prev) => ({
+      ...prev,
+      parameters: {
+        ...prev.parameters,
+        templateId,
+        shape: template.defaultParameters,
+      },
+    }));
+  }, []);
+
+  const updateShape = useCallback((shape: ShapeParameters) => {
+    setState((prev) => ({
+      ...prev,
+      parameters: { ...prev.parameters, shape },
+    }));
+  }, []);
+
+  const updateLight = useCallback((light: LightParameters) => {
+    setState((prev) => ({
+      ...prev,
+      parameters: { ...prev.parameters, light },
+    }));
+  }, []);
+
+  const updatePattern = useCallback((patternId: PatternId) => {
+    setState((prev) => ({
+      ...prev,
+      parameters: { ...prev.parameters, patternId },
+    }));
+  }, []);
+
   const currentStepIndex = STEP_IDS.indexOf(currentStep);
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === STEP_IDS.length - 1;
 
   const template = getTemplate(parameters.templateId);
+
+  function renderStep() {
+    switch (currentStep) {
+      case "context":
+        return (
+          <ContextStep
+            selected={parameters.context}
+            onSelect={updateContext}
+          />
+        );
+      case "form":
+        return (
+          <FormStep
+            selected={parameters.templateId}
+            onSelect={updateTemplate}
+          />
+        );
+      case "shape":
+        return <ShapeStep shape={parameters.shape} onChange={updateShape} />;
+      case "light":
+        return <LightStep light={parameters.light} onChange={updateLight} />;
+      case "pattern":
+        return (
+          <PatternStep
+            selected={parameters.patternId}
+            onSelect={updatePattern}
+          />
+        );
+      case "check":
+        return (
+          <CheckStep
+            shape={parameters.shape}
+            light={parameters.light}
+            patternId={parameters.patternId}
+          />
+        );
+      case "reveal":
+        return (
+          <RevealStep
+            context={parameters.context}
+            shape={parameters.shape}
+            light={parameters.light}
+            patternId={parameters.patternId}
+          />
+        );
+      case "export":
+        return (
+          <ExportStep
+            parameters={parameters}
+            designName={`${parameters.templateId}-lamp`}
+          />
+        );
+    }
+  }
 
   return (
     <div className="flex h-[calc(100vh-64px)] bg-parchment">
@@ -99,20 +197,7 @@ export default function LampDesignerPage() {
 
       {/* Right: Controls Panel */}
       <aside className="w-80 shrink-0 border-l border-wood/10 bg-cream/50 overflow-y-auto flex flex-col">
-        <div className="p-6 flex-1">
-          {currentStep === "shape" ? (
-            <ShapeStep shape={parameters.shape} onChange={updateShape} />
-          ) : (
-            <>
-              <h2 className="text-lg font-semibold text-wood mb-4 capitalize">
-                {currentStep}
-              </h2>
-              <p className="text-sm text-wood/60">
-                Step controls will appear here.
-              </p>
-            </>
-          )}
-        </div>
+        <div className="p-6 flex-1">{renderStep()}</div>
 
         {/* Navigation buttons */}
         <div className="p-4 border-t border-wood/10 flex gap-3">

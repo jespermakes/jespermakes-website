@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 import { STEP_IDS } from "../../lib/lamp-designer/types";
-import type { LampDesignerState, LampParameters } from "../../lib/lamp-designer/types";
+import type { LampDesignerState, LampParameters, LampContext, TemplateId, LightParameters, PatternId } from "../../lib/lamp-designer/types";
 import { getTemplate } from "../../lib/lamp-designer/templates";
 
 const source = readFileSync(resolve(__dirname, "page.tsx"), "utf-8");
@@ -34,6 +34,68 @@ describe("lamp-designer page structure", () => {
   it("has Back and Next navigation buttons", () => {
     expect(source).toContain("Back");
     expect(source).toContain("Next");
+  });
+});
+
+describe("lamp-designer all steps wired", () => {
+  it("imports all step components", () => {
+    expect(source).toContain("ContextStep");
+    expect(source).toContain("FormStep");
+    expect(source).toContain("ShapeStep");
+    expect(source).toContain("LightStep");
+    expect(source).toContain("PatternStep");
+    expect(source).toContain("CheckStep");
+    expect(source).toContain("RevealStep");
+    expect(source).toContain("ExportStep");
+  });
+
+  it("renders each step component in a switch/conditional", () => {
+    expect(source).toContain("<ContextStep");
+    expect(source).toContain("<FormStep");
+    expect(source).toContain("<ShapeStep");
+    expect(source).toContain("<LightStep");
+    expect(source).toContain("<PatternStep");
+    expect(source).toContain("<CheckStep");
+    expect(source).toContain("<RevealStep");
+    expect(source).toContain("<ExportStep");
+  });
+
+  it("passes context selection props to ContextStep", () => {
+    expect(source).toContain("selected={parameters.context}");
+    expect(source).toContain("onSelect={updateContext}");
+  });
+
+  it("passes template selection props to FormStep", () => {
+    expect(source).toContain("selected={parameters.templateId}");
+    expect(source).toContain("onSelect={updateTemplate}");
+  });
+
+  it("passes shape props to ShapeStep", () => {
+    expect(source).toContain("shape={parameters.shape}");
+    expect(source).toContain("onChange={updateShape}");
+  });
+
+  it("passes light props to LightStep", () => {
+    expect(source).toContain("light={parameters.light}");
+    expect(source).toContain("onChange={updateLight}");
+  });
+
+  it("passes pattern props to PatternStep", () => {
+    expect(source).toContain("selected={parameters.patternId}");
+    expect(source).toContain("onSelect={updatePattern}");
+  });
+
+  it("passes check props to CheckStep", () => {
+    expect(source).toContain("patternId={parameters.patternId}");
+  });
+
+  it("passes reveal props to RevealStep", () => {
+    expect(source).toContain("context={parameters.context}");
+  });
+
+  it("passes export props to ExportStep", () => {
+    expect(source).toContain("parameters={parameters}");
+    expect(source).toContain("designName=");
   });
 });
 
@@ -136,6 +198,68 @@ describe("lamp-designer step state logic", () => {
     const jumped: LampDesignerState = { ...state, currentStep: "context" };
     expect(jumped.currentStep).toBe("context");
     expect(jumped.completedSteps).toEqual(["context", "form"]);
+  });
+});
+
+describe("lamp-designer state update functions", () => {
+  function createParams(): LampParameters {
+    const template = getTemplate("cone");
+    return {
+      context: "bedside",
+      templateId: "cone",
+      shape: template.defaultParameters,
+      light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },
+      patternId: "smooth",
+    };
+  }
+
+  it("updateContext changes the context field", () => {
+    const params = createParams();
+    const updated: LampParameters = { ...params, context: "dining" as LampContext };
+    expect(updated.context).toBe("dining");
+    expect(updated.templateId).toBe(params.templateId);
+  });
+
+  it("updateTemplate changes templateId and resets shape to template defaults", () => {
+    const domeTemplate = getTemplate("dome");
+    const params = createParams();
+    const updated: LampParameters = {
+      ...params,
+      templateId: "dome" as TemplateId,
+      shape: domeTemplate.defaultParameters,
+    };
+    expect(updated.templateId).toBe("dome");
+    expect(updated.shape).toEqual(domeTemplate.defaultParameters);
+    expect(updated.light).toEqual(params.light);
+  });
+
+  it("updateLight changes the light field", () => {
+    const params = createParams();
+    const newLight: LightParameters = { colorTemperature: 4000, beamAngle: 90, direction: "up" };
+    const updated: LampParameters = { ...params, light: newLight };
+    expect(updated.light).toEqual(newLight);
+    expect(updated.shape).toEqual(params.shape);
+  });
+
+  it("updatePattern changes the patternId field", () => {
+    const params = createParams();
+    const updated: LampParameters = { ...params, patternId: "hexagonal" as PatternId };
+    expect(updated.patternId).toBe("hexagonal");
+    expect(updated.shape).toEqual(params.shape);
+  });
+
+  it("template change resets shape but preserves other parameters", () => {
+    const params = createParams();
+    const cylinderTemplate = getTemplate("cylinder");
+    const updated: LampParameters = {
+      ...params,
+      templateId: "cylinder",
+      shape: cylinderTemplate.defaultParameters,
+    };
+    expect(updated.context).toBe("bedside");
+    expect(updated.light).toEqual(params.light);
+    expect(updated.patternId).toBe("smooth");
+    expect(updated.shape).toEqual(cylinderTemplate.defaultParameters);
   });
 });
 
