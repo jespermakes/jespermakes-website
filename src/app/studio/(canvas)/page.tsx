@@ -183,6 +183,7 @@ export default function StudioPage() {
     targetShapeId: string | null;
   } | null>(null);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [dismissedEmpty, setDismissedEmpty] = useState(false);
   const [publishOpen, setPublishOpen] = useState(false);
   const [publishBusy, setPublishBusy] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
@@ -3065,11 +3066,13 @@ export default function StudioPage() {
             {doc.shapes.length === 0 &&
             doc.mode === "design" &&
             !drawing &&
-            !showWelcome ? (
+            !showWelcome &&
+            !dismissedEmpty ? (
               <EmptyCanvas
                 onDrawRectangle={() => {
                   markActive();
                   setActiveTool("rectangle");
+                  setDismissedEmpty(true);
                 }}
               />
             ) : null}
