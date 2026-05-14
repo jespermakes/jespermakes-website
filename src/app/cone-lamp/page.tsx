@@ -12,6 +12,7 @@ import {
   type SaveStatus,
 } from "@/components/lamp-designer/top-bar";
 import { LampDesignsDialog } from "@/components/lamp-designer/designs-dialog";
+import { PublishModal } from "@/components/studio/publish-modal";
 
 const ASSEMBLY_GUIDE_URL = "/downloads/cone-lamp-assembly-guide.pdf";
 const DEFAULT_THICKNESS = 6.4;
@@ -27,6 +28,9 @@ export default function ConeLampPage() {
   const [designName, setDesignName] = useState("Untitled");
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("never-saved");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [publishModalOpen, setPublishModalOpen] = useState(false);
+  const [publishBusy, setPublishBusy] = useState(false);
+  const [publishError, setPublishError] = useState<string | null>(null);
   const dirtyRef = useRef(false);
   const initialLoadRef = useRef(true);
 
@@ -195,6 +199,42 @@ export default function ConeLampPage() {
     setSaveStatus((s) => (s === "never-saved" ? "never-saved" : "dirty"));
   }, []);
 
+  const handlePublish = useCallback(
+    async (input: {
+      name: string;
+      description: string;
+      tags: string[];
+      category: string;
+    }) => {
+      setPublishBusy(true);
+      setPublishError(null);
+      try {
+        const res = await fetch("/api/lamp-designer/publish", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: input.name,
+            description: input.description,
+            tags: input.tags,
+            parameters: { thicknessMM },
+            templateId: "cone",
+          }),
+        });
+        if (!res.ok) {
+          const json = (await res.json()) as { error?: string };
+          setPublishError(json.error ?? "Failed to publish.");
+          return;
+        }
+        setPublishModalOpen(false);
+      } catch {
+        setPublishError("Network error. Please try again.");
+      } finally {
+        setPublishBusy(false);
+      }
+    },
+    [thicknessMM],
+  );
+
   const parts = useMemo(() => generateAllParts(thicknessMM), [thicknessMM]);
   const isOriginal = Math.abs(thicknessMM - 6.4) < 0.05;
   const totalPieces = parts.reduce((sum, p) => sum + p.count, 0);
@@ -320,6 +360,17 @@ export default function ConeLampPage() {
               >
                 Assembly guide (PDF)
               </button>
+              {isLoggedIn && (
+                <button
+                  onClick={() => {
+                    setPublishError(null);
+                    setPublishModalOpen(true);
+                  }}
+                  className="bg-forest text-cream rounded-2xl py-3.5 px-5 text-[13px] font-medium cursor-pointer hover:bg-forest/90"
+                >
+                  Publish to Marketplace
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -373,6 +424,16 @@ export default function ConeLampPage() {
         onClose={() => setDialogOpen(false)}
         onSelect={handleSelectDesign}
       />
+
+      {publishModalOpen && (
+        <PublishModal
+          initialName={designName}
+          busy={publishBusy}
+          error={publishError}
+          onCancel={() => setPublishModalOpen(false)}
+          onPublish={handlePublish}
+        />
+      )}
     </div>
   );
 }
