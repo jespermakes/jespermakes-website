@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 interface EmptyCanvasProps {
   onDrawRectangle: () => void;
 }
@@ -24,6 +26,13 @@ export function EmptyCanvas({ onDrawRectangle }: EmptyCanvasProps) {
           >
             Draw a rectangle
           </button>
+          <Link
+            href="/marketplace"
+            target="_blank"
+            className="rounded-xl border border-wood/[0.12] bg-white px-4 py-2 text-sm text-wood hover:border-forest/40 hover:bg-cream"
+          >
+            Browse Marketplace
+          </Link>
         </div>
         <p className="text-[12px] text-wood-light/60">
           Or drag an SVG file onto the canvas.
