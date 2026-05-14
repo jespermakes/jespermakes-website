@@ -2,12 +2,13 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import type { ProfilePoint, ShapeParameters } from "@/lib/lamp-designer/types";
+import type { ProfilePoint, ShapeParameters, PatternId } from "@/lib/lamp-designer/types";
 import { LampMesh } from "./lamp-mesh";
 
 export interface LampSceneProps {
   profile: ProfilePoint[];
   shape: ShapeParameters;
+  patternId?: PatternId;
   color?: string;
   glowIntensity?: number;
   glowColor?: string;
@@ -18,6 +19,7 @@ export interface LampSceneProps {
 export function LampScene({
   profile,
   shape,
+  patternId,
   color,
   glowIntensity,
   glowColor,
@@ -43,6 +45,7 @@ export function LampScene({
       <LampMesh
         profile={profile}
         shape={shape}
+        patternId={patternId}
         color={color}
         glowIntensity={glowIntensity}
         glowColor={glowColor}

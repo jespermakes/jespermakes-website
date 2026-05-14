@@ -192,6 +192,7 @@ export default function LampDesignerPage() {
         <LampSceneDynamic
           profile={template.profile}
           shape={parameters.shape}
+          patternId={parameters.patternId}
         />
       </main>
 

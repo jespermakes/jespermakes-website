@@ -105,12 +105,13 @@ export function generateLampGeometry(
 
   const positions = new Float32Array(totalVerts * 3);
   const normals = new Float32Array(totalVerts * 3);
+  const uvs = new Float32Array(totalVerts * 2);
   const indices: number[] = [];
 
   let vertOffset = 0;
 
   // Helper to write a vertex
-  function addVertex(pos: Vector3, normal: Vector3): number {
+  function addVertex(pos: Vector3, normal: Vector3, u = 0, v = 0): number {
     const idx = vertOffset;
     positions[idx * 3] = pos.x;
     positions[idx * 3 + 1] = pos.y;
@@ -118,6 +119,8 @@ export function generateLampGeometry(
     normals[idx * 3] = normal.x;
     normals[idx * 3 + 1] = normal.y;
     normals[idx * 3 + 2] = normal.z;
+    uvs[idx * 2] = u;
+    uvs[idx * 2 + 1] = v;
     vertOffset++;
     return idx;
   }
@@ -131,13 +134,14 @@ export function generateLampGeometry(
     const normalSign = outward ? 1 : -1;
 
     for (let p = 0; p < profileLen; p++) {
+      const v_coord = p / (profileLen - 1); // 0 at top, 1 at bottom
       for (let r = 0; r < ringCount; r++) {
+        const u_coord = r / radialSegments; // 0..1 around circumference
         const v = verts[p * ringCount + r];
-        // Compute normal: radial direction from Y axis, flipped for inner wall
         const nx = v.x * normalSign;
         const nz = v.z * normalSign;
         const len = Math.sqrt(nx * nx + nz * nz) || 1;
-        addVertex(v, new Vector3(nx / len, 0, nz / len));
+        addVertex(v, new Vector3(nx / len, 0, nz / len), u_coord, v_coord);
       }
     }
 
@@ -183,11 +187,13 @@ export function generateLampGeometry(
 
     // Add outer edge vertices
     for (let r = 0; r < ring; r++) {
-      addVertex(outer[profileIndex * ring + r], rimNormal);
+      const u_coord = r / radialSegments;
+      addVertex(outer[profileIndex * ring + r], rimNormal, u_coord, isTop ? 0 : 1);
     }
     // Add inner edge vertices
     for (let r = 0; r < ring; r++) {
-      addVertex(inner[profileIndex * ring + r], rimNormal);
+      const u_coord = r / radialSegments;
+      addVertex(inner[profileIndex * ring + r], rimNormal, u_coord, isTop ? 0 : 1);
     }
 
     // Connect with quads
@@ -208,6 +214,7 @@ export function generateLampGeometry(
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", new BufferAttribute(positions.slice(0, vertOffset * 3), 3));
   geometry.setAttribute("normal", new BufferAttribute(normals.slice(0, vertOffset * 3), 3));
+  geometry.setAttribute("uv", new BufferAttribute(uvs.slice(0, vertOffset * 2), 2));
   geometry.setIndex(indices);
   geometry.computeVertexNormals();
 

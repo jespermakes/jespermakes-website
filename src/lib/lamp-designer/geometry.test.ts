@@ -124,14 +124,32 @@ describe("generateLampGeometry", () => {
   const coneTemplate = getTemplate("cone");
   const shape = coneTemplate.defaultParameters;
 
-  it("returns a BufferGeometry with position, normal, and index", () => {
+  it("returns a BufferGeometry with position, normal, uv, and index", () => {
     const geo = generateLampGeometry(coneTemplate.profile, shape, {
       radialSegments: 8,
       profileSegments: 4,
     });
     expect(geo.getAttribute("position")).toBeDefined();
     expect(geo.getAttribute("normal")).toBeDefined();
+    expect(geo.getAttribute("uv")).toBeDefined();
     expect(geo.getIndex()).not.toBeNull();
+  });
+
+  it("generates UV coordinates in [0, 1] range", () => {
+    const geo = generateLampGeometry(coneTemplate.profile, shape, {
+      radialSegments: 8,
+      profileSegments: 4,
+    });
+    const uvAttr = geo.getAttribute("uv");
+    expect(uvAttr.count).toBeGreaterThan(0);
+    for (let i = 0; i < uvAttr.count; i++) {
+      const u = uvAttr.getX(i);
+      const v = uvAttr.getY(i);
+      expect(u).toBeGreaterThanOrEqual(0);
+      expect(u).toBeLessThanOrEqual(1);
+      expect(v).toBeGreaterThanOrEqual(0);
+      expect(v).toBeLessThanOrEqual(1);
+    }
   });
 
   it("has non-zero vertex count", () => {

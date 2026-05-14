@@ -2,13 +2,27 @@
 
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { DoubleSide, type Mesh, Color, AdditiveBlending } from "three";
-import type { ProfilePoint, ShapeParameters } from "@/lib/lamp-designer/types";
+import {
+  DoubleSide,
+  type Mesh,
+  Color,
+  AdditiveBlending,
+  CanvasTexture,
+  RepeatWrapping,
+} from "three";
+import type {
+  ProfilePoint,
+  ShapeParameters,
+  PatternId,
+} from "@/lib/lamp-designer/types";
 import { generateLampGeometry } from "@/lib/lamp-designer/geometry";
+import { generatePatternCanvas } from "@/lib/lamp-designer/pattern-texture";
 
 export interface LampMeshProps {
   profile: ProfilePoint[];
   shape: ShapeParameters;
+  /** Pattern to apply as alpha map. Default: "smooth" (no pattern) */
+  patternId?: PatternId;
   /** Outer shell color. Default: warm white */
   color?: string;
   /** Glow intensity for inner light. 0 = off, 1 = full. Default: 0.4 */
@@ -27,6 +41,7 @@ const MM_TO_SCENE = 0.005;
 export function LampMesh({
   profile,
   shape,
+  patternId = "smooth",
   color = "#f5f0e8",
   glowIntensity = 0.4,
   glowColor = "#ffb347",
@@ -40,6 +55,16 @@ export function LampMesh({
     () => generateLampGeometry(profile, shape),
     [profile, shape]
   );
+
+  const alphaMap = useMemo(() => {
+    const canvas = generatePatternCanvas(patternId);
+    if (!canvas) return null;
+    const texture = new CanvasTexture(canvas);
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
+    texture.repeat.set(4, 2);
+    return texture;
+  }, [patternId]);
 
   useFrame((_state, delta) => {
     if (rotateSpeed === 0) return;
@@ -62,6 +87,8 @@ export function LampMesh({
           thickness={shape.wallThickness * MM_TO_SCENE}
           side={DoubleSide}
           depthWrite={false}
+          alphaMap={alphaMap}
+          alphaTest={0.05}
         />
       </mesh>
 
@@ -75,6 +102,7 @@ export function LampMesh({
             blending={AdditiveBlending}
             side={DoubleSide}
             depthWrite={false}
+            alphaMap={alphaMap}
           />
         </mesh>
       )}
