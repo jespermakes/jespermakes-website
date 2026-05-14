@@ -13,6 +13,8 @@ import {
 } from "@/components/lamp-designer/top-bar";
 import { LampDesignsDialog } from "@/components/lamp-designer/designs-dialog";
 import { PublishModal } from "@/components/studio/publish-modal";
+import { MobileStepNav, type Step } from "@/components/lamp-designer/mobile-step-nav";
+import { BottomSheet } from "@/components/lamp-designer/bottom-sheet";
 
 const ASSEMBLY_GUIDE_URL = "/downloads/cone-lamp-assembly-guide.pdf";
 const DEFAULT_THICKNESS = 6.4;
@@ -31,6 +33,8 @@ export default function ConeLampDesigner() {
   const [publishModalOpen, setPublishModalOpen] = useState(false);
   const [publishBusy, setPublishBusy] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
+  const [mobileStep, setMobileStep] = useState<Step>("design");
+  const [sheetExpanded, setSheetExpanded] = useState(false);
   const dirtyRef = useRef(false);
   const initialLoadRef = useRef(true);
 
@@ -261,6 +265,111 @@ export default function ConeLampDesigner() {
     window.open(ASSEMBLY_GUIDE_URL, "_blank", "noopener,noreferrer");
   };
 
+  const thicknessSlider = (
+    <div>
+      <div className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-2.5">
+        Wood Thickness
+      </div>
+      <div className="flex items-baseline gap-2 mb-3.5">
+        <div className="text-5xl font-semibold text-wood leading-none">
+          {thicknessMM.toFixed(1)}
+        </div>
+        <div className="text-lg text-wood-light/50">mm</div>
+        {isOriginal && (
+          <div className="ml-2 text-[11px] text-forest font-bold tracking-[0.1em] uppercase">
+            ↑ original
+          </div>
+        )}
+      </div>
+      <input
+        type="range"
+        min={3}
+        max={8}
+        step={0.1}
+        value={thicknessMM}
+        onChange={(e) => setThicknessMM(parseFloat(e.target.value))}
+        className="w-full"
+        style={{ accentColor: "#3F6B4A" }}
+      />
+      <div className="flex justify-between text-[11px] text-wood-light/40 mt-1.5">
+        <span>3 mm</span>
+        <span>8 mm</span>
+      </div>
+      <p className="text-xs text-wood-light/55 leading-relaxed mt-3.5 m-0">
+        Every slot, tab and joint scales automatically. The leaves stay the same
+        shape, only the joinery changes. Anything from 3mm to 8mm plywood works.
+      </p>
+    </div>
+  );
+
+  const downloadActions = (
+    <div className="flex flex-col gap-3">
+      <div className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-1">
+        Get the plans
+      </div>
+      <div className="grid grid-cols-2 gap-3.5 mb-1">
+        <div>
+          <div className="text-[22px] font-semibold text-wood">
+            {uniqueShapes}
+          </div>
+          <div className="text-[11px] text-wood-light/55">unique shapes</div>
+        </div>
+        <div>
+          <div className="text-[22px] font-semibold text-wood">
+            {totalPieces}
+          </div>
+          <div className="text-[11px] text-wood-light/55">total pieces</div>
+        </div>
+      </div>
+      <button
+        onClick={downloadSVG}
+        className="bg-wood text-cream rounded-2xl py-4 px-5 text-[15px] font-semibold cursor-pointer"
+      >
+        Download SVG cut sheet
+      </button>
+      <button
+        onClick={openGuide}
+        className="bg-transparent text-wood-light border border-wood/[0.18] rounded-2xl py-3.5 px-5 text-[13px] font-medium cursor-pointer hover:border-wood/30"
+      >
+        Assembly guide (PDF)
+      </button>
+      {isLoggedIn && (
+        <button
+          onClick={() => {
+            setPublishError(null);
+            setPublishModalOpen(true);
+          }}
+          className="bg-forest text-cream rounded-2xl py-3.5 px-5 text-[13px] font-medium cursor-pointer hover:bg-forest/90"
+        >
+          Publish to Marketplace
+        </button>
+      )}
+    </div>
+  );
+
+  const partsGrid = (
+    <div className="mb-8">
+      <div className="flex items-baseline gap-3.5 mb-4">
+        <h2 className="font-serif text-2xl font-medium m-0 text-wood">
+          The 9 unique parts
+        </h2>
+        <div className="text-xs text-wood-light/55">
+          at {thicknessMM.toFixed(1)} mm thickness
+        </div>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 mb-3.5">
+        {leafParts.map((p) => (
+          <PartCard key={p.key} part={p} accent="forest" />
+        ))}
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+        {structParts.map((p) => (
+          <PartCard key={p.key} part={p} accent="sage" />
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-cream text-wood">
       <LampDesignerTopBar
@@ -273,16 +382,20 @@ export default function ConeLampDesigner() {
         onNewDesign={handleNewDesign}
         onOpenDesigns={handleOpenDesigns}
       />
-      <div className="max-w-5xl mx-auto px-6 py-10 md:py-16">
+
+      <MobileStepNav currentStep={mobileStep} onStepChange={(s) => { setMobileStep(s); setSheetExpanded(false); }} />
+
+      {/* ----- Desktop layout (all sections visible) ----- */}
+      <div className="hidden md:block max-w-5xl mx-auto px-6 py-16">
         {/* Header */}
         <div className="mb-10">
           <div className="text-[10px] font-bold tracking-[0.18em] text-wood-light/40 uppercase mb-3">
             Jesper Makes · Free Tool
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl font-normal leading-[1.05] tracking-tight text-wood mb-4">
+          <h1 className="font-serif text-5xl font-normal leading-[1.05] tracking-tight text-wood mb-4">
             The Cone Lamp Designer
           </h1>
-          <p className="text-wood-light/70 text-[15px] md:text-[17px] max-w-[680px] leading-relaxed m-0">
+          <p className="text-wood-light/70 text-[17px] max-w-[680px] leading-relaxed m-0">
             Build my pinecone pendant lamp from any plywood you&apos;ve got. Pick a
             thickness, download a cut-ready SVG of all 159 pieces sized to your stock,
             drop it into your laser cutter or CNC.{" "}
@@ -291,111 +404,14 @@ export default function ConeLampDesigner() {
         </div>
 
         {/* Control panel */}
-        <div className="bg-white/60 border border-wood/[0.08] rounded-2xl p-7 md:p-9 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 items-start">
-            {/* Left: thickness slider */}
-            <div>
-              <div className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-2.5">
-                Wood Thickness
-              </div>
-              <div className="flex items-baseline gap-2 mb-3.5">
-                <div className="text-5xl font-semibold text-wood leading-none">
-                  {thicknessMM.toFixed(1)}
-                </div>
-                <div className="text-lg text-wood-light/50">mm</div>
-                {isOriginal && (
-                  <div className="ml-2 text-[11px] text-forest font-bold tracking-[0.1em] uppercase">
-                    ↑ original
-                  </div>
-                )}
-              </div>
-              <input
-                type="range"
-                min={3}
-                max={8}
-                step={0.1}
-                value={thicknessMM}
-                onChange={(e) => setThicknessMM(parseFloat(e.target.value))}
-                className="w-full"
-                style={{ accentColor: "#3F6B4A" }}
-              />
-              <div className="flex justify-between text-[11px] text-wood-light/40 mt-1.5">
-                <span>3 mm</span>
-                <span>8 mm</span>
-              </div>
-              <p className="text-xs text-wood-light/55 leading-relaxed mt-3.5 m-0">
-                Every slot, tab and joint scales automatically. The leaves stay the same
-                shape, only the joinery changes. Anything from 3mm to 8mm plywood works.
-              </p>
-            </div>
-
-            {/* Right: download */}
-            <div className="flex flex-col gap-3">
-              <div className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-1">
-                Get the plans
-              </div>
-              <div className="grid grid-cols-2 gap-3.5 mb-1">
-                <div>
-                  <div className="text-[22px] font-semibold text-wood">
-                    {uniqueShapes}
-                  </div>
-                  <div className="text-[11px] text-wood-light/55">unique shapes</div>
-                </div>
-                <div>
-                  <div className="text-[22px] font-semibold text-wood">
-                    {totalPieces}
-                  </div>
-                  <div className="text-[11px] text-wood-light/55">total pieces</div>
-                </div>
-              </div>
-              <button
-                onClick={downloadSVG}
-                className="bg-wood text-cream rounded-2xl py-4 px-5 text-[15px] font-semibold cursor-pointer"
-              >
-                Download SVG cut sheet
-              </button>
-              <button
-                onClick={openGuide}
-                className="bg-transparent text-wood-light border border-wood/[0.18] rounded-2xl py-3.5 px-5 text-[13px] font-medium cursor-pointer hover:border-wood/30"
-              >
-                Assembly guide (PDF)
-              </button>
-              {isLoggedIn && (
-                <button
-                  onClick={() => {
-                    setPublishError(null);
-                    setPublishModalOpen(true);
-                  }}
-                  className="bg-forest text-cream rounded-2xl py-3.5 px-5 text-[13px] font-medium cursor-pointer hover:bg-forest/90"
-                >
-                  Publish to Marketplace
-                </button>
-              )}
-            </div>
+        <div className="bg-white/60 border border-wood/[0.08] rounded-2xl p-9 mb-8">
+          <div className="grid grid-cols-2 gap-10 items-start">
+            {thicknessSlider}
+            {downloadActions}
           </div>
         </div>
 
-        {/* Parts grid */}
-        <div className="mb-8">
-          <div className="flex items-baseline gap-3.5 mb-4">
-            <h2 className="font-serif text-2xl font-medium m-0 text-wood">
-              The 9 unique parts
-            </h2>
-            <div className="text-xs text-wood-light/55">
-              at {thicknessMM.toFixed(1)} mm thickness
-            </div>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 mb-3.5">
-            {leafParts.map((p) => (
-              <PartCard key={p.key} part={p} accent="forest" />
-            ))}
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-            {structParts.map((p) => (
-              <PartCard key={p.key} part={p} accent="sage" />
-            ))}
-          </div>
-        </div>
+        {partsGrid}
 
         {/* Note from Jesper */}
         <div className="bg-forest/[0.08] border border-forest/[0.18] rounded-2xl p-7 mb-5">
@@ -419,6 +435,113 @@ export default function ConeLampDesigner() {
         </div>
       </div>
 
+      {/* ----- Mobile layout (step-based) ----- */}
+      <div className="md:hidden px-4 py-6 pb-24">
+        {mobileStep === "design" && (
+          <>
+            <div className="mb-6">
+              <h1 className="font-serif text-3xl font-normal leading-[1.1] tracking-tight text-wood mb-2">
+                The Cone Lamp Designer
+              </h1>
+              <p className="text-wood-light/70 text-[14px] leading-relaxed m-0">
+                Pick a thickness to match your plywood stock. All joints scale automatically.
+              </p>
+            </div>
+            <div className="bg-white/60 border border-wood/[0.08] rounded-2xl p-5">
+              {thicknessSlider}
+            </div>
+          </>
+        )}
+
+        {mobileStep === "parts" && partsGrid}
+
+        {mobileStep === "export" && (
+          <>
+            <div className="bg-white/60 border border-wood/[0.08] rounded-2xl p-5 mb-6">
+              {downloadActions}
+            </div>
+
+            {/* Note from Jesper */}
+            <div className="bg-forest/[0.08] border border-forest/[0.18] rounded-2xl p-5 mb-4">
+              <div className="text-[10px] font-bold tracking-[0.15em] text-forest uppercase mb-2">
+                A note from Jesper
+              </div>
+              <p className="font-serif text-[14px] leading-relaxed m-0 text-wood-light">
+                I built the original cone lamp out of 6.4mm Baltic birch. Pick whatever&apos;s
+                on your shelf, download the cut sheet, and go. If you build one, send me a picture.
+              </p>
+            </div>
+
+            <div className="text-[11px] text-wood-light/45 leading-relaxed px-1">
+              Free for personal use. Tag <strong>@jespermakes</strong> if you build one.
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Mobile bottom sheet */}
+      <BottomSheet
+        expanded={sheetExpanded}
+        onToggle={() => setSheetExpanded((v) => !v)}
+        peekContent={
+          <MobileSheetPeek
+            step={mobileStep}
+            thicknessMM={thicknessMM}
+            totalPieces={totalPieces}
+            onNext={() => {
+              const next = mobileStep === "design" ? "parts" : "export";
+              setMobileStep(next as Step);
+            }}
+          />
+        }
+      >
+        {mobileStep === "design" && (
+          <div className="space-y-3">
+            <div className="text-[12px] font-semibold text-wood">Quick adjust</div>
+            <div className="flex gap-2">
+              {[3, 4, 5, 6, 6.4, 7, 8].map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setThicknessMM(v)}
+                  className={`rounded-lg px-2.5 py-1.5 text-[12px] font-medium transition-colors ${
+                    Math.abs(thicknessMM - v) < 0.05
+                      ? "bg-forest text-cream"
+                      : "bg-wood/[0.06] text-wood-light hover:bg-wood/[0.1]"
+                  }`}
+                >
+                  {v}mm
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        {mobileStep === "parts" && (
+          <div className="space-y-2">
+            <div className="text-[12px] font-semibold text-wood">Parts summary</div>
+            <div className="text-[13px] text-wood-light/70">
+              {uniqueShapes} unique shapes, {totalPieces} total pieces at {thicknessMM.toFixed(1)}mm
+            </div>
+          </div>
+        )}
+        {mobileStep === "export" && (
+          <div className="space-y-3">
+            <button
+              onClick={downloadSVG}
+              className="w-full bg-wood text-cream rounded-xl py-3.5 text-[14px] font-semibold cursor-pointer"
+            >
+              Download SVG cut sheet
+            </button>
+            <button
+              onClick={openGuide}
+              className="w-full bg-transparent text-wood-light border border-wood/[0.18] rounded-xl py-3 text-[13px] font-medium cursor-pointer"
+            >
+              Assembly guide (PDF)
+            </button>
+          </div>
+        )}
+      </BottomSheet>
+
       <LampDesignsDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
@@ -433,6 +556,45 @@ export default function ConeLampDesigner() {
           onCancel={() => setPublishModalOpen(false)}
           onPublish={handlePublish}
         />
+      )}
+    </div>
+  );
+}
+
+// ----- MobileSheetPeek -----
+
+function MobileSheetPeek({
+  step,
+  thicknessMM,
+  totalPieces,
+  onNext,
+}: {
+  step: Step;
+  thicknessMM: number;
+  totalPieces: number;
+  onNext: () => void;
+}) {
+  return (
+    <div className="flex items-center justify-between">
+      <div className="text-[13px] text-wood-light">
+        {step === "design" && (
+          <span>Thickness: <strong className="text-wood">{thicknessMM.toFixed(1)}mm</strong></span>
+        )}
+        {step === "parts" && (
+          <span><strong className="text-wood">{totalPieces}</strong> pieces ready</span>
+        )}
+        {step === "export" && (
+          <span className="text-forest font-medium">Ready to download</span>
+        )}
+      </div>
+      {step !== "export" && (
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); onNext(); }}
+          className="rounded-lg bg-forest text-cream px-3 py-1.5 text-[12px] font-semibold"
+        >
+          Next →
+        </button>
       )}
     </div>
   );
