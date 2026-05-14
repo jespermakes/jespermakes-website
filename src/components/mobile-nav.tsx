@@ -155,6 +155,14 @@ export function MobileNav({ userName }: { userName?: string | null }) {
             </Link>
 
             <Link
+              href="/lamp-designer"
+              onClick={() => setOpen(false)}
+              className="block py-3 text-lg text-wood hover:text-forest transition-colors border-b border-wood/5"
+            >
+              💡 Lamp Designer
+            </Link>
+
+            <Link
               href="/blog"
               onClick={() => setOpen(false)}
               className="block py-3 text-lg text-wood hover:text-forest transition-colors border-b border-wood/5"
