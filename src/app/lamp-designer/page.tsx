@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import type {
   StepId,
+  ShapeParameters,
   LampDesignerState,
   LampParameters,
 } from "@/lib/lamp-designer/types";
@@ -10,6 +11,7 @@ import { STEP_IDS } from "@/lib/lamp-designer/types";
 import { getTemplate } from "@/lib/lamp-designer/templates";
 import { StepNav } from "@/components/lamp-designer/step-nav";
 import { LampSceneDynamic } from "@/components/lamp-designer/scene-dynamic";
+import { ShapeStep } from "@/components/lamp-designer/steps/shape-step";
 
 const DEFAULT_TEMPLATE = getTemplate("cone");
 
@@ -55,6 +57,13 @@ export default function LampDesignerPage() {
     });
   }, []);
 
+  const updateShape = useCallback((shape: ShapeParameters) => {
+    setState((prev) => ({
+      ...prev,
+      parameters: { ...prev.parameters, shape },
+    }));
+  }, []);
+
   const goBack = useCallback(() => {
     setState((prev) => {
       const idx = STEP_IDS.indexOf(prev.currentStep);
@@ -91,12 +100,18 @@ export default function LampDesignerPage() {
       {/* Right: Controls Panel */}
       <aside className="w-80 shrink-0 border-l border-wood/10 bg-cream/50 overflow-y-auto flex flex-col">
         <div className="p-6 flex-1">
-          <h2 className="text-lg font-semibold text-wood mb-4 capitalize">
-            {currentStep}
-          </h2>
-          <p className="text-sm text-wood/60">
-            Step controls will appear here.
-          </p>
+          {currentStep === "shape" ? (
+            <ShapeStep shape={parameters.shape} onChange={updateShape} />
+          ) : (
+            <>
+              <h2 className="text-lg font-semibold text-wood mb-4 capitalize">
+                {currentStep}
+              </h2>
+              <p className="text-sm text-wood/60">
+                Step controls will appear here.
+              </p>
+            </>
+          )}
         </div>
 
         {/* Navigation buttons */}
