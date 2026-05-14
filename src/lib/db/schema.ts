@@ -645,6 +645,17 @@ export const lampDesigns = pgTable("lamp_designs", {
 export type LampDesign = typeof lampDesigns.$inferSelect;
 export type NewLampDesign = typeof lampDesigns.$inferInsert;
 
+export const lampDesignerEvents = pgTable("lamp_designer_events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  eventType: text("event_type").notNull(),
+  designId: uuid("design_id"),
+  templateId: text("template_id"),
+  country: text("country"),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+});
+
 export const studioEvents = pgTable("studio_events", {
   id: uuid("id").defaultRandom().primaryKey(),
   eventType: text("event_type").notNull(),
