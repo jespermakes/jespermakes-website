@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import type { ShapeParameters, ConstraintSeverity } from "@/lib/lamp-designer/types";
 import { runAllConstraints } from "@/lib/lamp-designer/constraints";
 import { SLIDER_CONSTRAINTS, worstSeverity } from "@/lib/lamp-designer/constraint-display";
+import { applySliderResistance } from "@/lib/lamp-designer/soft-resistance";
 
 export interface ShapeStepProps {
   shape: ShapeParameters;
@@ -88,9 +89,11 @@ export function ShapeStep({ shape, onChange }: ShapeStepProps) {
                 max={max}
                 step={step}
                 value={shape[key]}
-                onChange={(e) =>
-                  onChange({ ...shape, [key]: parseFloat(e.target.value) })
-                }
+                onChange={(e) => {
+                  const raw = parseFloat(e.target.value);
+                  const adjusted = applySliderResistance(shape, key, raw, step);
+                  onChange({ ...shape, [key]: adjusted });
+                }}
                 className="w-full accent-forest"
                 aria-label={label}
               />
