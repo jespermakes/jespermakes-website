@@ -628,6 +628,23 @@ export const workbenchVersions = pgTable("workbench_versions", {
     .defaultNow(),
 });
 
+export const lampDesigns = pgTable("lamp_designs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull().default("Untitled"),
+  parameters: jsonb("parameters").notNull(),
+  thumbnail: text("thumbnail"),
+  context: text("context"),
+  templateId: text("template_id"),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+});
+
+export type LampDesign = typeof lampDesigns.$inferSelect;
+export type NewLampDesign = typeof lampDesigns.$inferInsert;
+
 export const studioEvents = pgTable("studio_events", {
   id: uuid("id").defaultRandom().primaryKey(),
   eventType: text("event_type").notNull(),
