@@ -395,20 +395,6 @@ export function Toolbar({
 }: ToolbarProps) {
   return (
     <div className="flex h-full w-12 flex-col items-center gap-1 overflow-y-auto rounded-r-xl bg-wood py-3 text-cream">
-      <Link
-        href="/"
-        aria-label="Back to Jesper Makes"
-        className="group relative mb-1 flex h-9 w-9 items-center justify-center rounded-lg text-cream/80 transition-colors hover:bg-white/10 hover:text-cream"
-      >
-        <span className="font-serif text-lg leading-none">JM</span>
-        <span
-          className="pointer-events-none absolute left-12 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-wood-light px-2 py-1 text-[11px] font-medium text-cream opacity-0 shadow-md transition-opacity group-hover:opacity-100"
-          role="tooltip"
-        >
-          Jesper Makes
-        </span>
-      </Link>
-      <Separator />
       {TOOLS.map((t) => {
         const isSelect = t.tool === "select";
         const disabled = drawingDisabled && !isSelect;

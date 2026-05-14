@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { StudioMode } from "@/lib/studio/types";
 
@@ -65,16 +64,14 @@ export function TopBar({
     <div className="flex h-10 shrink-0 items-center gap-3 border-b border-wood/[0.08] bg-white px-3 text-sm text-wood">
       <Link
         href="/"
-        className="flex items-center gap-2 font-serif text-wood hover:text-forest"
+        className="flex items-center gap-2 text-wood hover:text-forest"
         aria-label="Back to Jesper Makes"
       >
-        <Image
-          src="/logo.png"
-          alt=""
-          width={24}
-          height={24}
-          className="rounded-full"
-        />
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden className="shrink-0">
+          <path d="M1 15V1h3v14H1Zm5-3V1h3v11H6Zm5-3V1h3v8h-3Z" fill="currentColor" opacity="0.7" />
+          <path d="M0 14.5h16" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+        </svg>
+        <span className="text-[12px] font-semibold tracking-tight whitespace-nowrap">2D Design Studio</span>
       </Link>
       <button
         type="button"

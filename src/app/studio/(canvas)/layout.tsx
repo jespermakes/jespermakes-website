@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Studio — Jesper Makes",
-  description: "Browser-based 2D vector design studio.",
+  title: "2D Design Studio | Jesper Makes",
+  description: "Browser-based 2D vector design studio for makers. Draw shapes, import SVGs, and share designs on the Marketplace.",
 };
 
 export default function StudioLayout({
