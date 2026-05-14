@@ -139,6 +139,13 @@ async function Header() {
                   <span className="text-base">💡</span>
                   Cone Lamp
                 </Link>
+                <Link
+                  href="/lamp-designer"
+                  className="flex items-center gap-2.5 px-4 py-2 text-sm text-wood-light hover:text-forest hover:bg-wood/5 transition-colors"
+                >
+                  <span className="text-base">💡</span>
+                  Lamp Designer
+                </Link>
               </div>
             </div>
           </div>
