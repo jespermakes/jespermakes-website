@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import type { BufferGeometry } from "three";
 import { downloadSTL } from "@/lib/lamp-designer/export-stl";
 import { download3MF } from "@/lib/lamp-designer/export-3mf";
+import { downloadPrintSettings } from "@/lib/lamp-designer/print-settings-card";
 
 interface ExportStepProps {
   geometry: BufferGeometry | null;
@@ -41,6 +42,13 @@ export default function ExportStep({ geometry, designName = "lamp" }: ExportStep
       setExporting(null);
     }
   }, [geometry, sanitizedName]);
+
+  const handleDownloadSettings = useCallback(() => {
+    downloadPrintSettings(
+      { designName: sanitizedName },
+      `${sanitizedName}-print-settings.txt`,
+    );
+  }, [sanitizedName]);
 
   const disabled = !geometry;
 
@@ -92,6 +100,12 @@ export default function ExportStep({ geometry, designName = "lamp" }: ExportStep
           <li>Translucent PETG for best light diffusion</li>
           <li>Fits standard E27 LED bulb</li>
         </ul>
+        <button
+          onClick={handleDownloadSettings}
+          className="mt-3 bg-transparent text-forest border border-forest/[0.25] rounded-xl py-2 px-4 text-[12px] font-medium cursor-pointer hover:border-forest/40 hover:bg-forest/[0.05]"
+        >
+          Download print settings
+        </button>
       </div>
     </div>
   );
