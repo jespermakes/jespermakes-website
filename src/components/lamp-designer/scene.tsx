@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import type { ProfilePoint, ShapeParameters, PatternId } from "@/lib/lamp-designer/types";
 import { LampMesh } from "./lamp-mesh";
+import { ShadowProjectionPlane } from "./shadow-projection-plane";
 
 export interface LampSceneProps {
   profile: ProfilePoint[];
@@ -51,6 +52,12 @@ export function LampScene({
         glowColor={glowColor}
         opacity={opacity}
         rotateSpeed={rotateSpeed}
+      />
+
+      {/* Projected light pattern from perforations */}
+      <ShadowProjectionPlane
+        patternId={patternId ?? "smooth"}
+        shape={shape}
       />
 
       {/* Ground plane with shadow */}
