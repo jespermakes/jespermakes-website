@@ -97,9 +97,22 @@ export type PatternId =
   | "hexagonal"
   | "organic";
 
+export type PatternType = "none" | "perforation" | "relief";
+
+export interface PatternGeometry {
+  type: PatternType;
+  spacingMm: number;
+  sizeMm: number;
+  density: number;
+  needsFineLayer: boolean;
+  createsStructure: boolean;
+}
+
 export interface PatternDefinition {
   id: PatternId;
   name: string;
+  description: string;
+  geometry: PatternGeometry;
 }
 
 // -- Constraints (Phase 4) -------------------------------------------------
