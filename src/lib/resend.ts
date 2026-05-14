@@ -53,7 +53,7 @@ export async function createContact(input: {
   firstName?: string | null;
   unsubscribed?: boolean;
 }): Promise<ResendContact> {
-  const result = await resendFetch<{ data: ResendContact }>(
+  const raw = await resendFetch<Record<string, unknown>>(
     `/audiences/${audienceId()}/contacts`,
     {
       method: "POST",
@@ -64,14 +64,16 @@ export async function createContact(input: {
       }),
     }
   );
-  return result.data;
+  // Resend may return { data: {...} } or the contact directly
+  const contact = (raw.data ?? raw) as ResendContact;
+  return contact;
 }
 
 export async function updateContactBy(identifier: { email?: string; id?: string }, patch: { unsubscribed?: boolean; firstName?: string | null }): Promise<ResendContact> {
   const key = identifier.id ?? identifier.email;
   if (!key) throw new Error("Need email or id");
 
-  const result = await resendFetch<{ data: ResendContact }>(
+  const raw = await resendFetch<Record<string, unknown>>(
     `/audiences/${audienceId()}/contacts/${encodeURIComponent(key)}`,
     {
       method: "PATCH",
@@ -81,7 +83,8 @@ export async function updateContactBy(identifier: { email?: string; id?: string 
       }),
     }
   );
-  return result.data;
+  const contact = (raw.data ?? raw) as ResendContact;
+  return contact;
 }
 
 export async function listAllContacts(): Promise<ResendContact[]> {
