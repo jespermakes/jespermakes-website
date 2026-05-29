@@ -25,11 +25,20 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const tool = rows[0];
   if (!tool) return {};
 
+  const imgUrl = tool.image ?? undefined;
+
   return {
     title: `${tool.name} — Tools — Jesper Makes`,
     description: tool.description,
     alternates: {
       canonical: `/tools/${tool.slug}`,
+    },
+    openGraph: {
+      title: `${tool.name} — Jesper Makes`,
+      description: tool.description,
+      url: `https://jespermakes.com/tools/${tool.slug}`,
+      type: "website",
+      ...(imgUrl ? { images: [{ url: imgUrl, alt: tool.name }] } : {}),
     },
   };
 }
@@ -66,8 +75,60 @@ export default async function ToolPage({ params }: { params: { slug: string } })
     .map((r) => r.tool)
     .filter((t) => t.slug !== tool.slug);
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: tool.name,
+    description: tool.longDescription ?? tool.description,
+    ...(imgUrl ? { image: imgUrl } : {}),
+    brand: {
+      "@type": "Brand",
+      name: tool.category.includes("Festool") ? "Festool" : tool.name.split(" ")[0],
+    },
+    review: tool.jesperNote
+      ? {
+          "@type": "Review",
+          author: { "@type": "Person", name: "Jesper" },
+          reviewBody: tool.jesperNote,
+        }
+      : undefined,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Tools & Links",
+        item: "https://jespermakes.com/tools",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: tool.category,
+        item: `https://jespermakes.com/tools/category/${tool.categorySlug}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: tool.name,
+        item: `https://jespermakes.com/tools/${tool.slug}`,
+      },
+    ],
+  };
+
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-wood-light/60 mb-10">
         <Link href="/tools" className="hover:text-forest transition-colors">
