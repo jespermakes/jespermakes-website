@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "About — Jesper Makes",
   description:
     "Danish woodworker. Started with pallet wood in 2020. Now 351K subscribers, a workshop on Fyn, and a mission to get more people making things.",
+  alternates: { canonical: "/about" },
 };
 
 export default function About() {

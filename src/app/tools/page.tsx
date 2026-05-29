@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Tools & Links — Jesper Makes",
   description:
     "The tools, materials and products I actually use in my workshop. Honest recommendations from years of building.",
+  alternates: { canonical: "/tools" },
 };
 
 type CategoryInfo = {
@@ -21,17 +22,22 @@ type CategoryInfo = {
 };
 
 export default async function ToolsPage() {
-  const rows = await db
-    .select({
-      category: toolItems.category,
-      categorySlug: toolItems.categorySlug,
-      categoryIcon: toolItems.categoryIcon,
-      count: sql<number>`count(*)::int`,
-    })
-    .from(toolItems)
-    .where(eq(toolItems.hidden, false))
-    .groupBy(toolItems.category, toolItems.categorySlug, toolItems.categoryIcon)
-    .orderBy(asc(toolItems.category));
+  let rows: CategoryInfo[] = [];
+  try {
+    rows = await db
+      .select({
+        category: toolItems.category,
+        categorySlug: toolItems.categorySlug,
+        categoryIcon: toolItems.categoryIcon,
+        count: sql<number>`count(*)::int`,
+      })
+      .from(toolItems)
+      .where(eq(toolItems.hidden, false))
+      .groupBy(toolItems.category, toolItems.categorySlug, toolItems.categoryIcon)
+      .orderBy(asc(toolItems.category));
+  } catch (err) {
+    console.error("[ToolsPage] DB unavailable:", err);
+  }
 
   const categories: CategoryInfo[] = rows;
 

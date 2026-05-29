@@ -4,6 +4,7 @@ import RevenueChart from "./revenue-chart";
 
 export const metadata: Metadata = {
   title: "Dashboard — Jesper Makes",
+  robots: { index: false, follow: false },
 };
 
 export const dynamic = "force-dynamic";

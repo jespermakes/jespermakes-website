@@ -19,6 +19,7 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: { canonical: "/shop/cone-lamp-3dprint" },
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

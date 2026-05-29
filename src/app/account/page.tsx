@@ -9,6 +9,7 @@ import { ChangePasswordForm } from "./change-password-form";
 
 export const metadata = {
   title: "My Account — Jesper Makes",
+  robots: { index: false, follow: false },
 };
 
 const PRODUCT_INFO: Record<

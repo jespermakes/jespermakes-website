@@ -19,6 +19,7 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: { canonical: "/shop/cone-lamp-laser" },
 };
 
 export default function ConeLampLaserLayout({

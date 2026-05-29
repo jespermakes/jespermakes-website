@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Shop — Jesper Makes",
   description: "Build guides and resources from Jesper's workshop.",
+  alternates: { canonical: "/shop" },
 };
 
 const products = [

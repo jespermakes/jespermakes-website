@@ -7,6 +7,10 @@ import { StatCard } from "@/components/admin/stat-card";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  robots: { index: false, follow: false },
+};
+
 export default async function AdminDashboard() {
   const [revenueResult] = await db
     .select({ total: sql<number>`coalesce(sum(${purchases.amount}), 0)::int` })

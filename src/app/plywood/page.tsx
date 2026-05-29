@@ -12,6 +12,7 @@ export const metadata: Metadata = {
       "A maker's guide to plywood. What it is, which kind to buy, and the three WISA panels I use for every serious project.",
     images: ["/images/plywood/plywood-hub-hero.jpg"],
   },
+  alternates: { canonical: "/plywood" },
 };
 
 const wisaProducts = [

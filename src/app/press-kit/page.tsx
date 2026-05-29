@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Press Kit — Jesper Makes",
   description:
     "Download logos, photos, and assets for press and media use. Free to use with credit.",
+  alternates: { canonical: "/press-kit" },
 };
 
 const portraits = [

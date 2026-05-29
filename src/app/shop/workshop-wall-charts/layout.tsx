@@ -19,6 +19,7 @@ export const metadata: Metadata = {
       },
     ],
   },
+  alternates: { canonical: "/shop/workshop-wall-charts" },
 };
 
 export default function CheatSheetsLayout({

@@ -24,9 +24,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://jespermakes.com"),
   title: "Jesper Makes — Build something real",
   description:
     "Danish woodworker and maker. Real build guides, honest measurements, no shortcuts.",
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

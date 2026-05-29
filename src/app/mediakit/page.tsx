@@ -1,23 +1,178 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Media Kit — Jesper Makes",
+  title: "Media Kit - Jesper Makes",
   description:
-    "Audience stats, demographics, and brand partnership info for Jesper Makes — 517.5K+ followers across YouTube, Instagram, and TikTok.",
+    "Audience stats, demographics, and brand partnership info for Jesper Makes. 538K+ followers across YouTube, Instagram, TikTok, and Facebook.",
+  alternates: { canonical: "/mediakit" },
 };
 
 /* ------------------------------------------------------------------ */
-/*  Reusable tiny components                                           */
+/*  Data                                                                */
 /* ------------------------------------------------------------------ */
 
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="bg-[#1a1a1a] rounded-xl p-5">
-      <p className="text-[#E8604C] text-2xl md:text-3xl font-bold">{value}</p>
-      <p className="text-white/50 text-sm mt-1">{label}</p>
-    </div>
-  );
-}
+const featuredVideos = [
+  {
+    id: "RNE8Kf8XLOU",
+    title: "Before the Fancy Tools... There Were Pallet Blocks",
+    views: "7.5M views",
+  },
+  {
+    id: "McK0kbPZNoU",
+    title: "This Video Will Change How You See Wood. I Promise.",
+    views: "6.6M views",
+  },
+  {
+    id: "1Vl7WQqodFc",
+    title: "Beginner to full-time woodworker in 2 years",
+    views: "4.3M views",
+  },
+  {
+    id: "SycRO164gt8",
+    title: "I made a coffee table from this. Sold for $1599",
+    views: "3.0M views",
+  },
+  {
+    id: "ANRu1HPTxno",
+    title: "Idiot YouTubers Are Destroying Their Houses",
+    views: "1.5M views",
+  },
+  {
+    id: "jOXvrHeSLzs",
+    title: "How to take a pallet apart without breaking it",
+    views: "1.5M views",
+  },
+];
+
+const testimonials = [
+  {
+    headline: "Came for drama, stayed for a genuine story",
+    name: "@eslachance",
+    likes: 3667,
+    text: "I thought I was just going to watch my usual youtuber explaining how other youtubers and influencers were destroying houses pretending to be flipping... but I watched a youtuber destroy his house because it had to be fixed. Came for drama, stayed for a genuine story, and something of value was gained.",
+  },
+  {
+    headline: "You made all that stress go away",
+    name: "@armyninjaz8552",
+    likes: 38,
+    text: "Being a veteran going through a tornado of stress, depression and over worked/hardly paid the past couple of years, you made all that go away throughout this video. I have never heard of you before this video but you have now got a life long follower. Thank you for such inspiration, positivity and raw openness that you have shared with the world.",
+  },
+  {
+    headline: "90 minutes flies by",
+    name: "@michaelkraus5984",
+    likes: 1807,
+    text: "Sure. You see that hour and a half runtime and think, No Way! Spend the time! Spend the time!",
+  },
+  {
+    headline: "Curiosity to subscriber in one video",
+    name: "@cappellettof",
+    likes: 147,
+    text: "I came because of curiosity, stayed because of the soundtrack and ended subscribing because of the quality. Nice woodworking.",
+  },
+  {
+    headline: "45 years in the trade, and this impressed me",
+    name: "@jimswanny1193",
+    likes: 160,
+    text: "Dude I have been a cabinet maker for 45 years, this is one of the coolest table tops I have ever seen, from a fellow craftsman, well done.",
+  },
+  {
+    headline: "Inspired me to start building",
+    name: "@soothingsounds1784",
+    likes: 11,
+    text: "I just wanna say this build inspired me to start building my own furniture, and I'm currently in the process of making my first coffee table. Much love man",
+  },
+];
+
+const platforms = [
+  {
+    name: "YouTube @jespermakes",
+    platform: "youtube" as const,
+    href: "/mediakit/youtube",
+    stats: [
+      { label: "Subscribers", value: "356K" },
+      { label: "Total Videos", value: "131" },
+      { label: "Total Views", value: "42.7M" },
+      { label: "Engagement", value: "6.1%" },
+      { label: "Avg Watch Time", value: "8:29" },
+    ],
+  },
+  {
+    name: "YouTube In The Rough",
+    platform: "youtube" as const,
+    href: "/mediakit/in-the-rough",
+    stats: [
+      { label: "Subscribers", value: "8.3K" },
+      { label: "Total Videos", value: "21" },
+      { label: "Engagement", value: "8.0%" },
+    ],
+    note: "Top 5% engagement rate",
+  },
+  {
+    name: "Instagram @jespermakes",
+    platform: "instagram" as const,
+    href: "/mediakit/instagram",
+    stats: [
+      { label: "Followers", value: "120K" },
+      { label: "Posts", value: "295" },
+      { label: "Engagement", value: "4.1%" },
+    ],
+  },
+  {
+    name: "TikTok @jespermakes",
+    platform: "tiktok" as const,
+    href: "/mediakit/tiktok",
+    stats: [
+      { label: "Followers", value: "44K" },
+      { label: "Videos", value: "132" },
+      { label: "Engagement", value: "2.6%" },
+    ],
+  },
+  {
+    name: "Facebook Page",
+    platform: "facebook" as const,
+    href: "/mediakit/facebook",
+    stats: [
+      { label: "Followers", value: "9.6K" },
+    ],
+  },
+];
+
+const ambassadorships = [
+  { name: "Festool", logo: "/brands/festool.svg" },
+  { name: "Rubio Monocoat", logo: "/brands/rubio-monocoat.svg" },
+];
+const collaborators = [
+  { name: "Bambu Lab", logo: "/brands/bambu-lab.svg" },
+  { name: "xTool", logo: "/brands/xtool.svg" },
+  { name: "Milanote", logo: "/brands/milanote.svg" },
+  { name: "BetterHelp", logo: "/brands/betterhelp.png" },
+  { name: "Navimow", logo: "/brands/navimow.svg" },
+];
+
+const ageData = [
+  { label: "18-24", pct: 3.8 },
+  { label: "25-34", pct: 18.7 },
+  { label: "35-44", pct: 25.8 },
+  { label: "45-54", pct: 21.6 },
+  { label: "55-64", pct: 17.5 },
+];
+
+const countryData = [
+  { label: "US", pct: 21.4 },
+  { label: "DE", pct: 11.1 },
+  { label: "GB", pct: 9.7 },
+  { label: "FR", pct: 4.7 },
+  { label: "NL", pct: 4.1 },
+  { label: "CA", pct: 4.0 },
+  { label: "AU", pct: 3.6 },
+  { label: "DK", pct: 2.7 },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Reusable components                                                 */
+/* ------------------------------------------------------------------ */
 
 function Bar({ label, pct }: { label: string; pct: number }) {
   return (
@@ -85,124 +240,236 @@ function PlatformIcon({ platform }: { platform: string }) {
         <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
       </svg>
     ),
+    facebook: (
+      <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      </svg>
+    ),
   };
   return icons[platform] ?? null;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Section wrappers                                                   */
-/* ------------------------------------------------------------------ */
-
-function SectionTitle({ children }: { children: React.ReactNode }) {
+function ThumbsUpIcon() {
   return (
-    <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white">
-      {children}
-    </h2>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-3.5 h-3.5"
+    >
+      <path d="M7 22V11l5-9 1.5 1.5L12 8h8a2 2 0 012 2v2a2 2 0 01-.06.5l-2.5 8.5A2 2 0 0117.5 22H7z" />
+      <path d="M2 11h3v11H2z" />
+    </svg>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/*  Page                                                               */
+/*  Page                                                                */
 /* ------------------------------------------------------------------ */
 
 export default function MediaKit() {
-  const brandPartners = [
-    "Festool",
-    "Carhartt",
-    "Rubio Monocoat",
-    "Bambu Lab",
-    "BetterHelp",
-    "xTool Official",
-  ];
-
   return (
     <div className="bg-[#0f0f0f] text-white -mt-[1px]">
       {/* ---- Hero ---- */}
-      <section className="max-w-5xl mx-auto px-6 pt-16 pb-12 text-center">
-        <p className="text-white/40 text-sm uppercase tracking-widest mb-4">
+      <section className="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
+        <p className="text-white/40 text-sm uppercase tracking-widest mb-6">
           Media Kit
         </p>
-        <p className="text-6xl md:text-8xl font-bold text-[#E8604C]">
-          517.5k
-        </p>
-        <p className="text-white/50 text-lg mt-2">Total Followers</p>
+        <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
+          538K+ followers.{" "}
+          <span className="text-[#E8604C]">42M+ views.</span>
+          <br />
+          Real builds, real audience.
+        </h1>
 
-        {/* Platform breakdown */}
         <div className="mt-10 flex flex-wrap justify-center gap-6 md:gap-10">
           {[
-            { platform: "instagram", label: "Instagram", count: "115.1k" },
-            { platform: "tiktok", label: "TikTok", count: "44.1k" },
-            { platform: "youtube", label: "YouTube", count: "351.0k" },
-            { platform: "youtube", label: "YouTube 2", count: "7.3k" },
+            { platform: "youtube", label: "YouTube", count: "356K" },
+            { platform: "instagram", label: "Instagram", count: "120K" },
+            { platform: "tiktok", label: "TikTok", count: "44K" },
+            { platform: "youtube", label: "In The Rough", count: "8.3K" },
+            { platform: "facebook", label: "Facebook", count: "9.6K" },
           ].map((p) => (
-            <div key={p.label} className="flex items-center gap-2 text-white/70">
-              <PlatformIcon platform={p.platform} />
+            <div
+              key={p.label}
+              className="flex items-center gap-2 text-white/70"
+            >
+              <div className="text-[#E8604C]">
+                <PlatformIcon platform={p.platform} />
+              </div>
               <span className="font-semibold text-white">{p.count}</span>
               <span className="text-sm">{p.label}</span>
             </div>
           ))}
         </div>
 
-        <p className="text-white/30 text-xs mt-6">Updated March 2026</p>
+        <div className="mt-8 flex items-center justify-center gap-4 text-white/30 text-xs">
+          <span>Updated May 2026</span>
+          <span className="inline-flex items-center gap-1.5 border border-white/10 rounded-full px-3 py-1 text-white/40">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
+              <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+            Verified via YouTube Analytics API
+          </span>
+        </div>
       </section>
 
       <hr className="border-white/10 max-w-5xl mx-auto" />
 
-      {/* ---- YouTube @jespermakes ---- */}
+      {/* ---- About ---- */}
       <section className="max-w-5xl mx-auto px-6 py-16">
-        <SectionTitle>YouTube @jespermakes</SectionTitle>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          <StatCard label="Subscribers" value="351k" />
-          <StatCard label="Content Engagement" value="6.1%" />
-          <StatCard label="Subscriber Engagement" value="1.60%" />
-          <StatCard label="Total Videos" value="126" />
-          <StatCard label="Avg Video Views" value="253.4k" />
-          <StatCard label="Avg Comments" value="604" />
-          <StatCard label="Avg Likes" value="4.9k" />
-          <StatCard label="Avg Watch Time" value="12h 31min" />
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white">
+          About Jesper
+        </h2>
+        <div className="max-w-3xl text-white/70 text-lg leading-relaxed space-y-4">
+          <p>
+            Jesper is a Danish woodworker and maker who went from hobbyist to
+            full-time creator in under two years. His content is
+            storytelling-driven, built around workshop builds, outdoor projects,
+            and honest craft rather than trends. That approach has earned a
+            loyal, highly engaged global community of makers, DIY enthusiasts,
+            and craft lovers.
+          </p>
         </div>
+      </section>
 
-        <div className="bg-[#1a1a1a] rounded-xl p-5 mb-10 text-sm text-white/60">
-          <span className="text-[#E8604C] font-semibold">Top 50% engagement</span>{" "}
-          — 6.1% higher than 50% of creators with similar reach
+      <hr className="border-white/10 max-w-5xl mx-auto" />
+
+      {/* ---- Featured Videos ---- */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
+          Featured Videos
+        </h2>
+        <p className="text-white/50 mb-10">
+          Proven performance. These videos show what resonates with the audience.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredVideos.map((video) => (
+            <a
+              key={video.id}
+              href={`https://www.youtube.com/watch?v=${video.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group block"
+            >
+              <div className="relative aspect-video rounded-xl overflow-hidden bg-[#1a1a1a]">
+                <Image
+                  src={`https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`}
+                  alt={video.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+                {/* Play icon overlay */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="w-14 h-14 rounded-full bg-[#E8604C]/90 flex items-center justify-center">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="white"
+                      className="w-6 h-6 ml-1"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3">
+                <p className="text-sm font-medium text-white/90 leading-snug line-clamp-2">
+                  {video.title}
+                </p>
+                <p className="text-[#E8604C] text-sm font-semibold mt-1">
+                  {video.views}
+                </p>
+              </div>
+            </a>
+          ))}
         </div>
+      </section>
+
+      <hr className="border-white/10 max-w-5xl mx-auto" />
+
+      {/* ---- Audience Testimonials ---- */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
+          What the Audience Says
+        </h2>
+        <p className="text-white/50 mb-10">
+          Real comments from real viewers. This is the kind of connection the content creates.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {testimonials.map((t) => (
+            <div
+              key={t.name}
+              className="bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-[#E8604C]/20 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(232,96,76,0.06)] transition-all duration-300"
+            >
+              <p className="text-[#E8604C] text-sm font-semibold mb-2">
+                {t.headline}
+              </p>
+              <p className="text-white/70 text-sm leading-relaxed italic mb-4">
+                &ldquo;{t.text}&rdquo;
+              </p>
+              <div className="flex items-center justify-between">
+                <span className="text-white/50 text-xs font-medium">
+                  {t.name}
+                </span>
+                <span className="flex items-center gap-1 text-white/40 text-xs">
+                  <ThumbsUpIcon />
+                  {t.likes.toLocaleString()}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <hr className="border-white/10 max-w-5xl mx-auto" />
+
+      {/* ---- Audience Overview ---- */}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
+          Core audience: male, 25 to 54, predominantly US and Europe.
+        </h2>
+        <p className="text-white/50 mb-10">
+          Primary demographics across all platforms.
+        </p>
 
         <div className="grid md:grid-cols-3 gap-8">
           {/* Gender */}
-          <div className="bg-[#1a1a1a] rounded-xl p-6">
+          <div className="bg-[#1a1a1a] rounded-xl p-6 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(232,96,76,0.08)] transition-all duration-300">
             <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
               Gender
             </p>
-            <DonutChart male={90.1} female={9.9} />
+            <DonutChart male={89.7} female={10.3} />
           </div>
 
           {/* Age */}
-          <div className="bg-[#1a1a1a] rounded-xl p-6">
+          <div className="bg-[#1a1a1a] rounded-xl p-6 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(232,96,76,0.08)] transition-all duration-300">
             <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
-              Age
+              Age Distribution
             </p>
             <div className="space-y-3">
-              <Bar label="18-24" pct={9.6} />
-              <Bar label="25-34" pct={24.2} />
-              <Bar label="35-44" pct={25.2} />
-              <Bar label="45-54" pct={18.6} />
-              <Bar label="55-64" pct={13.2} />
+              {ageData.map((a) => (
+                <Bar key={a.label} label={a.label} pct={a.pct} />
+              ))}
             </div>
           </div>
 
           {/* Countries */}
-          <div className="bg-[#1a1a1a] rounded-xl p-6">
+          <div className="bg-[#1a1a1a] rounded-xl p-6 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(232,96,76,0.08)] transition-all duration-300">
             <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
               Top Countries
             </p>
             <div className="space-y-3">
-              <Bar label="US" pct={20.2} />
-              <Bar label="DE" pct={10.5} />
-              <Bar label="UK" pct={6.2} />
-              <Bar label="FR" pct={5.5} />
-              <Bar label="IT" pct={4.7} />
-              <Bar label="PL" pct={3.7} />
+              {countryData.map((c) => (
+                <Bar key={c.label} label={c.label} pct={c.pct} />
+              ))}
             </div>
           </div>
         </div>
@@ -210,122 +477,109 @@ export default function MediaKit() {
 
       <hr className="border-white/10 max-w-5xl mx-auto" />
 
-      {/* ---- Instagram ---- */}
+      {/* ---- Platform Breakdown ---- */}
       <section className="max-w-5xl mx-auto px-6 py-16">
-        <SectionTitle>Instagram @jespermakes</SectionTitle>
+        <h2 className="text-2xl md:text-3xl font-bold mb-10 text-white">
+          Platform Breakdown
+        </h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          <StatCard label="Followers" value="115.1k" />
-          <StatCard label="Engagement" value="4.1%" />
-          <StatCard label="30d Reach" value="118.4k" />
-          <StatCard label="Total Posts" value="287" />
-          <StatCard label="Avg Reels Views" value="16.3k" />
-          <StatCard label="Avg Likes" value="554" />
-          <StatCard label="Avg Comments" value="24" />
-        </div>
+        <div className="grid sm:grid-cols-2 gap-6">
+          {platforms.map((p) => (
+            <Link
+              key={p.name}
+              href={p.href}
+              className="group bg-[#1a1a1a] rounded-xl p-6 border border-white/5 hover:border-[#E8604C]/30 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(232,96,76,0.1)] transition-all duration-300"
+            >
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="text-[#E8604C]">
+                    <PlatformIcon platform={p.platform} />
+                  </div>
+                  <h3 className="font-semibold text-white">{p.name}</h3>
+                </div>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-white/30 group-hover:text-[#E8604C] transition-colors">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-[#1a1a1a] rounded-xl p-6">
-            <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
-              Gender
-            </p>
-            <DonutChart male={70.5} female={29.5} />
-          </div>
-          <div className="bg-[#1a1a1a] rounded-xl p-6">
-            <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
-              Age
-            </p>
-            <div className="space-y-3">
-              <Bar label="25-34" pct={14.3} />
-              <Bar label="35-44" pct={31.7} />
-              <Bar label="45-54" pct={31} />
-              <Bar label="55-64" pct={16.4} />
-            </div>
-          </div>
-        </div>
-      </section>
+              <div className="grid grid-cols-2 gap-4">
+                {p.stats.map((s) => (
+                  <div key={s.label}>
+                    <p className="text-[#E8604C] text-xl font-bold">
+                      {s.value}
+                    </p>
+                    <p className="text-white/50 text-xs mt-0.5">{s.label}</p>
+                  </div>
+                ))}
+              </div>
 
-      <hr className="border-white/10 max-w-5xl mx-auto" />
+              {p.note && (
+                <p className="text-white/40 text-xs mt-4 pt-4 border-t border-white/10">
+                  {p.note}
+                </p>
+              )}
 
-      {/* ---- TikTok ---- */}
-      <section className="max-w-5xl mx-auto px-6 py-16">
-        <SectionTitle>TikTok @jespermakes</SectionTitle>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          <StatCard label="Followers" value="44.1k" />
-          <StatCard label="Engagement" value="2.6%" />
-          <StatCard label="Avg Views" value="16.6k" />
-          <StatCard label="Total Videos" value="132" />
-          <StatCard label="Avg Likes" value="346" />
-          <StatCard label="Avg Comments" value="4" />
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-[#1a1a1a] rounded-xl p-6">
-            <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
-              Gender
-            </p>
-            <DonutChart male={71} female={29} />
-          </div>
-          <div className="bg-[#1a1a1a] rounded-xl p-6">
-            <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
-              Age
-            </p>
-            <div className="space-y-3">
-              <Bar label="18-24" pct={6.6} />
-              <Bar label="25-34" pct={25.5} />
-              <Bar label="35-44" pct={32.7} />
-              <Bar label="45-54" pct={24.8} />
-              <Bar label="55-64" pct={10.4} />
-            </div>
-          </div>
-          <div className="bg-[#1a1a1a] rounded-xl p-6">
-            <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
-              Top Countries
-            </p>
-            <div className="space-y-3">
-              <Bar label="US" pct={6.7} />
-              <Bar label="FR" pct={6.1} />
-              <Bar label="UK" pct={5.9} />
-              <Bar label="DE" pct={3.6} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <hr className="border-white/10 max-w-5xl mx-auto" />
-
-      {/* ---- YouTube 2 ---- */}
-      <section className="max-w-5xl mx-auto px-6 py-16">
-        <SectionTitle>YouTube @jespermakes2 — In The Rough</SectionTitle>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <StatCard label="Subscribers" value="7.3k" />
-          <StatCard label="Content Engagement" value="8.0%" />
-          <StatCard label="Total Videos" value="21" />
-          <StatCard label="Avg Video Views" value="45.6k" />
-          <StatCard label="Avg Watch Time" value="2h 5min" />
-        </div>
-        <div className="bg-[#1a1a1a] rounded-xl p-5 text-sm text-white/60">
-          <span className="text-[#E8604C] font-semibold">Top 5% engagement</span>{" "}
-          — 8.0% content engagement rate
+              <p className="text-[#E8604C]/60 text-xs font-medium mt-4 group-hover:text-[#E8604C] transition-colors">
+                View details
+              </p>
+            </Link>
+          ))}
         </div>
       </section>
 
       <hr className="border-white/10 max-w-5xl mx-auto" />
 
       {/* ---- Brand Partners ---- */}
-      <section className="max-w-5xl mx-auto px-6 py-16 text-center">
-        <SectionTitle>Brand Partners</SectionTitle>
-        <div className="flex flex-wrap justify-center gap-4">
-          {brandPartners.map((name) => (
-            <div
-              key={name}
-              className="w-32 h-32 rounded-full bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-center text-sm text-white/70 font-medium px-3"
-            >
-              {name}
-            </div>
-          ))}
+      <section className="max-w-5xl mx-auto px-6 py-16">
+        <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white text-center">
+          Brand Partners
+        </h2>
+        <p className="text-white/50 mb-12 text-center">
+          Trusted by leading brands in tools, craft, and technology.
+        </p>
+
+        {/* Ambassador for */}
+        <div className="mb-10">
+          <p className="text-[#E8604C] text-xs uppercase tracking-widest font-semibold mb-6 text-center">
+            Ambassador for
+          </p>
+          <div className="flex flex-wrap justify-center gap-6">
+            {ambassadorships.map((brand) => (
+              <div
+                key={brand.name}
+                className="w-48 h-24 rounded-xl bg-[#1a1a1a] border border-[#E8604C]/20 flex items-center justify-center p-4 hover:border-[#E8604C]/50 hover:shadow-[0_0_20px_rgba(232,96,76,0.1)] hover:scale-105 transition-all duration-300"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={brand.logo}
+                  alt={brand.name}
+                  className="max-h-12 max-w-full brightness-0 invert opacity-90"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Repeated collaborations */}
+        <div>
+          <p className="text-white/40 text-xs uppercase tracking-widest font-semibold mb-6 text-center">
+            Repeated collaborations
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            {collaborators.map((brand) => (
+              <div
+                key={brand.name}
+                className="w-36 h-16 rounded-lg bg-[#1a1a1a] border border-white/5 flex items-center justify-center p-3 hover:border-white/20 hover:scale-105 transition-all duration-300"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={brand.logo}
+                  alt={brand.name}
+                  className="max-h-8 max-w-full brightness-0 invert opacity-70"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -336,11 +590,15 @@ export default function MediaKit() {
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Want to work together?
         </h2>
+        <p className="text-white/50 mb-8 max-w-lg mx-auto">
+          Reach out to discuss partnerships, sponsored content, or
+          collaborations.
+        </p>
         <a
           href="mailto:sponsors@jespermakes.com"
-          className="inline-block bg-[#E8604C] hover:bg-[#d14e3b] text-white px-8 py-4 rounded-xl text-lg font-semibold transition-colors mt-4"
+          className="inline-block bg-[#E8604C] hover:bg-[#d14e3b] text-white px-8 py-4 rounded-xl text-lg font-semibold transition-colors"
         >
-          sponsors@jespermakes.com →
+          sponsors@jespermakes.com
         </a>
       </section>
     </div>

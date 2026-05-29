@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Thank you! — Jesper Makes",
+  robots: { index: false, follow: false },
 };
 
 const PRODUCT_INFO: Record<

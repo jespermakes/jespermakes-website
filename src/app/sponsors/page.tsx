@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Sponsors — Jesper Makes",
   description:
     "Work with Jesper Makes — 351,000 woodworkers, makers and builders who trust real craft over influencer noise.",
+  alternates: { canonical: "/sponsors" },
 };
 
 export default function Sponsors() {
