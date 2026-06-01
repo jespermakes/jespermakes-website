@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "YouTube @jespermakes - Media Kit - Jesper Makes",
   description:
-    "YouTube channel stats for Jesper Makes. 356K subscribers, 42.7M views, 131 videos.",
+    "YouTube channel stats for Jesper Makes. 356K subscribers, 42.8M views, 131 videos.",
 };
 
 const topVideos = [
@@ -13,24 +13,24 @@ const topVideos = [
   { id: "McK0kbPZNoU", title: "This Video Will Change How You See Wood. I Promise.", views: "6.6M" },
   { id: "1Vl7WQqodFc", title: "Beginner to full-time woodworker in 2 years", views: "4.3M" },
   { id: "SycRO164gt8", title: "I made a coffee table from this. Sold for $1599", views: "3.0M" },
-  { id: "ANRu1HPTxno", title: "Idiot YouTubers Are Destroying Their Houses", views: "1.5M" },
+  { id: "ANRu1HPTxno", title: "Idiot YouTubers Are Destroying Their Houses", views: "1.6M" },
   { id: "jOXvrHeSLzs", title: "How to take a pallet apart without breaking it", views: "1.5M" },
 ];
 
 const stats = [
   { label: "Subscribers", value: "356K" },
-  { label: "Total Views", value: "42.7M" },
+  { label: "Total Views", value: "42.8M" },
   { label: "Total Videos", value: "131" },
   { label: "Engagement Rate", value: "6.1%" },
-  { label: "Avg Watch Time", value: "8:29" },
-  { label: "Male Audience", value: "95.9%" },
+  { label: "Avg Watch Time", value: "8:54" },
+  { label: "Male Audience", value: "88.6%" },
 ];
 
 const ageData = [
-  { label: "25-34", pct: 30.6 },
-  { label: "35-44", pct: 25.8 },
-  { label: "45-54", pct: 21.6 },
-  { label: "55-64", pct: 17.5 },
+  { label: "25-34", pct: 20.1 },
+  { label: "35-44", pct: 25.6 },
+  { label: "45-54", pct: 21.3 },
+  { label: "55-64", pct: 16.2 },
 ];
 
 const countryData = [

@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Media Kit - Jesper Makes",
   description:
-    "Audience stats, demographics, and brand partnership info for Jesper Makes. 538K+ followers across YouTube, Instagram, TikTok, and Facebook.",
+    "Audience stats, demographics, and brand partnership info for Jesper Makes. 538K+ followers across YouTube, Instagram, TikTok, and Facebook. Updated June 2026.",
   alternates: { canonical: "/mediakit" },
 };
 
@@ -37,7 +37,7 @@ const featuredVideos = [
   {
     id: "ANRu1HPTxno",
     title: "Idiot YouTubers Are Destroying Their Houses",
-    views: "1.5M views",
+    views: "1.6M views",
   },
   {
     id: "jOXvrHeSLzs",
@@ -93,9 +93,9 @@ const platforms = [
     stats: [
       { label: "Subscribers", value: "356K" },
       { label: "Total Videos", value: "131" },
-      { label: "Total Views", value: "42.7M" },
+      { label: "Total Views", value: "42.8M" },
       { label: "Engagement", value: "6.1%" },
-      { label: "Avg Watch Time", value: "8:29" },
+      { label: "Avg Watch Time", value: "8:54" },
     ],
   },
   {
@@ -103,8 +103,8 @@ const platforms = [
     platform: "youtube" as const,
     href: "/mediakit/in-the-rough",
     stats: [
-      { label: "Subscribers", value: "8.3K" },
-      { label: "Total Videos", value: "21" },
+      { label: "Subscribers", value: "8.5K" },
+      { label: "Total Videos", value: "23" },
       { label: "Engagement", value: "8.0%" },
     ],
     note: "Top 5% engagement rate",
@@ -152,11 +152,11 @@ const collaborators = [
 ];
 
 const ageData = [
-  { label: "18-24", pct: 3.8 },
-  { label: "25-34", pct: 18.7 },
-  { label: "35-44", pct: 25.8 },
-  { label: "45-54", pct: 21.6 },
-  { label: "55-64", pct: 17.5 },
+  { label: "18-24", pct: 6.2 },
+  { label: "25-34", pct: 20.1 },
+  { label: "35-44", pct: 25.6 },
+  { label: "45-54", pct: 21.3 },
+  { label: "55-64", pct: 16.2 },
 ];
 
 const countryData = [
@@ -280,7 +280,7 @@ export default function MediaKit() {
         </p>
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
           538K+ followers.{" "}
-          <span className="text-[#E8604C]">42M+ views.</span>
+          <span className="text-[#E8604C]">42.8M+ views.</span>
           <br />
           Real builds, real audience.
         </h1>
@@ -290,7 +290,7 @@ export default function MediaKit() {
             { platform: "youtube", label: "YouTube", count: "356K" },
             { platform: "instagram", label: "Instagram", count: "120K" },
             { platform: "tiktok", label: "TikTok", count: "44K" },
-            { platform: "youtube", label: "In The Rough", count: "8.3K" },
+            { platform: "youtube", label: "In The Rough", count: "8.5K" },
             { platform: "facebook", label: "Facebook", count: "9.6K" },
           ].map((p) => (
             <div
@@ -307,7 +307,7 @@ export default function MediaKit() {
         </div>
 
         <div className="mt-8 flex items-center justify-center gap-4 text-white/30 text-xs">
-          <span>Updated May 2026</span>
+          <span>Updated June 2026</span>
           <span className="inline-flex items-center gap-1.5 border border-white/10 rounded-full px-3 py-1 text-white/40">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
               <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
@@ -446,7 +446,7 @@ export default function MediaKit() {
             <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
               Gender
             </p>
-            <DonutChart male={89.7} female={10.3} />
+            <DonutChart male={88.6} female={11.1} />
           </div>
 
           {/* Age */}
