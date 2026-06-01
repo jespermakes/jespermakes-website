@@ -77,21 +77,12 @@ export default async function ToolPage({ params }: { params: { slug: string } })
 
   const productJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Product",
-    name: tool.name,
+    "@type": "Article",
+    headline: tool.name,
     description: tool.longDescription ?? tool.description,
     ...(imgUrl ? { image: imgUrl } : {}),
-    brand: {
-      "@type": "Brand",
-      name: tool.category.includes("Festool") ? "Festool" : tool.name.split(" ")[0],
-    },
-    review: tool.jesperNote
-      ? {
-          "@type": "Review",
-          author: { "@type": "Person", name: "Jesper" },
-          reviewBody: tool.jesperNote,
-        }
-      : undefined,
+    author: { "@type": "Person", name: "Jesper", url: "https://jespermakes.com/about" },
+    publisher: { "@type": "Organization", name: "Jesper Makes", url: "https://jespermakes.com" },
   };
 
   const breadcrumbJsonLd = {

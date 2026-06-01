@@ -43,6 +43,40 @@ export function ProductJsonLd({
         "@type": "Organization",
         name: "Jesper Makes",
       },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: "0",
+          currency,
+        },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: {
+            "@type": "QuantitativeValue",
+            minValue: 0,
+            maxValue: 0,
+            unitCode: "d",
+          },
+          transitTime: {
+            "@type": "QuantitativeValue",
+            minValue: 0,
+            maxValue: 0,
+            unitCode: "d",
+          },
+        },
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "EARTH",
+        },
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "DK",
+        returnPolicyCategory:
+          "https://schema.org/MerchantReturnNotPermitted",
+        merchantReturnDays: 0,
+      },
     },
   };
 
