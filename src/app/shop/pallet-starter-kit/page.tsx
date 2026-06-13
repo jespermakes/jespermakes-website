@@ -94,7 +94,7 @@ export default function PalletStarterKit() {
           not just the finished product.&rdquo;
         </p>
         <p className="text-wood-light/60 text-sm">
-          — Jesper, 351K subscribers on YouTube
+          — Jesper, 357K subscribers on YouTube
         </p>
       </div>
     </div>
