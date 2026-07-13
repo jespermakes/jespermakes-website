@@ -103,7 +103,7 @@ const platforms = [
     platform: "youtube" as const,
     href: "/mediakit/in-the-rough",
     stats: [
-      { label: "Subscribers", value: "8.5K" },
+      { label: "Subscribers", value: "9.2K" },
       { label: "Total Videos", value: "23" },
       { label: "Engagement", value: "8.0%" },
     ],
@@ -290,7 +290,7 @@ export default function MediaKit() {
             { platform: "youtube", label: "YouTube", count: "359K" },
             { platform: "instagram", label: "Instagram", count: "120K" },
             { platform: "tiktok", label: "TikTok", count: "44K" },
-            { platform: "youtube", label: "In The Rough", count: "8.5K" },
+            { platform: "youtube", label: "In The Rough", count: "9.2K" },
             { platform: "facebook", label: "Facebook", count: "9.6K" },
           ].map((p) => (
             <div
