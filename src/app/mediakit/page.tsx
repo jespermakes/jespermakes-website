@@ -91,9 +91,9 @@ const platforms = [
     platform: "youtube" as const,
     href: "/mediakit/youtube",
     stats: [
-      { label: "Subscribers", value: "356K" },
-      { label: "Total Videos", value: "131" },
-      { label: "Total Views", value: "42.8M" },
+      { label: "Subscribers", value: "359K" },
+      { label: "Total Videos", value: "133" },
+      { label: "Total Views", value: "43.6M" },
       { label: "Engagement", value: "6.1%" },
       { label: "Avg Watch Time", value: "8:54" },
     ],
@@ -287,7 +287,7 @@ export default function MediaKit() {
 
         <div className="mt-10 flex flex-wrap justify-center gap-6 md:gap-10">
           {[
-            { platform: "youtube", label: "YouTube", count: "356K" },
+            { platform: "youtube", label: "YouTube", count: "359K" },
             { platform: "instagram", label: "Instagram", count: "120K" },
             { platform: "tiktok", label: "TikTok", count: "44K" },
             { platform: "youtube", label: "In The Rough", count: "8.5K" },

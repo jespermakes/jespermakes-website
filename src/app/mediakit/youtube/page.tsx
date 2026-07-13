@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "YouTube @jespermakes - Media Kit - Jesper Makes",
   description:
-    "YouTube channel stats for Jesper Makes. 356K subscribers, 42.8M views, 131 videos.",
+    "YouTube channel stats for Jesper Makes. 359K subscribers, 43.6M views, 133 videos.",
 };
 
 const topVideos = [
@@ -18,9 +18,9 @@ const topVideos = [
 ];
 
 const stats = [
-  { label: "Subscribers", value: "356K" },
-  { label: "Total Views", value: "42.8M" },
-  { label: "Total Videos", value: "131" },
+  { label: "Subscribers", value: "359K" },
+  { label: "Total Views", value: "43.6M" },
+  { label: "Total Videos", value: "133" },
   { label: "Engagement Rate", value: "6.1%" },
   { label: "Avg Watch Time", value: "8:54" },
   { label: "Male Audience", value: "88.6%" },
