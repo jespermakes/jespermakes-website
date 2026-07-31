@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type {
   StepId,
   ShapeParameters,
@@ -12,7 +12,7 @@ import type {
   PatternId,
 } from "@/lib/lamp-designer/types";
 import { STEP_IDS } from "@/lib/lamp-designer/types";
-import { getTemplate } from "@/lib/lamp-designer/templates";
+import { buildLampProfile, getTemplate } from "@/lib/lamp-designer/templates";
 import { StepNav } from "@/components/lamp-designer/step-nav";
 import { LampSceneDynamic } from "@/components/lamp-designer/scene-dynamic";
 import { ContextStep } from "@/components/lamp-designer/steps/context-step";
@@ -120,7 +120,16 @@ export default function LampDesignerPage() {
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === STEP_IDS.length - 1;
 
-  const template = getTemplate(parameters.templateId);
+  // Single source of profile truth: the same scaled profile the export uses,
+  // so the preview can never show a lamp the STL does not contain.
+  const profile = useMemo(
+    () =>
+      buildLampProfile({
+        templateId: parameters.templateId,
+        shape: parameters.shape,
+      }),
+    [parameters.templateId, parameters.shape]
+  );
 
   function renderStep() {
     switch (currentStep) {
@@ -190,7 +199,7 @@ export default function LampDesignerPage() {
       {/* Center: 3D Preview */}
       <main className="flex-1 relative min-w-0">
         <LampSceneDynamic
-          profile={template.profile}
+          profile={profile}
           shape={parameters.shape}
           patternId={parameters.patternId}
         />

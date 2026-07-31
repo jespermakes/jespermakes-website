@@ -1,4 +1,9 @@
-import type { LampTemplate, ProfilePoint } from "./types";
+import type {
+  LampParameters,
+  LampTemplate,
+  ProfilePoint,
+  ShapeParameters,
+} from "./types";
 
 const cone: LampTemplate = {
   id: "cone",
@@ -65,6 +70,64 @@ export function getTemplate(id: LampTemplate["id"]): LampTemplate {
     throw new Error(`Unknown template: ${id}`);
   }
   return template;
+}
+
+/**
+ * Map user shape parameters onto a template's authored profile.
+ *
+ * The template profile carries the design's character; the shape parameters
+ * carry the user's dimensions. The first profile point (lowest y) maps to
+ * topDiameter, the last maps to bottomDiameter, and the y extent maps to
+ * height. Interior points scale by their position between the two ends so
+ * the curve keeps its character at any size. curveTension scales bezier
+ * handle strength relative to the template's authored default: the default
+ * tension reproduces the authored curve exactly, 0 straightens it.
+ */
+export function scaleProfileToShape(
+  template: LampTemplate,
+  shape: ShapeParameters
+): ProfilePoint[] {
+  const profile = template.profile;
+  const ys = profile.map((p) => p.y);
+  const yMin = Math.min(...ys);
+  const yMax = Math.max(...ys);
+  const yExtent = yMax - yMin || 1;
+  const heightScale = shape.height / yExtent;
+
+  const topRadius = profile[0].x;
+  const bottomRadius = profile[profile.length - 1].x;
+  const topScale = topRadius > 0 ? shape.topDiameter / 2 / topRadius : 1;
+  const bottomScale =
+    bottomRadius > 0 ? shape.bottomDiameter / 2 / bottomRadius : 1;
+
+  const defaultTension = template.defaultParameters.curveTension;
+  const tensionScale = defaultTension > 0 ? shape.curveTension / defaultTension : 1;
+
+  return profile.map((p) => {
+    const yNorm = (p.y - yMin) / yExtent;
+    const localScale = topScale + (bottomScale - topScale) * yNorm;
+    const scaleHandle = (h: { x: number; y: number }) => ({
+      x: h.x * localScale * tensionScale,
+      y: h.y * heightScale * tensionScale,
+    });
+    const point: ProfilePoint = {
+      x: p.x * localScale,
+      y: (p.y - yMin) * heightScale,
+    };
+    if (p.handleIn) point.handleIn = scaleHandle(p.handleIn);
+    if (p.handleOut) point.handleOut = scaleHandle(p.handleOut);
+    return point;
+  });
+}
+
+/**
+ * The single source of profile truth for preview and export. Both must call
+ * this so the rendered lamp and the exported file can never diverge.
+ */
+export function buildLampProfile(
+  parameters: Pick<LampParameters, "templateId" | "shape">
+): ProfilePoint[] {
+  return scaleProfileToShape(getTemplate(parameters.templateId), parameters.shape);
 }
 
 export function profileWidth(profile: ProfilePoint[]): number {

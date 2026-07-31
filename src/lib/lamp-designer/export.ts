@@ -4,17 +4,17 @@
 
 import { BufferGeometry, Matrix4, Vector3 } from "three";
 import { generateLampGeometry } from "./geometry";
-import { getTemplate } from "./templates";
+import { buildLampProfile } from "./templates";
 import type { LampParameters } from "./types";
 
 /**
  * Build the printable geometry for a design. Identical inputs to the
- * preview mesh (template profile + shape), rotated so the lamp stands on
- * the build plate: the designer works Y-up in mm, slicers expect Z-up.
+ * preview mesh (shared buildLampProfile + shape), rotated so the lamp
+ * stands on the build plate: the designer works Y-up in mm, slicers
+ * expect Z-up.
  */
 export function buildExportGeometry(parameters: LampParameters): BufferGeometry {
-  const template = getTemplate(parameters.templateId);
-  const geometry = generateLampGeometry(template.profile, parameters.shape);
+  const geometry = generateLampGeometry(buildLampProfile(parameters), parameters.shape);
   geometry.applyMatrix4(new Matrix4().makeRotationX(Math.PI / 2));
   return geometry;
 }
