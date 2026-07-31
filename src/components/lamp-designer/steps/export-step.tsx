@@ -13,9 +13,20 @@ export interface ExportStepProps {
 
 export type ExportStatus = "idle" | "preparing" | "ready" | "error";
 
-const FORMAT_META: Record<ExportFormat, { label: string; description: string }> = {
-  stl: { label: "STL", description: "Universal mesh format — works with any slicer" },
-  "3mf": { label: "3MF", description: "Rich format with color and metadata" },
+const FORMAT_META: Record<
+  ExportFormat,
+  { label: string; description: string; available: boolean }
+> = {
+  stl: {
+    label: "STL",
+    description: "Universal mesh format — works with any slicer",
+    available: true,
+  },
+  "3mf": {
+    label: "3MF",
+    description: "Rich format with color and metadata — coming soon",
+    available: false,
+  },
 };
 
 const MAKERWORLD_URL = "https://makerworld.com/en/upload" as const;
@@ -33,32 +44,33 @@ export function ExportStep({ parameters, designName }: ExportStepProps) {
     stl: "idle",
     "3mf": "idle",
   });
-  const [publishStatus, setPublishStatus] = useState<"idle" | "publishing" | "published" | "error">("idle");
 
-  function handleDownload(format: ExportFormat) {
+  async function handleDownload(format: ExportFormat) {
+    if (!FORMAT_META[format].available) return;
     setExportStatus((prev) => ({ ...prev, [format]: "preparing" }));
-
-    // Placeholder: in a real implementation this would call the geometry
-    // pipeline to generate the mesh and trigger a browser download.
-    setTimeout(() => {
+    try {
+      const { lampToStlBlob } = await import("@/lib/lamp-designer/export");
+      const blob = lampToStlBlob(parameters);
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = fileNameForDesign(designName, format);
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10_000);
       setExportStatus((prev) => ({ ...prev, [format]: "ready" }));
-    }, 1200);
-  }
-
-  function handlePublish() {
-    setPublishStatus("publishing");
-
-    // Placeholder: would POST the design to the marketplace API.
-    setTimeout(() => {
-      setPublishStatus("published");
-    }, 1500);
+    } catch (err) {
+      console.error("Lamp export failed:", err);
+      setExportStatus((prev) => ({ ...prev, [format]: "error" }));
+    }
   }
 
   return (
     <div>
       <h2 className="text-lg font-semibold text-wood mb-1">Export your lamp</h2>
       <p className="text-sm text-wood/60 mb-5">
-        Download print-ready files or share your design with the community.
+        Download a print-ready file, then share your design with the community.
       </p>
 
       {/* Download section */}
@@ -71,16 +83,20 @@ export function ExportStep({ parameters, designName }: ExportStepProps) {
             <button
               key={format}
               type="button"
-              disabled={status === "preparing"}
+              disabled={status === "preparing" || !meta.available}
               onClick={() => handleDownload(format)}
               aria-label={`Download ${meta.label} file`}
               className={[
                 "flex items-center justify-between w-full p-3 rounded-xl border-2 text-left transition-colors",
-                status === "preparing"
-                  ? "border-wood/20 bg-wood/5 cursor-wait"
-                  : status === "ready"
-                    ? "border-forest/30 bg-forest/5 hover:bg-forest/10"
-                    : "border-wood/15 bg-white hover:border-forest/30 hover:bg-forest/5",
+                !meta.available
+                  ? "border-wood/10 bg-wood/[0.03] cursor-not-allowed opacity-60"
+                  : status === "preparing"
+                    ? "border-wood/20 bg-wood/5 cursor-wait"
+                    : status === "ready"
+                      ? "border-forest/30 bg-forest/5 hover:bg-forest/10"
+                      : status === "error"
+                        ? "border-red-300 bg-red-50 hover:bg-red-100"
+                        : "border-wood/15 bg-white hover:border-forest/30 hover:bg-forest/5",
               ].join(" ")}
             >
               <div>
@@ -88,54 +104,43 @@ export function ExportStep({ parameters, designName }: ExportStepProps) {
                 <span className="block text-xs text-wood/50 mt-0.5">{meta.description}</span>
               </div>
               <span className="text-xs font-medium text-wood/60 shrink-0 ml-3">
-                {status === "preparing"
-                  ? "Preparing\u2026"
-                  : status === "ready"
-                    ? "\u2713 Ready"
-                    : "Download"}
+                {!meta.available
+                  ? "Soon"
+                  : status === "preparing"
+                    ? "Preparing…"
+                    : status === "ready"
+                      ? "✓ Downloaded"
+                      : status === "error"
+                        ? "Failed — try again"
+                        : "Download"}
               </span>
             </button>
           );
         })}
         <p className="text-xs text-wood/40">
-          File: {fileNameForDesign(designName, "stl")}
+          File: {fileNameForDesign(designName, "stl")} · millimeters, ready to
+          slice. Patterns are a light preview in the beta; the exported shell
+          is solid.
         </p>
       </div>
 
-      {/* Publish section */}
+      {/* Share section */}
       <div className="mt-6 flex flex-col gap-3">
         <h3 className="text-sm font-semibold text-wood">Share</h3>
-        <button
-          type="button"
-          disabled={publishStatus === "publishing" || publishStatus === "published"}
-          onClick={handlePublish}
-          aria-label="Publish to marketplace"
-          className={[
-            "w-full p-3 rounded-xl border-2 text-sm font-medium transition-colors",
-            publishStatus === "published"
-              ? "border-forest/30 bg-forest/10 text-forest cursor-default"
-              : publishStatus === "publishing"
-                ? "border-wood/20 bg-wood/5 text-wood/60 cursor-wait"
-                : "border-forest bg-forest text-white hover:bg-forest/90",
-          ].join(" ")}
-        >
-          {publishStatus === "publishing"
-            ? "Publishing\u2026"
-            : publishStatus === "published"
-              ? "\u2713 Published to marketplace"
-              : "Publish to marketplace"}
-        </button>
-
         <a
           href={MAKERWORLD_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full p-3 rounded-xl border-2 border-wood/15 bg-white text-sm font-medium text-wood hover:border-forest/30 hover:bg-forest/5 transition-colors"
+          className="flex items-center justify-center gap-2 w-full p-3 rounded-xl border-2 border-forest bg-forest text-sm font-medium text-white hover:bg-forest/90 transition-colors"
           aria-label="Upload to MakerWorld"
         >
           Upload to MakerWorld
-          <span className="text-wood/40" aria-hidden="true">{"\u2197"}</span>
+          <span className="text-white/60" aria-hidden="true">{"↗"}</span>
         </a>
+        <p className="text-xs text-wood/40">
+          Opens MakerWorld&apos;s upload page. Attach the STL you just
+          downloaded.
+        </p>
       </div>
 
       {/* Design summary */}
