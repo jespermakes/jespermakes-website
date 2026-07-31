@@ -2,13 +2,13 @@ import { describe, it, expect } from "vitest";
 import { TEMPLATES, getTemplate, profileWidth, profileHeight } from "./templates";
 
 describe("TEMPLATES", () => {
-  it("contains exactly 3 templates", () => {
-    expect(TEMPLATES).toHaveLength(3);
+  it("contains exactly 5 templates", () => {
+    expect(TEMPLATES).toHaveLength(5);
   });
 
-  it("includes cone, dome, and cylinder", () => {
+  it("includes cone, dome, cylinder, oval and bell", () => {
     const ids = TEMPLATES.map((t) => t.id);
-    expect(ids).toEqual(["cone", "dome", "cylinder"]);
+    expect(ids).toEqual(["cone", "dome", "cylinder", "oval", "bell"]);
   });
 
   it("every template has a non-empty profile", () => {

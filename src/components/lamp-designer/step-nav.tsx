@@ -10,12 +10,14 @@ interface StepNavProps {
 }
 
 const STEP_META: Record<StepId, { label: string; icon: React.ReactNode }> = {
-  context: {
-    label: "Context",
+  start: {
+    label: "Start",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-        <polyline points="9 22 9 12 15 12 15 22" />
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
       </svg>
     ),
   },
@@ -27,16 +29,6 @@ const STEP_META: Record<StepId, { label: string; icon: React.ReactNode }> = {
         <path d="M12 8v4" />
         <path d="M8 12h8l1 4H7z" />
         <path d="M12 16v6" />
-      </svg>
-    ),
-  },
-  form: {
-    label: "Form",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-        <polygon points="12 2 2 7 12 12 22 7 12 2" />
-        <polyline points="2 17 12 22 22 17" />
-        <polyline points="2 12 12 17 22 12" />
       </svg>
     ),
   },

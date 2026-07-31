@@ -25,7 +25,7 @@ export const MOON_T_MAX = 3.0;
 /** Top vent hole radius: skips the unprintable pole and vents heat. */
 export const MOON_VENT_RADIUS = 8;
 export const MOON_MIN_DIAMETER = 80;
-export const MOON_MAX_DIAMETER = 220;
+export const MOON_MAX_DIAMETER = 300;
 
 export interface MoonGeometryInfo {
   radius: number;

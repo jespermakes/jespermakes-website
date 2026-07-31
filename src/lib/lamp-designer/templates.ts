@@ -64,7 +64,53 @@ const cylinder: LampTemplate = {
   ],
 };
 
-export const TEMPLATES: readonly LampTemplate[] = [cone, dome, cylinder];
+const oval: LampTemplate = {
+  id: "oval",
+  name: "Oval",
+  description: "Full-bellied onion silhouette, the Scandinavian pendant classic",
+  defaultParameters: {
+    height: 190,
+    topDiameter: 44,
+    bottomDiameter: 110,
+    curveTension: 0.55,
+    wallThickness: 2,
+  },
+  profile: [
+    { x: 22, y: 0, handleOut: { x: 30, y: 12 } },
+    {
+      x: 105,
+      y: 95,
+      handleIn: { x: 0, y: -38 },
+      handleOut: { x: 0, y: 38 },
+    },
+    { x: 55, y: 190, handleIn: { x: -30, y: -35 } },
+  ],
+};
+
+const bell: LampTemplate = {
+  id: "bell",
+  name: "Bell",
+  description: "Slim neck opening into a flared rim, the classic glass-shade look",
+  defaultParameters: {
+    height: 170,
+    topDiameter: 44,
+    bottomDiameter: 164,
+    curveTension: 0.5,
+    wallThickness: 2,
+  },
+  profile: [
+    { x: 22, y: 0, handleOut: { x: 3, y: 40 } },
+    {
+      x: 34,
+      y: 110,
+      handleIn: { x: -4, y: -38 },
+      handleOut: { x: 6, y: 28 },
+    },
+    { x: 82, y: 170, handleIn: { x: -38, y: -8 } },
+  ],
+};
+
+export const TEMPLATES: readonly LampTemplate[] = [cone, dome, cylinder, oval, bell];
 
 export function getTemplate(id: LampTemplate["id"]): LampTemplate {
   const template = TEMPLATES.find((t) => t.id === id);

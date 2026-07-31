@@ -39,8 +39,7 @@ describe("lamp-designer page structure", () => {
 
 describe("lamp-designer all steps wired", () => {
   it("imports all step components", () => {
-    expect(source).toContain("ContextStep");
-    expect(source).toContain("FormStep");
+    expect(source).toContain("StartStep");
     expect(source).toContain("ShapeStep");
     expect(source).toContain("LightStep");
     expect(source).toContain("PatternStep");
@@ -50,8 +49,7 @@ describe("lamp-designer all steps wired", () => {
   });
 
   it("renders each step component in a switch/conditional", () => {
-    expect(source).toContain("<ContextStep");
-    expect(source).toContain("<FormStep");
+    expect(source).toContain("<StartStep");
     expect(source).toContain("<ShapeStep");
     expect(source).toContain("<LightStep");
     expect(source).toContain("<PatternStep");
@@ -60,14 +58,9 @@ describe("lamp-designer all steps wired", () => {
     expect(source).toContain("<ExportStep");
   });
 
-  it("passes context selection props to ContextStep", () => {
-    expect(source).toContain("selected={parameters.context}");
-    expect(source).toContain("onSelect={updateContext}");
-  });
-
-  it("passes template selection props to FormStep", () => {
-    expect(source).toContain("templateId={parameters.templateId}");
-    expect(source).toContain("onSelect={updateForm}");
+  it("passes preset gallery props to StartStep", () => {
+    expect(source).toContain("selectedId={presetId}");
+    expect(source).toContain("onSelect={selectPreset}");
   });
 
   it("passes shape props to ShapeStep", () => {
@@ -86,7 +79,7 @@ describe("lamp-designer all steps wired", () => {
   });
 
   it("passes check props to CheckStep", () => {
-    expect(source).toContain("patternId={parameters.pattern.presetId}");
+    expect(source).toContain("pattern={parameters.pattern}");
   });
 
   it("passes reveal props to RevealStep", () => {
@@ -103,7 +96,7 @@ describe("lamp-designer step state logic", () => {
   function createState(overrides: Partial<LampDesignerState> = {}): LampDesignerState {
     const template = getTemplate("cone");
     return {
-      currentStep: "context",
+      currentStep: "start",
       completedSteps: [],
       parameters: {
         context: "bedside",
@@ -137,27 +130,27 @@ describe("lamp-designer step state logic", () => {
     return { ...state, currentStep: STEP_IDS[idx - 1] };
   }
 
-  it("starts on the context step", () => {
+  it("starts on the preset gallery", () => {
     const state = createState();
-    expect(state.currentStep).toBe("context");
+    expect(state.currentStep).toBe("start");
     expect(state.completedSteps).toHaveLength(0);
   });
 
   it("advances to the next step and marks current as completed", () => {
     const state = createState();
     const next = completeAndAdvance(state);
-    expect(next.currentStep).toBe("fixture");
-    expect(next.completedSteps).toContain("context");
+    expect(next.currentStep).toBe("shape");
+    expect(next.completedSteps).toContain("start");
   });
 
   it("does not duplicate completed steps when advancing from an already-completed step", () => {
     const state = createState({
-      currentStep: "context",
-      completedSteps: ["context"],
+      currentStep: "start",
+      completedSteps: ["start"],
     });
     const next = completeAndAdvance(state);
-    expect(next.completedSteps.filter((s) => s === "context")).toHaveLength(1);
-    expect(next.currentStep).toBe("fixture");
+    expect(next.completedSteps.filter((s) => s === "start")).toHaveLength(1);
+    expect(next.currentStep).toBe("shape");
   });
 
   it("stays on the last step when completing it", () => {
@@ -173,13 +166,13 @@ describe("lamp-designer step state logic", () => {
   it("goes back to the previous step", () => {
     const state = createState({ currentStep: "shape" });
     const prev = goBack(state);
-    expect(prev.currentStep).toBe("form");
+    expect(prev.currentStep).toBe("start");
   });
 
   it("does not go back before the first step", () => {
-    const state = createState({ currentStep: "context" });
+    const state = createState({ currentStep: "start" });
     const prev = goBack(state);
-    expect(prev.currentStep).toBe("context");
+    expect(prev.currentStep).toBe("start");
   });
 
   it("can walk through all steps sequentially", () => {

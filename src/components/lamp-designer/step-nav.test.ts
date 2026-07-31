@@ -3,18 +3,17 @@ import { STEP_IDS } from "../../lib/lamp-designer/types";
 import type { StepId } from "../../lib/lamp-designer/types";
 
 describe("StepNav step definitions", () => {
-  it("covers all 9 step IDs", () => {
-    expect(STEP_IDS).toHaveLength(9);
+  it("covers all 8 step IDs", () => {
+    expect(STEP_IDS).toHaveLength(8);
   });
 
   it("step IDs are in the expected order", () => {
     expect(STEP_IDS).toEqual([
-      "context",
-      "fixture",
-      "form",
+      "start",
       "shape",
       "light",
       "pattern",
+      "fixture",
       "check",
       "reveal",
       "export",

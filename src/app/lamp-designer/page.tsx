@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import type { LampPreset } from "@/lib/lamp-designer/presets";
 import type {
   StepId,
   ShapeParameters,
   LampDesignerState,
   LampParameters,
-  LampContext,
   LightParameters,
   PatternParams,
   FixtureSpec,
@@ -15,10 +15,8 @@ import { STEP_IDS } from "@/lib/lamp-designer/types";
 import { getTemplate } from "@/lib/lamp-designer/templates";
 import { StepNav } from "@/components/lamp-designer/step-nav";
 import { LampSceneDynamic } from "@/components/lamp-designer/scene-dynamic";
-import { ContextStep } from "@/components/lamp-designer/steps/context-step";
+import { StartStep } from "@/components/lamp-designer/steps/start-step";
 import { FixtureStep } from "@/components/lamp-designer/steps/fixture-step";
-import type { FormSelection } from "@/components/lamp-designer/steps/form-step";
-import { FormStep } from "@/components/lamp-designer/steps/form-step";
 import { ShapeStep } from "@/components/lamp-designer/steps/shape-step";
 import { LightStep } from "@/components/lamp-designer/steps/light-step";
 import { PatternStep } from "@/components/lamp-designer/steps/pattern-step";
@@ -43,13 +41,14 @@ const DEFAULT_PARAMETERS: LampParameters = {
 };
 
 const INITIAL_STATE: LampDesignerState = {
-  currentStep: "context",
+  currentStep: "start",
   completedSteps: [],
   parameters: DEFAULT_PARAMETERS,
 };
 
 export default function LampDesignerPage() {
   const [state, setState] = useState<LampDesignerState>(INITIAL_STATE);
+  const [presetId, setPresetId] = useState<string | null>(null);
 
   const { currentStep, completedSteps, parameters } = state;
 
@@ -80,11 +79,13 @@ export default function LampDesignerPage() {
     });
   }, []);
 
-  const updateContext = useCallback((context: LampContext) => {
-    setState((prev) => ({
-      ...prev,
-      parameters: { ...prev.parameters, context },
-    }));
+  const selectPreset = useCallback((preset: LampPreset) => {
+    setPresetId(preset.id);
+    setState({
+      currentStep: "shape",
+      completedSteps: ["start"],
+      parameters: JSON.parse(JSON.stringify(preset.parameters)) as LampParameters,
+    });
   }, []);
 
   const updateFixture = useCallback((fixture: FixtureSpec) => {
@@ -92,32 +93,6 @@ export default function LampDesignerPage() {
       ...prev,
       parameters: { ...prev.parameters, fixture },
     }));
-  }, []);
-
-  const updateForm = useCallback((selection: FormSelection) => {
-    setState((prev) => {
-      if (selection.archetype === "moon") {
-        return {
-          ...prev,
-          parameters: {
-            ...prev.parameters,
-            archetype: "moon",
-            shape: { ...prev.parameters.shape, bottomDiameter: 150 },
-            pattern: { presetId: "smooth", intensity: 1 },
-          },
-        };
-      }
-      const template = getTemplate(selection.templateId);
-      return {
-        ...prev,
-        parameters: {
-          ...prev.parameters,
-          archetype: "vase",
-          templateId: selection.templateId,
-          shape: template.defaultParameters,
-        },
-      };
-    });
   }, []);
 
   const updateShape = useCallback((shape: ShapeParameters) => {
@@ -147,27 +122,11 @@ export default function LampDesignerPage() {
 
   function renderStep() {
     switch (currentStep) {
-      case "context":
+      case "start":
         return (
-          <ContextStep
-            selected={parameters.context}
-            onSelect={updateContext}
-          />
-        );
-      case "fixture":
-        return (
-          <FixtureStep
-            fixture={parameters.fixture}
-            context={parameters.context}
-            onChange={updateFixture}
-          />
-        );
-      case "form":
-        return (
-          <FormStep
-            archetype={parameters.archetype}
-            templateId={parameters.templateId}
-            onSelect={updateForm}
+          <StartStep
+            selectedId={presetId}
+            onSelect={selectPreset}
           />
         );
       case "shape":
@@ -188,6 +147,14 @@ export default function LampDesignerPage() {
             pattern={parameters.pattern}
             archetype={parameters.archetype}
             onChange={updatePattern}
+          />
+        );
+      case "fixture":
+        return (
+          <FixtureStep
+            fixture={parameters.fixture}
+            context={parameters.context}
+            onChange={updateFixture}
           />
         );
       case "check":
@@ -254,7 +221,8 @@ export default function LampDesignerPage() {
           <button
             type="button"
             onClick={completeCurrentAndAdvance}
-            className="px-4 py-2 text-sm rounded-lg bg-forest text-cream hover:bg-forest/90 transition-colors ml-auto"
+            disabled={currentStep === "start" && presetId === null}
+            className="px-4 py-2 text-sm rounded-lg bg-forest text-cream hover:bg-forest/90 transition-colors ml-auto disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isLastStep ? "Finish" : "Next"}
           </button>

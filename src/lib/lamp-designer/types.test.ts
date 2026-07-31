@@ -11,22 +11,21 @@ import {
 } from "./types";
 
 describe("STEP_IDS", () => {
-  it("contains all 9 steps in order, fixture right after context", () => {
+  it("starts at the preset gallery and keeps fixture before check", () => {
     expect(STEP_IDS).toEqual([
-      "context",
-      "fixture",
-      "form",
+      "start",
       "shape",
       "light",
       "pattern",
+      "fixture",
       "check",
       "reveal",
       "export",
     ]);
   });
 
-  it("has exactly 9 entries", () => {
-    expect(STEP_IDS).toHaveLength(9);
+  it("has exactly 8 entries", () => {
+    expect(STEP_IDS).toHaveLength(8);
   });
 });
 

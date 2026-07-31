@@ -5,23 +5,25 @@
 // -- Step navigation --------------------------------------------------------
 
 export type StepId =
-  | "context"
-  | "fixture"
-  | "form"
+  | "start"
   | "shape"
   | "light"
   | "pattern"
+  | "fixture"
   | "check"
   | "reveal"
   | "export";
 
+// The journey begins at a wall of complete lamp designs (Jesper's call
+// after first hands-on): pick a finished lamp, then make it yours. The
+// fixture-first principle lives inside every preset; the fixture step
+// remains for swapping hardware and printing the fit coupon.
 export const STEP_IDS: StepId[] = [
-  "context",
-  "fixture",
-  "form",
+  "start",
   "shape",
   "light",
   "pattern",
+  "fixture",
   "check",
   "reveal",
   "export",
@@ -108,7 +110,7 @@ export type ArchetypeId = "vase" | "moon";
 
 // -- Templates (Step 2) ----------------------------------------------------
 
-export type TemplateId = "cone" | "dome" | "cylinder";
+export type TemplateId = "cone" | "dome" | "cylinder" | "oval" | "bell";
 
 export interface ProfilePoint {
   x: number;
