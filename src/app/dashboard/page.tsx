@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import Stripe from "stripe";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import RevenueChart from "./revenue-chart";
 
 export const metadata: Metadata = {
@@ -116,6 +118,11 @@ function eur(cents: number) {
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function DashboardPage() {
+  const session = await auth();
+  if (!session?.user || session.user.email !== process.env.ADMIN_EMAIL) {
+    redirect("/login");
+  }
+
   const beacons = stripeClient(process.env.STRIPE_BEACONS_SECRET_KEY!);
   const store = stripeClient(process.env.STRIPE_DGX_SECRET_KEY!);
 

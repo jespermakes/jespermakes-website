@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { trackTitleLabEvent } from "@/lib/title-lab-track";
+import { checkAiRateLimit, rateLimitResponse } from "@/lib/ai-rate-limit";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY!;
@@ -132,6 +133,8 @@ Respond ONLY with valid JSON (no markdown, no backticks, no preamble):
 // ─── API Handler ─────────────────────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
+  if (!checkAiRateLimit(request).ok) return rateLimitResponse();
+
   try {
     const { url } = await request.json();
     if (!url || typeof url !== "string") {

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkAiRateLimit, rateLimitResponse } from "@/lib/ai-rate-limit";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const MODEL = "anthropic/claude-sonnet-4";
@@ -64,6 +65,8 @@ If you're asking a question (not delivering the brief), respond with:
 Respond ONLY with valid JSON. No markdown, no backticks, no preamble.`;
 
 export async function POST(request: NextRequest) {
+  if (!checkAiRateLimit(request).ok) return rateLimitResponse();
+
   try {
     const { description, conversation } = await request.json();
 

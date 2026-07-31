@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export default async function LogsPage() {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user || session.user.email !== process.env.ADMIN_EMAIL) {
     redirect("/login");
   }
 

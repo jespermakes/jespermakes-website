@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { trackTitleLabEvent } from "@/lib/title-lab-track";
+import { checkAiRateLimit, rateLimitResponse } from "@/lib/ai-rate-limit";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const MODEL = "anthropic/claude-sonnet-4";
@@ -63,6 +64,8 @@ Respond ONLY with valid JSON:
 }`;
 
 export async function POST(request: NextRequest) {
+  if (!checkAiRateLimit(request).ok) return rateLimitResponse();
+
   try {
     const { description, promise, story, hook } = await request.json();
 

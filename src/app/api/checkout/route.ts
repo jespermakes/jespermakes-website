@@ -12,12 +12,9 @@ interface ProductConfig {
   shipping?: "printful";
 }
 
+// NOTE: pallet-starter-kit is intentionally NOT purchasable: the product has
+// no deliverable file yet and /shop shows it as Coming Soon.
 const PRODUCTS: Record<string, ProductConfig> = {
-  "pallet-starter-kit": {
-    name: "The Pallet Builder's Starter Kit",
-    description: "5 complete build guides + tool recommendations. PDF bundle.",
-    price: 3500,
-  },
   "cone-lamp-laser": {
     name: "Cone Lamp Laser File",
     description:
@@ -49,13 +46,13 @@ const PRODUCTS: Record<string, ProductConfig> = {
 export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
-    const { sku = "pallet-starter-kit", size } = body as {
+    const { sku, size } = body as {
       sku?: string;
       size?: string;
     };
-    const config = PRODUCTS[sku];
+    const config = sku ? PRODUCTS[sku] : undefined;
 
-    if (!config) {
+    if (!sku || !config) {
       return NextResponse.json({ error: "Unknown product" }, { status: 400 });
     }
 
