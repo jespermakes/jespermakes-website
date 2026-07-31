@@ -6,9 +6,11 @@ import { SupportButtons } from "./support-buttons";
 export function FreePlanClaim({
   sku,
   downloadLabel,
+  suggested,
 }: {
   sku: string;
   downloadLabel: string;
+  suggested?: number[];
 }) {
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
@@ -55,7 +57,7 @@ export function FreePlanClaim({
             These plans are free and stay free. If they save you time, you can
             leave something in the jar:
           </p>
-          <SupportButtons compact />
+          <SupportButtons compact suggested={suggested} />
         </div>
       </div>
     );

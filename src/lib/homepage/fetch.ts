@@ -93,14 +93,14 @@ const SHOP_PRODUCTS: ShopProduct[] = [
     slug: "cone-lamp-laser",
     title: "Cone Lamp Laser File",
     subtitle: "SVG laser cut file \u2014 all parts included",
-    price: "\u20AC12",
+    price: "Free",
     image: "/images/products/cone-lamp-laser-1.jpg",
   },
   {
     slug: "cone-lamp-3dprint",
     title: "Cone Lamp 3D Print Files",
     subtitle: "STL files + PDF instruction guide",
-    price: "\u20AC12",
+    price: "Free",
     image: "/images/cone-lamp-3dprint/hero-firewood.jpg",
   },
   {

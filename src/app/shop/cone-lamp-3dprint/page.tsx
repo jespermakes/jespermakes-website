@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { BuyButton } from "./buy-button";
+import { FreePlanClaim } from "@/components/shop/free-plan-claim";
 
 const includes = [
   { name: "Blades XS, S, M, L, XL", desc: "All 5 blade sizes — 132 total" },
@@ -65,7 +65,7 @@ export default function ConeLamp3DPrint() {
           <h1 className="font-serif text-3xl md:text-4xl text-wood mb-2">
             Cone Lamp 3D Print Files
           </h1>
-          <p className="text-3xl text-forest font-serif mb-6">€12</p>
+          <p className="text-3xl text-forest font-serif mb-6">Free</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-4">
             The complete file pack to 3D print the Jesper Makes Cone Lamp at home. Originally a laser cut design, brilliantly adapted for 3D printing by Ron.
@@ -74,7 +74,7 @@ export default function ConeLamp3DPrint() {
             Total print time: ~60 hours. I used two Bambu Lab P1S printers — brass PLA for the stretchers, transparent ePETG for the blades. 132 blades in total.
           </p>
 
-          <BuyButton />
+          <FreePlanClaim sku="cone-lamp-3dprint" downloadLabel="Download ZIP" suggested={[12, 25, 50]} />
 
           <p className="text-wood-light/50 text-xs mt-3">
             Instant ZIP download after purchase. Secure payment via Stripe.

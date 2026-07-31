@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { BuyButton } from "./buy-button";
+import { FreePlanClaim } from "@/components/shop/free-plan-claim";
 
 const images = [
   { src: "/images/products/cone-lamp-laser-1.jpg", alt: "Finished cone lamp, studio shot" },
@@ -72,7 +72,7 @@ export default function ConeLampLaser() {
           <h1 className="font-serif text-3xl md:text-4xl text-wood mb-2">
             Cone Lamp Laser File
           </h1>
-          <p className="text-3xl text-forest font-serif mb-6">€12</p>
+          <p className="text-3xl text-forest font-serif mb-6">Free</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-4">
             The SVG laser cut template for the Jesper Makes Cone Lamp. One file
@@ -89,7 +89,7 @@ export default function ConeLampLaser() {
             </ul>
           </div>
 
-          <BuyButton />
+          <FreePlanClaim sku="cone-lamp-laser" downloadLabel="Download ZIP" suggested={[12, 25, 50]} />
 
           <p className="text-wood-light/50 text-xs mt-3">
             Instant download after purchase: SVG file + PDF assembly guide. Secure payment via Stripe.

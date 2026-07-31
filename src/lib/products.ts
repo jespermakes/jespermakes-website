@@ -34,9 +34,8 @@ export const PRODUCTS: Record<string, Product> = {
     name: "Cone Lamp Laser File",
     description:
       "SVG laser cut file for the Jesper Makes Cone Lamp. All parts included.",
-    tier: "paid",
-    priceCents: 1200,
-    payMore: true,
+    tier: "free",
+    priceCents: 0,
     file: { filename: "cone-lamp-laser.zip", contentType: "application/zip" },
     downloadLabel: "Download ZIP",
   },
@@ -45,9 +44,8 @@ export const PRODUCTS: Record<string, Product> = {
     name: "Cone Lamp 3D Print Files",
     description:
       "Complete 3D print file pack for the Jesper Makes Cone Lamp. STL files + PDF instruction guide.",
-    tier: "paid",
-    priceCents: 1200,
-    payMore: true,
+    tier: "free",
+    priceCents: 0,
     file: { filename: "cone-lamp-3dprint.zip", contentType: "application/zip" },
     downloadLabel: "Download ZIP",
   },

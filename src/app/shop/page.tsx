@@ -29,14 +29,14 @@ const products = [
     image: "/images/products/cone-lamp-laser-1.jpg",
     title: "Cone Lamp Laser File",
     subtitle: "SVG laser cut file — all parts included",
-    price: "€12",
+    price: "Free + support",
   },
   {
     href: "/shop/cone-lamp-3dprint",
     image: "/images/cone-lamp-3dprint/hero-firewood.jpg",
     title: "Cone Lamp 3D Print Files",
     subtitle: "STL files + PDF instruction guide",
-    price: "€12",
+    price: "Free + support",
   },
   {
     href: "/shop/workshop-tee",

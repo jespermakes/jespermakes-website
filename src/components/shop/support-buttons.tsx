@@ -4,7 +4,14 @@ import { useState } from "react";
 
 const SUGGESTED = [5, 15, 30];
 
-export function SupportButtons({ compact = false }: { compact?: boolean }) {
+export function SupportButtons({
+  compact = false,
+  suggested,
+}: {
+  compact?: boolean;
+  suggested?: number[];
+}) {
+  const amounts = suggested?.length ? suggested : SUGGESTED;
   const [custom, setCustom] = useState("");
   const [loading, setLoading] = useState<number | "custom" | null>(null);
   const [error, setError] = useState("");
@@ -40,7 +47,7 @@ export function SupportButtons({ compact = false }: { compact?: boolean }) {
   return (
     <div>
       <div className="flex flex-wrap items-center gap-3">
-        {SUGGESTED.map((amount) => (
+        {amounts.map((amount) => (
           <button
             key={amount}
             onClick={() => pay(amount, amount)}
