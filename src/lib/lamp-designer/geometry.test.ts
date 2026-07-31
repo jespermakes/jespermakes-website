@@ -62,25 +62,45 @@ describe("interpolateProfile", () => {
 });
 
 describe("offsetProfile", () => {
-  it("reduces radius by wall thickness", () => {
-    const profile = [new Vector2(50, 0), new Vector2(100, 100)];
+  it("offsets a vertical wall radially inward", () => {
+    const profile = [new Vector2(50, 0), new Vector2(50, 100)];
     const offset = offsetProfile(profile, 2.5);
     expect(offset[0].x).toBeCloseTo(47.5);
-    expect(offset[1].x).toBeCloseTo(97.5);
+    expect(offset[1].x).toBeCloseTo(47.5);
+    expect(offset[0].y).toBeCloseTo(0);
+    expect(offset[1].y).toBeCloseTo(100);
+  });
+
+  it("offsets a horizontal crown segment vertically into the interior", () => {
+    const profile = [new Vector2(20, 0), new Vector2(50, 0)];
+    const offset = offsetProfile(profile, 2.5);
+    expect(offset[0].x).toBeCloseTo(20);
+    expect(offset[1].x).toBeCloseTo(50);
+    expect(offset[0].y).toBeCloseTo(2.5);
+    expect(offset[1].y).toBeCloseTo(2.5);
+  });
+
+  it("offsets a sloped wall along its normal", () => {
+    const profile = [new Vector2(50, 0), new Vector2(100, 100)];
+    const offset = offsetProfile(profile, 2.5);
+    // d = (50, 100), unit normal = (-0.894, 0.447)
+    expect(offset[0].x).toBeCloseTo(50 - 2.5 * 0.894, 2);
+    expect(offset[0].y).toBeCloseTo(2.5 * 0.447, 2);
+  });
+
+  it("holds wall thickness through the crown-to-wall corner via miter", () => {
+    const profile = [new Vector2(20, 0), new Vector2(50, 0), new Vector2(50, 100)];
+    const offset = offsetProfile(profile, 2);
+    // Corner point: averaged normal (-0.707, 0.707) with 1/cos(45) miter -> (-2, 2)
+    expect(offset[1].x).toBeCloseTo(48);
+    expect(offset[1].y).toBeCloseTo(2);
   });
 
   it("clamps radius to zero", () => {
-    const profile = [new Vector2(1, 0), new Vector2(50, 100)];
+    const profile = [new Vector2(1, 0), new Vector2(1, 100)];
     const offset = offsetProfile(profile, 5);
     expect(offset[0].x).toBe(0);
-    expect(offset[1].x).toBeCloseTo(45);
-  });
-
-  it("preserves y values", () => {
-    const profile = [new Vector2(50, 10), new Vector2(100, 200)];
-    const offset = offsetProfile(profile, 3);
-    expect(offset[0].y).toBe(10);
-    expect(offset[1].y).toBe(200);
+    expect(offset[1].x).toBe(0);
   });
 });
 

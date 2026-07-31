@@ -1,9 +1,11 @@
 import type {
+  FixtureModuleId,
   LampParameters,
   LampTemplate,
   ProfilePoint,
   ShapeParameters,
 } from "./types";
+import { getMountInterface } from "./fixtures";
 
 const cone: LampTemplate = {
   id: "cone",
@@ -128,6 +130,36 @@ export function buildLampProfile(
   parameters: Pick<LampParameters, "templateId" | "shape">
 ): ProfilePoint[] {
   return scaleProfileToShape(getTemplate(parameters.templateId), parameters.shape);
+}
+
+/**
+ * Clamp the user's shape so the shade can physically host the chosen
+ * fixture: the top opening must reach past the crown land. Used by the
+ * assembly builder defensively and by the UI as the slider floor.
+ */
+export function clampShapeToFixture(
+  shape: ShapeParameters,
+  moduleId: FixtureModuleId
+): ShapeParameters {
+  const mount = getMountInterface(moduleId);
+  const minTopDiameter = Math.ceil(mount.crownMinRadius * 2);
+  if (shape.topDiameter >= minTopDiameter) return shape;
+  return { ...shape, topDiameter: minTopDiameter };
+}
+
+/**
+ * The full lamp profile: fixture crown first, shade built around it
+ * (DR-160). Starts at the mount aperture, runs the flat crown ring out to
+ * the shade's top radius, then follows the scaled shade profile down.
+ * This is what the preview renders and the STL contains.
+ */
+export function buildLampAssemblyProfile(
+  parameters: Pick<LampParameters, "templateId" | "shape" | "fixture">
+): ProfilePoint[] {
+  const mount = getMountInterface(parameters.fixture.moduleId);
+  const shape = clampShapeToFixture(parameters.shape, parameters.fixture.moduleId);
+  const shade = scaleProfileToShape(getTemplate(parameters.templateId), shape);
+  return [{ x: mount.apertureDiameter / 2, y: 0 }, ...shade];
 }
 
 export function profileWidth(profile: ProfilePoint[]): number {

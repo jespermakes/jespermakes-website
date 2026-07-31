@@ -3,8 +3,23 @@ import type {
   LampConstraint,
   ConstraintId,
   ConstraintResults,
+  FixtureSpec,
+  TemplateId,
 } from "./types";
-import { BULB_E27 } from "./types";
+import { getFixtureModule, getMountInterface, maxLedWatt, cappedWatt } from "./fixtures";
+import { buildLampAssemblyProfile } from "./templates";
+import { interpolateProfile, offsetProfile } from "./geometry";
+
+/** What fixture-aware constraints need beyond the shape sliders. */
+export interface ConstraintContext {
+  fixture: FixtureSpec;
+  templateId: TemplateId;
+}
+
+export const DEFAULT_CONSTRAINT_CONTEXT: ConstraintContext = {
+  fixture: { moduleId: "e27-clamp" },
+  templateId: "cone",
+};
 
 // ---------------------------------------------------------------------------
 // Individual constraint functions
@@ -36,34 +51,97 @@ export function shieldingAngle(shape: ShapeParameters): LampConstraint {
 }
 
 /**
- * Bulb fit: the larger opening must be >= 70 mm for an E27 bulb to fit through.
+ * Crown fit: the shade's top opening must reach past the mount's crown land
+ * so the fixture has a flat ring to clamp. Fixture-aware (DR-160).
  */
-export function bulbFit(shape: ShapeParameters): LampConstraint {
-  const opening = Math.max(shape.topDiameter, shape.bottomDiameter);
-  const needed = BULB_E27.fitDiameter;
+export function bulbFit(
+  shape: ShapeParameters,
+  ctx: ConstraintContext = DEFAULT_CONSTRAINT_CONTEXT
+): LampConstraint {
+  const mount = getMountInterface(ctx.fixture.moduleId);
+  const fixtureModule = getFixtureModule(ctx.fixture.moduleId);
+  const minTop = Math.ceil(mount.crownMinRadius * 2);
 
-  if (opening >= needed) {
-    const clearance = opening - BULB_E27.maxDiameter;
-    return { ok: true, value: opening, message: `E27 bulb fits with ${clearance} mm clearance`, severity: "info" };
+  if (shape.topDiameter >= minTop) {
+    const spare = Math.round(shape.topDiameter - minTop);
+    return {
+      ok: true,
+      value: shape.topDiameter,
+      message: `Top opening hosts the ${fixtureModule.name} (${spare} mm spare)`,
+      severity: "info",
+    };
   }
-  return { ok: false, value: opening, message: `Opening ${opening} mm too small — need ≥ ${needed} mm for E27 bulb`, severity: "error" };
+  return {
+    ok: false,
+    value: shape.topDiameter,
+    message: `Top opening ${shape.topDiameter} mm too small — the ${fixtureModule.name} needs ≥ ${minTop} mm`,
+    severity: "error",
+  };
 }
 
 /**
- * Thermal clearance: gap from bulb to shade inner wall >= 20 mm.
- * The inner wall radius is (larger opening / 2 - wallThickness).
- * The bulb radius is BULB_E27.maxDiameter / 2.
+ * Thermal clearance, fixture-aware: minimum radial gap between the bulb
+ * envelope of the chosen fixture and the shade's inner wall, sampled along
+ * the real assembly profile. The gap maps to a max LED wattage per material
+ * (RESEARCH-FIXTURE-STANDARDS.md section 5.4).
  */
-export function thermalClearance(shape: ShapeParameters): LampConstraint {
-  const largerOpening = Math.max(shape.topDiameter, shape.bottomDiameter);
-  const innerRadius = largerOpening / 2 - shape.wallThickness;
-  const bulbRadius = BULB_E27.maxDiameter / 2;
-  const gap = innerRadius - bulbRadius;
+export function thermalClearance(
+  shape: ShapeParameters,
+  ctx: ConstraintContext = DEFAULT_CONSTRAINT_CONTEXT
+): LampConstraint {
+  const mount = getMountInterface(ctx.fixture.moduleId);
+  const env = mount.bulbEnvelope;
+  const bulbRadius = env.diameter / 2;
 
-  if (gap >= BULB_E27.minClearance) {
-    return { ok: true, value: gap, message: `${Math.round(gap)} mm thermal clearance — safe`, severity: "info" };
+  const profile = buildLampAssemblyProfile({
+    templateId: ctx.templateId,
+    shape,
+    fixture: ctx.fixture,
+  });
+  const inner = offsetProfile(interpolateProfile(profile, 64), shape.wallThickness);
+
+  const bandTop = env.topOffset;
+  const bandBottom = env.topOffset + env.length;
+  const samples = inner.filter((p) => p.y >= bandTop && p.y <= bandBottom);
+
+  if (samples.length === 0) {
+    return {
+      ok: true,
+      value: Number.POSITIVE_INFINITY,
+      message: `Shade ends above the bulb zone — the ${env.bulbName} hangs free, any LED is fine`,
+      severity: "info",
+    };
   }
-  return { ok: false, value: gap, message: `Only ${Math.round(gap)} mm clearance — need ≥ ${BULB_E27.minClearance} mm`, severity: gap >= 10 ? "warn" : "error" };
+
+  const minInnerRadius = Math.min(...samples.map((p) => p.x));
+  const gap = minInnerRadius - bulbRadius;
+
+  if (gap < 5) {
+    return {
+      ok: false,
+      value: gap,
+      message: `Wall enters the bulb zone (${Math.round(gap)} mm) — widen the shade or shorten it`,
+      severity: "error",
+    };
+  }
+
+  const wPla = cappedWatt(maxLedWatt(gap, "pla"), ctx.fixture.moduleId);
+  const wPetg = cappedWatt(maxLedWatt(gap, "petg"), ctx.fixture.moduleId);
+
+  if (wPla === 0) {
+    return {
+      ok: true,
+      value: gap,
+      message: `${Math.round(gap)} mm to the ${env.bulbName} — PETG only, up to ${wPetg} W LED`,
+      severity: "warn",
+    };
+  }
+  return {
+    ok: true,
+    value: gap,
+    message: `${Math.round(gap)} mm to the ${env.bulbName} — PLA up to ${wPla} W, PETG up to ${wPetg} W LED`,
+    severity: "info",
+  };
 }
 
 /**
@@ -123,7 +201,10 @@ export function openingRatio(shape: ShapeParameters): LampConstraint {
 // Run all constraints
 // ---------------------------------------------------------------------------
 
-const CONSTRAINT_FNS: Record<ConstraintId, (shape: ShapeParameters) => LampConstraint> = {
+const CONSTRAINT_FNS: Record<
+  ConstraintId,
+  (shape: ShapeParameters, ctx: ConstraintContext) => LampConstraint
+> = {
   shieldingAngle,
   bulbFit,
   thermalClearance,
@@ -133,10 +214,13 @@ const CONSTRAINT_FNS: Record<ConstraintId, (shape: ShapeParameters) => LampConst
   openingRatio,
 };
 
-export function runAllConstraints(shape: ShapeParameters): ConstraintResults {
+export function runAllConstraints(
+  shape: ShapeParameters,
+  ctx: ConstraintContext = DEFAULT_CONSTRAINT_CONTEXT
+): ConstraintResults {
   const results = {} as ConstraintResults;
   for (const [id, fn] of Object.entries(CONSTRAINT_FNS)) {
-    results[id as ConstraintId] = fn(shape);
+    results[id as ConstraintId] = fn(shape, ctx);
   }
   return results;
 }

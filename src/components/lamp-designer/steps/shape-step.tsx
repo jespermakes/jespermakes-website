@@ -1,13 +1,22 @@
 "use client";
 
 import { useMemo } from "react";
-import type { ShapeParameters, ConstraintSeverity } from "@/lib/lamp-designer/types";
+import type {
+  ShapeParameters,
+  ConstraintSeverity,
+  FixtureSpec,
+  TemplateId,
+} from "@/lib/lamp-designer/types";
 import { runAllConstraints } from "@/lib/lamp-designer/constraints";
+import type { ConstraintContext } from "@/lib/lamp-designer/constraints";
 import { SLIDER_CONSTRAINTS, worstSeverity } from "@/lib/lamp-designer/constraint-display";
 import { applySliderResistance } from "@/lib/lamp-designer/soft-resistance";
+import { getMountInterface } from "@/lib/lamp-designer/fixtures";
 
 export interface ShapeStepProps {
   shape: ShapeParameters;
+  fixture: FixtureSpec;
+  templateId: TemplateId;
   onChange: (shape: ShapeParameters) => void;
 }
 
@@ -40,8 +49,18 @@ function formatValue(value: number, unit: string): string {
   return `${value} ${unit}`;
 }
 
-export function ShapeStep({ shape, onChange }: ShapeStepProps) {
-  const results = useMemo(() => runAllConstraints(shape), [shape]);
+export function ShapeStep({ shape, fixture, templateId, onChange }: ShapeStepProps) {
+  const ctx = useMemo<ConstraintContext>(
+    () => ({ fixture, templateId }),
+    [fixture, templateId]
+  );
+  const results = useMemo(() => runAllConstraints(shape, ctx), [shape, ctx]);
+  // The chosen fixture sets the floor for the top opening: the crown land
+  // must fit inside it.
+  const minTopDiameter = useMemo(
+    () => Math.ceil(getMountInterface(fixture.moduleId).crownMinRadius * 2),
+    [fixture.moduleId]
+  );
 
   const issues = useMemo(() => {
     return Object.values(results).filter(
@@ -65,6 +84,7 @@ export function ShapeStep({ shape, onChange }: ShapeStepProps) {
             .map((id) => results[id])
             .filter(Boolean);
           const severity = worstSeverity(related);
+          const effectiveMin = key === "topDiameter" ? Math.max(min, minTopDiameter) : min;
 
           return (
             <label key={key} className="flex flex-col gap-1.5">
@@ -85,14 +105,14 @@ export function ShapeStep({ shape, onChange }: ShapeStepProps) {
               </span>
               <input
                 type="range"
-                min={min}
+                min={effectiveMin}
                 max={max}
                 step={step}
-                value={shape[key]}
+                value={Math.max(shape[key], effectiveMin)}
                 onChange={(e) => {
-                  const raw = parseFloat(e.target.value);
-                  const adjusted = applySliderResistance(shape, key, raw, step);
-                  onChange({ ...shape, [key]: adjusted });
+                  const raw = Math.max(parseFloat(e.target.value), effectiveMin);
+                  const adjusted = applySliderResistance(shape, key, raw, step, ctx);
+                  onChange({ ...shape, [key]: Math.max(adjusted, effectiveMin) });
                 }}
                 className="w-full accent-forest"
                 aria-label={label}

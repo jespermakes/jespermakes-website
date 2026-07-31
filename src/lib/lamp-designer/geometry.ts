@@ -91,6 +91,11 @@ export function generateLampGeometry(
 
   const outerProfile = interpolateProfile(profile, profileSegments);
   const innerProfile = offsetProfile(outerProfile, shape.wallThickness);
+  // Keep the open-end rim planar: on sloped walls the normal offset would
+  // push the inner edge past the outer one. The start point keeps its
+  // offset (that is the crown plate thickness).
+  innerProfile[innerProfile.length - 1].y =
+    outerProfile[outerProfile.length - 1].y;
 
   const outerVerts = revolveProfile(outerProfile, radialSegments);
   const innerVerts = revolveProfile(innerProfile, radialSegments);
@@ -222,14 +227,53 @@ export function generateLampGeometry(
 }
 
 /**
- * Offset a 2D profile inward by the wall thickness.
- * Each point's x (radius) is reduced by thickness, clamped to a minimum of 0.
+ * Offset a 2D profile into the material interior by the wall thickness,
+ * along the local curve normal. For near-vertical shade walls this matches
+ * the old radial offset; for horizontal segments (the fixture crown ring)
+ * it correctly offsets in y so the crown is a plate of true thickness.
+ *
+ * Interior side convention: profiles run from the crown aperture outward,
+ * then down the shade, so the interior normal is (-dy, dx) per segment.
+ * Corner points get an averaged, miter-compensated normal (clamped) so
+ * wall thickness holds around the crown-to-wall corner.
  */
 export function offsetProfile(
   profile: Vector2[],
   thickness: number
 ): Vector2[] {
-  return profile.map((p) => new Vector2(Math.max(0, p.x - thickness), p.y));
+  const n = profile.length;
+  if (n < 2) return profile.map((p) => p.clone());
+
+  const segmentNormals: Vector2[] = [];
+  for (let i = 0; i < n - 1; i++) {
+    const d = new Vector2().subVectors(profile[i + 1], profile[i]);
+    const len = d.length() || 1;
+    segmentNormals.push(new Vector2(-d.y / len, d.x / len));
+  }
+
+  return profile.map((p, i) => {
+    let normal: Vector2;
+    if (i === 0) {
+      normal = segmentNormals[0].clone();
+    } else if (i === n - 1) {
+      normal = segmentNormals[n - 2].clone();
+    } else {
+      normal = new Vector2().addVectors(segmentNormals[i - 1], segmentNormals[i]);
+      if (normal.lengthSq() < 1e-9) {
+        normal = segmentNormals[i].clone();
+      } else {
+        normal.normalize();
+        // Miter compensation keeps the wall at full thickness through the
+        // corner; clamp so a sharp corner cannot spike the offset.
+        const cosHalf = Math.max(0.5, normal.dot(segmentNormals[i]));
+        normal.multiplyScalar(1 / cosHalf);
+      }
+    }
+    return new Vector2(
+      Math.max(0, p.x + normal.x * thickness),
+      p.y + normal.y * thickness
+    );
+  });
 }
 
 /**

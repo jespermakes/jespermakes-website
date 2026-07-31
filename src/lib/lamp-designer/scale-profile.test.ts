@@ -103,6 +103,7 @@ describe("buildExportGeometry honors shape parameters", () => {
   it("exports the user's height and diameter, not the template's", () => {
     const geometry = buildExportGeometry({
       context: "bedside",
+      fixture: { moduleId: "e27-clamp" },
       templateId: "cone",
       shape: CUSTOM_CONE,
       light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },

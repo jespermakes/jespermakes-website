@@ -50,46 +50,68 @@ describe("shieldingAngle", () => {
   });
 });
 
-describe("bulbFit", () => {
-  it("passes when the larger opening is >= 70 mm", () => {
-    const result = bulbFit(makeShape({ topDiameter: 120, bottomDiameter: 80 }));
+describe("bulbFit (crown fit, fixture-aware)", () => {
+  // Default context is the E27 ring mount: crown minimum = 41/2 + 8 = 28.5,
+  // so the top opening floor is 57 mm.
+  it("passes when the top opening hosts the default E27 mount", () => {
+    const result = bulbFit(makeShape({ topDiameter: 120 }));
     expect(result.ok).toBe(true);
     expect(result.severity).toBe("info");
   });
 
-  it("fails when both openings are too small", () => {
-    const result = bulbFit(makeShape({ topDiameter: 50, bottomDiameter: 60 }));
+  it("fails when the top opening is under the crown minimum", () => {
+    const result = bulbFit(makeShape({ topDiameter: 50 }));
     expect(result.ok).toBe(false);
     expect(result.severity).toBe("error");
   });
 
-  it("uses the larger of top/bottom diameter", () => {
-    const result = bulbFit(makeShape({ topDiameter: 40, bottomDiameter: 80 }));
-    expect(result.ok).toBe(true);
-    expect(result.value).toBe(80);
+  it("honors the chosen fixture module", () => {
+    // Kit 001 seat: crown minimum = 70/2 + 6 = 41 -> floor 82 mm.
+    const ctx = { fixture: { moduleId: "kit001-seat" as const }, templateId: "cone" as const };
+    expect(bulbFit(makeShape({ topDiameter: 70 }), ctx).ok).toBe(false);
+    expect(bulbFit(makeShape({ topDiameter: 90 }), ctx).ok).toBe(true);
   });
 });
 
-describe("thermalClearance", () => {
-  it("passes with sufficient clearance", () => {
-    const result = thermalClearance(makeShape({ topDiameter: 120, wallThickness: 2 }));
-    // inner radius = 60 - 2 = 58, bulb radius = 30, gap = 28
+describe("thermalClearance (bulb envelope, fixture-aware)", () => {
+  // Cylinder shapes (top = bottom) make the sampled inner radius exact.
+  it("reports the gap and per-material wattage when clearance is generous", () => {
+    const result = thermalClearance(
+      makeShape({ topDiameter: 200, bottomDiameter: 200, height: 200, wallThickness: 2.5 })
+    );
+    // inner radius 97.5, A60 radius 30 -> gap 67.5
     expect(result.ok).toBe(true);
-    expect(result.value).toBe(28);
+    expect(result.severity).toBe("info");
+    expect(result.value).toBeCloseTo(67.5, 1);
+    expect(result.message).toContain("PLA up to 13 W");
   });
 
-  it("fails when gap is too small", () => {
-    const result = thermalClearance(makeShape({ topDiameter: 72, bottomDiameter: 60, wallThickness: 4 }));
-    // inner radius = 36 - 4 = 32, bulb radius = 30, gap = 2
+  it("errors when the wall enters the bulb zone", () => {
+    const result = thermalClearance(
+      makeShape({ topDiameter: 70, bottomDiameter: 70, height: 200, wallThickness: 2.5 })
+    );
+    // inner radius 32.5 -> gap 2.5, below the 5 mm hard floor
     expect(result.ok).toBe(false);
-    expect(result.value).toBe(2);
+    expect(result.severity).toBe("error");
+    expect(result.value).toBeCloseTo(2.5, 1);
   });
 
-  it("uses warn severity when gap is 10–19 mm", () => {
-    const result = thermalClearance(makeShape({ topDiameter: 90, bottomDiameter: 60, wallThickness: 2 }));
-    // inner radius = 45 - 2 = 43, bulb radius = 30, gap = 13
-    expect(result.ok).toBe(false);
+  it("warns PETG-only when the gap is below the PLA floor", () => {
+    const result = thermalClearance(
+      makeShape({ topDiameter: 90, bottomDiameter: 90, height: 200, wallThickness: 2 })
+    );
+    // inner radius 43 -> gap 13: under 15 mm PLA floor, PETG fine
+    expect(result.ok).toBe(true);
     expect(result.severity).toBe("warn");
+    expect(result.message).toContain("PETG only");
+  });
+
+  it("passes when the shade ends above the bulb zone", () => {
+    const result = thermalClearance(
+      makeShape({ topDiameter: 100, bottomDiameter: 100, height: 30, wallThickness: 2 })
+    );
+    expect(result.ok).toBe(true);
+    expect(result.message).toContain("hangs free");
   });
 });
 

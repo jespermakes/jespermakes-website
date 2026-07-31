@@ -19,6 +19,17 @@ const STEP_META: Record<StepId, { label: string; icon: React.ReactNode }> = {
       </svg>
     ),
   },
+  fixture: {
+    label: "Fixture",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+        <path d="M9 2h6v6a3 3 0 0 1-6 0z" />
+        <path d="M12 8v4" />
+        <path d="M8 12h8l1 4H7z" />
+        <path d="M12 16v6" />
+      </svg>
+    ),
+  },
   form: {
     label: "Form",
     icon: (

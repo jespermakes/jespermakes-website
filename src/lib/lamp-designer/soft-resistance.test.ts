@@ -81,13 +81,15 @@ describe("applySliderResistance", () => {
   });
 
   it("does not resist movement away from constraint violations", () => {
-    // Start with a shape that has bulbFit error
+    // Top opening under the E27 crown minimum (57 mm) -> crown-fit error,
+    // and the narrow neck also violates thermal clearance.
     const badShape: ShapeParameters = {
       ...safeShape,
       topDiameter: 40,
-      bottomDiameter: 40,
+      bottomDiameter: 120,
     };
-    // Moving diameter UP should not be resisted (improving bulbFit)
+    // Raising the top diameter to a healthy cylinder fixes both, so the
+    // move must pass through undamped.
     const result = applySliderResistance(badShape, "topDiameter", 120, 1);
     expect(result).toBe(120);
   });

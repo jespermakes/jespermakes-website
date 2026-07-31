@@ -4,19 +4,58 @@
 
 import { BufferGeometry, Matrix4, Vector3 } from "three";
 import { generateLampGeometry } from "./geometry";
-import { buildLampProfile } from "./templates";
-import type { LampParameters } from "./types";
+import { buildLampAssemblyProfile } from "./templates";
+import { getMountInterface } from "./fixtures";
+import type { FixtureModuleId, LampParameters, ProfilePoint, ShapeParameters } from "./types";
 
-/**
- * Build the printable geometry for a design. Identical inputs to the
- * preview mesh (shared buildLampProfile + shape), rotated so the lamp
- * stands on the build plate: the designer works Y-up in mm, slicers
- * expect Z-up.
- */
-export function buildExportGeometry(parameters: LampParameters): BufferGeometry {
-  const geometry = generateLampGeometry(buildLampProfile(parameters), parameters.shape);
+function toZUp(geometry: BufferGeometry): BufferGeometry {
   geometry.applyMatrix4(new Matrix4().makeRotationX(Math.PI / 2));
   return geometry;
+}
+
+/**
+ * Build the printable geometry for a design: fixture crown + shade, the
+ * same assembly profile the preview renders, rotated so the lamp stands
+ * on the build plate (designer is Y-up in mm, slicers expect Z-up).
+ */
+export function buildExportGeometry(parameters: LampParameters): BufferGeometry {
+  return toZUp(generateLampGeometry(buildLampAssemblyProfile(parameters), parameters.shape));
+}
+
+/**
+ * Fit-test coupon for a fixture module: the crown ring with a short
+ * flared skirt. Prints in minutes and verifies the aperture against the
+ * user's real hardware before they commit to a long shade print.
+ */
+export function buildFitCouponGeometry(moduleId: FixtureModuleId): BufferGeometry {
+  const mount = getMountInterface(moduleId);
+  const r0 = mount.apertureDiameter / 2;
+  const r1 = r0 + mount.landWidth;
+  const profile: ProfilePoint[] = [
+    { x: r0, y: 0 },
+    { x: r1, y: 0 },
+    { x: r1 + 4, y: 6 },
+  ];
+  const couponShape: ShapeParameters = {
+    height: 6,
+    topDiameter: r0 * 2,
+    bottomDiameter: (r1 + 4) * 2,
+    curveTension: 0,
+    wallThickness: 2.4,
+  };
+  return toZUp(
+    generateLampGeometry(profile, couponShape, { profileSegments: 4 })
+  );
+}
+
+export function couponToStlBlob(moduleId: FixtureModuleId): Blob {
+  const geometry = buildFitCouponGeometry(moduleId);
+  try {
+    const stl = geometryToBinaryStl(geometry, `Jesper Makes fit coupon ${moduleId}`);
+    return new Blob([stl], { type: "model/stl" });
+  } finally {
+    geometry.dispose();
+  }
 }
 
 /**

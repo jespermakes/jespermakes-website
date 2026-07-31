@@ -1,5 +1,6 @@
 import type { ShapeParameters, ConstraintSeverity } from "./types";
-import { runAllConstraints } from "./constraints";
+import { runAllConstraints, DEFAULT_CONSTRAINT_CONTEXT } from "./constraints";
+import type { ConstraintContext } from "./constraints";
 import { SLIDER_CONSTRAINTS, worstSeverity } from "./constraint-display";
 
 /** How much of the original delta to keep at each severity level */
@@ -28,6 +29,7 @@ export function applySliderResistance(
   key: keyof ShapeParameters,
   rawValue: number,
   sliderStep: number,
+  ctx: ConstraintContext = DEFAULT_CONSTRAINT_CONTEXT,
 ): number {
   const currentValue = currentShape[key];
   const delta = rawValue - currentValue;
@@ -38,7 +40,7 @@ export function applySliderResistance(
 
   // Evaluate constraints at proposed value
   const proposedShape = { ...currentShape, [key]: rawValue };
-  const proposedResults = runAllConstraints(proposedShape);
+  const proposedResults = runAllConstraints(proposedShape, ctx);
   const proposedConstraints = relevantIds.map((id) => proposedResults[id]);
   const proposedSeverity = worstSeverity(proposedConstraints);
 
@@ -46,7 +48,7 @@ export function applySliderResistance(
   if (!proposedSeverity || proposedSeverity === "info") return rawValue;
 
   // Evaluate constraints at current value
-  const currentResults = runAllConstraints(currentShape);
+  const currentResults = runAllConstraints(currentShape, ctx);
   const currentConstraints = relevantIds.map((id) => currentResults[id]);
   const currentSeverity = worstSeverity(currentConstraints);
 

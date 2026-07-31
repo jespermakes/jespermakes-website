@@ -1,13 +1,23 @@
 "use client";
 
-import type { ShapeParameters, LightParameters, PatternId } from "@/lib/lamp-designer/types";
+import type {
+  ShapeParameters,
+  LightParameters,
+  PatternId,
+  FixtureSpec,
+  TemplateId,
+} from "@/lib/lamp-designer/types";
 import { runAllChecks } from "@/lib/lamp-designer/checks";
 import type { CheckSection, CheckItem } from "@/lib/lamp-designer/checks";
+import { getFixtureModule } from "@/lib/lamp-designer/fixtures";
+import { thermalClearance } from "@/lib/lamp-designer/constraints";
 
 export interface CheckStepProps {
   shape: ShapeParameters;
   light: LightParameters;
   patternId: PatternId;
+  fixture: FixtureSpec;
+  templateId: TemplateId;
 }
 
 function severityColor(item: CheckItem): string {
@@ -56,11 +66,13 @@ function Section({ section }: { section: CheckSection }) {
   );
 }
 
-export function CheckStep({ shape, light, patternId }: CheckStepProps) {
+export function CheckStep({ shape, light, patternId, fixture, templateId }: CheckStepProps) {
   const sections = runAllChecks(shape, light, patternId);
   const hasErrors = sections.some((s) =>
     s.items.some((i) => !i.ok && i.severity === "error")
   );
+  const fixtureModule = getFixtureModule(fixture.moduleId);
+  const thermal = thermalClearance(shape, { fixture, templateId });
 
   return (
     <div>
@@ -71,6 +83,22 @@ export function CheckStep({ shape, light, patternId }: CheckStepProps) {
         Review dimensions, bulb fit, print settings, and material before
         exporting.
       </p>
+
+      <div className="mb-5 p-3 rounded-xl bg-forest/5 border border-forest/15">
+        <h3 className="text-sm font-semibold text-wood mb-1">Fixture: {fixtureModule.name}</h3>
+        <p className="text-xs text-wood/60 leading-snug">You buy: {fixtureModule.hardware}</p>
+        <p
+          className={`text-xs mt-1.5 leading-snug ${
+            thermal.severity === "error"
+              ? "text-red-600"
+              : thermal.severity === "warn"
+                ? "text-amber-700"
+                : "text-wood/70"
+          }`}
+        >
+          {thermal.message}. LED bulbs only, never incandescent or halogen.
+        </p>
+      </div>
 
       <div className="flex flex-col gap-5">
         {sections.map((section) => (

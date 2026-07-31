@@ -10,12 +10,14 @@ import type {
   TemplateId,
   LightParameters,
   PatternId,
+  FixtureSpec,
 } from "@/lib/lamp-designer/types";
 import { STEP_IDS } from "@/lib/lamp-designer/types";
-import { buildLampProfile, getTemplate } from "@/lib/lamp-designer/templates";
+import { buildLampAssemblyProfile, getTemplate } from "@/lib/lamp-designer/templates";
 import { StepNav } from "@/components/lamp-designer/step-nav";
 import { LampSceneDynamic } from "@/components/lamp-designer/scene-dynamic";
 import { ContextStep } from "@/components/lamp-designer/steps/context-step";
+import { FixtureStep } from "@/components/lamp-designer/steps/fixture-step";
 import { FormStep } from "@/components/lamp-designer/steps/form-step";
 import { ShapeStep } from "@/components/lamp-designer/steps/shape-step";
 import { LightStep } from "@/components/lamp-designer/steps/light-step";
@@ -28,6 +30,7 @@ const DEFAULT_TEMPLATE = getTemplate("cone");
 
 const DEFAULT_PARAMETERS: LampParameters = {
   context: "bedside",
+  fixture: { moduleId: "e27-clamp" },
   templateId: "cone",
   shape: DEFAULT_TEMPLATE.defaultParameters,
   light: {
@@ -83,6 +86,13 @@ export default function LampDesignerPage() {
     }));
   }, []);
 
+  const updateFixture = useCallback((fixture: FixtureSpec) => {
+    setState((prev) => ({
+      ...prev,
+      parameters: { ...prev.parameters, fixture },
+    }));
+  }, []);
+
   const updateTemplate = useCallback((templateId: TemplateId) => {
     const template = getTemplate(templateId);
     setState((prev) => ({
@@ -120,15 +130,17 @@ export default function LampDesignerPage() {
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === STEP_IDS.length - 1;
 
-  // Single source of profile truth: the same scaled profile the export uses,
-  // so the preview can never show a lamp the STL does not contain.
+  // Single source of profile truth: the same assembly profile (fixture
+  // crown + shade) the export uses, so the preview can never show a lamp
+  // the STL does not contain.
   const profile = useMemo(
     () =>
-      buildLampProfile({
+      buildLampAssemblyProfile({
         templateId: parameters.templateId,
         shape: parameters.shape,
+        fixture: parameters.fixture,
       }),
-    [parameters.templateId, parameters.shape]
+    [parameters.templateId, parameters.shape, parameters.fixture]
   );
 
   function renderStep() {
@@ -140,6 +152,14 @@ export default function LampDesignerPage() {
             onSelect={updateContext}
           />
         );
+      case "fixture":
+        return (
+          <FixtureStep
+            fixture={parameters.fixture}
+            context={parameters.context}
+            onChange={updateFixture}
+          />
+        );
       case "form":
         return (
           <FormStep
@@ -148,7 +168,14 @@ export default function LampDesignerPage() {
           />
         );
       case "shape":
-        return <ShapeStep shape={parameters.shape} onChange={updateShape} />;
+        return (
+          <ShapeStep
+            shape={parameters.shape}
+            fixture={parameters.fixture}
+            templateId={parameters.templateId}
+            onChange={updateShape}
+          />
+        );
       case "light":
         return <LightStep light={parameters.light} onChange={updateLight} />;
       case "pattern":
@@ -164,6 +191,8 @@ export default function LampDesignerPage() {
             shape={parameters.shape}
             light={parameters.light}
             patternId={parameters.patternId}
+            fixture={parameters.fixture}
+            templateId={parameters.templateId}
           />
         );
       case "reveal":

@@ -11,9 +11,10 @@ import {
 } from "./types";
 
 describe("STEP_IDS", () => {
-  it("contains all 8 steps in order", () => {
+  it("contains all 9 steps in order, fixture right after context", () => {
     expect(STEP_IDS).toEqual([
       "context",
+      "fixture",
       "form",
       "shape",
       "light",
@@ -24,8 +25,8 @@ describe("STEP_IDS", () => {
     ]);
   });
 
-  it("has exactly 8 entries", () => {
-    expect(STEP_IDS).toHaveLength(8);
+  it("has exactly 9 entries", () => {
+    expect(STEP_IDS).toHaveLength(9);
   });
 });
 
@@ -48,6 +49,7 @@ describe("type structure tests", () => {
   it("LampParameters holds all required fields", () => {
     const params: LampParameters = {
       context: "bedside",
+      fixture: { moduleId: "e27-clamp" },
       templateId: "cone",
       shape: {
         height: 200,

@@ -6,6 +6,7 @@
 
 export type StepId =
   | "context"
+  | "fixture"
   | "form"
   | "shape"
   | "light"
@@ -16,6 +17,7 @@ export type StepId =
 
 export const STEP_IDS: StepId[] = [
   "context",
+  "fixture",
   "form",
   "shape",
   "light",
@@ -48,7 +50,56 @@ export interface ContextConstraints {
   suggestedLightDirection: LightDirection;
 }
 
-// -- Templates (Step 1) ----------------------------------------------------
+// -- Fixture (Step 1) ------------------------------------------------------
+// Every lamp begins at the fixture (DR-160). The module is the verified
+// mounting interface for real socket hardware; the shade is generated
+// around its mount interface.
+
+export type FixtureModuleId =
+  | "e27-clamp"
+  | "ikea-slip"
+  | "e14-clamp"
+  | "stem-m10"
+  | "kit001-seat";
+
+export interface FixtureSpec {
+  moduleId: FixtureModuleId;
+}
+
+export type FixtureMode = "pendant" | "table" | "accent";
+
+/** Exclusion zone the bulb occupies inside the shade, in profile space:
+ *  y measured from the crown plane (y=0) into the shade interior. */
+export interface BulbEnvelope {
+  /** Bulb glass max diameter in mm (A60 = 60). */
+  diameter: number;
+  /** Bulb glass length in mm. */
+  length: number;
+  /** Distance from crown plane to where the glass starts, in mm
+   *  (socket and holder body sit in this gap). */
+  topOffset: number;
+  /** Human name for the reference bulb, e.g. "A60 LED". */
+  bulbName: string;
+}
+
+/** What the shade generator needs to know about the chosen fixture. */
+export interface MountInterface {
+  moduleId: FixtureModuleId;
+  /** Hole diameter printed in the shade crown, mm. */
+  apertureDiameter: number;
+  /** Flat annulus width around the hole that the hardware clamps, mm. */
+  landWidth: number;
+  /** apertureDiameter/2 + landWidth: the shade's top opening radius must
+   *  be at least this. */
+  crownMinRadius: number;
+  bulbEnvelope: BulbEnvelope;
+  mode: FixtureMode;
+  /** Hard LED wattage cap from the hardware itself (e.g. IKEA max 22 W),
+   *  null when only the material/clearance gate applies. */
+  hardCapWatt: number | null;
+}
+
+// -- Templates (Step 2) ----------------------------------------------------
 
 export type TemplateId = "cone" | "dome" | "cylinder";
 
@@ -141,6 +192,7 @@ export type ConstraintResults = Record<ConstraintId, LampConstraint>;
 
 export interface LampParameters {
   context: LampContext;
+  fixture: FixtureSpec;
   templateId: TemplateId;
   shape: ShapeParameters;
   light: LightParameters;

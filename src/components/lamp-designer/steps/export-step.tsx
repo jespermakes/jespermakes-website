@@ -5,6 +5,7 @@ import type {
   LampParameters,
   ExportFormat,
 } from "@/lib/lamp-designer/types";
+import { getFixtureModule } from "@/lib/lamp-designer/fixtures";
 
 export interface ExportStepProps {
   parameters: LampParameters;
@@ -119,8 +120,8 @@ export function ExportStep({ parameters, designName }: ExportStepProps) {
         })}
         <p className="text-xs text-wood/40">
           File: {fileNameForDesign(designName, "stl")} · millimeters, ready to
-          slice. Patterns are a light preview in the beta; the exported shell
-          is solid.
+          slice. The fixture mount crown is part of the shell. Patterns are a
+          light preview in the beta; the exported shell is solid.
         </p>
       </div>
 
@@ -153,6 +154,10 @@ export function ExportStep({ parameters, designName }: ExportStepProps) {
           <span className="text-wood font-medium">{designName}</span>
           <span className="text-wood/60">Context</span>
           <span className="text-wood font-medium">{parameters.context}</span>
+          <span className="text-wood/60">Fixture</span>
+          <span className="text-wood font-medium">
+            {getFixtureModule(parameters.fixture.moduleId).name}
+          </span>
           <span className="text-wood/60">Template</span>
           <span className="text-wood font-medium">{parameters.templateId}</span>
           <span className="text-wood/60">Pattern</span>
