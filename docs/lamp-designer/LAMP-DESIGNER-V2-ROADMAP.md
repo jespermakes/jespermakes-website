@@ -1,5 +1,7 @@
 # Lamp Designer v2: Fixture-First Rebuild
 
+**Status 2026-07-31 end of day:** Phase A SHIPPED (fixture step, five mount modules, fit coupons, real thermal model; commit dda75f1). Phase B1 SHIPPED (patterns are real modulated geometry, one build pipeline, validator + 47-cell golden matrix in CI; commit ddffcca). Phase C core SHIPPED (material plan engine, fixture-aware Check step, real 3MF export, per-fixture assembly guide; commit 9c489b6+fixes). Remaining: B2 (moon, photo lithophane, kumiko, mushroom engines), C remainder (dual-material zones, embossed crown text, Bambu settings embedding), D physical prints (Jesper), E MakerWorld presets. Task IDs in section 7.
+
 **Date:** 2026-07-31
 **Owner:** Floki (build), Jesper (validation prints, final calls)
 **Deadline anchor:** live and tested before the Bambu video publishes (late summer 2026, DR-153)
