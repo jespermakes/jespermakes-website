@@ -100,7 +100,7 @@ export default function WorkshopWallCharts() {
           <p className="text-wood-light/60 text-sm mb-1">
             8 printable reference sheets for your workshop wall
           </p>
-          <p className="text-3xl text-forest font-serif mb-6">&euro;3</p>
+          <p className="text-3xl text-forest font-serif mb-6">Free</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-6">
             These started as notes on my own workshop wall because I keep
@@ -124,7 +124,7 @@ export default function WorkshopWallCharts() {
           <FreePlanClaim sku="workshop-wall-charts" downloadLabel="Download PDF" />
 
           <p className="text-wood-light/50 text-xs mt-3">
-            Instant PDF download after purchase. Secure payment via Stripe.
+            Instant download. If you choose to pay, Stripe handles it securely.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
