@@ -58,17 +58,29 @@ async function Header() {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8 text-sm font-sans">
           <Link
+            href="/work"
+            className="text-wood-light hover:text-forest transition-colors"
+          >
+            Work
+          </Link>
+          <Link
             href="/shop"
             className="text-wood-light hover:text-forest transition-colors"
           >
-            Shop
+            Plans
+          </Link>
+          <Link
+            href="/barn"
+            className="text-wood-light hover:text-forest transition-colors"
+          >
+            Barn
           </Link>
           <div className="relative group">
             <Link
               href="/tools"
               className="text-wood-light hover:text-forest transition-colors"
             >
-              Tools & Links
+              Gear
             </Link>
             <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
               <div className="bg-cream border border-wood/10 rounded-xl shadow-lg py-2 w-52">
@@ -96,7 +108,7 @@ async function Header() {
           </div>
           <div className="relative group">
             <span className="text-wood-light hover:text-forest transition-colors cursor-pointer">
-              Creator Tools
+              Apps
             </span>
             <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
               <div className="bg-cream border border-wood/10 rounded-xl shadow-lg py-2 w-52">
@@ -171,12 +183,6 @@ async function Header() {
             className="text-wood-light hover:text-forest transition-colors"
           >
             About
-          </Link>
-          <Link
-            href="/contact"
-            className="text-wood-light hover:text-forest transition-colors"
-          >
-            Contact
           </Link>
           {session?.user ? (
             <>

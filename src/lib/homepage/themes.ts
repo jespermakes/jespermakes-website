@@ -86,6 +86,8 @@ export const THEMES: Record<Exclude<ModuleTheme, "default">, ThemeStyle> = {
 export const DEFAULT_THEMES: Record<string, Exclude<ModuleTheme, "default">> = {
   hero: "cream",
   about: "wood",
+  work: "cream",
+  barn: "wood",
   creator_tools: "cream",
   blog: "wood-soft",
   shop: "cream",

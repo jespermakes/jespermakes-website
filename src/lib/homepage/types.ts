@@ -3,6 +3,8 @@ import type { ModuleTheme } from "./themes";
 export type ModuleKind =
   | "hero"
   | "about"
+  | "work"
+  | "barn"
   | "creator_tools"
   | "blog"
   | "shop"
@@ -12,6 +14,8 @@ export type ModuleKind =
 export const MODULE_KINDS: ModuleKind[] = [
   "hero",
   "about",
+  "work",
+  "barn",
   "creator_tools",
   "blog",
   "shop",
@@ -22,6 +26,8 @@ export const MODULE_KINDS: ModuleKind[] = [
 export const MODULE_LABELS: Record<ModuleKind, string> = {
   hero: "Hero",
   about: "About strip",
+  work: "Selected work",
+  barn: "The barn",
   creator_tools: "Creator tools",
   blog: "Blog posts",
   shop: "Shop products",
@@ -53,6 +59,36 @@ export interface AboutData {
   ctaLabel?: string;
   ctaUrl?: string;
   direction?: "image-left" | "image-right";
+  theme?: ModuleTheme;
+}
+
+export interface WorkItem {
+  title: string;
+  blurb: string;
+  image: string;
+  href: string;
+}
+
+export interface WorkData {
+  caps?: string;
+  title: string;
+  subtitle?: string;
+  items: WorkItem[];
+  ctaLabel?: string;
+  ctaUrl?: string;
+  theme?: ModuleTheme;
+}
+
+export interface BarnData {
+  caps?: string;
+  title: string;
+  body: string;
+  image?: string;
+  imageAlt?: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
+  secondaryLabel?: string;
+  secondaryUrl?: string;
   theme?: ModuleTheme;
 }
 
@@ -93,6 +129,8 @@ export interface NewsletterData {
 export type ModuleData =
   | HeroData
   | AboutData
+  | WorkData
+  | BarnData
   | CreatorToolsData
   | BlogData
   | ShopData
@@ -130,6 +168,22 @@ export function defaultDataFor(kind: ModuleKind): ModuleData {
         title: "About heading",
         body: "Your story in two short paragraphs.",
         direction: "image-left",
+      };
+    case "work":
+      return {
+        caps: "Selected work",
+        title: "Furniture with a story in it",
+        items: [],
+        ctaLabel: "See the work →",
+        ctaUrl: "/work",
+      };
+    case "barn":
+      return {
+        caps: "The barn",
+        title: "Raising a barn the old way",
+        body: "On South Fyn we are rebuilding an 1850s barn as a hand-cut timber frame workshop.",
+        ctaLabel: "Follow the build",
+        ctaUrl: "/barn",
       };
     case "creator_tools":
       return {

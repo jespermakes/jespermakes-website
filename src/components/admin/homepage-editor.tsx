@@ -272,5 +272,13 @@ function EditForm({ section, onSave, saving }: { section: PageSection; onSave: (
       return <FeedForm kind={section.kind} initial={section.data as import("@/lib/homepage/types").FeedData} onSave={onSave} saving={saving} />;
     case "newsletter":
       return <AdminNewsletterForm initial={section.data as import("@/lib/homepage/types").NewsletterData} onSave={onSave} saving={saving} />;
+    default:
+      // Kinds without a dedicated form yet (work, barn) are edited via the
+      // site MCP or directly in the DB.
+      return (
+        <p className="text-sm text-wood-light/70">
+          This section has no visual editor yet. Edit it via the site MCP.
+        </p>
+      );
   }
 }

@@ -57,11 +57,27 @@ export function MobileNav({ userName }: { userName?: string | null }) {
 
           <nav className="px-6 py-6 space-y-1 overflow-y-auto max-h-[calc(100vh-80px)]">
             <Link
+              href="/work"
+              onClick={() => setOpen(false)}
+              className="block py-3 text-lg text-wood hover:text-forest transition-colors border-b border-wood/5"
+            >
+              Work
+            </Link>
+
+            <Link
               href="/shop"
               onClick={() => setOpen(false)}
               className="block py-3 text-lg text-wood hover:text-forest transition-colors border-b border-wood/5"
             >
-              Shop
+              Plans
+            </Link>
+
+            <Link
+              href="/barn"
+              onClick={() => setOpen(false)}
+              className="block py-3 text-lg text-wood hover:text-forest transition-colors border-b border-wood/5"
+            >
+              Barn
             </Link>
 
             {/* Tools with expandable categories */}
@@ -70,7 +86,7 @@ export function MobileNav({ userName }: { userName?: string | null }) {
                 onClick={() => setToolsOpen(!toolsOpen)}
                 className="flex items-center justify-between w-full py-3 text-lg text-wood hover:text-forest transition-colors"
               >
-                Tools & Links
+                Gear
                 <svg
                   className={`w-5 h-5 transition-transform ${toolsOpen ? "rotate-180" : ""}`}
                   fill="none"

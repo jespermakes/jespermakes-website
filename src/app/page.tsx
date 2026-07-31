@@ -2,6 +2,8 @@ import { getHomepageSections } from "@/lib/homepage/fetch";
 import type { PageSection } from "@/lib/homepage/types";
 import HeroModule from "@/components/homepage/hero-module";
 import AboutModule from "@/components/homepage/about-module";
+import WorkModule from "@/components/homepage/work-module";
+import BarnModule from "@/components/homepage/barn-module";
 import CreatorToolsModule from "@/components/homepage/creator-tools-module";
 import BlogModule from "@/components/homepage/blog-module";
 import ShopModule from "@/components/homepage/shop-module";
@@ -29,6 +31,10 @@ function ModuleRenderer({ section }: { section: PageSection }) {
       return <HeroModule data={section.data as import("@/lib/homepage/types").HeroData} />;
     case "about":
       return <AboutModule data={section.data as import("@/lib/homepage/types").AboutData} />;
+    case "work":
+      return <WorkModule data={section.data as import("@/lib/homepage/types").WorkData} />;
+    case "barn":
+      return <BarnModule data={section.data as import("@/lib/homepage/types").BarnData} />;
     case "creator_tools":
       return <CreatorToolsModule data={section.data as import("@/lib/homepage/types").CreatorToolsData} />;
     case "blog":
