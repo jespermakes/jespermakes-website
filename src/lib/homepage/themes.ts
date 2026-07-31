@@ -5,6 +5,7 @@ export type ModuleTheme =
   | "wood-soft"
   | "forest-soft"
   | "wood"
+  | "night"
   | "forest";
 
 export const THEME_OPTIONS: Array<{ value: ModuleTheme; label: string; swatch: string }> = [
@@ -14,6 +15,7 @@ export const THEME_OPTIONS: Array<{ value: ModuleTheme; label: string; swatch: s
   { value: "wood-soft", label: "Soft wood", swatch: "#F0EAE1" },
   { value: "forest-soft", label: "Soft forest", swatch: "#EEF2EC" },
   { value: "wood", label: "Wood", swatch: "#2C1810" },
+  { value: "night", label: "Night", swatch: "#20100A" },
   { value: "forest", label: "Forest", swatch: "#5A7A5A" },
 ];
 
@@ -71,6 +73,15 @@ export const THEMES: Record<Exclude<ModuleTheme, "default">, ThemeStyle> = {
     highlight: "text-amber",
     muted: "text-cream/50",
   },
+  night: {
+    bg: "bg-[#20100A]",
+    heading: "text-cream",
+    text: "text-cream/60",
+    caps: "text-cream/50",
+    accent: "text-cream/70 hover:text-amber",
+    highlight: "text-amber",
+    muted: "text-cream/45",
+  },
   forest: {
     bg: "bg-forest",
     heading: "text-cream",
@@ -84,15 +95,15 @@ export const THEMES: Record<Exclude<ModuleTheme, "default">, ThemeStyle> = {
 
 /** Each module's designed default. Keep in sync with what shipped. */
 export const DEFAULT_THEMES: Record<string, Exclude<ModuleTheme, "default">> = {
-  hero: "cream",
+  hero: "night",
   about: "wood",
   work: "cream",
-  barn: "wood",
-  creator_tools: "cream",
+  barn: "night",
+  creator_tools: "night",
   blog: "wood-soft",
-  shop: "cream",
-  youtube: "wood-soft",
-  newsletter: "forest-soft",
+  shop: "night",
+  youtube: "night",
+  newsletter: "cream",
 };
 
 /** Resolve a possibly-"default" theme for a given module kind. */

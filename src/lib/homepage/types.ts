@@ -49,6 +49,13 @@ export interface HeroData {
   mediaImageId?: string;
   mediaOverlayText?: string;
   mediaYoutubeId?: string;
+  /** Full-bleed background image path. When set, the hero renders the
+   * cinematic dark layout (v3) instead of the split layout. */
+  backgroundImage?: string;
+  /** Small stat line under the CTAs, e.g. subscriber counts. */
+  statsLine?: string;
+  /** Identity index band rendered under the hero (01 Furniture, ...). */
+  indexLinks?: Array<{ label: string; href: string }>;
   theme?: ModuleTheme;
 }
 
@@ -67,6 +74,7 @@ export interface WorkItem {
   blurb: string;
   image: string;
   href: string;
+  linkLabel?: string;
 }
 
 export interface WorkData {
@@ -103,6 +111,8 @@ export interface CreatorToolsData {
 export interface FeedData {
   caps?: string;
   title: string;
+  /** Substring of title rendered in the amber accent color. */
+  titleHighlight?: string;
   subtitle?: string;
   mode: "auto" | "manual";
   count?: number;
@@ -123,6 +133,9 @@ export interface NewsletterData {
   buttonLabel: string;
   placeholder: string;
   showSubscriberCount: boolean;
+  /** Small round portrait + name rendered as a sign-off under the form. */
+  signatureImage?: string;
+  signatureName?: string;
   theme?: ModuleTheme;
 }
 

@@ -1,41 +1,59 @@
 import { CREATOR_TOOL_REGISTRY } from "@/lib/creator-tools";
 import type { CreatorToolsData } from "@/lib/homepage/types";
 import { resolveTheme } from "@/lib/homepage/themes";
+import { Kicker } from "./kicker";
 
+// The apps as an index: heading column left, numbered list right.
 export default function CreatorToolsModule({ data }: { data: CreatorToolsData }) {
   const tools = data.toolSlugs
     .map((slug) => CREATOR_TOOL_REGISTRY[slug])
     .filter(Boolean);
   const theme = resolveTheme("creator_tools", data.theme);
+  if (tools.length === 0) return null;
+
+  const dark = data.theme !== "cream" && data.theme !== "white" && data.theme !== "wood-soft";
 
   return (
-    <section className={theme.bg}>
-      <div className="mx-auto max-w-5xl px-6 py-16 md:py-20">
-        <div className="mx-auto max-w-xl text-center">
-          {data.caps && <div className={`text-[10px] font-bold tracking-[0.15em] uppercase ${theme.caps}`}>{data.caps}</div>}
-          <h2 className={`mt-2 font-serif text-3xl md:text-4xl ${theme.heading}`}>{data.title}</h2>
-          {data.subtitle && <p className={`mt-3 ${theme.text}`}>{data.subtitle}</p>}
-        </div>
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {tools.map((tool) => (
-            <a
-              key={tool.slug}
-              href={tool.url}
-              className="group block rounded-2xl bg-white/50 border border-wood/8 p-6 hover:border-wood/20 transition-colors"
-            >
-              <div
-                className={
-                  "flex h-10 w-10 items-center justify-center rounded-lg text-lg " +
-                  (tool.tint === "amber" ? "bg-amber/10 text-amber" : "bg-forest/10 text-forest")
-                }
-                aria-hidden
+    <section className={`${theme.bg} ${dark ? "border-t border-cream/10" : ""}`}>
+      <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
+          <div className="md:col-span-2">
+            {data.caps && <Kicker dark={dark}>{data.caps}</Kicker>}
+            <h2 className={`mt-5 font-serif text-4xl leading-tight ${theme.heading}`}>
+              {data.title}
+            </h2>
+            {data.subtitle && (
+              <p className={`mt-5 leading-relaxed max-w-sm ${theme.text}`}>{data.subtitle}</p>
+            )}
+          </div>
+          <div className="md:col-span-3">
+            {tools.map((tool, i) => (
+              <a
+                key={tool.slug}
+                href={tool.url}
+                className={`group flex items-baseline gap-5 py-5 border-t ${
+                  dark ? "border-cream/10" : "border-wood/10"
+                } last:border-b`}
               >
-                {tool.glyph}
-              </div>
-              <h3 className="mt-4 font-serif text-lg text-wood">{tool.name}</h3>
-              <p className="mt-2 text-sm text-wood-light/75">{tool.description}</p>
-            </a>
-          ))}
+                <span className="text-sm font-semibold text-amber">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <span className={`font-serif text-xl group-hover:text-amber transition-colors ${theme.heading}`}>
+                    {tool.name}
+                  </span>
+                  <p className={`mt-0.5 text-sm ${theme.muted}`}>{tool.description}</p>
+                </div>
+                <span
+                  className={`ml-auto group-hover:text-amber group-hover:translate-x-1 transition-all ${
+                    dark ? "text-cream/50" : "text-wood/30"
+                  }`}
+                >
+                  →
+                </span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>

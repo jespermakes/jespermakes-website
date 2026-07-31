@@ -2,11 +2,9 @@ import { SmartImage } from "@/components/smart-image";
 import { getImageById } from "@/lib/homepage/fetch";
 import type { HeroData } from "@/lib/homepage/types";
 import { resolveTheme } from "@/lib/homepage/themes";
+import { Kicker } from "./kicker";
 
 export default async function HeroModule({ data }: { data: HeroData }) {
-  const image = await getImageById(data.mediaImageId);
-  const theme = resolveTheme("hero", data.theme);
-
   let before = data.title;
   let highlight = "";
   if (data.titleHighlight && data.title.includes(data.titleHighlight)) {
@@ -14,6 +12,81 @@ export default async function HeroModule({ data }: { data: HeroData }) {
     before = data.title.slice(0, idx);
     highlight = data.titleHighlight;
   }
+
+  // Cinematic full-bleed hero (v3). Renders when a background image is set.
+  if (data.backgroundImage) {
+    return (
+      <>
+        <section className="relative min-h-[92vh] flex items-end bg-[#20100A]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={data.backgroundImage}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#20100A] via-[#20100A]/40 to-[#20100A]/10" />
+          <div className="relative mx-auto w-full max-w-6xl px-6 pb-20 pt-40">
+            {data.mediaOverlayText && <Kicker dark>{data.mediaOverlayText}</Kicker>}
+            <h1 className="mt-5 font-serif text-cream text-[clamp(2.8rem,7vw,5.5rem)] leading-[1.02] max-w-3xl">
+              {before}
+              {highlight && <em className="not-italic text-amber">{highlight}</em>}
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-cream/75 leading-relaxed">
+              {data.subtitle}
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-5">
+              <a
+                href={data.primaryCta.url}
+                className="rounded-xl bg-cream px-6 py-3.5 text-sm font-semibold text-wood hover:bg-cream/90 transition-colors"
+              >
+                {data.primaryCta.label}
+              </a>
+              {data.secondaryCta && (
+                <a
+                  href={data.secondaryCta.url}
+                  className="text-sm font-semibold text-cream/80 hover:text-amber transition-colors"
+                >
+                  {data.secondaryCta.label} →
+                </a>
+              )}
+            </div>
+            {data.statsLine && (
+              <p className="mt-10 text-xs tracking-wide text-cream/40">{data.statsLine}</p>
+            )}
+          </div>
+        </section>
+        {data.indexLinks && data.indexLinks.length > 0 && (
+          <section className="bg-[#20100A] border-t border-cream/10">
+            <div className="mx-auto max-w-6xl px-6 grid grid-cols-1 md:grid-cols-3">
+              {data.indexLinks.map((item, i) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className={`group flex items-baseline gap-4 py-8 md:py-10 px-1 ${
+                    i > 0 ? "md:border-l md:border-cream/10 md:pl-10" : ""
+                  }`}
+                >
+                  <span className="text-xs text-amber font-semibold">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-serif text-2xl text-cream/85 group-hover:text-amber transition-colors">
+                    {item.label}
+                  </span>
+                  <span className="ml-auto text-cream/50 group-hover:text-amber group-hover:translate-x-1 transition-all">
+                    →
+                  </span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </>
+    );
+  }
+
+  // Legacy split hero.
+  const image = await getImageById(data.mediaImageId);
+  const theme = resolveTheme("hero", data.theme);
 
   return (
     <section className={theme.bg}>
