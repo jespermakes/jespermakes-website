@@ -117,11 +117,11 @@ export default function HomeV3Preview() {
                 i > 0 ? "md:border-l md:border-cream/10 md:pl-10" : ""
               }`}
             >
-              <span className="text-xs text-amber/70 font-semibold">{item.n}</span>
+              <span className="text-xs text-amber font-semibold">{item.n}</span>
               <span className="font-serif text-2xl text-cream/85 group-hover:text-amber transition-colors">
                 {item.label}
               </span>
-              <span className="ml-auto text-cream/30 group-hover:text-amber group-hover:translate-x-1 transition-all">
+              <span className="ml-auto text-cream/50 group-hover:text-amber group-hover:translate-x-1 transition-all">
                 →
               </span>
             </a>
@@ -181,7 +181,7 @@ export default function HomeV3Preview() {
                 No screws, no metal. Wood holding wood.
               </p>
             </Link>
-            <Link href="/blog/planter-box-finger-joints" className="group block md:mt-20">
+            <Link href="/blog/planter-box-finger-joints" className="group block md:mt-12">
               <div className="overflow-hidden rounded-2xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -267,7 +267,7 @@ export default function HomeV3Preview() {
                   <h3 className="font-serif text-lg text-cream group-hover:text-amber transition-colors">
                     {plan.name}
                   </h3>
-                  <span className="font-serif text-amber shrink-0">€0+</span>
+                  <span className="font-serif text-xl text-amber shrink-0">€0+</span>
                 </div>
                 <p className="mt-1 text-sm text-cream/50">{plan.sub}</p>
               </Link>
@@ -299,14 +299,14 @@ export default function HomeV3Preview() {
                   href={app.href}
                   className="group flex items-baseline gap-5 border-t border-cream/10 py-5 last:border-b"
                 >
-                  <span className="text-xs font-semibold text-amber/60">{app.n}</span>
+                  <span className="text-sm font-semibold text-amber">{app.n}</span>
                   <div>
                     <span className="font-serif text-xl text-cream group-hover:text-amber transition-colors">
                       {app.name}
                     </span>
-                    <p className="mt-0.5 text-sm text-cream/45">{app.blurb}</p>
+                    <p className="mt-0.5 text-sm text-cream/60">{app.blurb}</p>
                   </div>
-                  <span className="ml-auto text-cream/25 group-hover:text-amber group-hover:translate-x-1 transition-all">
+                  <span className="ml-auto text-cream/50 group-hover:text-amber group-hover:translate-x-1 transition-all">
                     →
                   </span>
                 </Link>
