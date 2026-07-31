@@ -206,5 +206,9 @@ export function lampTo3mfBytes(
 }
 
 export function lampTo3mfBlob(parameters: LampParameters, title = "Lamp"): Blob {
-  return new Blob([lampTo3mfBytes(parameters, title)], { type: "model/3mf" });
+  // The bytes span their entire freshly-allocated buffer, so handing the
+  // ArrayBuffer over is exact (and satisfies the BlobPart typing).
+  return new Blob([lampTo3mfBytes(parameters, title).buffer as ArrayBuffer], {
+    type: "model/3mf",
+  });
 }

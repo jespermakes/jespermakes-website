@@ -151,7 +151,7 @@ export interface CheckInput {
 }
 
 export function runAllChecks(input: CheckInput): CheckSection[] {
-  const { shape, light, pattern, fixture, templateId } = input;
+  const { shape, pattern, fixture, templateId } = input;
   const ctx = { fixture, templateId };
   const dims = getDimensionSummary(shape);
   const mountFit = bulbFit(shape, ctx);

@@ -61,7 +61,7 @@ function wallAdviceFor(wallThickness: number): string {
 
 export function recommendLampPlan(input: LampPlanInput): LampPlan {
   const { shape, light, pattern, fixture, templateId } = input;
-  const module = getFixtureModule(fixture.moduleId);
+  const fixtureModule = getFixtureModule(fixture.moduleId);
   const warm = light.colorTemperature <= 3200;
   const kelvin = nearestKelvin(light.colorTemperature);
 
@@ -91,7 +91,7 @@ export function recommendLampPlan(input: LampPlanInput): LampPlan {
     };
   }
 
-  const bulbBase = module.bulbEnvelope.bulbName;
+  const bulbBase = fixtureModule.bulbEnvelope.bulbName;
   const petgRequired = maxWattPla === 0;
 
   let filamentName: string;
