@@ -1,4 +1,5 @@
 import type {
+  ArchetypeId,
   ShapeParameters,
   LightParameters,
   PatternId,
@@ -148,15 +149,22 @@ export interface CheckInput {
   pattern: PatternParams;
   fixture: FixtureSpec;
   templateId: TemplateId;
+  archetype?: ArchetypeId;
 }
 
 export function runAllChecks(input: CheckInput): CheckSection[] {
   const { shape, pattern, fixture, templateId } = input;
-  const ctx = { fixture, templateId };
+  const archetype = input.archetype ?? "vase";
+  const ctx = { fixture, templateId, archetype };
   const dims = getDimensionSummary(shape);
   const mountFit = bulbFit(shape, ctx);
   const heat = thermalClearance(shape, ctx);
   const print = getPrintSettings(shape, pattern.presetId);
+  if (archetype === "moon") {
+    print.layerHeight = "0.12 mm";
+    print.infill = "solid walls — the thickness is the image";
+    print.supports = false;
+  }
   const plan = recommendLampPlan(input);
 
   return [

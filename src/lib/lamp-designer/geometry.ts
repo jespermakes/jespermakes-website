@@ -20,6 +20,39 @@ interface GeometryOptions {
   radialSegments?: number;
   profileSegments?: number;
   modulation?: SurfaceModulation;
+  /**
+   * Per-vertex wall thickness in mm (lithophane engine). Called with the
+   * circumferential coordinate u (0..1) and the row position rowNorm
+   * (0..1 across the non-crown rows). Crown rows keep the constant wall.
+   */
+  thicknessMap?: (u: number, rowNorm: number) => number;
+}
+
+/**
+ * Per-row unit interior normals with the hard-corner rule (no miter
+ * scaling): the lithophane engine offsets each vertex along these.
+ */
+export function profileUnitNormals(
+  profile: Vector2[],
+  pairSegment?: number[]
+): Vector2[] {
+  const n = profile.length;
+  const segmentNormals: Vector2[] = [];
+  for (let i = 0; i < n - 1; i++) {
+    const d = new Vector2().subVectors(profile[i + 1], profile[i]);
+    const len = d.length() || 1;
+    segmentNormals.push(new Vector2(-d.y / len, d.x / len));
+  }
+  return profile.map((_, i) => {
+    if (i === 0) return segmentNormals[0].clone();
+    if (i === n - 1) return segmentNormals[n - 2].clone();
+    const atHardCorner =
+      pairSegment !== undefined && pairSegment[i - 1] !== pairSegment[i];
+    if (atHardCorner) return segmentNormals[i - 1].clone();
+    const avg = new Vector2().addVectors(segmentNormals[i - 1], segmentNormals[i]);
+    if (avg.lengthSq() < 1e-9) return segmentNormals[i].clone();
+    return avg.normalize();
+  });
 }
 
 function smoothstep(t: number): number {
@@ -160,7 +193,49 @@ export function generateLampGeometry(
   const yExtent = Math.max(...ys) - Math.min(...ys) || 1;
 
   const outerVerts = revolveProfile(outerProfile, radialSegments, modulation, yExtent);
-  const innerVerts = revolveProfile(innerProfile, radialSegments, modulation, yExtent);
+  let innerVerts: Vector3[];
+
+  if (options.thicknessMap) {
+    // Lithophane path: offset every outer vertex individually along the
+    // row's interior normal by the mapped thickness. Crown rows (source
+    // segment 0, the fixture ring) keep the constant wall so the mount
+    // stays flat and true.
+    const normals = profileUnitNormals(outerProfile, interpolated.pairSegment);
+    const ringCountLocal = radialSegments + 1;
+    const rowSegment = (p: number) =>
+      p === 0 ? interpolated.pairSegment[0] : interpolated.pairSegment[p - 1];
+    const firstArcRow = outerProfile.findIndex((_, p) => rowSegment(p) > 0);
+    const lastRow = outerProfile.length - 1;
+    const arcSpan = Math.max(1, lastRow - Math.max(0, firstArcRow));
+
+    innerVerts = new Array<Vector3>(outerVerts.length);
+    for (let p = 0; p < outerProfile.length; p++) {
+      const normal2d = normals[p];
+      const inCrown = firstArcRow === -1 || rowSegment(p) === 0;
+      const rowNorm = inCrown ? 0 : (p - firstArcRow) / arcSpan;
+      for (let r = 0; r < ringCountLocal; r++) {
+        const idx = p * ringCountLocal + r;
+        const outer = outerVerts[idx];
+        const u = (r % radialSegments) / radialSegments;
+        const t = inCrown
+          ? shape.wallThickness
+          : options.thicknessMap(u, rowNorm);
+        const theta = Math.atan2(outer.z, outer.x);
+        innerVerts[idx] = new Vector3(
+          outer.x + normal2d.x * Math.cos(theta) * t,
+          outer.y + normal2d.y * t,
+          outer.z + normal2d.x * Math.sin(theta) * t
+        );
+      }
+    }
+    // Keep the open-end rim planar, matching the constant-wall path.
+    for (let r = 0; r < ringCountLocal; r++) {
+      const idx = lastRow * ringCountLocal + r;
+      innerVerts[idx].y = outerVerts[idx].y;
+    }
+  } else {
+    innerVerts = revolveProfile(innerProfile, radialSegments, modulation, yExtent);
+  }
 
   const profileLen = outerProfile.length;
   const ringCount = radialSegments + 1; // includes wrap-around duplicate

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { DoubleSide, type Mesh, Color, AdditiveBlending } from "three";
 import type { LampBuildInput } from "@/lib/lamp-designer/build";
 import { buildLampGeometryYUp } from "@/lib/lamp-designer/build";
+import { getLoadedMoonField, loadMoonHeightField } from "@/lib/lamp-designer/moonfield";
 
 export interface LampMeshProps {
   /** The design. The mesh builds the exact geometry the export writes. */
@@ -34,12 +35,34 @@ export function LampMesh({
 }: LampMeshProps) {
   const outerRef = useRef<Mesh>(null);
   const glowRef = useRef<Mesh>(null);
+  const [fieldVersion, setFieldVersion] = useState(0);
+
+  useEffect(() => {
+    if (parameters.archetype !== "moon" || getLoadedMoonField()) return;
+    let cancelled = false;
+    loadMoonHeightField()
+      .then(() => {
+        if (!cancelled) setFieldVersion((v) => v + 1);
+      })
+      .catch((err) => console.error("Moon height map load failed:", err));
+    return () => {
+      cancelled = true;
+    };
+  }, [parameters.archetype]);
 
   // One pipeline: this is the same builder the STL export calls, so the
   // preview can never show geometry the print will not have.
   const geometry = useMemo(
     () => buildLampGeometryYUp(parameters),
-    [parameters.templateId, parameters.shape, parameters.fixture, parameters.pattern]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      parameters.archetype,
+      parameters.templateId,
+      parameters.shape,
+      parameters.fixture,
+      parameters.pattern,
+      fieldVersion,
+    ]
   );
 
   useEffect(() => {

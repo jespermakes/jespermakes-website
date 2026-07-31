@@ -51,6 +51,10 @@ export function ExportStep({ parameters, designName }: ExportStepProps) {
     if (!FORMAT_META[format].available) return;
     setExportStatus((prev) => ({ ...prev, [format]: "preparing" }));
     try {
+      if (parameters.archetype === "moon") {
+        const { loadMoonHeightField } = await import("@/lib/lamp-designer/moonfield");
+        await loadMoonHeightField();
+      }
       let blob: Blob;
       if (format === "3mf") {
         const { lampTo3mfBlob } = await import("@/lib/lamp-designer/export-3mf");
@@ -183,8 +187,10 @@ export function ExportStep({ parameters, designName }: ExportStepProps) {
           <span className="text-wood font-medium">
             {getFixtureModule(parameters.fixture.moduleId).name}
           </span>
-          <span className="text-wood/60">Template</span>
-          <span className="text-wood font-medium">{parameters.templateId}</span>
+          <span className="text-wood/60">Form</span>
+          <span className="text-wood font-medium">
+            {parameters.archetype === "moon" ? "moon" : parameters.templateId}
+          </span>
           <span className="text-wood/60">Pattern</span>
           <span className="text-wood font-medium">{parameters.pattern.presetId.replace("-", " ")}</span>
           <span className="text-wood/60">Height</span>

@@ -2,11 +2,13 @@
 
 import { useMemo } from "react";
 import type {
+  ArchetypeId,
   ShapeParameters,
   ConstraintSeverity,
   FixtureSpec,
   TemplateId,
 } from "@/lib/lamp-designer/types";
+import { MOON_MIN_DIAMETER, MOON_MAX_DIAMETER } from "@/lib/lamp-designer/build";
 import { runAllConstraints } from "@/lib/lamp-designer/constraints";
 import type { ConstraintContext } from "@/lib/lamp-designer/constraints";
 import { SLIDER_CONSTRAINTS, worstSeverity } from "@/lib/lamp-designer/constraint-display";
@@ -17,6 +19,7 @@ export interface ShapeStepProps {
   shape: ShapeParameters;
   fixture: FixtureSpec;
   templateId: TemplateId;
+  archetype: ArchetypeId;
   onChange: (shape: ShapeParameters) => void;
 }
 
@@ -49,10 +52,10 @@ function formatValue(value: number, unit: string): string {
   return `${value} ${unit}`;
 }
 
-export function ShapeStep({ shape, fixture, templateId, onChange }: ShapeStepProps) {
+export function ShapeStep({ shape, fixture, templateId, archetype, onChange }: ShapeStepProps) {
   const ctx = useMemo<ConstraintContext>(
-    () => ({ fixture, templateId }),
-    [fixture, templateId]
+    () => ({ fixture, templateId, archetype }),
+    [fixture, templateId, archetype]
   );
   const results = useMemo(() => runAllConstraints(shape, ctx), [shape, ctx]);
   // The chosen fixture sets the floor for the top opening: the crown land
@@ -67,6 +70,38 @@ export function ShapeStep({ shape, fixture, templateId, onChange }: ShapeStepPro
       (c) => c.severity === "warn" || c.severity === "error"
     );
   }, [results]);
+
+  if (archetype === "moon") {
+    return (
+      <div>
+        <h2 className="text-lg font-semibold text-wood mb-1">Size the moon</h2>
+        <p className="text-sm text-wood/60 mb-5">
+          One decision here: how big. The surface itself is real lunar
+          elevation data, and the crown is built to your fixture.
+        </p>
+        <label className="flex flex-col gap-1.5">
+          <span className="flex justify-between text-sm text-wood">
+            <span className="font-medium">Diameter</span>
+            <span className="tabular-nums text-wood/60">{Math.min(MOON_MAX_DIAMETER, Math.max(MOON_MIN_DIAMETER, shape.bottomDiameter))} mm</span>
+          </span>
+          <input
+            type="range"
+            min={MOON_MIN_DIAMETER}
+            max={MOON_MAX_DIAMETER}
+            step={1}
+            value={Math.min(MOON_MAX_DIAMETER, Math.max(MOON_MIN_DIAMETER, shape.bottomDiameter))}
+            onChange={(e) => onChange({ ...shape, bottomDiameter: parseFloat(e.target.value) })}
+            className="w-full accent-forest"
+            aria-label="Moon diameter"
+          />
+        </label>
+        <p className="mt-4 text-xs text-wood/50 leading-snug">
+          150 mm is the classic moon lamp size. Print time grows fast with
+          diameter: the wall is solid and the layers are fine.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>

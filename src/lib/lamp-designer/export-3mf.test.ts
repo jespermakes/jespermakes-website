@@ -6,6 +6,7 @@ import type { LampParameters } from "./types";
 const PARAMS: LampParameters = {
   context: "bedside",
   fixture: { moduleId: "e27-clamp" },
+  archetype: "vase",
   templateId: "cone",
   shape: { height: 180, topDiameter: 120, bottomDiameter: 200, curveTension: 0, wallThickness: 2.5 },
   light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },

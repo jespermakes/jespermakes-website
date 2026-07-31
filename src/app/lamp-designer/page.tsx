@@ -7,7 +7,6 @@ import type {
   LampDesignerState,
   LampParameters,
   LampContext,
-  TemplateId,
   LightParameters,
   PatternParams,
   FixtureSpec,
@@ -18,6 +17,7 @@ import { StepNav } from "@/components/lamp-designer/step-nav";
 import { LampSceneDynamic } from "@/components/lamp-designer/scene-dynamic";
 import { ContextStep } from "@/components/lamp-designer/steps/context-step";
 import { FixtureStep } from "@/components/lamp-designer/steps/fixture-step";
+import type { FormSelection } from "@/components/lamp-designer/steps/form-step";
 import { FormStep } from "@/components/lamp-designer/steps/form-step";
 import { ShapeStep } from "@/components/lamp-designer/steps/shape-step";
 import { LightStep } from "@/components/lamp-designer/steps/light-step";
@@ -31,6 +31,7 @@ const DEFAULT_TEMPLATE = getTemplate("cone");
 const DEFAULT_PARAMETERS: LampParameters = {
   context: "bedside",
   fixture: { moduleId: "e27-clamp" },
+  archetype: "vase",
   templateId: "cone",
   shape: DEFAULT_TEMPLATE.defaultParameters,
   light: {
@@ -93,16 +94,30 @@ export default function LampDesignerPage() {
     }));
   }, []);
 
-  const updateTemplate = useCallback((templateId: TemplateId) => {
-    const template = getTemplate(templateId);
-    setState((prev) => ({
-      ...prev,
-      parameters: {
-        ...prev.parameters,
-        templateId,
-        shape: template.defaultParameters,
-      },
-    }));
+  const updateForm = useCallback((selection: FormSelection) => {
+    setState((prev) => {
+      if (selection.archetype === "moon") {
+        return {
+          ...prev,
+          parameters: {
+            ...prev.parameters,
+            archetype: "moon",
+            shape: { ...prev.parameters.shape, bottomDiameter: 150 },
+            pattern: { presetId: "smooth", intensity: 1 },
+          },
+        };
+      }
+      const template = getTemplate(selection.templateId);
+      return {
+        ...prev,
+        parameters: {
+          ...prev.parameters,
+          archetype: "vase",
+          templateId: selection.templateId,
+          shape: template.defaultParameters,
+        },
+      };
+    });
   }, []);
 
   const updateShape = useCallback((shape: ShapeParameters) => {
@@ -150,8 +165,9 @@ export default function LampDesignerPage() {
       case "form":
         return (
           <FormStep
-            selected={parameters.templateId}
-            onSelect={updateTemplate}
+            archetype={parameters.archetype}
+            templateId={parameters.templateId}
+            onSelect={updateForm}
           />
         );
       case "shape":
@@ -160,6 +176,7 @@ export default function LampDesignerPage() {
             shape={parameters.shape}
             fixture={parameters.fixture}
             templateId={parameters.templateId}
+            archetype={parameters.archetype}
             onChange={updateShape}
           />
         );
@@ -169,6 +186,7 @@ export default function LampDesignerPage() {
         return (
           <PatternStep
             pattern={parameters.pattern}
+            archetype={parameters.archetype}
             onChange={updatePattern}
           />
         );
@@ -180,6 +198,7 @@ export default function LampDesignerPage() {
             pattern={parameters.pattern}
             fixture={parameters.fixture}
             templateId={parameters.templateId}
+            archetype={parameters.archetype}
           />
         );
       case "reveal":

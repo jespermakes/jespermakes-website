@@ -50,6 +50,7 @@ describe("type structure tests", () => {
     const params: LampParameters = {
       context: "bedside",
       fixture: { moduleId: "e27-clamp" },
+      archetype: "vase",
       templateId: "cone",
       shape: {
         height: 200,
@@ -78,6 +79,8 @@ describe("type structure tests", () => {
       completedSteps: ["context", "form"],
       parameters: {
         context: "dining",
+        fixture: { moduleId: "e27-clamp" },
+        archetype: "vase",
         templateId: "dome",
         shape: {
           height: 150,
@@ -148,6 +151,8 @@ describe("type structure tests", () => {
       name: "My Lamp",
       parameters: {
         context: "desk",
+        fixture: { moduleId: "kit001-seat" },
+        archetype: "vase",
         templateId: "cylinder",
         shape: {
           height: 180,

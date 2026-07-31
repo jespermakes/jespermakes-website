@@ -104,6 +104,7 @@ describe("buildExportGeometry honors shape parameters", () => {
     const geometry = buildExportGeometry({
       context: "bedside",
       fixture: { moduleId: "e27-clamp" },
+      archetype: "vase",
       templateId: "cone",
       shape: CUSTOM_CONE,
       light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },

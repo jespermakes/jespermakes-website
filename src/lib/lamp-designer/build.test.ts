@@ -5,6 +5,8 @@
 
 import { describe, it, expect } from "vitest";
 import { buildLampGeometryYUp } from "./build";
+import { setHeightFieldForTests } from "./moonfield";
+import type { HeightField } from "./moonfield";
 import { buildExportGeometry } from "./export";
 import { validateLampGeometry } from "./validate";
 import type {
@@ -43,6 +45,7 @@ function params(
   return {
     context: "bedside",
     fixture: { moduleId },
+    archetype: "vase",
     templateId,
     shape,
     light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },
@@ -126,6 +129,87 @@ describe("patterns are real geometry", () => {
     geometry.computeBoundingBox();
     const box = geometry.boundingBox!;
     expect(box.max.z - box.min.z).toBeCloseTo(SHAPES.default.height, 3);
+    geometry.dispose();
+  });
+});
+
+describe("moon archetype (lithophane sphere)", () => {
+  function moonParams(moduleId: FixtureModuleId = "kit001-seat"): LampParameters {
+    return {
+      ...params("cone", { ...SHAPES.default, bottomDiameter: 150 }, "smooth", moduleId),
+      archetype: "moon",
+    };
+  }
+
+  function gradientField(bright: number): HeightField {
+    return {
+      width: 8,
+      height: 4,
+      data: new Float32Array(32).fill(bright),
+    };
+  }
+
+  it("is one watertight component on both target fixtures", () => {
+    setHeightFieldForTests(gradientField(0.5));
+    for (const moduleId of ["kit001-seat", "e27-clamp"] as FixtureModuleId[]) {
+      const geometry = buildLampGeometryYUp(moonParams(moduleId));
+      const result = validateLampGeometry(geometry);
+      expect(result.connectedComponents).toBe(1);
+      expect(result.nonManifoldEdges).toBe(0);
+      geometry.dispose();
+    }
+    setHeightFieldForTests(null);
+  });
+
+  it("bright terrain prints thinner walls than dark terrain", () => {
+    setHeightFieldForTests(gradientField(1));
+    const bright = buildLampGeometryYUp(moonParams());
+    setHeightFieldForTests(gradientField(0));
+    const dark = buildLampGeometryYUp(moonParams());
+    // Same outer sphere; the inner surface differs. Compare total inner
+    // material via vertex distance: sample matching indices.
+    const bp = bright.getAttribute("position");
+    const dp = dark.getAttribute("position");
+    expect(bp.count).toBe(dp.count);
+    // Outer vertices are identical in both; only the inner surface moves.
+    // Bright terrain = thin wall = inner surface sits further out, so the
+    // mean radius across the whole buffer is strictly larger.
+    let brightMean = 0;
+    let darkMean = 0;
+    for (let i = 0; i < bp.count; i++) {
+      brightMean += Math.hypot(bp.getX(i), bp.getZ(i));
+      darkMean += Math.hypot(dp.getX(i), dp.getZ(i));
+    }
+    brightMean /= bp.count;
+    darkMean /= dp.count;
+    expect(brightMean).toBeGreaterThan(darkMean + 0.3);
+    bright.dispose();
+    dark.dispose();
+    setHeightFieldForTests(null);
+  });
+
+  it("crown aperture matches the fixture exactly, moon or not", () => {
+    setHeightFieldForTests(gradientField(0.5));
+    const geometry = buildLampGeometryYUp(moonParams("kit001-seat"));
+    const position = geometry.getAttribute("position");
+    let minR = Infinity;
+    for (let i = 0; i < position.count; i++) {
+      if (position.getY(i) > 0.5) continue;
+      const r = Math.hypot(position.getX(i), position.getZ(i));
+      if (r < 40) minR = Math.min(minR, r);
+    }
+    // Kit 001 aperture radius is 35
+    expect(minR).toBeCloseTo(35, 1);
+    geometry.dispose();
+    setHeightFieldForTests(null);
+  });
+
+  it("builds a smooth sphere before the height field loads", () => {
+    setHeightFieldForTests(null);
+    const geometry = buildLampGeometryYUp(moonParams());
+    const result = validateLampGeometry(geometry);
+    expect(result.connectedComponents).toBe(1);
+    expect(result.nonManifoldEdges).toBe(0);
     geometry.dispose();
   });
 });

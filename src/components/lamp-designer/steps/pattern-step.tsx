@@ -1,6 +1,6 @@
 "use client";
 
-import type { PatternId, PatternParams } from "@/lib/lamp-designer/types";
+import type { ArchetypeId, PatternId, PatternParams } from "@/lib/lamp-designer/types";
 import {
   PATTERNS,
   MIN_PATTERN_INTENSITY,
@@ -9,6 +9,7 @@ import {
 
 export interface PatternStepProps {
   pattern: PatternParams;
+  archetype: ArchetypeId;
   onChange: (pattern: PatternParams) => void;
 }
 
@@ -50,7 +51,22 @@ const PATTERN_ICONS: Record<PatternId, React.ReactNode> = {
   ),
 };
 
-export function PatternStep({ pattern, onChange }: PatternStepProps) {
+export function PatternStep({ pattern, archetype, onChange }: PatternStepProps) {
+  if (archetype === "moon") {
+    return (
+      <div>
+        <h2 className="text-lg font-semibold text-wood mb-1">
+          The moon is the pattern
+        </h2>
+        <p className="text-sm text-wood/60">
+          Craters, maria and highlands come from NASA elevation data, carved
+          into the wall thickness. Bright terrain prints thin, dark terrain
+          prints thick: switch the light on and the surface appears.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h2 className="text-lg font-semibold text-wood mb-1">

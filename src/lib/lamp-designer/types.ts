@@ -99,6 +99,13 @@ export interface MountInterface {
   hardCapWatt: number | null;
 }
 
+// -- Archetype (Step 2) ----------------------------------------------------
+// The vase archetype is the revolve family (cone/dome/cylinder silhouettes
+// + surface patterns). Moon is the lithophane sphere: same revolve engine,
+// arc profile, per-vertex wall thickness from the NASA LDEM heightmap.
+
+export type ArchetypeId = "vase" | "moon";
+
 // -- Templates (Step 2) ----------------------------------------------------
 
 export type TemplateId = "cone" | "dome" | "cylinder";
@@ -206,6 +213,7 @@ export type ConstraintResults = Record<ConstraintId, LampConstraint>;
 export interface LampParameters {
   context: LampContext;
   fixture: FixtureSpec;
+  archetype: ArchetypeId;
   templateId: TemplateId;
   shape: ShapeParameters;
   light: LightParameters;

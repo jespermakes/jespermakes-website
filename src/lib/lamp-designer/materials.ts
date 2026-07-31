@@ -6,6 +6,7 @@
 // measured reason.
 
 import type {
+  ArchetypeId,
   FixtureSpec,
   LightParameters,
   PatternParams,
@@ -37,6 +38,7 @@ export interface LampPlanInput {
   pattern: PatternParams;
   fixture: FixtureSpec;
   templateId: TemplateId;
+  archetype?: ArchetypeId;
 }
 
 function nearestKelvin(k: number): number {
@@ -65,11 +67,43 @@ export function recommendLampPlan(input: LampPlanInput): LampPlan {
   const warm = light.colorTemperature <= 3200;
   const kelvin = nearestKelvin(light.colorTemperature);
 
-  const thermal = thermalClearance(shape, { fixture, templateId });
+  const thermal = thermalClearance(shape, {
+    fixture,
+    templateId,
+    archetype: input.archetype ?? "vase",
+  });
   const gapMm = thermal.value;
   const finiteGap = Number.isFinite(gapMm) ? gapMm : 99;
   const maxWattPla = cappedWatt(maxLedWatt(finiteGap, "pla"), fixture.moduleId);
   const maxWattPetg = cappedWatt(maxLedWatt(finiteGap, "petg"), fixture.moduleId);
+
+  // Moon lithophane: white PLA is non-negotiable (the wall thickness is
+  // the image; translucent or colored filament destroys the contrast).
+  if (input.archetype === "moon") {
+    const isKit = fixture.moduleId === "kit001-seat";
+    const moonBulbBase = fixtureModule.bulbEnvelope.bulbName;
+    const tooTight = !isKit && maxWattPla === 0;
+    return {
+      filamentName: "Bambu PLA Basic (Jade White)",
+      filamentWhy: tooTight
+        ? "Lithophanes only work in white PLA, but this moon sits close to a mains bulb: use the Kit 001 or a larger diameter instead"
+        : "Lithophanes only read in white PLA: the wall thickness is the image",
+      material: "pla",
+      petgRequired: tooTight,
+      wallAdvice:
+        "The moon's wall is the image: 0.8 mm bright highlands to 3.0 mm dark maria. Print at 0.12 mm layers.",
+      bulbSpec: isKit
+        ? `LED Lamp Kit 001 puck, ${kelvin === 4000 ? "4000 K" : "3000 K"} setting, 3-5 W`
+        : tooTight
+          ? `${moonBulbBase}: too tight at this size — use the Kit 001 seat or grow the moon`
+          : `${moonBulbBase}, frosted, ${kelvin} K, up to ${maxWattPla} W`,
+      bulbWhy: "A frosted source behind the lithophane lights the image evenly",
+      maxWattPla,
+      maxWattPetg,
+      gapMm,
+    };
+  }
+
 
   // The Kit 001 runs on 5 V at 3-5 W and stays cool: material is free.
   if (fixture.moduleId === "kit001-seat") {

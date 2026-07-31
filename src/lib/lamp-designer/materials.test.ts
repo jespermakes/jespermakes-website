@@ -18,6 +18,7 @@ function input(overrides: Partial<LampPlanInput> = {}): LampPlanInput {
     pattern: { presetId: "smooth", intensity: 1 },
     fixture: { moduleId: "e27-clamp" },
     templateId: "cone",
+    archetype: "vase",
     ...overrides,
   };
 }
@@ -90,5 +91,13 @@ describe("recommendLampPlan", () => {
     expect(thin.wallAdvice).toContain("hotspot");
     expect(mid.wallAdvice).toContain("sweet spot");
     expect(thick.wallAdvice).toContain("opaque");
+  });
+});
+
+describe("moon material override", () => {
+  it("forces white PLA and litho advice", () => {
+    const plan = recommendLampPlan(input({ archetype: "moon", fixture: { moduleId: "kit001-seat" } }));
+    expect(plan.filamentName).toContain("Jade White");
+    expect(plan.wallAdvice).toContain("0.8 mm");
   });
 });

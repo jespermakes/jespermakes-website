@@ -66,8 +66,8 @@ describe("lamp-designer all steps wired", () => {
   });
 
   it("passes template selection props to FormStep", () => {
-    expect(source).toContain("selected={parameters.templateId}");
-    expect(source).toContain("onSelect={updateTemplate}");
+    expect(source).toContain("templateId={parameters.templateId}");
+    expect(source).toContain("onSelect={updateForm}");
   });
 
   it("passes shape props to ShapeStep", () => {
@@ -107,6 +107,8 @@ describe("lamp-designer step state logic", () => {
       completedSteps: [],
       parameters: {
         context: "bedside",
+        fixture: { moduleId: "e27-clamp" },
+        archetype: "vase",
         templateId: "cone",
         shape: template.defaultParameters,
         light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },
@@ -206,6 +208,8 @@ describe("lamp-designer state update functions", () => {
     const template = getTemplate("cone");
     return {
       context: "bedside",
+      fixture: { moduleId: "e27-clamp" },
+      archetype: "vase",
       templateId: "cone",
       shape: template.defaultParameters,
       light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },

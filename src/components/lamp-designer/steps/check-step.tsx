@@ -1,6 +1,7 @@
 "use client";
 
 import type {
+  ArchetypeId,
   ShapeParameters,
   LightParameters,
   PatternParams,
@@ -18,6 +19,7 @@ export interface CheckStepProps {
   pattern: PatternParams;
   fixture: FixtureSpec;
   templateId: TemplateId;
+  archetype: ArchetypeId;
 }
 
 function severityColor(item: CheckItem): string {
@@ -66,13 +68,13 @@ function Section({ section }: { section: CheckSection }) {
   );
 }
 
-export function CheckStep({ shape, light, pattern, fixture, templateId }: CheckStepProps) {
-  const sections = runAllChecks({ shape, light, pattern, fixture, templateId });
+export function CheckStep({ shape, light, pattern, fixture, templateId, archetype }: CheckStepProps) {
+  const sections = runAllChecks({ shape, light, pattern, fixture, templateId, archetype });
   const hasErrors = sections.some((s) =>
     s.items.some((i) => !i.ok && i.severity === "error")
   );
   const fixtureModule = getFixtureModule(fixture.moduleId);
-  const thermal = thermalClearance(shape, { fixture, templateId });
+  const thermal = thermalClearance(shape, { fixture, templateId, archetype });
 
   return (
     <div>

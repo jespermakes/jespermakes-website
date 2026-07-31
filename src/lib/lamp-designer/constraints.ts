@@ -1,4 +1,5 @@
 import type {
+  ArchetypeId,
   ShapeParameters,
   LampConstraint,
   ConstraintId,
@@ -7,18 +8,20 @@ import type {
   TemplateId,
 } from "./types";
 import { getFixtureModule, getMountInterface, maxLedWatt, cappedWatt } from "./fixtures";
-import { buildLampAssemblyProfile } from "./templates";
+import { buildProfileForParameters } from "./build";
 import { interpolateProfile, offsetProfile } from "./geometry";
 
 /** What fixture-aware constraints need beyond the shape sliders. */
 export interface ConstraintContext {
   fixture: FixtureSpec;
   templateId: TemplateId;
+  archetype?: ArchetypeId;
 }
 
 export const DEFAULT_CONSTRAINT_CONTEXT: ConstraintContext = {
   fixture: { moduleId: "e27-clamp" },
   templateId: "cone",
+  archetype: "vase",
 };
 
 // ---------------------------------------------------------------------------
@@ -60,6 +63,14 @@ export function bulbFit(
 ): LampConstraint {
   const mount = getMountInterface(ctx.fixture.moduleId);
   const fixtureModule = getFixtureModule(ctx.fixture.moduleId);
+  if (ctx.archetype === "moon") {
+    return {
+      ok: true,
+      value: mount.apertureDiameter,
+      message: `Moon crown is built to the ${fixtureModule.name}`,
+      severity: "info",
+    };
+  }
   const minTop = Math.ceil(mount.crownMinRadius * 2);
 
   if (shape.topDiameter >= minTop) {
@@ -93,7 +104,8 @@ export function thermalClearance(
   const env = mount.bulbEnvelope;
   const bulbRadius = env.diameter / 2;
 
-  const profile = buildLampAssemblyProfile({
+  const profile = buildProfileForParameters({
+    archetype: ctx.archetype ?? "vase",
     templateId: ctx.templateId,
     shape,
     fixture: ctx.fixture,

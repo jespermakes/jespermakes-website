@@ -12,6 +12,8 @@ function fileNameForDesign(name: string, format: ExportFormat): string {
 
 const SAMPLE_PARAMS: LampParameters = {
   context: "bedside",
+  fixture: { moduleId: "e27-clamp" },
+  archetype: "vase",
   templateId: "cone",
   shape: {
     height: 200,
