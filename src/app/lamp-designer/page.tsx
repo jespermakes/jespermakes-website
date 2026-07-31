@@ -122,13 +122,6 @@ export default function LampDesignerPage() {
 
   function renderStep() {
     switch (currentStep) {
-      case "start":
-        return (
-          <StartStep
-            selectedId={presetId}
-            onSelect={selectPreset}
-          />
-        );
       case "shape":
         return (
           <ShapeStep
@@ -187,6 +180,27 @@ export default function LampDesignerPage() {
     }
   }
 
+  // The start screen IS the gallery: the 3D workshop only makes sense
+  // once a lamp exists to work on.
+  if (currentStep === "start") {
+    return (
+      <div className="flex h-[calc(100vh-64px)] bg-parchment">
+        <aside className="w-56 shrink-0 border-r border-wood/10 bg-cream/50 overflow-y-auto">
+          <StepNav
+            currentStep={currentStep}
+            completedSteps={completedSteps}
+            onStepClick={goToStep}
+          />
+        </aside>
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-5xl mx-auto px-8 py-10">
+            <StartStep selectedId={presetId} onSelect={selectPreset} />
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-[calc(100vh-64px)] bg-parchment">
       {/* Left: Step Navigation */}
@@ -221,7 +235,6 @@ export default function LampDesignerPage() {
           <button
             type="button"
             onClick={completeCurrentAndAdvance}
-            disabled={currentStep === "start" && presetId === null}
             className="px-4 py-2 text-sm rounded-lg bg-forest text-cream hover:bg-forest/90 transition-colors ml-auto disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isLastStep ? "Finish" : "Next"}

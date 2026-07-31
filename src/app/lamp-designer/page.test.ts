@@ -24,11 +24,11 @@ describe("lamp-designer page structure", () => {
     expect(source).toContain("<LampSceneDynamic");
   });
 
-  it("has a three-panel layout with aside-main-aside", () => {
+  it("has a gallery layout and a three-panel editor layout", () => {
     const asideCount = (source.match(/<aside/g) || []).length;
     const mainCount = (source.match(/<main/g) || []).length;
-    expect(asideCount).toBe(2);
-    expect(mainCount).toBe(1);
+    expect(asideCount).toBe(3);
+    expect(mainCount).toBe(2);
   });
 
   it("has Back and Next navigation buttons", () => {
@@ -49,7 +49,6 @@ describe("lamp-designer all steps wired", () => {
   });
 
   it("renders each step component in a switch/conditional", () => {
-    expect(source).toContain("<StartStep");
     expect(source).toContain("<ShapeStep");
     expect(source).toContain("<LightStep");
     expect(source).toContain("<PatternStep");
