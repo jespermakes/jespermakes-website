@@ -221,6 +221,20 @@ Full legal research with case citations: RESEARCH-ARCHETYPES-IP.md section 4. Th
 
 The MakerWorld distribution consequence, from the same research: MakerWorld has no upload API and bans external links in model listings. Our strategy is two channels: the full guided designer on jespermakes.com, plus curated presets published natively as MakerWorld Parametric Model Maker models (OpenSCAD), where the contest lives. Cadence beats one big drop under the 2026 points system.
 
+## 9b. Cycle 2: redesign around real printing pain (added 2026-07-31 late)
+
+Grounded in RESEARCH-PRINTING-PAINS.md (community pain sweep). The top five problems and our position: (1) light exposes every print flaw: we answer with texture-by-default, seam guidance, tuned recipes; (2) the vase mode trap: the community meta is spiral vase but it cannot print sockets, so the fix is architectural; (3) heat/aging: largely built, add vents + embossed text; (4) hardware fit: built (fixture library + coupons); (5) translucency expectation gap: partly built, add diffusion dial + dry-filament guidance.
+
+**The centerpiece: two-piece print architecture.** Every vase-archetype lamp exports as TWO parts:
+- **Shade body**: a solid single-surface revolve (outer profile + capped ends) that slices in spiral vase mode: seam-free, 3-5x faster, the glow sweet spot by line width. Vase-safety by construction: one continuous contour per Z (the modulation engine already guarantees this), overhang clamps, and a reinforced cylindrical NECK at the crown end (12 mm throat at neck radius = crownMin + 3, then an 8 mm blend into the shade silhouette; total height budget unchanged). The neck solves the documented base-transition fragility and gives the collar its seat.
+- **Mount collar**: the fixture module as its own 30-60 minute normal-mode part: the existing crown ring (aperture + land, 2.4 mm) plus a 10 mm skirt that friction-fits inside the neck (skirt outer = neck inner - 0.3 mm). Carries printed threads where chosen, and the embossed LED-ONLY text (finally in the right place: a small flat part that prints text well).
+- Preview stays the assembled lamp (shade + collar visible in the rig); export produces both parts: one 3MF with two objects (our writer extends trivially) and two STL fallbacks.
+- Print modes are DERIVED, not stored: moon = lithophane (solid shelled, 0.12 layers, walls-only); vase archetype = vase-two-piece. A shelled override can come later as an advanced toggle.
+- **Print recipe block** replaces generic print settings in Check and Export: per-mode exact settings from the research (vase: spiral ON, line width 0.6-0.8 on 0.4 nozzle, 3 concentric bottom layers, brim on tall bodies, constant outer-wall speed; lithophane: 0.12 layers, solid; all: DRY THE FILAMENT FIRST, check it lit).
+- **Honest time estimates** per part per mode, shown before export (vase path-length model vs shelled volume model; lithophane hours warned).
+
+Sequencing: shade-solid builder + collar part + multi-object 3MF + export UI + recipes + estimator, then the vent openings and embossed text on the collar. Implementation is the next build block under t_01KYWRPWA5ZPRSV4HMCYMB5HWZ.
+
 ## 10. Open decisions for Jesper
 
 1. Archetype launch shortlist: sign off the 7 proposed in section 4, or swap.
