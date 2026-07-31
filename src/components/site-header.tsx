@@ -166,11 +166,11 @@ export function SiteHeader({
 
             {hasSession ? (
               <>
-                <NotificationsBell hasSession />
+                <NotificationsBell hasSession dark={dark} />
                 <Link
                   href="/account"
                   className={`font-medium transition-colors ${
-                    dark ? "text-amber hover:text-amber/80" : "text-forest hover:text-amber-dark"
+                    dark ? "text-cream hover:text-amber" : "text-forest hover:text-amber-dark"
                   }`}
                 >
                   {userName?.split(" ")[0] || "Account"}

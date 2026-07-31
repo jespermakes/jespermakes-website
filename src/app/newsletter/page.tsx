@@ -51,7 +51,7 @@ export default function NewsletterPage() {
           One email. Once in a while. Worth reading.
         </h1>
         <p className="text-lg md:text-xl text-wood-light/70 max-w-2xl leading-relaxed mb-10">
-          Join 3,300+ makers who get the behind-the-scenes on what I&apos;m
+          Join thousands of makers who get the behind-the-scenes on what I&apos;m
           building, what I&apos;m learning, and what&apos;s coming next on
           the channel. No spam, no upsells, and you can unsubscribe any
           time.

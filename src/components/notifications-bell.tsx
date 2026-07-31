@@ -16,9 +16,11 @@ interface NotificationRow {
 
 interface NotificationsBellProps {
   hasSession: boolean;
+  /** Color context of the surrounding header. */
+  dark?: boolean;
 }
 
-export function NotificationsBell({ hasSession }: NotificationsBellProps) {
+export function NotificationsBell({ hasSession, dark = false }: NotificationsBellProps) {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<NotificationRow[]>([]);
   const [loading, setLoading] = useState(false);
@@ -98,7 +100,9 @@ export function NotificationsBell({ hasSession }: NotificationsBellProps) {
         type="button"
         onClick={() => (open ? setOpen(false) : openPanel())}
         aria-label="Notifications"
-        className="relative flex h-9 w-9 items-center justify-center rounded-full text-wood-light hover:text-forest"
+        className={`relative flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+          dark ? "text-cream/80 hover:text-amber" : "text-wood-light hover:text-forest"
+        }`}
       >
         <svg
           width="20"
