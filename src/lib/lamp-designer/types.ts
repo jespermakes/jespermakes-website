@@ -138,32 +138,45 @@ export interface LightParameters {
   direction: LightDirection;
 }
 
-// -- Pattern (Step 4) ------------------------------------------------------
+// -- Pattern (Step 5) ------------------------------------------------------
+// Patterns are REAL geometry (DR-160): radial surface modulation applied to
+// the revolve engine. A modulated revolve is always one closed connected
+// surface, so no pattern choice can produce a disconnected mesh.
 
 export type PatternId =
   | "smooth"
-  | "vertical-lines"
-  | "horizontal-rings"
-  | "diamond-grid"
-  | "hexagonal"
-  | "organic";
+  | "fine-ribs"
+  | "bold-waves"
+  | "spiral-twist"
+  | "wavy-bands";
 
-export type PatternType = "none" | "perforation" | "relief";
+/** User-facing pattern state: a preset plus an intensity multiplier. */
+export interface PatternParams {
+  presetId: PatternId;
+  /** 0.25 to 1.5, scales the preset's depths. */
+  intensity: number;
+}
 
-export interface PatternGeometry {
-  type: PatternType;
-  spacingMm: number;
-  sizeMm: number;
-  density: number;
-  needsFineLayer: boolean;
-  createsStructure: boolean;
+/**
+ * Radial surface modulation, resolved and safety-clamped:
+ * r(theta, y) = R(y) + fade(y) * (
+ *   waveDepth * sin(waveCount * theta + twist * yNorm)
+ *   + bandDepth * sin(bandCount * PI * yNorm) )
+ * fade() ramps from 0 at the fixture crown so the mount stays circular.
+ */
+export interface SurfaceModulation {
+  waveCount: number;
+  waveDepth: number;
+  twistDeg: number;
+  bandCount: number;
+  bandDepth: number;
 }
 
 export interface PatternDefinition {
   id: PatternId;
   name: string;
   description: string;
-  geometry: PatternGeometry;
+  modulation: SurfaceModulation;
 }
 
 // -- Constraints (Phase 4) -------------------------------------------------
@@ -196,7 +209,7 @@ export interface LampParameters {
   templateId: TemplateId;
   shape: ShapeParameters;
   light: LightParameters;
-  patternId: PatternId;
+  pattern: PatternParams;
 }
 
 export interface LampDesignerState {

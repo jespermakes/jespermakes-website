@@ -25,7 +25,7 @@ const SAMPLE_PARAMS: LampParameters = {
     beamAngle: 90,
     direction: "down",
   },
-  patternId: "smooth",
+  pattern: { presetId: "smooth", intensity: 1 },
 };
 
 describe("fileNameForDesign", () => {
@@ -78,7 +78,7 @@ describe("ExportStep design summary", () => {
   it("sample parameters have all required fields", () => {
     expect(SAMPLE_PARAMS.context).toBeTruthy();
     expect(SAMPLE_PARAMS.templateId).toBeTruthy();
-    expect(SAMPLE_PARAMS.patternId).toBeTruthy();
+    expect(SAMPLE_PARAMS.pattern.presetId).toBeTruthy();
     expect(SAMPLE_PARAMS.shape.height).toBeGreaterThan(0);
   });
 });

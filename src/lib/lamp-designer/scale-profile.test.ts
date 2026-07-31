@@ -107,7 +107,7 @@ describe("buildExportGeometry honors shape parameters", () => {
       templateId: "cone",
       shape: CUSTOM_CONE,
       light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },
-      patternId: "smooth",
+      pattern: { presetId: "smooth", intensity: 1 },
     });
     geometry.computeBoundingBox();
     const box = geometry.boundingBox!;

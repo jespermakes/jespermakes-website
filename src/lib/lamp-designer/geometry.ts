@@ -4,14 +4,31 @@ import {
   Vector2,
   Vector3,
 } from "three";
-import type { ProfilePoint, ShapeParameters } from "./types";
+import type { ProfilePoint, ShapeParameters, SurfaceModulation } from "./types";
 
 const DEFAULT_RADIAL_SEGMENTS = 64;
 const DEFAULT_PROFILE_SEGMENTS = 32;
 
+/** Below this the fixture crown stays perfectly circular (mm of y). */
+const CROWN_FLAT_MM = 3;
+/** Modulation ramps in over this wall length past the flat zone (mm). */
+const CROWN_RAMP_MM = 15;
+/** Radius floor so modulation can never collapse a vertex onto the axis. */
+const MIN_RADIUS_MM = 0.5;
+
 interface GeometryOptions {
   radialSegments?: number;
   profileSegments?: number;
+  modulation?: SurfaceModulation;
+}
+
+function smoothstep(t: number): number {
+  const x = Math.min(1, Math.max(0, t));
+  return x * x * (3 - 2 * x);
+}
+
+function hasModulation(m?: SurfaceModulation): m is SurfaceModulation {
+  return !!m && (m.waveDepth > 0 || m.bandDepth > 0);
 }
 
 /**
@@ -40,14 +57,23 @@ function evaluateBezierSegment(
   );
 }
 
+export interface InterpolatedProfile {
+  points: Vector2[];
+  /** For each consecutive point pair, the source profile segment index.
+   *  Length = points.length - 1. Lets the offset pass know where hard
+   *  corners are (segment boundaries) vs smooth curvature (within one). */
+  pairSegment: number[];
+}
+
 /**
- * Interpolate the profile curve into evenly-spaced 2D points.
+ * Interpolate the profile curve into evenly-spaced 2D points, keeping
+ * track of which source segment each pair belongs to.
  * Each point is (radius, height) -- x = distance from axis, y = vertical.
  */
-export function interpolateProfile(
+export function interpolateProfileWithSegments(
   profile: ProfilePoint[],
   segments: number
-): Vector2[] {
+): InterpolatedProfile {
   if (profile.length < 2) {
     throw new Error("Profile must have at least 2 points");
   }
@@ -55,6 +81,7 @@ export function interpolateProfile(
   const totalSegmentPairs = profile.length - 1;
   const pointsPerPair = Math.max(1, Math.floor(segments / totalSegmentPairs));
   const points: Vector2[] = [];
+  const pairSegment: number[] = [];
 
   for (let i = 0; i < totalSegmentPairs; i++) {
     const p0 = profile[i];
@@ -67,10 +94,18 @@ export function interpolateProfile(
       if (i > 0 && j === 0) continue; // avoid duplicate at segment joins
       const t = j / count;
       points.push(evaluateBezierSegment(p0, p1, t));
+      if (points.length > 1) pairSegment.push(i);
     }
   }
 
-  return points;
+  return { points, pairSegment };
+}
+
+export function interpolateProfile(
+  profile: ProfilePoint[],
+  segments: number
+): Vector2[] {
+  return interpolateProfileWithSegments(profile, segments).points;
 }
 
 /**
@@ -86,19 +121,46 @@ export function generateLampGeometry(
   shape: ShapeParameters,
   options: GeometryOptions = {}
 ): BufferGeometry {
-  const radialSegments = options.radialSegments ?? DEFAULT_RADIAL_SEGMENTS;
-  const profileSegments = options.profileSegments ?? DEFAULT_PROFILE_SEGMENTS;
+  const modulation = hasModulation(options.modulation)
+    ? options.modulation
+    : undefined;
 
-  const outerProfile = interpolateProfile(profile, profileSegments);
-  const innerProfile = offsetProfile(outerProfile, shape.wallThickness);
+  const radialSegments =
+    options.radialSegments ??
+    (modulation
+      ? Math.min(256, Math.max(DEFAULT_RADIAL_SEGMENTS, modulation.waveCount * 12))
+      : DEFAULT_RADIAL_SEGMENTS);
+  const profileSegments =
+    options.profileSegments ??
+    (modulation
+      ? Math.min(
+          128,
+          Math.max(
+            DEFAULT_PROFILE_SEGMENTS,
+            modulation.bandCount * 16,
+            modulation.twistDeg > 0 ? 64 : 0
+          )
+        )
+      : DEFAULT_PROFILE_SEGMENTS);
+
+  const interpolated = interpolateProfileWithSegments(profile, profileSegments);
+  const outerProfile = interpolated.points;
+  const innerProfile = offsetProfile(
+    outerProfile,
+    shape.wallThickness,
+    interpolated.pairSegment
+  );
   // Keep the open-end rim planar: on sloped walls the normal offset would
   // push the inner edge past the outer one. The start point keeps its
   // offset (that is the crown plate thickness).
   innerProfile[innerProfile.length - 1].y =
     outerProfile[outerProfile.length - 1].y;
 
-  const outerVerts = revolveProfile(outerProfile, radialSegments);
-  const innerVerts = revolveProfile(innerProfile, radialSegments);
+  const ys = outerProfile.map((p) => p.y);
+  const yExtent = Math.max(...ys) - Math.min(...ys) || 1;
+
+  const outerVerts = revolveProfile(outerProfile, radialSegments, modulation, yExtent);
+  const innerVerts = revolveProfile(innerProfile, radialSegments, modulation, yExtent);
 
   const profileLen = outerProfile.length;
   const ringCount = radialSegments + 1; // includes wrap-around duplicate
@@ -234,12 +296,17 @@ export function generateLampGeometry(
  *
  * Interior side convention: profiles run from the crown aperture outward,
  * then down the shade, so the interior normal is (-dy, dx) per segment.
- * Corner points get an averaged, miter-compensated normal (clamped) so
- * wall thickness holds around the crown-to-wall corner.
+ * Within a smooth curve, corner points get an averaged, miter-compensated
+ * normal. At hard corners (source-segment boundaries, when pairSegment is
+ * provided) the point keeps the PREVIOUS segment's normal instead: a
+ * mitered offset at a sharp corner travels tangentially and folds the
+ * dense inner crown back over itself, which reads as self-intersecting
+ * non-manifold geometry.
  */
 export function offsetProfile(
   profile: Vector2[],
-  thickness: number
+  thickness: number,
+  pairSegment?: number[]
 ): Vector2[] {
   const n = profile.length;
   if (n < 2) return profile.map((p) => p.clone());
@@ -253,10 +320,18 @@ export function offsetProfile(
 
   return profile.map((p, i) => {
     let normal: Vector2;
+    const atHardCorner =
+      pairSegment !== undefined &&
+      i > 0 &&
+      i < n - 1 &&
+      pairSegment[i - 1] !== pairSegment[i];
+
     if (i === 0) {
       normal = segmentNormals[0].clone();
     } else if (i === n - 1) {
       normal = segmentNormals[n - 2].clone();
+    } else if (atHardCorner) {
+      normal = segmentNormals[i - 1].clone();
     } else {
       normal = new Vector2().addVectors(segmentNormals[i - 1], segmentNormals[i]);
       if (normal.lengthSq() < 1e-9) {
@@ -277,20 +352,56 @@ export function offsetProfile(
 }
 
 /**
- * Revolve a 2D profile around the Y axis to produce 3D vertices.
+ * Revolve a 2D profile around the Y axis to produce 3D vertices, applying
+ * the optional surface modulation:
+ *   r(theta, y) = R(y) + fade(y) * (waveDepth * sin(N*theta + twist*yNorm)
+ *                                   + bandDepth * sin(bandCount*PI*yNorm))
+ * fade() is 0 through the fixture crown zone and ramps in over the first
+ * stretch of wall, so mount interfaces stay perfectly circular. The same
+ * modulation applied to outer and inner profiles keeps wall thickness
+ * effectively constant, and a modulated revolve is always one closed
+ * connected surface: patterns cannot disconnect the mesh by construction.
+ *
  * Returns an array of Vector3 with length = profilePoints * (radialSegments + 1).
  */
 export function revolveProfile(
   profile: Vector2[],
-  radialSegments: number
+  radialSegments: number,
+  modulation?: SurfaceModulation,
+  yExtent?: number
 ): Vector3[] {
   const vertices: Vector3[] = [];
   const ringCount = radialSegments + 1;
+  const active = hasModulation(modulation);
+  const extent = yExtent ?? 1;
+  const twistRad = active ? (modulation.twistDeg * Math.PI) / 180 : 0;
 
   for (let p = 0; p < profile.length; p++) {
-    const { x: radius, y: height } = profile[p];
+    const { x: baseRadius, y: height } = profile[p];
+    let fade = 0;
+    let yNorm = 0;
+    if (active) {
+      yNorm = height / extent;
+      fade = smoothstep((height - CROWN_FLAT_MM) / CROWN_RAMP_MM);
+    }
     for (let r = 0; r < ringCount; r++) {
-      const theta = (r / radialSegments) * Math.PI * 2;
+      // The wrap-around column collapses to exactly theta 0 so seam
+      // vertices are bit-identical and the shell is exactly watertight.
+      const theta = ((r % radialSegments) / radialSegments) * Math.PI * 2;
+      let radius = baseRadius;
+      if (active && fade > 0) {
+        const wave =
+          modulation.waveCount > 0
+            ? modulation.waveDepth *
+              Math.sin(modulation.waveCount * theta + twistRad * yNorm)
+            : 0;
+        const band =
+          modulation.bandCount > 0
+            ? modulation.bandDepth *
+              Math.sin(modulation.bandCount * Math.PI * yNorm)
+            : 0;
+        radius = Math.max(MIN_RADIUS_MM, baseRadius + fade * (wave + band));
+      }
       vertices.push(
         new Vector3(
           radius * Math.cos(theta),

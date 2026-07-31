@@ -95,13 +95,11 @@ export function getPrintSettings(
 
   const hours = Math.max(1, Math.round(volume / 15000));
 
-  const layerHeight =
-    patternId === "smooth" || patternId === "horizontal-rings"
-      ? "0.12 mm"
-      : "0.20 mm";
+  const layerHeight = patternId === "smooth" ? "0.16 mm" : "0.20 mm";
 
-  const infill =
-    patternId === "smooth" ? "15%" : "0% (pattern creates structure)";
+  // Any infill in a lit region projects as a shadow web when the lamp is
+  // on, so shades are walls-only regardless of pattern.
+  const infill = "0% (walls only — infill would shadow the light)";
 
   return {
     layerHeight,

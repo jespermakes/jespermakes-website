@@ -81,12 +81,12 @@ describe("lamp-designer all steps wired", () => {
   });
 
   it("passes pattern props to PatternStep", () => {
-    expect(source).toContain("selected={parameters.patternId}");
-    expect(source).toContain("onSelect={updatePattern}");
+    expect(source).toContain("pattern={parameters.pattern}");
+    expect(source).toContain("onChange={updatePattern}");
   });
 
   it("passes check props to CheckStep", () => {
-    expect(source).toContain("patternId={parameters.patternId}");
+    expect(source).toContain("patternId={parameters.pattern.presetId}");
   });
 
   it("passes reveal props to RevealStep", () => {
@@ -110,7 +110,7 @@ describe("lamp-designer step state logic", () => {
         templateId: "cone",
         shape: template.defaultParameters,
         light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },
-        patternId: "smooth",
+        pattern: { presetId: "smooth", intensity: 1 },
       },
       ...overrides,
     };
@@ -144,7 +144,7 @@ describe("lamp-designer step state logic", () => {
   it("advances to the next step and marks current as completed", () => {
     const state = createState();
     const next = completeAndAdvance(state);
-    expect(next.currentStep).toBe("form");
+    expect(next.currentStep).toBe("fixture");
     expect(next.completedSteps).toContain("context");
   });
 
@@ -155,7 +155,7 @@ describe("lamp-designer step state logic", () => {
     });
     const next = completeAndAdvance(state);
     expect(next.completedSteps.filter((s) => s === "context")).toHaveLength(1);
-    expect(next.currentStep).toBe("form");
+    expect(next.currentStep).toBe("fixture");
   });
 
   it("stays on the last step when completing it", () => {
@@ -209,7 +209,7 @@ describe("lamp-designer state update functions", () => {
       templateId: "cone",
       shape: template.defaultParameters,
       light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },
-      patternId: "smooth",
+      pattern: { presetId: "smooth", intensity: 1 },
     };
   }
 
@@ -241,10 +241,13 @@ describe("lamp-designer state update functions", () => {
     expect(updated.shape).toEqual(params.shape);
   });
 
-  it("updatePattern changes the patternId field", () => {
+  it("updatePattern changes the pattern field", () => {
     const params = createParams();
-    const updated: LampParameters = { ...params, patternId: "hexagonal" as PatternId };
-    expect(updated.patternId).toBe("hexagonal");
+    const updated: LampParameters = {
+      ...params,
+      pattern: { presetId: "bold-waves" as PatternId, intensity: 1.2 },
+    };
+    expect(updated.pattern.presetId).toBe("bold-waves");
     expect(updated.shape).toEqual(params.shape);
   });
 
@@ -258,7 +261,7 @@ describe("lamp-designer state update functions", () => {
     };
     expect(updated.context).toBe("bedside");
     expect(updated.light).toEqual(params.light);
-    expect(updated.patternId).toBe("smooth");
+    expect(updated.pattern.presetId).toBe("smooth");
     expect(updated.shape).toEqual(cylinderTemplate.defaultParameters);
   });
 });
@@ -279,11 +282,11 @@ describe("lamp-designer default parameters", () => {
       templateId: "cone",
       shape: template.defaultParameters,
       light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },
-      patternId: "smooth",
+      pattern: { presetId: "smooth", intensity: 1 },
     };
     expect(params.context).toBe("bedside");
     expect(params.templateId).toBe("cone");
-    expect(params.patternId).toBe("smooth");
+    expect(params.pattern.presetId).toBe("smooth");
     expect(params.light.direction).toBe("down");
   });
 });

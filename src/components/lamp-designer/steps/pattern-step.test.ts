@@ -4,11 +4,10 @@ import { PATTERNS, getPattern } from "../../../lib/lamp-designer/patterns";
 
 const ALL_PATTERNS: PatternId[] = [
   "smooth",
-  "vertical-lines",
-  "horizontal-rings",
-  "diamond-grid",
-  "hexagonal",
-  "organic",
+  "fine-ribs",
+  "bold-waves",
+  "spiral-twist",
+  "wavy-bands",
 ];
 
 describe("PatternStep pattern data", () => {

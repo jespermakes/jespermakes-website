@@ -1,11 +1,15 @@
 "use client";
 
-import type { PatternId } from "@/lib/lamp-designer/types";
-import { PATTERNS } from "@/lib/lamp-designer/patterns";
+import type { PatternId, PatternParams } from "@/lib/lamp-designer/types";
+import {
+  PATTERNS,
+  MIN_PATTERN_INTENSITY,
+  MAX_PATTERN_INTENSITY,
+} from "@/lib/lamp-designer/patterns";
 
 export interface PatternStepProps {
-  selected: PatternId | null;
-  onSelect: (patternId: PatternId) => void;
+  pattern: PatternParams;
+  onChange: (pattern: PatternParams) => void;
 }
 
 const PATTERN_ICONS: Record<PatternId, React.ReactNode> = {
@@ -14,59 +18,59 @@ const PATTERN_ICONS: Record<PatternId, React.ReactNode> = {
       <circle cx="24" cy="24" r="14" />
     </svg>
   ),
-  "vertical-lines": (
+  "fine-ribs": (
     <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
-      <line x1="16" y1="10" x2="16" y2="38" />
+      <line x1="12" y1="10" x2="12" y2="38" />
+      <line x1="18" y1="10" x2="18" y2="38" />
       <line x1="24" y1="10" x2="24" y2="38" />
-      <line x1="32" y1="10" x2="32" y2="38" />
+      <line x1="30" y1="10" x2="30" y2="38" />
+      <line x1="36" y1="10" x2="36" y2="38" />
     </svg>
   ),
-  "horizontal-rings": (
+  "bold-waves": (
     <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
-      <line x1="10" y1="16" x2="38" y2="16" />
-      <line x1="10" y1="24" x2="38" y2="24" />
-      <line x1="10" y1="32" x2="38" y2="32" />
+      <path d="M10 10c4 0 4 4 8 4s4-4 8-4 4 4 8 4" />
+      <path d="M10 24c4 0 4 4 8 4s4-4 8-4 4 4 8 4" />
+      <path d="M10 38c4 0 4-4 8-4s4 4 8 4 4-4 8-4" />
     </svg>
   ),
-  "diamond-grid": (
+  "spiral-twist": (
     <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
-      <path d="M24 10l10 14-10 14-10-14z" />
-      <line x1="14" y1="24" x2="34" y2="24" />
-      <line x1="24" y1="10" x2="24" y2="38" />
+      <path d="M14 8c8 8 -4 16 4 24s12 0 16 8" />
+      <path d="M24 8c8 8 -4 16 4 24" />
     </svg>
   ),
-  hexagonal: (
+  "wavy-bands": (
     <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
-      <path d="M24 10l12 7v14l-12 7-12-7V17z" />
-    </svg>
-  ),
-  organic: (
-    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
-      <path d="M16 14c4 2 8-2 12 0s4 8 2 12-8 4-12 2-4-8-2-12z" />
+      <path d="M12 14h24" />
+      <path d="M10 22c6 4 22 4 28 0" />
+      <path d="M10 30c6 -4 22 -4 28 0" />
+      <path d="M12 38h24" />
     </svg>
   ),
 };
 
-export function PatternStep({ selected, onSelect }: PatternStepProps) {
+export function PatternStep({ pattern, onChange }: PatternStepProps) {
   return (
     <div>
       <h2 className="text-lg font-semibold text-wood mb-1">
         Choose a surface pattern
       </h2>
       <p className="text-sm text-wood/60 mb-5">
-        Select a texture for the lamp shade. This affects both the look and how
-        light filters through.
+        The pattern is real geometry: what you see here is exactly what
+        prints. Depths self-limit to stay printable.
       </p>
 
       <div className="grid grid-cols-2 gap-3">
-        {PATTERNS.map((pattern) => {
-          const isSelected = selected === pattern.id;
+        {PATTERNS.map((preset) => {
+          const isSelected = pattern.presetId === preset.id;
           return (
             <button
-              key={pattern.id}
+              key={preset.id}
               type="button"
-              onClick={() => onSelect(pattern.id)}
+              onClick={() => onChange({ ...pattern, presetId: preset.id })}
               aria-pressed={isSelected}
+              title={preset.description}
               className={[
                 "flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all text-center",
                 isSelected
@@ -75,15 +79,38 @@ export function PatternStep({ selected, onSelect }: PatternStepProps) {
               ].join(" ")}
             >
               <span className={isSelected ? "text-forest" : "text-wood/50"}>
-                {PATTERN_ICONS[pattern.id]}
+                {PATTERN_ICONS[preset.id]}
               </span>
               <span className="text-sm font-medium leading-tight">
-                {pattern.name}
+                {preset.name}
               </span>
             </button>
           );
         })}
       </div>
+
+      {pattern.presetId !== "smooth" && (
+        <label className="mt-5 flex flex-col gap-1.5">
+          <span className="flex justify-between text-sm text-wood">
+            <span className="font-medium">Depth</span>
+            <span className="tabular-nums text-wood/60">
+              {Math.round(pattern.intensity * 100)} %
+            </span>
+          </span>
+          <input
+            type="range"
+            min={MIN_PATTERN_INTENSITY}
+            max={MAX_PATTERN_INTENSITY}
+            step={0.05}
+            value={pattern.intensity}
+            onChange={(e) =>
+              onChange({ ...pattern, intensity: parseFloat(e.target.value) })
+            }
+            className="w-full accent-forest"
+            aria-label="Pattern depth"
+          />
+        </label>
+      )}
     </div>
   );
 }

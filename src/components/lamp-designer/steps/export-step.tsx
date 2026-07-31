@@ -161,7 +161,7 @@ export function ExportStep({ parameters, designName }: ExportStepProps) {
           <span className="text-wood/60">Template</span>
           <span className="text-wood font-medium">{parameters.templateId}</span>
           <span className="text-wood/60">Pattern</span>
-          <span className="text-wood font-medium">{parameters.patternId.replace("-", " ")}</span>
+          <span className="text-wood font-medium">{parameters.pattern.presetId.replace("-", " ")}</span>
           <span className="text-wood/60">Height</span>
           <span className="text-wood font-medium tabular-nums">{parameters.shape.height} mm</span>
         </div>

@@ -1,95 +1,55 @@
-import type { PatternId, PatternDefinition, PatternGeometry } from "./types";
+// Pattern presets for the vase-family archetype engine (DR-160 Phase B1).
+// Every preset resolves to a SurfaceModulation, and resolveModulation clamps
+// the depths against the actual shade so no pattern + shape combination can
+// self-intersect or exceed printable overhangs. Limits come from
+// docs/lamp-designer/RESEARCH-ARCHETYPES-IP.md section 5.
 
-const SMOOTH_GEOMETRY: PatternGeometry = {
-  type: "none",
-  spacingMm: 0,
-  sizeMm: 0,
-  density: 0,
-  needsFineLayer: true,
-  createsStructure: false,
-};
+import type {
+  PatternDefinition,
+  PatternId,
+  PatternParams,
+  ShapeParameters,
+  SurfaceModulation,
+} from "./types";
 
-const VERTICAL_LINES_GEOMETRY: PatternGeometry = {
-  type: "perforation",
-  spacingMm: 8,
-  sizeMm: 2,
-  density: 0.25,
-  needsFineLayer: false,
-  createsStructure: true,
-};
-
-const HORIZONTAL_RINGS_GEOMETRY: PatternGeometry = {
-  type: "perforation",
-  spacingMm: 6,
-  sizeMm: 1.5,
-  density: 0.25,
-  needsFineLayer: true,
-  createsStructure: false,
-};
-
-const DIAMOND_GRID_GEOMETRY: PatternGeometry = {
-  type: "perforation",
-  spacingMm: 10,
-  sizeMm: 4,
-  density: 0.4,
-  needsFineLayer: false,
-  createsStructure: true,
-};
-
-const HEXAGONAL_GEOMETRY: PatternGeometry = {
-  type: "perforation",
-  spacingMm: 8,
-  sizeMm: 5,
-  density: 0.5,
-  needsFineLayer: false,
-  createsStructure: true,
-};
-
-const ORGANIC_GEOMETRY: PatternGeometry = {
-  type: "relief",
-  spacingMm: 12,
-  sizeMm: 3,
-  density: 0.3,
-  needsFineLayer: false,
-  createsStructure: true,
+const NO_MODULATION: SurfaceModulation = {
+  waveCount: 0,
+  waveDepth: 0,
+  twistDeg: 0,
+  bandCount: 0,
+  bandDepth: 0,
 };
 
 export const PATTERNS: PatternDefinition[] = [
   {
     id: "smooth",
     name: "Smooth",
-    description: "Clean surface with no pattern — light diffuses evenly through the wall",
-    geometry: SMOOTH_GEOMETRY,
+    description: "Clean surface, light diffuses evenly through the wall",
+    modulation: NO_MODULATION,
   },
   {
-    id: "vertical-lines",
-    name: "Vertical lines",
-    description: "Narrow vertical slits that cast striped shadows downward",
-    geometry: VERTICAL_LINES_GEOMETRY,
+    id: "fine-ribs",
+    name: "Fine ribs",
+    description: "Dense vertical ribs that hide layer lines and soften the glow",
+    modulation: { waveCount: 36, waveDepth: 1.5, twistDeg: 0, bandCount: 0, bandDepth: 0 },
   },
   {
-    id: "horizontal-rings",
-    name: "Horizontal rings",
-    description: "Thin horizontal bands that create layered light rings",
-    geometry: HORIZONTAL_RINGS_GEOMETRY,
+    id: "bold-waves",
+    name: "Bold waves",
+    description: "Deep flutes that throw strong light and shadow bands",
+    modulation: { waveCount: 10, waveDepth: 5, twistDeg: 0, bandCount: 0, bandDepth: 0 },
   },
   {
-    id: "diamond-grid",
-    name: "Diamond grid",
-    description: "Diagonal crosshatch forming diamond-shaped openings",
-    geometry: DIAMOND_GRID_GEOMETRY,
+    id: "spiral-twist",
+    name: "Spiral twist",
+    description: "Ribs that wind around the shade, the classic swirl lamp",
+    modulation: { waveCount: 12, waveDepth: 3.5, twistDeg: 120, bandCount: 0, bandDepth: 0 },
   },
   {
-    id: "hexagonal",
-    name: "Hexagonal",
-    description: "Honeycomb perforations for maximum light with structural strength",
-    geometry: HEXAGONAL_GEOMETRY,
-  },
-  {
-    id: "organic",
-    name: "Organic",
-    description: "Irregular, nature-inspired relief pattern with varied light play",
-    geometry: ORGANIC_GEOMETRY,
+    id: "wavy-bands",
+    name: "Wavy bands",
+    description: "Soft horizontal ripples, the organic ceramics look",
+    modulation: { waveCount: 0, waveDepth: 0, twistDeg: 0, bandCount: 5, bandDepth: 6 },
   },
 ];
 
@@ -99,10 +59,68 @@ export function getPattern(id: PatternId): PatternDefinition {
   return pattern;
 }
 
-export function getPerforationPatterns(): PatternDefinition[] {
-  return PATTERNS.filter((p) => p.geometry.type === "perforation");
+export const MIN_PATTERN_INTENSITY = 0.25;
+export const MAX_PATTERN_INTENSITY = 1.5;
+
+/** Sustained printable overhang for band ripples, from research (50 deg). */
+const MAX_BAND_SLOPE = Math.tan((50 * Math.PI) / 180);
+
+/**
+ * Resolve a pattern choice into a safety-clamped modulation for a given
+ * shade. Clamps (correct by construction, not warnings):
+ * - total radial depth <= 30 % of the smallest shade radius (no
+ *   self-intersection, keeps r comfortably positive everywhere)
+ * - wave depth <= PI * minRadius / (2 * waveCount) (wall slope between
+ *   crests stays printable)
+ * - band depth <= tan(50 deg) * height / (bandCount * PI) (band underside
+ *   stays inside sustained-overhang limits)
+ */
+export function resolveModulation(
+  pattern: PatternParams,
+  shape: ShapeParameters
+): SurfaceModulation {
+  const preset = getPattern(pattern.presetId).modulation;
+  const intensity = Math.min(
+    MAX_PATTERN_INTENSITY,
+    Math.max(MIN_PATTERN_INTENSITY, pattern.intensity)
+  );
+
+  const minRadius = Math.min(shape.topDiameter, shape.bottomDiameter) / 2;
+  const depthBudget = 0.3 * minRadius;
+
+  let waveDepth = preset.waveDepth * intensity;
+  if (preset.waveCount > 0) {
+    waveDepth = Math.min(
+      waveDepth,
+      (Math.PI * minRadius) / (2 * preset.waveCount)
+    );
+  }
+
+  let bandDepth = preset.bandDepth * intensity;
+  if (preset.bandCount > 0) {
+    bandDepth = Math.min(
+      bandDepth,
+      (MAX_BAND_SLOPE * shape.height) / (preset.bandCount * Math.PI)
+    );
+  }
+
+  const totalDepth = waveDepth + bandDepth;
+  if (totalDepth > depthBudget && totalDepth > 0) {
+    const scale = depthBudget / totalDepth;
+    waveDepth *= scale;
+    bandDepth *= scale;
+  }
+
+  return {
+    waveCount: preset.waveCount,
+    waveDepth,
+    twistDeg: preset.twistDeg,
+    bandCount: preset.bandCount,
+    bandDepth,
+  };
 }
 
-export function getPatternsNeedingFineLayer(): PatternDefinition[] {
-  return PATTERNS.filter((p) => p.geometry.needsFineLayer);
+/** True when the modulation displaces nothing (smooth surface). */
+export function isFlat(modulation: SurfaceModulation): boolean {
+  return modulation.waveDepth === 0 && modulation.bandDepth === 0;
 }

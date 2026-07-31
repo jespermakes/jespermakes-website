@@ -63,13 +63,13 @@ describe("type structure tests", () => {
         beamAngle: 120,
         direction: "down",
       },
-      patternId: "smooth",
+      pattern: { presetId: "smooth", intensity: 1 },
     };
     expect(params.context).toBe("bedside");
     expect(params.templateId).toBe("cone");
     expect(params.shape.height).toBe(200);
     expect(params.light.colorTemperature).toBe(2700);
-    expect(params.patternId).toBe("smooth");
+    expect(params.pattern.presetId).toBe("smooth");
   });
 
   it("LampDesignerState tracks current step and completed steps", () => {
@@ -91,7 +91,7 @@ describe("type structure tests", () => {
           beamAngle: 90,
           direction: "ambient",
         },
-        patternId: "hexagonal",
+        pattern: { presetId: "bold-waves", intensity: 1 },
       },
     };
     expect(state.currentStep).toBe("shape");
@@ -161,7 +161,7 @@ describe("type structure tests", () => {
           beamAngle: 60,
           direction: "down",
         },
-        patternId: "vertical-lines",
+        pattern: { presetId: "fine-ribs", intensity: 1 },
       },
       thumbnail: null,
       context: "desk",

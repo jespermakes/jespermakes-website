@@ -1,28 +1,14 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import {
-  DoubleSide,
-  type Mesh,
-  Color,
-  AdditiveBlending,
-  CanvasTexture,
-  RepeatWrapping,
-} from "three";
-import type {
-  ProfilePoint,
-  ShapeParameters,
-  PatternId,
-} from "@/lib/lamp-designer/types";
-import { generateLampGeometry } from "@/lib/lamp-designer/geometry";
-import { generatePatternCanvas } from "@/lib/lamp-designer/pattern-texture";
+import { DoubleSide, type Mesh, Color, AdditiveBlending } from "three";
+import type { LampBuildInput } from "@/lib/lamp-designer/build";
+import { buildLampGeometryYUp } from "@/lib/lamp-designer/build";
 
 export interface LampMeshProps {
-  profile: ProfilePoint[];
-  shape: ShapeParameters;
-  /** Pattern to apply as alpha map. Default: "smooth" (no pattern) */
-  patternId?: PatternId;
+  /** The design. The mesh builds the exact geometry the export writes. */
+  parameters: LampBuildInput;
   /** Outer shell color. Default: warm white */
   color?: string;
   /** Glow intensity for inner light. 0 = off, 1 = full. Default: 0.4 */
@@ -39,9 +25,7 @@ export interface LampMeshProps {
 const MM_TO_SCENE = 0.005;
 
 export function LampMesh({
-  profile,
-  shape,
-  patternId = "smooth",
+  parameters,
   color = "#f5f0e8",
   glowIntensity = 0.4,
   glowColor = "#ffb347",
@@ -51,20 +35,16 @@ export function LampMesh({
   const outerRef = useRef<Mesh>(null);
   const glowRef = useRef<Mesh>(null);
 
+  // One pipeline: this is the same builder the STL export calls, so the
+  // preview can never show geometry the print will not have.
   const geometry = useMemo(
-    () => generateLampGeometry(profile, shape),
-    [profile, shape]
+    () => buildLampGeometryYUp(parameters),
+    [parameters.templateId, parameters.shape, parameters.fixture, parameters.pattern]
   );
 
-  const alphaMap = useMemo(() => {
-    const canvas = generatePatternCanvas(patternId);
-    if (!canvas) return null;
-    const texture = new CanvasTexture(canvas);
-    texture.wrapS = RepeatWrapping;
-    texture.wrapT = RepeatWrapping;
-    texture.repeat.set(4, 2);
-    return texture;
-  }, [patternId]);
+  useEffect(() => {
+    return () => geometry.dispose();
+  }, [geometry]);
 
   useFrame((_state, delta) => {
     if (rotateSpeed === 0) return;
@@ -76,7 +56,7 @@ export function LampMesh({
   return (
     <group scale={[MM_TO_SCENE, MM_TO_SCENE, MM_TO_SCENE]}>
       {/* Translucent outer shell */}
-      <mesh ref={outerRef} geometry={geometry}>
+      <mesh ref={outerRef} geometry={geometry} castShadow>
         <meshPhysicalMaterial
           color={color}
           transparent
@@ -84,11 +64,9 @@ export function LampMesh({
           roughness={0.6}
           metalness={0}
           transmission={0.3}
-          thickness={shape.wallThickness * MM_TO_SCENE}
+          thickness={parameters.shape.wallThickness * MM_TO_SCENE}
           side={DoubleSide}
           depthWrite={false}
-          alphaMap={alphaMap}
-          alphaTest={0.05}
         />
       </mesh>
 
@@ -102,7 +80,6 @@ export function LampMesh({
             blending={AdditiveBlending}
             side={DoubleSide}
             depthWrite={false}
-            alphaMap={alphaMap}
           />
         </mesh>
       )}

@@ -59,11 +59,11 @@ describe("getMaterialRecommendations", () => {
 describe("getPrintSettings", () => {
   it("uses finer layer height for smooth pattern", () => {
     const settings = getPrintSettings(DEFAULT_SHAPE, "smooth");
-    expect(settings.layerHeight).toBe("0.12 mm");
+    expect(settings.layerHeight).toBe("0.16 mm");
   });
 
   it("uses coarser layer height for patterned surfaces", () => {
-    const settings = getPrintSettings(DEFAULT_SHAPE, "vertical-lines");
+    const settings = getPrintSettings(DEFAULT_SHAPE, "fine-ribs");
     expect(settings.layerHeight).toBe("0.20 mm");
   });
 

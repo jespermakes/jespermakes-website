@@ -4,7 +4,7 @@
 
 import { BufferGeometry, Matrix4, Vector3 } from "three";
 import { generateLampGeometry } from "./geometry";
-import { buildLampAssemblyProfile } from "./templates";
+import { buildLampGeometryYUp } from "./build";
 import { getMountInterface } from "./fixtures";
 import type { FixtureModuleId, LampParameters, ProfilePoint, ShapeParameters } from "./types";
 
@@ -14,12 +14,13 @@ function toZUp(geometry: BufferGeometry): BufferGeometry {
 }
 
 /**
- * Build the printable geometry for a design: fixture crown + shade, the
- * same assembly profile the preview renders, rotated so the lamp stands
- * on the build plate (designer is Y-up in mm, slicers expect Z-up).
+ * Build the printable geometry for a design: fixture crown + shade with
+ * the pattern as real modulation, the exact geometry the preview renders,
+ * rotated so the lamp stands on the build plate (designer is Y-up in mm,
+ * slicers expect Z-up).
  */
 export function buildExportGeometry(parameters: LampParameters): BufferGeometry {
-  return toZUp(generateLampGeometry(buildLampAssemblyProfile(parameters), parameters.shape));
+  return toZUp(buildLampGeometryYUp(parameters));
 }
 
 /**

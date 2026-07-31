@@ -46,8 +46,7 @@ describe("LampScene component structure", () => {
 
   it("renders LampMesh with forwarded props", () => {
     expect(source).toContain("<LampMesh");
-    expect(source).toContain("profile={profile}");
-    expect(source).toContain("shape={shape}");
+    expect(source).toContain("parameters={parameters}");
   });
 });
 

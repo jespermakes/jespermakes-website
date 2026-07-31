@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import type {
   StepId,
   ShapeParameters,
@@ -9,11 +9,11 @@ import type {
   LampContext,
   TemplateId,
   LightParameters,
-  PatternId,
+  PatternParams,
   FixtureSpec,
 } from "@/lib/lamp-designer/types";
 import { STEP_IDS } from "@/lib/lamp-designer/types";
-import { buildLampAssemblyProfile, getTemplate } from "@/lib/lamp-designer/templates";
+import { getTemplate } from "@/lib/lamp-designer/templates";
 import { StepNav } from "@/components/lamp-designer/step-nav";
 import { LampSceneDynamic } from "@/components/lamp-designer/scene-dynamic";
 import { ContextStep } from "@/components/lamp-designer/steps/context-step";
@@ -38,7 +38,7 @@ const DEFAULT_PARAMETERS: LampParameters = {
     beamAngle: 120,
     direction: "down",
   },
-  patternId: "smooth",
+  pattern: { presetId: "smooth", intensity: 1 },
 };
 
 const INITIAL_STATE: LampDesignerState = {
@@ -119,29 +119,16 @@ export default function LampDesignerPage() {
     }));
   }, []);
 
-  const updatePattern = useCallback((patternId: PatternId) => {
+  const updatePattern = useCallback((pattern: PatternParams) => {
     setState((prev) => ({
       ...prev,
-      parameters: { ...prev.parameters, patternId },
+      parameters: { ...prev.parameters, pattern },
     }));
   }, []);
 
   const currentStepIndex = STEP_IDS.indexOf(currentStep);
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === STEP_IDS.length - 1;
-
-  // Single source of profile truth: the same assembly profile (fixture
-  // crown + shade) the export uses, so the preview can never show a lamp
-  // the STL does not contain.
-  const profile = useMemo(
-    () =>
-      buildLampAssemblyProfile({
-        templateId: parameters.templateId,
-        shape: parameters.shape,
-        fixture: parameters.fixture,
-      }),
-    [parameters.templateId, parameters.shape, parameters.fixture]
-  );
 
   function renderStep() {
     switch (currentStep) {
@@ -181,8 +168,8 @@ export default function LampDesignerPage() {
       case "pattern":
         return (
           <PatternStep
-            selected={parameters.patternId}
-            onSelect={updatePattern}
+            pattern={parameters.pattern}
+            onChange={updatePattern}
           />
         );
       case "check":
@@ -190,7 +177,7 @@ export default function LampDesignerPage() {
           <CheckStep
             shape={parameters.shape}
             light={parameters.light}
-            patternId={parameters.patternId}
+            patternId={parameters.pattern.presetId}
             fixture={parameters.fixture}
             templateId={parameters.templateId}
           />
@@ -201,7 +188,7 @@ export default function LampDesignerPage() {
             context={parameters.context}
             shape={parameters.shape}
             light={parameters.light}
-            patternId={parameters.patternId}
+            patternId={parameters.pattern.presetId}
           />
         );
       case "export":
@@ -227,11 +214,7 @@ export default function LampDesignerPage() {
 
       {/* Center: 3D Preview */}
       <main className="flex-1 relative min-w-0">
-        <LampSceneDynamic
-          profile={profile}
-          shape={parameters.shape}
-          patternId={parameters.patternId}
-        />
+        <LampSceneDynamic parameters={parameters} />
       </main>
 
       {/* Right: Controls Panel */}
