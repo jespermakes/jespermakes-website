@@ -14,16 +14,24 @@ const toolCategories = [
   { title: "Gardening & Outdoors", slug: "gardening-outdoors", icon: "🌿" },
 ];
 
-export function MobileNav({ userName }: { userName?: string | null }) {
+export function MobileNav({
+  userName,
+  dark = true,
+}: {
+  userName?: string | null;
+  dark?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
 
   return (
     <div className="md:hidden">
-      {/* Hamburger button */}
+      {/* Hamburger button: adapts to the header's color context */}
       <button
         onClick={() => setOpen(!open)}
-        className="text-cream/70 hover:text-amber transition-colors p-2 -mr-2"
+        className={`transition-colors p-2 -mr-2 ${
+          dark ? "text-cream/70 hover:text-amber" : "text-wood-light hover:text-amber-dark"
+        }`}
         aria-label="Toggle menu"
       >
         {open ? (
