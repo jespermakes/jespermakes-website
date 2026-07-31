@@ -3,7 +3,7 @@
 import type {
   ShapeParameters,
   LightParameters,
-  PatternId,
+  PatternParams,
   FixtureSpec,
   TemplateId,
 } from "@/lib/lamp-designer/types";
@@ -15,7 +15,7 @@ import { thermalClearance } from "@/lib/lamp-designer/constraints";
 export interface CheckStepProps {
   shape: ShapeParameters;
   light: LightParameters;
-  patternId: PatternId;
+  pattern: PatternParams;
   fixture: FixtureSpec;
   templateId: TemplateId;
 }
@@ -66,8 +66,8 @@ function Section({ section }: { section: CheckSection }) {
   );
 }
 
-export function CheckStep({ shape, light, patternId, fixture, templateId }: CheckStepProps) {
-  const sections = runAllChecks(shape, light, patternId);
+export function CheckStep({ shape, light, pattern, fixture, templateId }: CheckStepProps) {
+  const sections = runAllChecks({ shape, light, pattern, fixture, templateId });
   const hasErrors = sections.some((s) =>
     s.items.some((i) => !i.ok && i.severity === "error")
   );

@@ -18,15 +18,15 @@ const FORMAT_META: Record<
   ExportFormat,
   { label: string; description: string; available: boolean }
 > = {
+  "3mf": {
+    label: "3MF",
+    description: "Recommended — opens directly in Bambu Studio, watertight and welded",
+    available: true,
+  },
   stl: {
     label: "STL",
     description: "Universal mesh format — works with any slicer",
     available: true,
-  },
-  "3mf": {
-    label: "3MF",
-    description: "Rich format with color and metadata — coming soon",
-    available: false,
   },
 };
 
@@ -45,13 +45,20 @@ export function ExportStep({ parameters, designName }: ExportStepProps) {
     stl: "idle",
     "3mf": "idle",
   });
+  const fixtureModule = getFixtureModule(parameters.fixture.moduleId);
 
   async function handleDownload(format: ExportFormat) {
     if (!FORMAT_META[format].available) return;
     setExportStatus((prev) => ({ ...prev, [format]: "preparing" }));
     try {
-      const { lampToStlBlob } = await import("@/lib/lamp-designer/export");
-      const blob = lampToStlBlob(parameters);
+      let blob: Blob;
+      if (format === "3mf") {
+        const { lampTo3mfBlob } = await import("@/lib/lamp-designer/export-3mf");
+        blob = lampTo3mfBlob(parameters, designName);
+      } else {
+        const { lampToStlBlob } = await import("@/lib/lamp-designer/export");
+        blob = lampToStlBlob(parameters);
+      }
       const url = URL.createObjectURL(blob);
       const anchor = document.createElement("a");
       anchor.href = url;
@@ -119,9 +126,27 @@ export function ExportStep({ parameters, designName }: ExportStepProps) {
           );
         })}
         <p className="text-xs text-wood/40">
-          File: {fileNameForDesign(designName, "stl")} · millimeters, ready to
-          slice. The fixture mount crown is part of the shell. Patterns are a
-          light preview in the beta; the exported shell is solid.
+          Millimeters, ready to slice. The fixture mount crown and the
+          surface pattern are part of the exported shell — what you see is
+          what prints.
+        </p>
+      </div>
+
+      {/* Hardware guide */}
+      <div className="mt-6 flex flex-col gap-2">
+        <h3 className="text-sm font-semibold text-wood">Make it real</h3>
+        <p className="text-xs text-wood/50">
+          You buy: {fixtureModule.hardware}
+        </p>
+        <ol className="flex flex-col gap-1.5 list-decimal list-inside">
+          {fixtureModule.assembly.map((step) => (
+            <li key={step} className="text-xs text-wood/70 leading-snug">
+              {step}
+            </li>
+          ))}
+        </ol>
+        <p className="text-xs font-medium text-amber-700/90">
+          LED bulbs only. Never incandescent or halogen in a printed shade.
         </p>
       </div>
 

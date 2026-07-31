@@ -24,6 +24,8 @@ export interface FixtureModule {
   hardCapWatt: number | null;
   /** Fit caveat surfaced in the UI, if any. */
   fitNote?: string;
+  /** Assembly steps for the export guide, in order. */
+  assembly: string[];
 }
 
 const A60_LED: BulbEnvelope = {
@@ -51,6 +53,12 @@ export const FIXTURE_MODULES: readonly FixtureModule[] = [
     landWidth: 8,
     bulbEnvelope: A60_LED,
     hardCapWatt: null,
+    assembly: [
+      "Unscrew one shade ring from the E27 lamp holder",
+      "Drop the socket through the crown hole from above",
+      "Screw the ring back on from below so the crown clamps between the rings",
+      "Screw in a frosted LED bulb within the wattage on your export card",
+    ],
   },
   {
     id: "ikea-slip",
@@ -63,6 +71,12 @@ export const FIXTURE_MODULES: readonly FixtureModule[] = [
     bulbEnvelope: A60_LED,
     hardCapWatt: 22,
     fitNote: "IKEA marks these cord sets max 22 W. LED bulbs stay far below that.",
+    assembly: [
+      "Unscrew the ring from the cord set socket",
+      "Slip the crown over the socket from below and rest it on the ring",
+      "Screw the ring snug",
+      "LED bulb in, hang it, plug it in",
+    ],
   },
   {
     id: "e14-clamp",
@@ -74,6 +88,12 @@ export const FIXTURE_MODULES: readonly FixtureModule[] = [
     landWidth: 7,
     bulbEnvelope: C35_LED,
     hardCapWatt: null,
+    assembly: [
+      "Unscrew one shade ring from the E14 holder",
+      "Drop the socket through the crown hole from above",
+      "Screw the ring back on from below",
+      "Use a C35 candle LED within the wattage on your export card",
+    ],
   },
   {
     id: "stem-m10",
@@ -85,6 +105,12 @@ export const FIXTURE_MODULES: readonly FixtureModule[] = [
     landWidth: 12,
     bulbEnvelope: { ...A60_LED, topOffset: 55 },
     hardCapWatt: null,
+    assembly: [
+      "Slide the flange over the M10 stem",
+      "Clamp it between two M10 lamp nuts",
+      "Mount the E27 holder on the stem above the flange",
+      "LED bulb in",
+    ],
   },
   {
     id: "kit001-seat",
@@ -102,6 +128,11 @@ export const FIXTURE_MODULES: readonly FixtureModule[] = [
     },
     hardCapWatt: 5,
     fitNote: "Seat diameter is provisional until verified against the physical kit; print the fit coupon first.",
+    assembly: [
+      "Seat the Kit 001 LED puck in the crown opening",
+      "Route the USB cable out through the aperture",
+      "Power it from any USB port or charger",
+    ],
   },
 ];
 

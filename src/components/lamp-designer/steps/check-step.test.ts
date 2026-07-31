@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import {
-  getMaterialRecommendations,
   getPrintSettings,
   checkBulbFit,
   getDimensionSummary,
@@ -21,40 +20,6 @@ const DEFAULT_LIGHT: LightParameters = {
   beamAngle: 60,
   direction: "down",
 };
-
-describe("getMaterialRecommendations", () => {
-  it("recommends PLA for warm bulbs (<=2700K)", () => {
-    const recs = getMaterialRecommendations({ ...DEFAULT_LIGHT, colorTemperature: 2400 });
-    const pla = recs.find((r) => r.id === "pla");
-    expect(pla?.recommended).toBe(true);
-  });
-
-  it("does not recommend PLA for hot bulbs", () => {
-    const recs = getMaterialRecommendations({ ...DEFAULT_LIGHT, colorTemperature: 4000 });
-    const pla = recs.find((r) => r.id === "pla");
-    expect(pla?.recommended).toBe(false);
-  });
-
-  it("always recommends PETG", () => {
-    for (const temp of [2000, 3000, 5000]) {
-      const recs = getMaterialRecommendations({ ...DEFAULT_LIGHT, colorTemperature: temp });
-      const petg = recs.find((r) => r.id === "petg");
-      expect(petg?.recommended).toBe(true);
-    }
-  });
-
-  it("recommends ASA for high-temperature bulbs (>=4000K)", () => {
-    const recs = getMaterialRecommendations({ ...DEFAULT_LIGHT, colorTemperature: 4500 });
-    const asa = recs.find((r) => r.id === "asa");
-    expect(asa?.recommended).toBe(true);
-  });
-
-  it("does not recommend ASA for cool bulbs", () => {
-    const recs = getMaterialRecommendations({ ...DEFAULT_LIGHT, colorTemperature: 2700 });
-    const asa = recs.find((r) => r.id === "asa");
-    expect(asa?.recommended).toBe(false);
-  });
-});
 
 describe("getPrintSettings", () => {
   it("uses finer layer height for smooth pattern", () => {
@@ -85,7 +50,7 @@ describe("getPrintSettings", () => {
   });
 
   it("sets infill to 0% for patterned surfaces", () => {
-    const settings = getPrintSettings(DEFAULT_SHAPE, "diamond-grid");
+    const settings = getPrintSettings(DEFAULT_SHAPE, "bold-waves");
     expect(settings.infill).toContain("0%");
   });
 });
@@ -141,19 +106,27 @@ describe("getDimensionSummary", () => {
 });
 
 describe("runAllChecks", () => {
+  const INPUT = {
+    shape: DEFAULT_SHAPE,
+    light: DEFAULT_LIGHT,
+    pattern: { presetId: "smooth" as const, intensity: 1 },
+    fixture: { moduleId: "e27-clamp" as const },
+    templateId: "cone" as const,
+  };
+
   it("returns four sections", () => {
-    const sections = runAllChecks(DEFAULT_SHAPE, DEFAULT_LIGHT, "smooth");
+    const sections = runAllChecks(INPUT);
     expect(sections).toHaveLength(4);
     expect(sections.map((s) => s.title)).toEqual([
       "Dimensions",
-      "Bulb compatibility",
+      "Fit and heat",
       "Print settings",
-      "Material",
+      "Material plan",
     ]);
   });
 
   it("all items have required fields", () => {
-    const sections = runAllChecks(DEFAULT_SHAPE, DEFAULT_LIGHT, "smooth");
+    const sections = runAllChecks(INPUT);
     for (const section of sections) {
       for (const item of section.items) {
         expect(item.label).toBeTruthy();
@@ -164,11 +137,17 @@ describe("runAllChecks", () => {
     }
   });
 
-  it("flags errors when bulb does not fit", () => {
+  it("flags errors when the mount does not fit", () => {
     const tiny = { ...DEFAULT_SHAPE, topDiameter: 30, bottomDiameter: 30 };
-    const sections = runAllChecks(tiny, DEFAULT_LIGHT, "smooth");
-    const bulbSection = sections.find((s) => s.title === "Bulb compatibility")!;
-    expect(bulbSection.items[0].ok).toBe(false);
-    expect(bulbSection.items[0].severity).toBe("error");
+    const sections = runAllChecks({ ...INPUT, shape: tiny });
+    const fitSection = sections.find((s) => s.title === "Fit and heat")!;
+    expect(fitSection.items[0].ok).toBe(false);
+    expect(fitSection.items[0].severity).toBe("error");
+  });
+
+  it("material plan names a concrete Bambu filament", () => {
+    const sections = runAllChecks(INPUT);
+    const plan = sections.find((s) => s.title === "Material plan")!;
+    expect(plan.items[0].value).toContain("Bambu");
   });
 });

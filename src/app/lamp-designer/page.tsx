@@ -177,7 +177,7 @@ export default function LampDesignerPage() {
           <CheckStep
             shape={parameters.shape}
             light={parameters.light}
-            patternId={parameters.pattern.presetId}
+            pattern={parameters.pattern}
             fixture={parameters.fixture}
             templateId={parameters.templateId}
           />

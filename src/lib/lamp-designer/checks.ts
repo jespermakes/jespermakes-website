@@ -2,8 +2,13 @@ import type {
   ShapeParameters,
   LightParameters,
   PatternId,
+  PatternParams,
+  FixtureSpec,
+  TemplateId,
   ConstraintSeverity,
 } from "./types";
+import { bulbFit, thermalClearance } from "./constraints";
+import { recommendLampPlan } from "./materials";
 
 // ---------------------------------------------------------------------------
 // Check result types
@@ -20,51 +25,6 @@ export interface CheckItem {
 export interface CheckSection {
   title: string;
   items: CheckItem[];
-}
-
-// ---------------------------------------------------------------------------
-// Material recommendation
-// ---------------------------------------------------------------------------
-
-export type MaterialId = "pla" | "petg" | "asa";
-
-export interface MaterialRecommendation {
-  id: MaterialId;
-  name: string;
-  reason: string;
-  recommended: boolean;
-}
-
-export function getMaterialRecommendations(
-  light: LightParameters
-): MaterialRecommendation[] {
-  const warm = light.colorTemperature <= 2700;
-  const hot = light.colorTemperature >= 4000;
-
-  return [
-    {
-      id: "pla",
-      name: "PLA",
-      reason: warm
-        ? "Fine for low-heat warm bulbs"
-        : "May soften near hot bulbs — consider PETG or ASA",
-      recommended: warm,
-    },
-    {
-      id: "petg",
-      name: "PETG",
-      reason: "Good heat resistance, slight translucency helps light diffuse",
-      recommended: true,
-    },
-    {
-      id: "asa",
-      name: "ASA",
-      reason: hot
-        ? "Best choice for high-temperature bulbs"
-        : "Excellent durability, but harder to print",
-      recommended: hot,
-    },
-  ];
 }
 
 // ---------------------------------------------------------------------------
@@ -111,7 +71,8 @@ export function getPrintSettings(
 }
 
 // ---------------------------------------------------------------------------
-// Bulb compatibility
+// Legacy bulb compatibility (superseded by fixture-aware constraints; kept
+// only until the last caller dies)
 // ---------------------------------------------------------------------------
 
 export interface BulbCheck {
@@ -181,15 +142,22 @@ export function getDimensionSummary(
 // Aggregate all checks into sections
 // ---------------------------------------------------------------------------
 
-export function runAllChecks(
-  shape: ShapeParameters,
-  light: LightParameters,
-  patternId: PatternId
-): CheckSection[] {
+export interface CheckInput {
+  shape: ShapeParameters;
+  light: LightParameters;
+  pattern: PatternParams;
+  fixture: FixtureSpec;
+  templateId: TemplateId;
+}
+
+export function runAllChecks(input: CheckInput): CheckSection[] {
+  const { shape, light, pattern, fixture, templateId } = input;
+  const ctx = { fixture, templateId };
   const dims = getDimensionSummary(shape);
-  const bulb = checkBulbFit(shape);
-  const print = getPrintSettings(shape, patternId);
-  const materials = getMaterialRecommendations(light);
+  const mountFit = bulbFit(shape, ctx);
+  const heat = thermalClearance(shape, ctx);
+  const print = getPrintSettings(shape, pattern.presetId);
+  const plan = recommendLampPlan(input);
 
   return [
     {
@@ -211,14 +179,21 @@ export function runAllChecks(
       ],
     },
     {
-      title: "Bulb compatibility",
+      title: "Fit and heat",
       items: [
         {
-          label: "E27 bulb",
-          value: bulb.message,
-          ok: bulb.fits,
-          severity: bulb.fits ? "info" : "error",
-          hint: bulb.fits ? undefined : "Increase the top or bottom diameter",
+          label: "Mount fit",
+          value: mountFit.message,
+          ok: mountFit.ok,
+          severity: mountFit.severity,
+          hint: mountFit.ok ? undefined : "Widen the top opening",
+        },
+        {
+          label: "Bulb heat gap",
+          value: heat.message,
+          ok: heat.ok,
+          severity: heat.severity,
+          hint: heat.ok ? undefined : "Widen or shorten the shade",
         },
       ],
     },
@@ -238,14 +213,30 @@ export function runAllChecks(
       ],
     },
     {
-      title: "Material",
-      items: materials.map((m) => ({
-        label: m.name,
-        value: m.reason,
-        ok: m.recommended,
-        severity: m.recommended ? "info" as ConstraintSeverity : "warn" as ConstraintSeverity,
-        hint: m.recommended ? "Recommended" : undefined,
-      })),
+      title: "Material plan",
+      items: [
+        {
+          label: "Filament",
+          value: plan.filamentName,
+          ok: true,
+          severity: plan.petgRequired ? ("warn" as ConstraintSeverity) : ("info" as ConstraintSeverity),
+          hint: plan.filamentWhy,
+        },
+        {
+          label: "Wall glow",
+          value: `${shape.wallThickness} mm`,
+          ok: true,
+          severity: "info",
+          hint: plan.wallAdvice,
+        },
+        {
+          label: "Bulb",
+          value: plan.bulbSpec,
+          ok: true,
+          severity: "info",
+          hint: plan.bulbWhy,
+        },
+      ],
     },
   ];
 }
