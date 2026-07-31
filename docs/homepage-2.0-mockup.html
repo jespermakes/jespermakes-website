@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jespermakes.com 2.0 - homepage direction</title>
+<style>
+  :root{
+    --cream:#FAF7F2; --wood:#2C1810; --wood-light:#4A3228;
+    --amber:#C17F3C; --amber-dark:#A66B2E; --forest:#3E5C4B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--cream);color:var(--wood);font-family:Georgia,'Times New Roman',serif}
+  .sans{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  .note{position:sticky;top:0;z-index:9;background:var(--wood);color:var(--cream);font-size:12px;padding:8px 16px;text-align:center;letter-spacing:1px}
+  nav{display:flex;gap:22px;align-items:center;padding:20px 0;font-size:14px}
+  nav .brand{font-weight:bold;font-size:17px;margin-right:auto}
+  nav a{color:var(--wood-light);text-decoration:none}
+  nav a.new{color:var(--amber);font-weight:600}
+  .tag{display:inline-block;font-size:10px;letter-spacing:2px;font-weight:bold;color:rgba(74,50,40,.45);text-transform:uppercase;margin-bottom:14px}
+  section{padding:56px 0;border-top:1px solid rgba(44,24,16,.06)}
+  h1{font-size:52px;line-height:1.05;margin-bottom:18px}
+  h1 em{color:var(--amber);font-style:normal}
+  h2{font-size:30px;margin-bottom:8px}
+  p.lead{font-size:18px;color:var(--wood-light);max-width:560px;line-height:1.55}
+  .cta{display:inline-block;background:var(--wood);color:var(--cream);padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;text-decoration:none;margin-top:22px;margin-right:10px}
+  .cta.ghost{background:rgba(193,127,60,.1);border:1px solid rgba(193,127,60,.25);color:var(--amber-dark)}
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:64px 0}
+  .ph{border-radius:16px;background:
+      linear-gradient(160deg,rgba(193,127,60,.25),rgba(44,24,16,.55)),
+      repeating-linear-gradient(90deg,rgba(44,24,16,.12) 0 14px,rgba(44,24,16,.03) 14px 28px);
+      display:flex;align-items:end;padding:14px;color:var(--cream);font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:.95}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+  .card{background:rgba(255,255,255,.5);border:1px solid rgba(44,24,16,.06);border-radius:16px;overflow:hidden}
+  .card .ph{border-radius:0;height:150px}
+  .card .pad{padding:16px}
+  .card h3{font-size:17px;margin-bottom:5px}
+  .card p{font-size:13px;color:var(--wood-light);line-height:1.5}
+  .pill{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:3px 10px;margin-bottom:8px}
+  .pill.free{background:rgba(62,92,75,.12);color:var(--forest)}
+  .pill.premium{background:rgba(193,127,60,.14);color:var(--amber-dark)}
+  .barn{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center;background:var(--wood);color:var(--cream);border-radius:20px;padding:44px;margin-top:10px}
+  .barn .tag{color:rgba(250,247,242,.5)}
+  .barn p{color:rgba(250,247,242,.8);font-size:16px;line-height:1.6;max-width:480px}
+  .barn .ph{height:240px}
+  .letter{background:rgba(193,127,60,.08);border:1px solid rgba(193,127,60,.2);border-radius:20px;padding:40px;text-align:center}
+  .letter input{padding:12px 16px;border-radius:10px;border:1px solid rgba(44,24,16,.15);font-size:14px;width:260px}
+  footer{padding:40px 0;font-size:12px;color:var(--wood-light)}
+  @media(max-width:760px){.hero,.barn{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}h1{font-size:38px}}
+</style>
+</head>
+<body>
+<div class="note sans">MOCKUP: homepage 2.0 direction. Same design language as today, new story and order. Placeholders stand in for real photos.</div>
+<div class="wrap">
+
+<nav class="sans">
+  <span class="brand">Jesper Makes</span>
+  <a href="#" class="new">Work</a>
+  <a href="#" class="new">Plans</a>
+  <a href="#" class="new">Barn</a>
+  <a href="#">Apps</a>
+  <a href="#">Gear</a>
+  <a href="#">Blog</a>
+  <a href="#">About</a>
+</nav>
+
+<div class="hero">
+  <div>
+    <span class="tag sans">Fyn, Denmark</span>
+    <h1>Build something <em>real.</em></h1>
+    <p class="lead">I'm Jesper. I design furniture, raise timber frames, and film all of it from my workshop on Fyn, Denmark. 359,000 people watch it happen.</p>
+    <a class="cta sans" href="#">Watch on YouTube</a>
+    <a class="cta ghost sans" href="#">See the work</a>
+  </div>
+  <div class="ph" style="height:340px">Photo: Jesper at the bench, natural light</div>
+</div>
+
+<section>
+  <span class="tag sans">Selected work</span>
+  <h2>Furniture with a story in it</h2>
+  <p class="lead">Every piece starts with material that had a life before. Here is where it ended up.</p>
+  <div class="grid3">
+    <div class="card"><div class="ph">Photo: vinyl cabinet</div><div class="pad"><h3>The Bowling Alley Vinyl Cabinet</h3><p class="sans">Reclaimed maple lane, brass, and a story about patience. Watch the build.</p></div></div>
+    <div class="card"><div class="ph">Photo: cone lamp lit</div><div class="pad"><h3>The Cone Lamp</h3><p class="sans">The flagship. Laser cut or 3D printed, warm light, 159 parts.</p></div></div>
+    <div class="card"><div class="ph">Photo: epoxy table</div><div class="pad"><h3>The River Table</h3><p class="sans">Old oak, deep resin, four months of weekends.</p></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="barn">
+    <div class="ph">Photo: barn timber raising, axes</div>
+    <div>
+      <span class="tag sans">The barn / Øhavsladen</span>
+      <h2>Raising a barn the old way</h2>
+      <p>On South Fyn we are rebuilding an 1850s barn as a hand-cut timber frame workshop, with axes, chisels, and The Northmen. It will become a place to teach the craft. Follow the build here and on ohavsladen.dk.</p>
+      <a class="cta ghost sans" href="#" style="background:rgba(250,247,242,.1);border-color:rgba(250,247,242,.25);color:var(--cream)">Follow the build</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="tag sans">Plans</span>
+  <h2>Build them yourself</h2>
+  <p class="lead">Standard plans are free. Download, build, and if it was worth something to you, leave a few coins in the jar. Flagship files are priced like the work they carry.</p>
+  <div class="grid3">
+    <div class="card"><div class="ph">Cheat sheets</div><div class="pad"><span class="pill free sans">Free + support</span><h3>Workshop Cheat Sheets</h3><p class="sans">8 printable A4 references for the shop wall.</p></div></div>
+    <div class="card"><div class="ph">Sawhorse plan</div><div class="pad"><span class="pill free sans">Free + support</span><h3>Sawhorse Plans</h3><p class="sans">The pair every workshop needs. Metric and imperial.</p></div></div>
+    <div class="card"><div class="ph">Cone lamp files</div><div class="pad"><span class="pill premium sans">12 EUR</span><h3>Cone Lamp Files</h3><p class="sans">Laser SVG or full 3D print pack with guide.</p></div></div>
+  </div>
+</section>
+
+<section>
+  <span class="tag sans">Workshop apps</span>
+  <h2>Tools I built, free to use</h2>
+  <div class="grid3 sans">
+    <div class="card"><div class="pad"><h3>Lamp Designer</h3><p>Design your own printable lamp in 3D. Coming with the next big video.</p></div></div>
+    <div class="card"><div class="pad"><h3>Box Joint Jig</h3><p>Parametric jig generator. Cut-ready SVG for laser or CNC.</p></div></div>
+    <div class="card"><div class="pad"><h3>Rubio Finish Guide</h3><p>Find the right finish and color for your wood.</p></div></div>
+  </div>
+</section>
+
+<section>
+  <span class="tag sans">On YouTube</span>
+  <h2>Latest films</h2>
+  <div class="grid3">
+    <div class="card"><div class="ph">Video thumb</div></div>
+    <div class="card"><div class="ph">Video thumb</div></div>
+    <div class="card"><div class="ph">Video thumb</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="letter">
+    <span class="tag sans">The workshop letter</span>
+    <h2>A letter from the workshop</h2>
+    <p class="lead" style="margin:10px auto 20px">New builds, the barn, new tools, and the occasional long read. About once a month. Never boring.</p>
+    <input class="sans" placeholder="your@email.com"> <a class="cta sans" href="#">Subscribe</a>
+  </div>
+</section>
+
+<footer class="sans">Order of the story: who I am, what I make, what I am building now, what you can build, what I built for you, what to watch, and how to stay. Sponsors get /mediakit, unchanged.</footer>
+</div>
+</body>
+</html>
