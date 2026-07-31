@@ -21,17 +21,26 @@ describe("LampScene component structure", () => {
 
   it("includes ambient light", () => {
     expect(source).toContain("<ambientLight");
-    expect(source).toContain("intensity={0.4}");
+    expect(source).toContain("intensity={0.35}");
   });
 
-  it("includes point light as bulb inside the lamp", () => {
+  it("includes the point light at the bulb position", () => {
     expect(source).toContain("<pointLight");
-    expect(source).toContain('position={[0, 0.5, 0]}');
-    expect(source).toContain('color="#ffb347"');
+    expect(source).toContain("position={bulb}");
     expect(source).toContain("castShadow");
   });
 
-  it("includes ground plane with shadow at y=-0.01", () => {
+  it("renders the fixture rig with the real bulb", () => {
+    expect(source).toContain("<FixtureRig");
+    expect(source).toContain("bulbCenterLocal");
+  });
+
+  it("shows per-mode context: cord for pendants, stem and foot for table lamps", () => {
+    expect(source).toContain('mode === "pendant"');
+    expect(source).toContain('mode === "table"');
+  });
+
+  it("includes ground plane with shadow", () => {
     expect(source).toContain('position={[0, -0.01, 0]}');
     expect(source).toContain("receiveShadow");
     expect(source).toContain("<planeGeometry");
