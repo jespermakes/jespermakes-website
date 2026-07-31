@@ -22,11 +22,12 @@ and friends from The Northmen. The timber was felled in winter and is drying
 in Latvia while we fight the paperwork. If you want the full story, it lives
 at ohavsladen.dk, and I will keep you posted here.
 
-**The plans are free now.** I moved my site off the link-in-bio service and
-onto jespermakes.com, and while doing that I made a call: the workshop cheat
-sheets are free to download. If they save you time, there is a jar on the
-site you can drop something into. That is the whole business model. The cone
-lamp cut files are still paid, because they took months to get right.
+**Everything is free now.** I moved my site off the link-in-bio service and
+onto jespermakes.com, and while doing that I made a call: the plans are free
+to download. All of them. The workshop cheat sheets, and yes, the cone lamp
+files too, laser and 3D print. If they save you time or light up a corner of
+your home, there is a jar on the site you can drop something into. That is
+the whole business model, and I like it that way.
 
 **One useful thing.** If you finish wood with Rubio Monocoat (I do, on
 almost everything), I built a small guide that picks the right product and
