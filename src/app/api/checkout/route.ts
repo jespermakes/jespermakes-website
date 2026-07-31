@@ -8,10 +8,11 @@ export const maxDuration = 15;
 export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
-    const { sku, size, amountCents } = body as {
+    const { sku, size, amountCents, forSku } = body as {
       sku?: string;
       size?: string;
       amountCents?: number;
+      forSku?: string;
     };
 
     if (!sku) {
@@ -51,9 +52,14 @@ export async function POST(request: Request) {
             quantity: 1,
           },
         ],
-        metadata: { sku: "support" },
-        success_url: `${siteUrl}/thank-you?product=support`,
-        cancel_url: `${siteUrl}/support`,
+        metadata: {
+          sku: "support",
+          ...(forSku && PRODUCTS[forSku] ? { for: forSku } : {}),
+        },
+        success_url: `${siteUrl}/thank-you?product=${
+          forSku && PRODUCTS[forSku] ? "support-plan" : "support"
+        }`,
+        cancel_url: forSku && PRODUCTS[forSku] ? `${siteUrl}/shop/${forSku}` : `${siteUrl}/support`,
       });
       return NextResponse.json({ url: session.url });
     }

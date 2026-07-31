@@ -30,7 +30,13 @@ const PRODUCT_INFO: Record<
     name: "Support for the workshop",
     hasDownload: false,
   },
+  "support-plan": {
+    name: "Support for the workshop",
+    hasDownload: false,
+  },
 };
+
+const SUPPORT_KEYS = new Set(["support", "support-plan"]);
 
 export default async function ThankYou({
   searchParams,
@@ -39,6 +45,7 @@ export default async function ThankYou({
 }) {
   const { product: productKey } = await searchParams;
   const product = productKey ? PRODUCT_INFO[productKey] : undefined;
+  const isSupport = productKey ? SUPPORT_KEYS.has(productKey) : false;
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-24 md:py-32 text-center">
@@ -62,7 +69,18 @@ export default async function ThankYou({
           Thank you!
         </h1>
 
-        {product ? (
+        {isSupport ? (
+          <>
+            <p className="text-wood-light/80 text-lg leading-relaxed mb-2">
+              Support like yours is what keeps the free plans free.
+            </p>
+            <p className="text-wood-light/60 text-sm mt-2">
+              {productKey === "support-plan"
+                ? "Your plan files are already on the way to your inbox."
+                : "It goes straight back into the next build and the barn on South Fyn."}
+            </p>
+          </>
+        ) : product ? (
           <>
             <p className="text-wood-light/80 text-lg leading-relaxed mb-2">
               Your purchase of <strong>{product.name}</strong> is complete.
@@ -89,27 +107,29 @@ export default async function ThankYou({
         )}
       </div>
 
-      {/* Account prompt */}
-      <div className="bg-wood/5 rounded-xl p-6 mt-8 mb-8 max-w-md mx-auto">
-        <p className="text-wood font-serif text-lg mb-2">Get your downloads</p>
-        <p className="text-wood-light/70 text-sm mb-4">
-          Create an account or sign in to download your files anytime.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link
-            href="/signup"
-            className="inline-block bg-forest text-cream px-6 py-2.5 rounded-lg font-medium hover:bg-forest-dark transition-colors text-sm"
-          >
-            Create account
-          </Link>
-          <Link
-            href="/login"
-            className="inline-block bg-wood text-cream px-6 py-2.5 rounded-lg font-medium hover:bg-wood/90 transition-colors text-sm"
-          >
-            Sign in
-          </Link>
+      {/* Account prompt (not for support payments: their files arrive by email) */}
+      {!isSupport && (
+        <div className="bg-wood/5 rounded-xl p-6 mt-8 mb-8 max-w-md mx-auto">
+          <p className="text-wood font-serif text-lg mb-2">Get your downloads</p>
+          <p className="text-wood-light/70 text-sm mb-4">
+            Create an account or sign in to download your files anytime.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/signup"
+              className="inline-block bg-forest text-cream px-6 py-2.5 rounded-lg font-medium hover:bg-forest-dark transition-colors text-sm"
+            >
+              Create account
+            </Link>
+            <Link
+              href="/login"
+              className="inline-block bg-wood text-cream px-6 py-2.5 rounded-lg font-medium hover:bg-wood/90 transition-colors text-sm"
+            >
+              Sign in
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="flex flex-wrap justify-center gap-4">
         <Link
