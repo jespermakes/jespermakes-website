@@ -97,15 +97,38 @@ Full spec with sources: RESEARCH-FIXTURE-STANDARDS.md. The load-bearing facts:
 - Every module carries a bulb keep-out envelope (A60: 60 x 110 mm etc.), the heat clearance for the chosen filament, and embossed "LED ONLY MAX xx W" text near the aperture.
 - Every fixture exports a **15-minute fit-test coupon** so users verify their hardware before a 10-hour shade print.
 
-Launch modules, in order: EU-E27-CLAMP (default), IKEA-SLIP, EU-E14-CLAMP, STEM-M10 table flange. Post-launch: US-E26-CLAMP, US-SPIDER, US-UNO, GU10-CARRIER.
+Launch modules, in order: EU-E27-CLAMP (default), IKEA-SLIP, EU-E14-CLAMP, STEM-M10 table flange, and **KIT001-SEAT** for the Bambu LED Lamp Kit 001 (the MakerWorld lamp economy standard, 5V 3W/5W, cool-running so PLA-safe; see section 4). Post-launch: US-E26-CLAMP, US-SPIDER, US-UNO, GU10-CARRIER.
 
 Each mount module ships only after a physical fit test on real hardware, printed on the H2D. One test print per fixture, filmed, becomes video material.
 
 ## 4. Archetype library v1
 
-*[research integration pending: the archetype list is being grounded in what is actually popular on MakerWorld and Printables, with per-archetype geometry logic, parameter ranges, and printability constraints]*
+Full per-archetype geometry logic, parameter ranges, constraints, examples and licenses: RESEARCH-ARCHETYPES-IP.md. Ranked by real platform traction (Printables API exact counts, MakerWorld page data).
 
-Target: 6 to 8 archetypes at launch, each a generator with clamped parameter ranges, each print-verified at parameter extremes before the tool goes live. The v1 cone, dome, and cylinder become archetypes in the new engine rather than static profiles.
+The demand ranking, condensed: (1) moon/lithophane spheres, by far, (2) spiral/twisted vase, (3) ribbed/wavy vase, (4) mushroom domes, (5) kumiko/slatted lanterns, (6) desk/sculptural lamps, (7) voronoi shells, (8) honeycomb, (9) pleated/origami, (10) low-poly, (11) photo lithophane cylinders (541k users of MakerWorld's own tool; personalization is the strongest trigger on the platform), (12) gyroid.
+
+**Stacked-disc/louvered shades are rejected**: verified weakest demand (top model 152 downloads) and the closest silhouette to protected PH designs. The v1 horizontal-rings pattern dies with the alpha-map system.
+
+Proposed launch shortlist (7 archetypes, 3 shared engines, pending Jesper sign-off):
+
+*Revolve engine (vase mode):*
+1. Spiral / twisted vase
+2. Ribbed / wavy vase
+3. Classic family (the v1 cone, dome, cylinder, reborn as real generators)
+
+*Heightmap engine:*
+4. Moon lamp (NASA public-domain lunar data)
+5. Photo lithophane cylinder (user photos, personalization)
+
+*Frame engine (standard mode, two-material ready):*
+6. Kumiko / slatted lantern (opaque frame + translucent diffuser, the H2D dual-nozzle showcase)
+7. Mushroom dome (guardrailed away from the Panthella corner)
+
+Post-launch tranche: voronoi (needs the strut-graph connectivity validator at full strength), honeycomb, pleated (straight pleats only), low-poly, gyroid, desk arms.
+
+Every archetype ships with: clamped parameter ranges from the research constants, a Kit 001 mount variant plus the fixture modules from section 3, print-verification at parameter extremes on the H2D before launch, and an OpenSCAD port path for MakerWorld parametric presets (see section 9 strategy note).
+
+**The Bambu LED Lamp Kit 001 finding:** the Maker's Supply hardware kit (5V USB, 3W/5W) is the center of the MakerWorld lamp economy. The platform's top lamp (69.5k downloads) is built for it, and BOM listings pay creators 3-15 percent cash commission. Every template gets a Kit 001 seat; it also runs cool enough to relax PLA heat limits. This aligns perfectly with the Bambu video.
 
 ## 5. Material and light intelligence
 
@@ -136,7 +159,7 @@ Test harness: a golden-parameter matrix per archetype (min, default, max of ever
 
 ## 7. Build phases
 
-*[task IDs backfilled after Brain task creation]*
+Brain tracking: umbrella t_01KYW1E186T68WYNJZ1TP7CNR5. Phase A t_01KYW1E8WGX0KQGQ4FHEQWGFSY, A2 (fit prints, Jesper) t_01KYW1ED1Y99FB1CW3ARNJCFPP, B1 t_01KYW1EH7CDA917CWRB7GD9EQ2, B2 t_01KYW1ENB2WQRMXV9FE90YGRDY, C t_01KYW1ESZNX26M5ZGCQDKQWB3M, D t_01KYW1EY7BRRGPW43XR1X95CVX, E t_01KYW1F1SS9MKJN9QRDY6EEGRT, decisions (Jesper) t_01KYW1F5HH13YWYEJY5Z0A8AZN.
 
 **Phase A: truth and the fixture seed.**
 Make the geometry honest and plant the fixture at the root.
@@ -169,11 +192,12 @@ Done when: a novice can go from export to a lit, safe lamp with no outside resea
 Done when: the printed matrix exists in the workshop and every failure mode found is now unreachable in the UI.
 
 **Phase E: launch alignment.**
-- MakerWorld contest path polished (tag, upload flow, instructions).
+- MakerWorld presence: port launch archetypes to OpenSCAD and publish as native Parametric Model Maker presets with real print photos and profiles (no API and no external links exist, so this IS the MakerWorld channel; contest tag pending from Bambu).
+- In-app contest path: clear "upload your export to MakerWorld" instructions in the Export step.
 - Reveal/share moment polish, OG images.
 - Analytics on the new journey.
 - Soft launch to the newsletter segment before the video.
-Done when: the tool survives strangers before the video sends a wave at it.
+Done when: the tool survives strangers before the video sends a wave at it, and the preset models are live on MakerWorld.
 
 ## 8. Video alignment: A Study Into Light
 
@@ -186,13 +210,20 @@ The rebuild is not a detour from the video, it is Act 2. The script's honest hoo
 
 ## 9. Legal and IP guardrails
 
-*[research integration pending: EU design protection specifics and the operating boundary]*
+Full legal research with case citations: RESEARCH-ARCHETYPES-IP.md section 4. The operating rules:
 
-Operating rule until then: archetypes are generic geometric families only. No recognizable silhouettes of protected designs (PH series, Le Klint, Akari and similar), and no designer names in the product UI or marketing. Danish courts are notably strict on lamp design copies, and we are a Danish business publishing a tool that generates lamp designs. The vision doc's "descended from Henningsen" framing stays in the video as design history commentary, but the tool ships nameless generic archetypes.
+1. **Generic geometric families only.** Spiral, ribbed, voronoi, honeycomb, gyroid, low-poly, straight pleats, kumiko, lithophanes, organic mushrooms. After the December 2025 CJEU rulings, infringement turns on whether original creative elements of a protected work appear in ours; math, craft traditions and print aesthetics are not protectable. All 7 launch archetypes are clean.
+2. **Parameter-space blacklist**, enforced as range clamps, not honor system: multi-tier curved reflector discs (PH 5, protected to 2037), layered leaf globes (Artichoke), glossy hemisphere on trumpet stem (Panthella, to 2068), sine-wave-folded pleat shells (Le Klint Sinus, decades left), Akari-proportioned cocoons (to 2058, plus live name trademark), tension-cable cantilever arms (Tolomeo, actively enforced), three-spring clusters (Anglepoise).
+3. **No designer or brand names** in product UI, listings or marketing. "PH-style" is trademark use in trade. Design history stays in the video as commentary, where it is legitimate.
+4. **File-level liability is real now.** EU Regulation 2024/2822, fully in force July 1, 2026, makes distributing files recording a protected design an infringing use. Denmark enforces hardest in Europe (criminal convictions for replica lamp sales, PH lamps named in the judgments; the private-copy exception does not cover prints that read as originals). So: no protected templates at all, a takedown route on the site, ToS putting lithophane photo responsibility on the user.
+
+The MakerWorld distribution consequence, from the same research: MakerWorld has no upload API and bans external links in model listings. Our strategy is two channels: the full guided designer on jespermakes.com, plus curated presets published natively as MakerWorld Parametric Model Maker models (OpenSCAD), where the contest lives. Cadence beats one big drop under the 2026 points system.
 
 ## 10. Open decisions for Jesper
 
-1. Archetype shortlist sign-off once research lands (which 6 to 8 make the launch cut).
-2. Naming: "Lamp Designer" vs something warmer (vision doc has directions; decision can wait, URL stays).
-3. Bulb-and-cord hardware kit links: affiliate or plain links (money question, needs your call).
-4. Contest tag and mechanic: still pending from Bambu side, chase with Joyce.
+1. Archetype launch shortlist: sign off the 7 proposed in section 4, or swap.
+2. Maker's Supply BOM commissions: enrolling our MakerWorld models in Kit 001 BOM listings pays 3-15 percent cash. Money decision, needs your call; my recommendation is yes, it is aligned income and Bambu-friendly.
+3. Bulb-and-cord hardware links in the app's guide: affiliate or plain links (money question).
+4. Naming: "Lamp Designer" vs something warmer (vision doc has directions; can wait, URL stays).
+5. Contest tag and mechanic: still pending from Bambu, chase with Joyce alongside the concept submission task.
+6. Hardware shopping list for fit tests: an E27 cord set (or the IKEA ones you have), an E14 holder, an M10 stem holder, and one Bambu LED Lamp Kit 001 order. Small money, your approval.
