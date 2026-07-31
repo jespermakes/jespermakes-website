@@ -40,6 +40,38 @@ export const CREATOR_TOOL_REGISTRY: Record<string, CreatorToolEntry> = {
     glyph: "\u25D0",
     tint: "green",
   },
+  "studio": {
+    slug: "studio",
+    name: "Design Studio",
+    description: "Full 2D design app for laser and CNC. Draw, nest, export.",
+    url: "/studio",
+    glyph: "\u25A3",
+    tint: "amber",
+  },
+  "marketplace": {
+    slug: "marketplace",
+    name: "Workbench",
+    description: "Community gallery of designs made in the Studio.",
+    url: "/marketplace",
+    glyph: "\u25C9",
+    tint: "green",
+  },
+  "rubio": {
+    slug: "rubio",
+    name: "Rubio Finish Guide",
+    description: "Find the right finish and color for your wood.",
+    url: "/rubio",
+    glyph: "\u25CD",
+    tint: "amber",
+  },
+  "lamp-designer": {
+    slug: "lamp-designer",
+    name: "Lamp Designer",
+    description: "Design your own printable lamp in 3D. Beta.",
+    url: "/lamp-designer",
+    glyph: "\u25CB",
+    tint: "green",
+  },
 };
 
 export const CREATOR_TOOL_SLUGS = Object.keys(CREATOR_TOOL_REGISTRY);

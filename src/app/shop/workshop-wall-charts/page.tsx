@@ -2,7 +2,7 @@
 
 import ImageGallery from "@/components/image-gallery";
 import type { GalleryImage } from "@/components/image-gallery";
-import { BuyButton } from "./buy-button";
+import { FreePlanClaim } from "@/components/shop/free-plan-claim";
 
 const images: GalleryImage[] = [
   {
@@ -121,7 +121,7 @@ export default function WorkshopWallCharts() {
             </p>
           </div>
 
-          <BuyButton />
+          <FreePlanClaim sku="workshop-wall-charts" downloadLabel="Download PDF" />
 
           <p className="text-wood-light/50 text-xs mt-3">
             Instant PDF download after purchase. Secure payment via Stripe.

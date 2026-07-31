@@ -160,7 +160,6 @@ async function Header() {
               </div>
             </div>
           </div>
-          {/* Marketplace hidden until ready for public launch */}
           <Link
             href="/blog"
             className="text-wood-light hover:text-forest transition-colors"

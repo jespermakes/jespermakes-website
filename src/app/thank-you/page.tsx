@@ -26,6 +26,10 @@ const PRODUCT_INFO: Record<
     name: "Cone Lamp 3D Print Files",
     hasDownload: true,
   },
+  support: {
+    name: "Support for the workshop",
+    hasDownload: false,
+  },
 };
 
 export default async function ThankYou({

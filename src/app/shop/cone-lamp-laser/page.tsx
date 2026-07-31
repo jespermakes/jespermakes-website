@@ -72,7 +72,7 @@ export default function ConeLampLaser() {
           <h1 className="font-serif text-3xl md:text-4xl text-wood mb-2">
             Cone Lamp Laser File
           </h1>
-          <p className="text-3xl text-forest font-serif mb-6">€5</p>
+          <p className="text-3xl text-forest font-serif mb-6">€12</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-4">
             The SVG laser cut template for the Jesper Makes Cone Lamp. One file

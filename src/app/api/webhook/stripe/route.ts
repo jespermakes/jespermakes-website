@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { db } from "@/lib/db";
 import { users, purchases } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { PRODUCT_NAMES } from "@/lib/products";
 
 export const runtime = "nodejs";
 
@@ -41,15 +42,7 @@ async function getOrCreateAudienceId(): Promise<string> {
   return audienceId!;
 }
 
-// --------------- product names for purchase records ---------------
-
-const PRODUCT_NAMES: Record<string, string> = {
-  "workshop-wall-charts": "Jesper's Cheat Sheets",
-  "cone-lamp-laser": "Cone Lamp Laser File",
-  "cone-lamp-3dprint": "Cone Lamp 3D Print Files",
-  "workshop-tee": "Jesper Makes Workshop Tee",
-  "pallet-starter-kit": "The Pallet Builder's Starter Kit",
-};
+// Product names for purchase records come from the shared catalog.
 
 // --------------- email templates ---------------
 
@@ -117,15 +110,30 @@ function buildEmail({ to, firstName, sku }: EmailData) {
     };
   }
 
-  // pallet-starter-kit (and fallback)
+  if (sku === "support") {
+    return {
+      to,
+      from: "Jesper Makes <hello@jespermakes.com>",
+      subject: "Thank you for supporting the workshop",
+      html: `
+        <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
+          <p>${greeting}</p>
+          <p>Thank you. Seriously. Support like yours is what keeps the free plans free.</p>
+          <p>It goes straight back into the next build, the next plan, and the barn on South Fyn.</p>
+          <p>Jesper<br/><span style="color:#888">Jesper Makes</span></p>
+        </div>`,
+    };
+  }
+
+  // Fallback
   return {
     to,
     from: "Jesper Makes <hello@jespermakes.com>",
-    subject: "Your Pallet Builder Starter Kit — Coming Soon",
+    subject: "Thank you for your order",
     html: `
       <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
         <p>${greeting}</p>
-        <p>Thank you for your purchase! We are preparing your files and will email you shortly.</p>
+        <p>Thank you for your order! If anything looks off, just reply to this email.</p>
         ${footer}
       </div>`,
   };
@@ -304,7 +312,9 @@ export async function POST(request: Request) {
               email,
               name: name || null,
               stripeCustomerId: typeof session.customer === "string" ? session.customer : null,
-              newsletterSubscribed: true,
+              // Marketing consent is opt-in (EU): buying something is not a
+              // newsletter signup. The letter has its own consent flows.
+              newsletterSubscribed: false,
             })
             .returning();
           user = newUser;

@@ -6,7 +6,7 @@ import { createContact, updateContactBy, ResendError } from "@/lib/resend";
 export interface SubscribeInput {
   email: string;
   firstName?: string | null;
-  source: "public_form" | "account_toggle";
+  source: "public_form" | "account_toggle" | "plan_download";
   userId?: string;
 }
 

@@ -14,8 +14,8 @@ const products = [
     image: "/images/products/cheat-sheets-hero.jpg",
     title: "Jesper's Cheat Sheets",
     subtitle: "8 printable reference sheets for your workshop wall",
-    price: "€3",
-    badge: "NEW",
+    price: "Free + support",
+    badge: "FREE",
   },
   {
     href: "/shop/pallet-starter-kit",
@@ -29,14 +29,14 @@ const products = [
     image: "/images/products/cone-lamp-laser-1.jpg",
     title: "Cone Lamp Laser File",
     subtitle: "SVG laser cut file — all parts included",
-    price: "€5",
+    price: "€12",
   },
   {
     href: "/shop/cone-lamp-3dprint",
     image: "/images/cone-lamp-3dprint/hero-firewood.jpg",
     title: "Cone Lamp 3D Print Files",
     subtitle: "STL files + PDF instruction guide",
-    price: "€5",
+    price: "€12",
   },
   {
     href: "/shop/workshop-tee",

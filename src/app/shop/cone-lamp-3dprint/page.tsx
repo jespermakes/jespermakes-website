@@ -65,7 +65,7 @@ export default function ConeLamp3DPrint() {
           <h1 className="font-serif text-3xl md:text-4xl text-wood mb-2">
             Cone Lamp 3D Print Files
           </h1>
-          <p className="text-3xl text-forest font-serif mb-6">€5</p>
+          <p className="text-3xl text-forest font-serif mb-6">€12</p>
 
           <p className="text-wood-light/80 leading-relaxed mb-4">
             The complete file pack to 3D print the Jesper Makes Cone Lamp at home. Originally a laser cut design, brilliantly adapted for 3D printing by Ron.

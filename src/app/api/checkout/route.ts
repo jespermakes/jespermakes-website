@@ -1,71 +1,85 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { PRODUCTS, SUPPORT } from "@/lib/products";
 
 export const runtime = "nodejs";
 export const maxDuration = 15;
 
-interface ProductConfig {
-  name: string;
-  description: string;
-  price: number;
-  hasSize?: boolean;
-  shipping?: "printful";
-}
-
-// NOTE: pallet-starter-kit is intentionally NOT purchasable: the product has
-// no deliverable file yet and /shop shows it as Coming Soon.
-const PRODUCTS: Record<string, ProductConfig> = {
-  "cone-lamp-laser": {
-    name: "Cone Lamp Laser File",
-    description:
-      "SVG laser cut file for the Jesper Makes Cone Lamp. All parts included.",
-    price: 500,
-  },
-  "cone-lamp-3dprint": {
-    name: "Cone Lamp 3D Print Files",
-    description:
-      "Complete 3D print file pack for the Jesper Makes Cone Lamp. STL files + PDF instruction guide.",
-    price: 500,
-  },
-  "workshop-wall-charts": {
-    name: "Jesper's Cheat Sheets",
-    description:
-      "8 printable A4 reference sheets for your workshop wall. Wood species, sandpaper, joinery, screws, drill bits, conversions, angles, and safety.",
-    price: 300,
-  },
-  "workshop-tee": {
-    name: "Jesper Makes Workshop Tee",
-    description:
-      "Unisex black tee — Bella+Canvas 3001. Logo on front & back. Printed & shipped by Printful.",
-    price: 3500,
-    hasSize: true,
-    shipping: "printful",
-  },
-};
-
 export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
-    const { sku, size } = body as {
+    const { sku, size, amountCents } = body as {
       sku?: string;
       size?: string;
+      amountCents?: number;
     };
-    const config = sku ? PRODUCTS[sku] : undefined;
 
-    if (!sku || !config) {
+    if (!sku) {
       return NextResponse.json({ error: "Unknown product" }, { status: 400 });
-    }
-
-    if (config.hasSize && !size) {
-      return NextResponse.json(
-        { error: "Size is required" },
-        { status: 400 }
-      );
     }
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
       httpClient: Stripe.createFetchHttpClient(),
     });
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+    // Standalone support payment ("the jar"). Also used as the optional
+    // support step after claiming a free plan.
+    if (sku === "support") {
+      const amount = Math.floor(Number(amountCents));
+      if (
+        !Number.isFinite(amount) ||
+        amount < SUPPORT.minCents ||
+        amount > SUPPORT.maxCents
+      ) {
+        return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+      }
+      const session = await stripe.checkout.sessions.create({
+        mode: "payment",
+        submit_type: "donate",
+        line_items: [
+          {
+            price_data: {
+              currency: "eur",
+              unit_amount: amount,
+              product_data: {
+                name: "Support the workshop",
+                description: "Keeps the free plans free. Thank you.",
+                metadata: { sku: "support" },
+              },
+            },
+            quantity: 1,
+          },
+        ],
+        metadata: { sku: "support" },
+        success_url: `${siteUrl}/thank-you?product=support`,
+        cancel_url: `${siteUrl}/support`,
+      });
+      return NextResponse.json({ url: session.url });
+    }
+
+    const config = PRODUCTS[sku];
+
+    // Free plans are claimed via /api/plans/claim, not bought.
+    if (!config || config.tier === "unavailable" || config.tier === "free") {
+      return NextResponse.json({ error: "Unknown product" }, { status: 400 });
+    }
+
+    if (config.hasSize && !size) {
+      return NextResponse.json({ error: "Size is required" }, { status: 400 });
+    }
+
+    // Pay-more: the buyer may raise the amount above the floor, never below.
+    let amount = config.priceCents;
+    if (config.payMore) {
+      const requested = Math.floor(Number(amountCents));
+      if (Number.isFinite(requested)) {
+        amount = Math.min(
+          Math.max(requested, config.priceCents),
+          SUPPORT.maxCents,
+        );
+      }
+    }
 
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       mode: "payment",
@@ -73,11 +87,9 @@ export async function POST(request: Request) {
         {
           price_data: {
             currency: "eur",
-            unit_amount: config.price,
+            unit_amount: amount,
             product_data: {
-              name: size
-                ? `${config.name} (${size})`
-                : config.name,
+              name: size ? `${config.name} (${size})` : config.name,
               description: config.description,
               metadata: { sku },
             },
@@ -86,8 +98,8 @@ export async function POST(request: Request) {
         },
       ],
       metadata: { sku, ...(size ? { size } : {}) },
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/thank-you?product=${sku}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/shop/${sku}`,
+      success_url: `${siteUrl}/thank-you?product=${sku}`,
+      cancel_url: `${siteUrl}/shop/${sku}`,
     };
 
     // Physical products need shipping address
