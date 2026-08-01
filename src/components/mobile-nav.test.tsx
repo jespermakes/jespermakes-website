@@ -16,12 +16,8 @@ const source = readFileSync(
 );
 
 describe("MobileNav links", () => {
-  it("includes a link to /lamp-designer", () => {
-    expect(source).toContain('href="/lamp-designer"');
-  });
-
-  it("includes Lamp Designer label text", () => {
-    expect(source).toContain("Lamp Designer");
+  it("does not link to /lamp-designer while it is unfinished", () => {
+    expect(source).not.toContain('href="/lamp-designer"');
   });
 
   it("includes all Creator Tools links", () => {
@@ -32,7 +28,6 @@ describe("MobileNav links", () => {
       "/storyteller",
       "/box-joint-jig",
       "/cone-lamp",
-      "/lamp-designer",
     ];
     for (const link of expectedLinks) {
       expect(source).toContain(`href="${link}"`);

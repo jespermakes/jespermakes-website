@@ -1,28 +1,25 @@
 import { describe, it, expect } from "vitest";
 
 /**
- * Structural tests for the desktop nav Creator Tools dropdown in layout.tsx.
- * We verify expected links by inspecting the source file.
+ * Structural tests for the desktop nav Apps dropdown.
+ * The nav lives in site-header.tsx (layout.tsx only renders <SiteHeader />),
+ * so we inspect that source file.
  */
 
 import { readFileSync } from "fs";
 import { join } from "path";
 
 const source = readFileSync(
-  join(__dirname, "layout.tsx"),
+  join(__dirname, "..", "components", "site-header.tsx"),
   "utf-8"
 );
 
-describe("Desktop nav Creator Tools dropdown", () => {
-  it("includes a link to /lamp-designer", () => {
-    expect(source).toContain('href="/lamp-designer"');
+describe("Desktop nav Apps dropdown", () => {
+  it("does not link to /lamp-designer while it is unfinished", () => {
+    expect(source).not.toContain('href: "/lamp-designer"');
   });
 
-  it("includes Lamp Designer label text", () => {
-    expect(source).toContain("Lamp Designer");
-  });
-
-  it("includes all Creator Tools links", () => {
+  it("includes all Apps links", () => {
     const expectedLinks = [
       "/studio",
       "/marketplace",
@@ -30,10 +27,9 @@ describe("Desktop nav Creator Tools dropdown", () => {
       "/storyteller",
       "/box-joint-jig",
       "/cone-lamp",
-      "/lamp-designer",
     ];
     for (const link of expectedLinks) {
-      expect(source).toContain(`href="${link}"`);
+      expect(source).toContain(`href: "${link}"`);
     }
   });
 });

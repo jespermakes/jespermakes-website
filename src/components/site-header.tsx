@@ -30,7 +30,7 @@ const GEAR_CATEGORIES = [
 const APP_LINKS = [
   { title: "2D Design Studio", href: "/studio", icon: "📐" },
   { title: "Workbench", href: "/marketplace", icon: "🏪" },
-  { title: "Lamp Designer", href: "/lamp-designer", icon: "💡" },
+  // Lamp Designer hidden from nav until it is finished (page still reachable at /lamp-designer)
   { title: "Box Joint Jig", href: "/box-joint-jig", icon: "🧰" },
   { title: "Cone Lamp", href: "/cone-lamp", icon: "◐" },
   { title: "Rubio Finish Guide", href: "/rubio", icon: "🎨" },

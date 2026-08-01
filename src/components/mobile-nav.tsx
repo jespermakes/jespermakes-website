@@ -186,13 +186,7 @@ export function MobileNav({
               🎨 Rubio Finish Guide
             </Link>
 
-            <Link
-              href="/lamp-designer"
-              onClick={() => setOpen(false)}
-              className="block py-3 text-lg text-cream hover:text-amber transition-colors border-b border-cream/10"
-            >
-              💡 Lamp Designer
-            </Link>
+            {/* Lamp Designer hidden from nav until it is finished (page still reachable at /lamp-designer) */}
 
             <Link
               href="/blog"
