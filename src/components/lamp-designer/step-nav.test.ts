@@ -34,28 +34,28 @@ describe("StepNav step state logic", () => {
   }
 
   it("marks the current step as current and clickable", () => {
-    const state = getStepState("shape", "shape", ["context", "form"]);
+    const state = getStepState("shape", "shape", ["start"]);
     expect(state.isCurrent).toBe(true);
     expect(state.isCompleted).toBe(false);
     expect(state.isClickable).toBe(true);
   });
 
   it("marks completed steps as clickable", () => {
-    const state = getStepState("context", "shape", ["context", "form"]);
+    const state = getStepState("start", "shape", ["start"]);
     expect(state.isCurrent).toBe(false);
     expect(state.isCompleted).toBe(true);
     expect(state.isClickable).toBe(true);
   });
 
   it("marks future steps as not clickable", () => {
-    const state = getStepState("light", "shape", ["context", "form"]);
+    const state = getStepState("light", "shape", ["start"]);
     expect(state.isCurrent).toBe(false);
     expect(state.isCompleted).toBe(false);
     expect(state.isClickable).toBe(false);
   });
 
   it("first step starts as current with no completed steps", () => {
-    const state = getStepState("context", "context", []);
+    const state = getStepState("start", "start", []);
     expect(state.isCurrent).toBe(true);
     expect(state.isClickable).toBe(true);
   });
@@ -69,7 +69,7 @@ describe("StepNav step state logic", () => {
   });
 
   it("completed step that is also current shows as both", () => {
-    const state = getStepState("form", "form", ["context", "form"]);
+    const state = getStepState("shape", "shape", ["start", "shape"]);
     expect(state.isCurrent).toBe(true);
     expect(state.isCompleted).toBe(true);
     expect(state.isClickable).toBe(true);

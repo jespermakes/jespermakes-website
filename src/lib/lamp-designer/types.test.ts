@@ -74,8 +74,8 @@ describe("type structure tests", () => {
 
   it("LampDesignerState tracks current step and completed steps", () => {
     const state: LampDesignerState = {
-      currentStep: "shape",
-      completedSteps: ["context", "form"],
+      currentStep: "light",
+      completedSteps: ["start", "shape"],
       parameters: {
         context: "dining",
         fixture: { moduleId: "e27-clamp" },
@@ -96,9 +96,9 @@ describe("type structure tests", () => {
         pattern: { presetId: "bold-waves", intensity: 1 },
       },
     };
-    expect(state.currentStep).toBe("shape");
-    expect(state.completedSteps).toContain("context");
-    expect(state.completedSteps).toContain("form");
+    expect(state.currentStep).toBe("light");
+    expect(state.completedSteps).toContain("start");
+    expect(state.completedSteps).toContain("shape");
   });
 
   it("LampConstraint holds constraint check result", () => {

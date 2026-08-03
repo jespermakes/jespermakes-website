@@ -186,12 +186,12 @@ describe("lamp-designer step state logic", () => {
 
   it("goToStep changes current step without affecting completed", () => {
     const state = createState({
-      currentStep: "shape",
-      completedSteps: ["context", "form"],
+      currentStep: "light",
+      completedSteps: ["start", "shape"],
     });
-    const jumped: LampDesignerState = { ...state, currentStep: "context" };
-    expect(jumped.currentStep).toBe("context");
-    expect(jumped.completedSteps).toEqual(["context", "form"]);
+    const jumped: LampDesignerState = { ...state, currentStep: "start" };
+    expect(jumped.currentStep).toBe("start");
+    expect(jumped.completedSteps).toEqual(["start", "shape"]);
   });
 });
 
@@ -275,12 +275,16 @@ describe("lamp-designer default parameters", () => {
     const template = getTemplate("cone");
     const params: LampParameters = {
       context: "bedside",
+      fixture: { moduleId: "e27-clamp" },
+      archetype: "vase",
       templateId: "cone",
       shape: template.defaultParameters,
       light: { colorTemperature: 2700, beamAngle: 120, direction: "down" },
       pattern: { presetId: "smooth", intensity: 1 },
     };
     expect(params.context).toBe("bedside");
+    expect(params.fixture.moduleId).toBe("e27-clamp");
+    expect(params.archetype).toBe("vase");
     expect(params.templateId).toBe("cone");
     expect(params.pattern.presetId).toBe("smooth");
     expect(params.light.direction).toBe("down");
