@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Media Kit - Jesper Makes",
   description:
-    "Audience stats, demographics, and brand partnership info for Jesper Makes. 538K+ followers across YouTube, Instagram, TikTok, and Facebook. Updated June 2026.",
+    "Audience stats, demographics, and brand partnership info for Jesper Makes. 543K+ followers across YouTube, Instagram, TikTok, and Facebook. Updated August 2026.",
   alternates: { canonical: "/mediakit" },
 };
 
@@ -91,9 +91,9 @@ const platforms = [
     platform: "youtube" as const,
     href: "/mediakit/youtube",
     stats: [
-      { label: "Subscribers", value: "359K" },
-      { label: "Total Videos", value: "133" },
-      { label: "Total Views", value: "43.6M" },
+      { label: "Subscribers", value: "360K" },
+      { label: "Total Videos", value: "132" },
+      { label: "Total Views", value: "44.1M" },
       { label: "Engagement", value: "6.1%" },
       { label: "Avg Watch Time", value: "8:54" },
     ],
@@ -103,8 +103,8 @@ const platforms = [
     platform: "youtube" as const,
     href: "/mediakit/in-the-rough",
     stats: [
-      { label: "Subscribers", value: "9.2K" },
-      { label: "Total Videos", value: "23" },
+      { label: "Subscribers", value: "9.5K" },
+      { label: "Total Videos", value: "24" },
       { label: "Engagement", value: "8.0%" },
     ],
     note: "Top 5% engagement rate",
@@ -279,18 +279,18 @@ export default function MediaKit() {
           Media Kit
         </p>
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
-          538K+ followers.{" "}
-          <span className="text-[#E8604C]">42.8M+ views.</span>
+          543K+ followers.{" "}
+          <span className="text-[#E8604C]">44.8M+ views.</span>
           <br />
           Real builds, real audience.
         </h1>
 
         <div className="mt-10 flex flex-wrap justify-center gap-6 md:gap-10">
           {[
-            { platform: "youtube", label: "YouTube", count: "359K" },
+            { platform: "youtube", label: "YouTube", count: "360K" },
             { platform: "instagram", label: "Instagram", count: "120K" },
             { platform: "tiktok", label: "TikTok", count: "44K" },
-            { platform: "youtube", label: "In The Rough", count: "9.2K" },
+            { platform: "youtube", label: "In The Rough", count: "9.5K" },
             { platform: "facebook", label: "Facebook", count: "9.6K" },
           ].map((p) => (
             <div
@@ -307,7 +307,7 @@ export default function MediaKit() {
         </div>
 
         <div className="mt-8 flex items-center justify-center gap-4 text-white/30 text-xs">
-          <span>Updated June 2026</span>
+          <span>Updated August 2026</span>
           <span className="inline-flex items-center gap-1.5 border border-white/10 rounded-full px-3 py-1 text-white/40">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
               <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />

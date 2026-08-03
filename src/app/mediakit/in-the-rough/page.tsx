@@ -4,12 +4,12 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "YouTube In The Rough - Media Kit - Jesper Makes",
   description:
-    "In The Rough channel stats. 9.2K subscribers, top 5% engagement rate. Raw, unfiltered maker content.",
+    "In The Rough channel stats. 9.5K subscribers, top 5% engagement rate. Raw, unfiltered maker content.",
 };
 
 const stats = [
-  { label: "Subscribers", value: "9.2K" },
-  { label: "Total Videos", value: "23" },
+  { label: "Subscribers", value: "9.5K" },
+  { label: "Total Videos", value: "24" },
   { label: "Engagement Rate", value: "8.0%" },
   { label: "Growth (28d)", value: "+994 subs" },
 ];
