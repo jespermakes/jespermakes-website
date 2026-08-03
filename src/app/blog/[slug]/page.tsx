@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { blogPosts, images } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { SmartImage } from "@/components/smart-image";
+import { NotesSignupForm } from "@/components/newsletter/notes-signup-form";
 
 export const revalidate = 60;
 
@@ -189,8 +190,33 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <ReactMarkdown>{post.content}</ReactMarkdown>
         </div>
 
+        {/* Newsletter CTA: a reader who finished the article is the exact
+            audience for the letter */}
+        <div className="mt-16 bg-wood rounded-2xl p-8">
+          <p className="text-[10px] font-bold tracking-[0.15em] text-cream/50 mb-3">
+            NOTES FROM THE WORKSHOP
+          </p>
+          <h2 className="font-serif text-2xl text-cream mb-2">
+            If you read this far, we should talk more often.
+          </h2>
+          <p className="text-cream/70 font-sans mb-5 leading-relaxed">
+            The newsletter is the written side of all this: running the
+            business, the real numbers, the problems, and the tools I build to
+            fix them. Free, roughly monthly.
+          </p>
+          <NotesSignupForm source="blog_post" variant="band" dark />
+          <p className="text-cream/40 text-xs mt-4">
+            <Link
+              href="/newsletter"
+              className="underline underline-offset-2 hover:text-cream/70 transition-colors"
+            >
+              More about the letter
+            </Link>
+          </p>
+        </div>
+
         {/* Shop CTA */}
-        <div className="mt-16 bg-forest/5 border border-forest/20 rounded-2xl p-8">
+        <div className="mt-8 bg-forest/5 border border-forest/20 rounded-2xl p-8">
           <h2 className="font-serif text-2xl text-wood mb-2">
             Ready to build something?
           </h2>

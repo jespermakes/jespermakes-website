@@ -3,10 +3,21 @@ import { newsletterSubscribers, users } from "@/lib/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { createContact, updateContactBy, ResendError } from "@/lib/resend";
 
+export type SubscribeSource =
+  | "public_form"
+  | "account_toggle"
+  | "plan_download"
+  | "ohavsladen"
+  | "newsletter_page"
+  | "homepage"
+  | "site_footer"
+  | "blog_post"
+  | "tools_page";
+
 export interface SubscribeInput {
   email: string;
   firstName?: string | null;
-  source: "public_form" | "account_toggle" | "plan_download" | "ohavsladen";
+  source: SubscribeSource;
   userId?: string;
 }
 

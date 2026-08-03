@@ -8,6 +8,7 @@ import { auth } from "@/lib/auth";
 import { SiteJsonLd } from "@/components/site-json-ld";
 import { ConditionalChrome } from "@/components/conditional-chrome";
 import { SiteHeader } from "@/components/site-header";
+import { NotesSignupForm } from "@/components/newsletter/notes-signup-form";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -58,6 +59,26 @@ async function Header() {
 function Footer() {
   return (
     <footer className="border-t border-wood/10 mt-auto">
+      {/* Notes from the Workshop: quiet site-wide signup */}
+      <div className="border-b border-wood/10">
+        <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="max-w-md">
+            <p className="font-serif text-xl text-wood mb-1">
+              Notes from the Workshop
+            </p>
+            <p className="text-sm text-wood-light/60 leading-relaxed">
+              The business behind the videos. Problems, numbers, and free
+              tools, roughly once a month.{" "}
+              <Link href="/newsletter" className="text-forest hover:underline">
+                About the letter
+              </Link>
+            </p>
+          </div>
+          <div className="w-full md:w-[380px] shrink-0">
+            <NotesSignupForm source="site_footer" variant="band" />
+          </div>
+        </div>
+      </div>
       <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-wood-light/60 font-sans">
         <div className="flex items-center gap-3">
           <Image src="/logo.png" alt="Jesper Makes Workshop" width={32} height={32} className="rounded-full opacity-60" />

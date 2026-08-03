@@ -21,7 +21,7 @@ export default async function NewsletterModule({ data }: { data: NewsletterData 
         </div>
         {data.showSubscriberCount && count > 0 && (
           <p className={`mt-3 text-xs ${theme.muted}`}>
-            {count.toLocaleString()} makers read it. Unsubscribe anytime.
+            {count.toLocaleString()} people read it. Unsubscribe any time.
           </p>
         )}
         {data.signatureImage && (

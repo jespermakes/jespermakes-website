@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
 
+const description =
+  "Not a woodworking newsletter. A letter about running a one-man creative business in public: the real problems, the real numbers, and the free tools I build to fix things.";
+
 export const metadata: Metadata = {
-  title: "Newsletter | Jesper Makes",
-  description:
-    "Join thousands of makers who get behind-the-scenes on my builds, first access to new tools, and longer thoughts on craft. Once a month, never spam.",
+  title: "Notes from the Workshop | Jesper Makes",
+  description,
+  alternates: { canonical: "/newsletter" },
   openGraph: {
-    title: "Newsletter | Jesper Makes",
-    description:
-      "Join thousands of makers who get behind-the-scenes on my builds, first access to new tools, and longer thoughts on craft. Once a month, never spam.",
+    title: "Notes from the Workshop | Jesper Makes",
+    description,
     type: "website",
     url: "https://jespermakes.com/newsletter",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Newsletter | Jesper Makes",
-    description:
-      "Join thousands of makers who get behind-the-scenes on my builds, first access to new tools, and longer thoughts on craft.",
+    title: "Notes from the Workshop | Jesper Makes",
+    description,
   },
 };
 

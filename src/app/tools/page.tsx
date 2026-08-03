@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { toolItems } from "@/lib/db/schema";
 import { eq, asc, sql } from "drizzle-orm";
 import { SmartImage } from "@/components/smart-image";
+import { NotesSignupForm } from "@/components/newsletter/notes-signup-form";
 
 export const revalidate = 60;
 
@@ -108,8 +109,29 @@ export default async function ToolsPage() {
         ))}
       </div>
 
+      {/* Newsletter: the gear costs money, the letter and the apps do not */}
+      <div className="mt-20 bg-wood rounded-2xl p-8 md:p-12">
+        <div className="max-w-2xl">
+          <p className="text-[10px] font-bold tracking-[0.15em] text-cream/50 mb-3">
+            THE OTHER TOOLBOX
+          </p>
+          <h2 className="font-serif text-2xl md:text-3xl text-cream mb-3">
+            The gear above costs money. The tools I build do not.
+          </h2>
+          <p className="text-cream/70 mb-6 leading-relaxed">
+            Notes from the Workshop is my letter about running this whole
+            operation: what the gear earns back, what sponsors actually pay,
+            and the free apps I build when something does not exist.
+            Subscribers get those first.
+          </p>
+          <div className="max-w-md">
+            <NotesSignupForm source="tools_page" variant="band" dark />
+          </div>
+        </div>
+      </div>
+
       {/* CTA Section */}
-      <div className="mt-20 bg-wood/5 rounded-2xl p-8 md:p-12 text-center">
+      <div className="mt-8 bg-wood/5 rounded-2xl p-8 md:p-12 text-center">
         <h2 className="font-serif text-2xl text-wood mb-3">
           Missing something?
         </h2>

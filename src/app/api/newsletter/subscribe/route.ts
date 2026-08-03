@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { subscribeToNewsletter } from "@/lib/newsletter";
+import { subscribeToNewsletter, type SubscribeSource } from "@/lib/newsletter";
 
 export const runtime = "nodejs";
 
@@ -29,7 +29,19 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const email = typeof body.email === "string" ? body.email : "";
     const firstName = typeof body.firstName === "string" ? body.firstName : null;
-    const source = body.source === "ohavsladen" ? "ohavsladen" : "public_form";
+    // Placement tracking: only known public sources pass through, everything
+    // else collapses to public_form. Keep in sync with NotesSignupSource.
+    const PUBLIC_SOURCES = new Set<SubscribeSource>([
+      "ohavsladen",
+      "newsletter_page",
+      "homepage",
+      "site_footer",
+      "blog_post",
+      "tools_page",
+    ]);
+    const source: SubscribeSource = PUBLIC_SOURCES.has(body.source)
+      ? (body.source as SubscribeSource)
+      : "public_form";
 
     if (!email.includes("@") || email.length > 320) {
       return NextResponse.json({ error: "Invalid email" }, { status: 400, headers: cors });

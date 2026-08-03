@@ -125,7 +125,7 @@ export function SiteHeader({
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-7 text-sm font-sans">
+          <div className="hidden md:flex items-center gap-4 lg:gap-7 text-sm font-sans">
             <Link href="/work" className={linkCls}>Work</Link>
             <Link href="/shop" className={linkCls}>Plans</Link>
             <Link href="/barn" className={linkCls}>Barn</Link>
@@ -162,6 +162,7 @@ export function SiteHeader({
               )}
             </div>
             <Link href="/blog" className={linkCls}>Blog</Link>
+            <Link href="/newsletter" className={linkCls}>Newsletter</Link>
             <Link href="/about" className={linkCls}>About</Link>
 
             {hasSession ? (

@@ -1,282 +1,285 @@
-"use client";
-
-import { useState, FormEvent } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { getSubscriberCount } from "@/lib/homepage/fetch";
+import { NotesSignupForm } from "@/components/newsletter/notes-signup-form";
 
-export default function NewsletterPage() {
-  const [email, setEmail] = useState("");
-  const [state, setState] = useState<"idle" | "loading" | "success" | "error">(
-    "idle"
+export const revalidate = 60;
+
+// The apps in the site nav. Each one exists because something in the
+// business needed it. They are the proof behind the pitch on this page.
+const TOOLS = [
+  { name: "2D Design Studio", href: "/studio" },
+  { name: "Box Joint Jig", href: "/box-joint-jig" },
+  { name: "Cone Lamp", href: "/cone-lamp" },
+  { name: "Title Lab", href: "/title-lab" },
+  { name: "Storyteller Engine", href: "/storyteller" },
+  { name: "Rubio Finish Guide", href: "/rubio" },
+];
+
+function Kicker({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
+  return (
+    <p
+      className={`text-[10px] font-bold tracking-[0.15em] mb-4 ${
+        dark ? "text-cream/40" : "text-wood-light/40"
+      }`}
+    >
+      {children}
+    </p>
   );
-  const [errorMessage, setErrorMessage] = useState("");
+}
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!email || !email.includes("@")) {
-      setErrorMessage("Please enter a valid email address.");
-      setState("error");
-      return;
-    }
-    setState("loading");
-    setErrorMessage("");
-    try {
-      const res = await fetch("/api/newsletter/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setErrorMessage(
-          data.error || "Something went wrong. Please try again."
-        );
-        setState("error");
-        return;
-      }
-      setState("success");
-    } catch {
-      setErrorMessage("Something went wrong. Please try again.");
-      setState("error");
-    }
-  }
+export default async function NewsletterPage() {
+  const count = await getSubscriberCount();
 
   return (
     <main className="min-h-screen bg-cream">
       {/* Hero */}
-      <section className="max-w-4xl mx-auto px-6 pt-16 pb-12 md:pt-24 md:pb-16">
-        <p className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 mb-6">
-          THE NEWSLETTER
-        </p>
-        <h1 className="font-serif text-4xl md:text-6xl leading-tight text-wood mb-6 max-w-3xl">
-          One email. Once in a while. Worth reading.
+      <section className="max-w-4xl mx-auto px-6 pt-16 pb-16 md:pt-24 md:pb-20">
+        <Kicker>NOTES FROM THE WORKSHOP</Kicker>
+        <h1 className="font-serif text-4xl md:text-6xl leading-[1.05] text-wood mb-8 max-w-3xl">
+          Not a woodworking newsletter.
         </h1>
-        <p className="text-lg md:text-xl text-wood-light/70 max-w-2xl leading-relaxed mb-10">
-          Join thousands of makers who get the behind-the-scenes on what I&apos;m
-          building, what I&apos;m learning, and what&apos;s coming next on
-          the channel. No spam, no upsells, and you can unsubscribe any
-          time.
-        </p>
+        <div className="max-w-2xl space-y-5 text-lg md:text-xl text-wood-light/80 leading-relaxed mb-10">
+          <p>On YouTube I make films about wood. This is the other half.</p>
+          <p>
+            I run a one-man business from a workshop on Fyn, Denmark: films,
+            furniture, free plans, and the apps I build to keep it all running.
+            The letter is me being completely honest about how that goes. The
+            problems, the numbers, the fixes.
+          </p>
+        </div>
 
-        {/* Signup form */}
-        <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6 md:p-8 max-w-xl">
-          {state === "success" ? (
+        <div className="max-w-xl">
+          <NotesSignupForm source="newsletter_page" variant="hero" />
+          <p className="text-sm text-wood-light/50 mt-4 leading-relaxed">
+            {count > 0 && (
+              <span className="text-wood-light/70 font-medium">
+                {count.toLocaleString()} people read it.{" "}
+              </span>
+            )}
+            Your address stays here. One click out, any time.
+          </p>
+        </div>
+      </section>
+
+      {/* What lands in your inbox */}
+      <section className="max-w-4xl mx-auto px-6 py-16 border-t border-wood/10">
+        <Kicker>WHAT LANDS IN YOUR INBOX</Kicker>
+        <h2 className="font-serif text-3xl md:text-4xl text-wood mb-10 max-w-3xl">
+          Every letter is built from three things.
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
+              01 &nbsp; THE PROBLEM
+            </p>
+            <h3 className="font-serif text-xl text-wood mb-3">
+              Something always breaks
+            </h3>
+            <p className="text-wood-light/80 leading-relaxed">
+              A sponsor deal goes sideways. A video dies. A product sells four
+              copies. I write down what happened, what I tried, and whether it
+              worked. The failed fixes go in too. Those are usually the useful
+              ones.
+            </p>
+          </div>
+
+          <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
+              02 &nbsp; THE NUMBERS
+            </p>
+            <h3 className="font-serif text-xl text-wood mb-3">
+              The real ones
+            </h3>
+            <p className="text-wood-light/80 leading-relaxed">
+              Revenue, views, subscriber counts, what a brand actually pays for
+              an integration. Creators tend to share their numbers when they
+              look good. I share mine when they are real, which is not always
+              the same thing.
+            </p>
+          </div>
+
+          <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
+              03 &nbsp; THE TOOLS
+            </p>
+            <h3 className="font-serif text-xl text-wood mb-3">
+              Built to fix my own problems
+            </h3>
+            <p className="text-wood-light/80 leading-relaxed">
+              When a problem needs software, I build it. Then I give it away,
+              free whenever I can possibly make it free. Subscribers get every
+              new tool first.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* The ledger */}
+      <section className="bg-wood">
+        <div className="max-w-4xl mx-auto px-6 py-16 md:py-20">
+          <Kicker dark>THE LEDGER</Kicker>
+          <h2 className="font-serif text-3xl md:text-4xl text-cream mb-12 max-w-2xl">
+            If I sell transparency, this page should have some.
+          </h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-10">
             <div>
-              <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
-                YOU&apos;RE IN
-              </p>
-              <h2 className="font-serif text-2xl text-wood mb-3">
-                Thanks for subscribing.
-              </h2>
-              <p className="text-wood-light/80 leading-relaxed mb-4">
-                Check your inbox for a confirmation. If it doesn&apos;t
-                arrive within a few minutes, have a look in your spam
-                folder and mark it as not-spam so the next one lands
-                where it should.
-              </p>
-              <p className="text-wood-light/80 leading-relaxed">
-                Go build something.
+              <p className="font-serif text-4xl md:text-5xl text-cream mb-2">2020</p>
+              <p className="text-sm text-cream/60 leading-relaxed">
+                The year I started. No background in wood or video.
               </p>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              <label
-                htmlFor="newsletter-email"
-                className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 mb-2 block"
-              >
-                YOUR EMAIL
-              </label>
-              <input
-                id="newsletter-email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (state === "error") setState("idle");
-                }}
-                placeholder="you@example.com"
-                disabled={state === "loading"}
-                className="w-full bg-white border border-wood/15 rounded-xl px-4 py-3 text-wood placeholder:text-wood-light/30 focus:outline-none focus:border-forest/60 mb-3"
-              />
-              {state === "error" && errorMessage ? (
-                <p className="text-sm text-red-700 mb-3">{errorMessage}</p>
-              ) : null}
-              <button
-                type="submit"
-                disabled={state === "loading"}
-                className="w-full bg-wood text-cream rounded-xl py-3 font-semibold hover:bg-wood-light transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {state === "loading" ? "Subscribing..." : "Subscribe"}
-              </button>
-              <p className="text-xs text-wood-light/40 mt-4 leading-relaxed">
-                I&apos;ll only use your email to send the newsletter. No
-                sharing, no selling, no surprise marketing emails. One-click
-                unsubscribe in every email.
+            <div>
+              <p className="font-serif text-4xl md:text-5xl text-cream mb-2">360,000</p>
+              <p className="text-sm text-cream/60 leading-relaxed">
+                Subscribers on YouTube.
               </p>
-            </form>
-          )}
+            </div>
+            <div>
+              <p className="font-serif text-4xl md:text-5xl text-cream mb-2">44.1M</p>
+              <p className="text-sm text-cream/60 leading-relaxed">
+                Views, all time.
+              </p>
+            </div>
+            <div>
+              <p className="font-serif text-4xl md:text-5xl text-cream mb-2">7</p>
+              <p className="text-sm text-cream/60 leading-relaxed">
+                Free tools built and running on this site.
+              </p>
+            </div>
+            {count > 0 && (
+              <div>
+                <p className="font-serif text-4xl md:text-5xl text-cream mb-2">
+                  {count.toLocaleString()}
+                </p>
+                <p className="text-sm text-cream/60 leading-relaxed">
+                  People on this list, live from the database.
+                </p>
+              </div>
+            )}
+            <div>
+              <p className="font-serif text-4xl md:text-5xl text-cream mb-2">1</p>
+              <p className="text-sm text-cream/60 leading-relaxed">
+                Barn on South Fyn, being rebuilt the 1850s way.
+              </p>
+            </div>
+          </div>
+
+          <p className="text-cream/70 leading-relaxed mt-12 max-w-2xl">
+            The letter is where these numbers get explained. What they cost,
+            what they pay, and which ones actually matter.
+          </p>
         </div>
       </section>
 
-      {/* What you get */}
-      <section className="max-w-4xl mx-auto px-6 py-16 border-t border-wood/10">
-        <p className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 mb-4">
-          WHAT YOU GET
-        </p>
-        <h2 className="font-serif text-3xl md:text-4xl text-wood mb-10 max-w-3xl">
-          Four things, delivered roughly once a month.
+      {/* The tools, as proof */}
+      <section className="max-w-4xl mx-auto px-6 py-16">
+        <Kicker>PROOF</Kicker>
+        <h2 className="font-serif text-3xl md:text-4xl text-wood mb-4 max-w-3xl">
+          Problems that became tools.
         </h2>
+        <p className="text-lg text-wood-light/80 leading-relaxed max-w-2xl mb-10">
+          When the business needs a tool that does not exist, I build it. These
+          run in your browser and cost nothing.
+        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
-            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
-              01 &nbsp; BEHIND THE SCENES
-            </p>
-            <h3 className="font-serif text-xl text-wood mb-3">
-              The story behind the videos
-            </h3>
-            <p className="text-wood-light/80 leading-relaxed">
-              The honest version of what happened during a build. What
-              broke. What I cut from the final video. Why the idea worked
-              or didn&apos;t. The stuff that doesn&apos;t fit into twelve
-              edited minutes.
-            </p>
-          </div>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          {TOOLS.map((tool) => (
+            <Link
+              key={tool.href}
+              href={tool.href}
+              className="group bg-white/60 border border-wood/5 rounded-xl px-5 py-4 flex items-center justify-between hover:border-forest/30 transition-colors"
+            >
+              <span className="font-serif text-lg text-wood group-hover:text-forest transition-colors">
+                {tool.name}
+              </span>
+              <span className="text-forest/40 group-hover:text-forest transition-colors" aria-hidden>
+                &rarr;
+              </span>
+            </Link>
+          ))}
+        </div>
 
-          <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
-            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
-              02 &nbsp; FIRST LOOK
-            </p>
-            <h3 className="font-serif text-xl text-wood mb-3">
-              New tools and downloads, first
-            </h3>
-            <p className="text-wood-light/80 leading-relaxed">
-              When I ship something new on the site, newsletter subscribers
-              see it before anyone else. Occasionally there&apos;s something
-              exclusive to the list that doesn&apos;t get a public launch
-              at all.
-            </p>
-          </div>
+        <p className="text-wood-light/60 mt-8">
+          Subscribers hear about every new tool before anyone else.
+        </p>
+      </section>
 
-          <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
-            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
-              03 &nbsp; LONGER THOUGHTS
-            </p>
-            <h3 className="font-serif text-xl text-wood mb-3">
-              Things that don&apos;t fit in a video
-            </h3>
-            <p className="text-wood-light/80 leading-relaxed">
-              Writing about craft, materials, storytelling, and the weird
-              business of being a woodworker on the internet. Less
-              polished than a video. More honest because of it.
-            </p>
-          </div>
-
-          <div className="bg-white/50 border border-wood/[0.06] rounded-2xl p-6">
-            <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
-              04 &nbsp; SHOP & SUBSCRIBER DEALS
-            </p>
-            <h3 className="font-serif text-xl text-wood mb-3">
-              Quiet discounts, early access
-            </h3>
-            <p className="text-wood-light/80 leading-relaxed">
-              When new products drop in the shop, subscribers hear first.
-              Occasionally a subscriber-only discount code. No pressure,
-              no fake urgency, just a head start if you want one.
-            </p>
-          </div>
+      {/* Who it's for */}
+      <section className="max-w-4xl mx-auto px-6 py-16 border-t border-wood/10">
+        <Kicker>WHO IT&apos;S FOR</Kicker>
+        <h2 className="font-serif text-3xl md:text-4xl text-wood mb-8 max-w-3xl">
+          The films show what worked. The letter shows what it cost.
+        </h2>
+        <div className="max-w-2xl space-y-5 text-lg text-wood-light/80 leading-relaxed">
+          <p>
+            Maybe you want the woodworking. Maybe the YouTube channel, or the
+            app building, or the day you hand in your notice on a job that pays
+            fine and means nothing. Most readers want one piece of what I do.
+            That is enough.
+          </p>
+          <p>
+            I write the whole machine anyway, because the parts only make sense
+            together. The sponsor money pays for the tools. The tools feed the
+            films. The films bring the sponsors. Around it goes.
+          </p>
         </div>
       </section>
 
-      {/* What you don't get */}
+      {/* How I run the list */}
       <section className="max-w-4xl mx-auto px-6 py-16 border-t border-wood/10">
-        <p className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 mb-4">
-          WHAT YOU DON&apos;T GET
-        </p>
+        <Kicker>THE RULES</Kicker>
         <h2 className="font-serif text-3xl md:text-4xl text-wood mb-10 max-w-3xl">
-          Things I promise not to do.
+          How I run the list.
         </h2>
-
         <div className="space-y-5 text-lg text-wood-light/80 leading-relaxed max-w-2xl">
           <p>
-            <span className="text-wood font-semibold">Daily emails.</span>{" "}
-            Once a month is the target. Sometimes two weeks, sometimes
-            six. Never more than that.
+            <span className="text-wood font-semibold">Cadence.</span> A letter
+            goes out when there is something worth sending. The aim is monthly.
+            Some months the business eats the letter. When that happens, the
+            next one tells you why, and that story is usually better than the
+            letter it replaced.
           </p>
           <p>
-            <span className="text-wood font-semibold">Manufactured
-            urgency.</span> No fake countdowns. No &quot;last chance&quot;
-            emails when there&apos;s nothing actually ending.
+            <span className="text-wood font-semibold">No manufactured
+            urgency.</span> No countdowns, no last chances. Nothing here is
+            ever about to run out.
           </p>
           <p>
-            <span className="text-wood font-semibold">Your email going
-            anywhere.</span> I don&apos;t share, sell, or rent the list.
-            It&apos;s hosted on Resend, secured with the usual boring
-            industry stuff, and you can delete your subscription in one
-            click any time.
-          </p>
-          <p>
-            <span className="text-wood font-semibold">Filler.</span> If I
-            don&apos;t have something worth sending, I don&apos;t send
-            one. An empty-calorie email just to &quot;stay top of
-            mind&quot; is exactly the kind of newsletter I unsubscribe
-            from, and I won&apos;t write one.
+            <span className="text-wood font-semibold">Your address.</span>{" "}
+            Stays with me. Never sold, never shared, never rented. Unsubscribe
+            is one click, in every letter.
           </p>
         </div>
       </section>
 
-      {/* Social proof / closer */}
-      <section className="max-w-3xl mx-auto px-6 py-16 border-t border-wood/10">
-        <div className="bg-forest/10 border border-forest/20 rounded-2xl p-8">
+      {/* Closer */}
+      <section className="max-w-3xl mx-auto px-6 py-16 pb-24 border-t border-wood/10">
+        <div className="bg-forest/10 border border-forest/20 rounded-2xl p-8 md:p-10">
           <p className="text-[10px] font-bold tracking-[0.15em] text-forest mb-3">
-            A QUICK NOTE
+            LAST THING
           </p>
           <h2 className="font-serif text-2xl md:text-3xl text-wood mb-4">
-            If you&apos;re reading this from a video description, thanks.
+            Read the next one.
           </h2>
-          <p className="text-wood-light/80 leading-relaxed mb-4">
-            YouTube gives me your attention for ten or twelve minutes at a
-            time. The newsletter lets me keep the conversation going
-            when I actually have something to say, not when an algorithm
-            decides I need to post.
+          <p className="text-wood-light/80 leading-relaxed mb-6">
+            It costs nothing. It takes one click to leave. And it might save
+            you a few of the mistakes I paid full price for.
           </p>
-          <p className="text-wood-light/80 leading-relaxed">
-            If that sounds like your kind of thing, the signup form is at
-            the top of this page. If not, no hard feelings. Go watch
-            something on the channel instead.
-          </p>
+          <NotesSignupForm source="newsletter_page" variant="band" />
+          <div className="mt-8 flex items-center gap-3">
+            <Image
+              src="/images/press/latvia/jesper-portrait-barn.jpg"
+              alt="Jesper"
+              width={48}
+              height={48}
+              className="h-12 w-12 rounded-full object-cover"
+            />
+            <span className="font-serif italic text-xl text-wood">Jesper</span>
+          </div>
         </div>
-      </section>
-
-      {/* Back to the top CTA */}
-      <section className="max-w-4xl mx-auto px-6 py-16 border-t border-wood/10 text-center">
-        <p className="text-wood-light/60 mb-4">Ready to subscribe?</p>
-        <a
-          href="#top"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          className="inline-block bg-wood text-cream rounded-xl px-6 py-3 font-semibold hover:bg-wood-light transition-colors"
-        >
-          Back to the signup form →
-        </a>
-        <p className="mt-8 text-sm text-wood-light/40">
-          Not interested in email? Find me on{" "}
-          <a
-            href="https://www.youtube.com/c/JesperMakes"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-forest hover:underline"
-          >
-            YouTube
-          </a>{" "}
-          or browse the{" "}
-          <Link href="/blog" className="text-forest hover:underline">
-            blog
-          </Link>
-          .
-        </p>
       </section>
     </main>
   );

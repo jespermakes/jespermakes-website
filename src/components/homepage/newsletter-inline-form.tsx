@@ -14,7 +14,7 @@ export function NewsletterInlineForm({ buttonLabel, placeholder }: { buttonLabel
       const res = await fetch("/api/newsletter/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, source: "homepage" }),
       });
       if (res.ok) {
         setStatus("success");
@@ -56,7 +56,7 @@ export function NewsletterInlineForm({ buttonLabel, placeholder }: { buttonLabel
         </button>
       </form>
       {status === "error" && (
-        <p className="text-red-600 text-sm mt-3">Something went wrong — try again.</p>
+        <p className="text-red-600 text-sm mt-3">Something went wrong. Try again.</p>
       )}
     </>
   );

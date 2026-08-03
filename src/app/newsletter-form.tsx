@@ -66,7 +66,7 @@ export function NewsletterForm() {
         )}
 
         {status === "error" && (
-          <p className="text-red-600 text-sm mt-3">Something went wrong — try again.</p>
+          <p className="text-red-600 text-sm mt-3">Something went wrong. Try again.</p>
         )}
 
         <p className="text-wood/30 text-xs mt-6">No spam. Unsubscribe any time.</p>

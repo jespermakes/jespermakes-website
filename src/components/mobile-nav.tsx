@@ -197,6 +197,14 @@ export function MobileNav({
             </Link>
 
             <Link
+              href="/newsletter"
+              onClick={() => setOpen(false)}
+              className="block py-3 text-lg text-cream hover:text-amber transition-colors border-b border-cream/10"
+            >
+              Newsletter
+            </Link>
+
+            <Link
               href="/about"
               onClick={() => setOpen(false)}
               className="block py-3 text-lg text-cream hover:text-amber transition-colors border-b border-cream/10"
