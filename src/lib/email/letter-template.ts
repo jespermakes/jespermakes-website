@@ -1,23 +1,27 @@
-// The Workshop Letter: branded HTML email template.
-// Matches the site's v3 design language: night header, cream body,
-// Georgia serif headings, amber accents. Email-client-safe: single
-// column, max 560px, all styles inline, system font stack for body.
-//
-// Used for newsletter broadcasts (Resend). The {{{RESEND_UNSUBSCRIBE_URL}}}
+// The Workshop Letter: HTML email template, v2 design (2026-08-04).
+// Reads like a letter, not a campaign: cream page, no boxed blocks, plain
+// serif headings (no rules or ornaments), 17px body with generous leading,
+// small logo up top, portrait signature, quiet footer. Email-client-safe:
+// single column, max 560px, all styles inline. The {{{RESEND_UNSUBSCRIBE_URL}}}
 // merge tag is filled by Resend at send time.
 
-const NIGHT = "#20100A";
-const WOOD = "#2C1810";
-const WOOD_LIGHT = "#4A3228";
-const CREAM = "#FAF7F2";
-const AMBER = "#C17F3C";
+const INK = "#2C1B12"; // headings + strong text
+const BODY = "#3A2A1F"; // body text, dark enough to read in sunlight
+const MUTED = "#8A776A";
+const AMBER = "#B26E2E"; // links (darker than the site accent for contrast)
+const PAPER = "#F7F3EC";
+const HAIRLINE = "#E6DCCD";
 const SITE = "https://jespermakes.com";
 
 export interface LetterSection {
-  /** Optional serif heading with an amber rule. */
+  /** Optional serif heading, plain, no ornament. */
   heading?: string;
   /** Paragraph HTML (already-safe content; <p> tags added here). */
   paragraphs: string[];
+  /** Optional single photo below the section's text. Use sparingly (one per
+   * letter at most): image-heavy emails drift into the Promotions tab. Must be
+   * hosted on jespermakes.com and carry real alt text. */
+  image?: { src: string; alt: string; caption?: string };
 }
 
 export interface WorkshopLetter {
@@ -32,14 +36,22 @@ export interface WorkshopLetter {
   signoff?: string;
 }
 
-const paragraph = (html: string) =>
-  `<p style="margin:0 0 16px 0;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.65;color:${WOOD_LIGHT};">${html}</p>`;
+const FONT = "-apple-system,'Segoe UI',Helvetica,Arial,sans-serif";
+const SERIF = "Georgia,'Times New Roman',serif";
 
-const sectionHeading = (text: string) => `
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 12px 0;">
+const paragraph = (html: string) =>
+  `<p style="margin:0 0 18px 0;font-family:${FONT};font-size:17px;line-height:1.75;color:${BODY};">${html}</p>`;
+
+const sectionHeading = (text: string) =>
+  `<h2 style="margin:34px 0 14px 0;font-family:${SERIF};font-size:22px;line-height:1.3;font-weight:bold;color:${INK};">${text}</h2>`;
+
+const sectionImage = (img: { src: string; alt: string; caption?: string }) => `
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:6px 0 22px 0;">
     <tr>
-      <td width="28" style="border-top:2px solid ${AMBER};font-size:0;line-height:0;">&nbsp;</td>
-      <td style="padding-left:10px;font-family:Georgia,'Times New Roman',serif;font-size:22px;color:${WOOD};font-weight:bold;">${text}</td>
+      <td>
+        <img src="${img.src}" alt="${img.alt}" width="512" style="width:100%;max-width:512px;height:auto;border-radius:8px;display:block;">
+        ${img.caption ? `<p style="margin:8px 0 0 0;font-family:${FONT};font-size:13px;line-height:1.5;color:${MUTED};">${img.caption}</p>` : ""}
+      </td>
     </tr>
   </table>`;
 
@@ -48,7 +60,8 @@ export function renderWorkshopLetter(letter: WorkshopLetter): string {
     .map(
       (s) =>
         (s.heading ? sectionHeading(s.heading) : "") +
-        s.paragraphs.map(paragraph).join(""),
+        s.paragraphs.map(paragraph).join("") +
+        (s.image ? sectionImage(s.image) : ""),
     )
     .join("");
 
@@ -59,38 +72,42 @@ export function renderWorkshopLetter(letter: WorkshopLetter): string {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${letter.title}</title>
 </head>
-<body style="margin:0;padding:0;background-color:#EFE9DE;">
+<body style="margin:0;padding:0;background-color:${PAPER};">
   <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${letter.preheader}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#EFE9DE;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${PAPER};">
     <tr>
-      <td align="center" style="padding:24px 12px;">
+      <td align="center" style="padding:32px 16px 40px 16px;">
         <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
 
-          <!-- Night header -->
+          <!-- Masthead: small and quiet -->
           <tr>
-            <td align="center" style="background-color:${NIGHT};border-radius:16px 16px 0 0;padding:28px 24px 24px 24px;">
-              <img src="${SITE}/logo.png" width="64" height="64" alt="Jesper Makes" style="border-radius:50%;display:block;margin:0 auto 12px auto;">
-              <div style="font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:3px;color:${AMBER};font-weight:bold;">THE WORKSHOP LETTER</div>
+            <td style="padding:0 4px 26px 4px;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td><img src="${SITE}/logo.png" width="36" height="36" alt="Jesper Makes" style="border-radius:50%;display:block;"></td>
+                  <td style="padding-left:10px;font-family:${FONT};font-size:12px;letter-spacing:2px;color:${MUTED};font-weight:bold;">THE WORKSHOP LETTER</td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Body -->
+          <!-- Letter body -->
           <tr>
-            <td style="background-color:${CREAM};padding:32px 32px 8px 32px;">
-              <h1 style="margin:0 0 20px 0;font-family:Georgia,'Times New Roman',serif;font-size:30px;line-height:1.2;color:${WOOD};">${letter.title}</h1>
+            <td style="padding:0 4px;">
+              <h1 style="margin:0 0 22px 0;font-family:${SERIF};font-size:30px;line-height:1.25;font-weight:bold;color:${INK};">${letter.title}</h1>
               ${letter.greeting ? paragraph(letter.greeting) : ""}
               ${sections}
+              ${letter.signoff ? paragraph(letter.signoff) : ""}
             </td>
           </tr>
 
           <!-- Signature -->
           <tr>
-            <td style="background-color:${CREAM};padding:8px 32px 32px 32px;">
-              ${letter.signoff ? paragraph(letter.signoff) : ""}
+            <td style="padding:10px 4px 0 4px;">
               <table role="presentation" cellpadding="0" cellspacing="0">
                 <tr>
                   <td><img src="${SITE}/images/press/latvia/jesper-portrait-barn.jpg" width="44" height="44" alt="Jesper" style="border-radius:50%;display:block;"></td>
-                  <td style="padding-left:12px;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:19px;color:${AMBER};">Jesper</td>
+                  <td style="padding-left:12px;font-family:${SERIF};font-style:italic;font-size:19px;color:${AMBER};">Jesper</td>
                 </tr>
               </table>
             </td>
@@ -98,16 +115,22 @@ export function renderWorkshopLetter(letter: WorkshopLetter): string {
 
           <!-- Footer -->
           <tr>
-            <td style="background-color:${NIGHT};border-radius:0 0 16px 16px;padding:20px 32px;">
-              <p style="margin:0 0 8px 0;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#B8A99C;">
-                You get this letter because you signed up at
-                <a href="${SITE}" style="color:${AMBER};text-decoration:none;">jespermakes.com</a>
-                (or back in the beacons days). About once a month.
-              </p>
-              <p style="margin:0;font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#B8A99C;">
-                <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#B8A99C;text-decoration:underline;">Unsubscribe</a>
-                &nbsp;&middot;&nbsp; Jesper Makes, Fyn, Denmark
-              </p>
+            <td style="padding:28px 4px 0 4px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid ${HAIRLINE};">
+                <tr>
+                  <td style="padding-top:16px;">
+                    <p style="margin:0 0 6px 0;font-family:${FONT};font-size:12px;line-height:1.6;color:${MUTED};">
+                      You get this letter because you signed up at
+                      <a href="${SITE}" style="color:${AMBER};text-decoration:none;">jespermakes.com</a>.
+                      About once a month.
+                    </p>
+                    <p style="margin:0;font-family:${FONT};font-size:12px;line-height:1.6;color:${MUTED};">
+                      <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:${MUTED};text-decoration:underline;">Unsubscribe</a>
+                      &nbsp;&middot;&nbsp; Jesper Makes, Fyn, Denmark
+                    </p>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 

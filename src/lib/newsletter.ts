@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { newsletterSubscribers, users } from "@/lib/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { createContact, updateContactBy, ResendError } from "@/lib/resend";
+import { sendWelcomeEmail } from "@/lib/email/welcome";
 
 export type SubscribeSource =
   | "public_form"
@@ -24,6 +25,14 @@ export interface SubscribeInput {
 export async function subscribeToNewsletter(input: SubscribeInput) {
   const email = input.email.toLowerCase().trim();
   if (!email.includes("@")) throw new Error("Invalid email");
+
+  // Welcome-email rule: send only to a NEW subscriber or a resubscribe after
+  // an unsubscribe, never on repeat toggles of an already-subscribed contact.
+  const existing = await db
+    .select({ subscribed: newsletterSubscribers.subscribed, firstName: newsletterSubscribers.firstName })
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.email, email));
+  const shouldWelcome = !existing[0] || !existing[0].subscribed;
 
   // Resend first — Resend is source of truth
   let resendContact;
@@ -70,6 +79,13 @@ export async function subscribeToNewsletter(input: SubscribeInput) {
       .update(users)
       .set({ newsletterSubscribed: true, updatedAt: new Date() })
       .where(eq(users.id, input.userId));
+  }
+
+  // Fire-and-forget: a signup must never fail because the welcome could not send.
+  if (shouldWelcome) {
+    void sendWelcomeEmail(email, input.firstName ?? existing[0]?.firstName ?? null).catch((e) =>
+      console.error("welcome email error:", e)
+    );
   }
 
   return { email, subscribed: true };
