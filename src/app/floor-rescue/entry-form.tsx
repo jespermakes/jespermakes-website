@@ -8,6 +8,8 @@ import { useState } from "react";
 export default function EntryForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [code, setCode] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -22,10 +24,23 @@ export default function EntryForm() {
         setStatus("error");
         return;
       }
+      setCode(typeof body.code === "string" ? body.code : null);
       setStatus("done");
     } catch {
       setError("Something went wrong. Try again.");
       setStatus("error");
+    }
+  }
+
+  async function copyCode() {
+    if (!code) return;
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Clipboard blocked (older browser, insecure context): the code is on
+      // screen and in the email, so selecting it by hand still works.
     }
   }
 
@@ -34,8 +49,45 @@ export default function EntryForm() {
       <div className="rounded-lg border border-white/20 bg-white/10 p-6">
         <p className="font-serif text-2xl text-white mb-2">Your floor is in.</p>
         <p className="text-white/80 text-[15px] leading-relaxed">
-          Check your inbox: the confirmation is on its way, and it has something extra in it.
           Winners are picked in early September. Until then, do not fix anything.
+        </p>
+
+        {code && (
+          <div className="mt-5 rounded-lg border border-[#fcc52c]/40 bg-[#fcc52c]/10 p-4">
+            <p className="text-white text-[15px] leading-relaxed mb-3">
+              Whatever the judges decide, here is something for entering: pay for one Rubio
+              Monocoat sample, get two free. Try the oil on a corner of that floor before you
+              commit to the whole thing.
+            </p>
+            <div className="flex items-center gap-3 flex-wrap">
+              <code className="rounded-md bg-[#183029] border border-[#fcc52c]/50 px-3 py-2 font-mono text-[17px] tracking-wide text-[#fcc52c] select-all">
+                {code}
+              </code>
+              <button
+                type="button"
+                onClick={copyCode}
+                className="rounded-md bg-[#fcc52c] px-4 py-2 text-[14px] font-medium text-[#183029] hover:opacity-90"
+              >
+                {copied ? "Copied" : "Copy code"}
+              </button>
+            </div>
+            <p className="text-white/60 text-[13px] leading-relaxed mt-3">
+              Paste it at checkout on{" "}
+              <a
+                href="https://www.rubiomonocoat.com"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[#fcc52c] underline decoration-[#fcc52c]/40"
+              >
+                rubiomonocoat.com
+              </a>
+              . Runs until the end of August. It is in your confirmation email too.
+            </p>
+          </div>
+        )}
+
+        <p className="text-white/60 text-[13px] leading-relaxed mt-4">
+          Check your inbox for the confirmation.
         </p>
       </div>
     );

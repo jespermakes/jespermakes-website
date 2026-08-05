@@ -83,8 +83,8 @@ export async function POST(request: NextRequest) {
 
     const code = process.env.RUBIO_DISCOUNT_CODE;
     const codeBlock = code
-      ? `<p>As promised, here is your Rubio Monocoat discount code: <strong>${code}</strong>. It is valid until the end of August.</p>`
-      : `<p>Your Rubio Monocoat discount code follows in a separate email once the campaign officially opens.</p>`;
+      ? `<p>And whatever the judges decide, here is your Rubio Monocoat code: <strong>${code}</strong>. Pay for one sample, get two free. Paste it at checkout on rubiomonocoat.com. It runs until the end of August, so try the oil on a corner of that floor before you commit to the whole thing.</p>`
+      : `<p>Your Rubio Monocoat sample code follows in a separate email once the campaign officially opens.</p>`;
     try {
       await fetch("https://api.resend.com/emails", {
         method: "POST",
@@ -113,7 +113,11 @@ export async function POST(request: NextRequest) {
       console.error("floor-rescue confirmation email failed:", e);
     }
 
-    return NextResponse.json({ ok: true });
+    // The code goes back to the client so the success state can show it
+    // immediately (Rubio's request, 2026-08-05): entrants copy it straight
+    // into checkout without waiting for the email. Server-configured, so the
+    // env var stays the single source of truth.
+    return NextResponse.json({ ok: true, code: code ?? null });
   } catch (e) {
     console.error("floor-rescue entry error:", e);
     return NextResponse.json({ error: "Something broke on our end. Try again." }, { status: 500 });
