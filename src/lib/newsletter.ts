@@ -13,7 +13,8 @@ export type SubscribeSource =
   | "homepage"
   | "site_footer"
   | "blog_post"
-  | "tools_page";
+  | "tools_page"
+  | "competition";
 
 export interface SubscribeInput {
   email: string;

@@ -639,3 +639,23 @@ export const studioEvents = pgTable("studio_events", {
     .notNull()
     .defaultNow(),
 });
+
+// Rubio "Floor Rescue" competition (Aug-Sep 2026): entries from the form at
+// /floor-rescue. Photo lives in Vercel Blob; consent covers sharing the entry
+// with Rubio Monocoat (GDPR basis for the campaign). Winners get status
+// 'winner' when picked together with Rubio in early September.
+export const competitionEntries = pgTable("competition_entries", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  campaign: text("campaign").notNull().default("rubio-floor-rescue-2026"),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  country: text("country").notNull(),
+  floorStory: text("floor_story").notNull().default(""),
+  photoUrl: text("photo_url").notNull(),
+  consentShare: boolean("consent_share").notNull().default(false),
+  newsletterOptIn: boolean("newsletter_opt_in").notNull().default(false),
+  status: text("status").notNull().default("received"),
+  createdAt: timestamp("created_at", { mode: "date" })
+    .notNull()
+    .defaultNow(),
+});
