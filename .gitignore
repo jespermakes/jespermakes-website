@@ -35,3 +35,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 jespermakes.db
+
+# local agent state (contains full-repo worktrees — must never be committed)
+.claude/
