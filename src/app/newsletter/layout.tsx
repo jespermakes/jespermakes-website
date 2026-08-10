@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 const description =
   "Not a woodworking newsletter. A letter about running a one-man creative business in public: the real problems, the real numbers, and the free tools I build to fix things.";
@@ -12,11 +13,14 @@ export const metadata: Metadata = {
     description,
     type: "website",
     url: "https://jespermakes.com/newsletter",
+    // Overriding openGraph replaces the root object outright, images included.
+    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: "Notes from the Workshop | Jesper Makes",
     description,
+    images: [DEFAULT_OG_IMAGE.url],
   },
 };
 

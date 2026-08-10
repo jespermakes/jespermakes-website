@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
+import { pageTitle, ogImages } from "@/lib/seo";
 import { toolItems, images } from "@/lib/db/schema";
 import type { BuyLink, ColorSwatch, Spec } from "@/lib/db/schema";
 import { eq, and, asc } from "drizzle-orm";
@@ -28,17 +29,17 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const imgUrl = tool.image ?? undefined;
 
   return {
-    title: `${tool.name} — Tools — Jesper Makes`,
+    title: pageTitle(tool.name, "Tools", "Jesper Makes"),
     description: tool.description,
     alternates: {
       canonical: `/tools/${tool.slug}`,
     },
     openGraph: {
-      title: `${tool.name} — Jesper Makes`,
+      title: pageTitle(tool.name, "Jesper Makes"),
       description: tool.description,
       url: `https://jespermakes.com/tools/${tool.slug}`,
       type: "website",
-      ...(imgUrl ? { images: [{ url: imgUrl, alt: tool.name }] } : {}),
+      images: ogImages(imgUrl, tool.name),
     },
   };
 }
@@ -75,14 +76,39 @@ export default async function ToolPage({ params }: { params: { slug: string } })
     .map((r) => r.tool)
     .filter((t) => t.slug !== tool.slug);
 
+  /* Product, not Article. These pages describe a physical tool, and typing them
+   * as Article told Google the subject was a piece of writing.
+   *
+   * Deliberately no aggregateRating/offers: we hold no numeric ratings and no
+   * prices, and inventing either to win star snippets is exactly what Google's
+   * structured-data policy treats as spam. Adding real ratings later is the
+   * only honest route to rich results here. */
   const productJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: tool.name,
+    "@type": "Product",
+    name: tool.name,
     description: tool.longDescription ?? tool.description,
     ...(imgUrl ? { image: imgUrl } : {}),
-    author: { "@type": "Person", name: "Jesper", url: "https://jespermakes.com/about" },
-    publisher: { "@type": "Organization", name: "Jesper Makes", url: "https://jespermakes.com" },
+    category: tool.category,
+    url: `https://jespermakes.com/tools/${tool.slug}`,
+    ...(tool.jesperNote
+      ? {
+          review: {
+            "@type": "Review",
+            author: {
+              "@type": "Person",
+              name: "Jesper",
+              url: "https://jespermakes.com/about",
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "Jesper Makes",
+              url: "https://jespermakes.com",
+            },
+            reviewBody: tool.jesperNote,
+          },
+        }
+      : {}),
   };
 
   const breadcrumbJsonLd = {
@@ -324,11 +350,17 @@ export default async function ToolPage({ params }: { params: { slug: string } })
           <>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {buyLinks.map((link) => (
+                /* rel="sponsored" on every buy link, not just the tagged ones.
+                 * Some carry Awin/partner params and some are plain
+                 * manufacturer URLs, but they all sit on a page with a
+                 * commercial relationship behind it, and Google asks for the
+                 * whole class to be marked rather than the subset that happens
+                 * to be monetised today. */
                 <a
                   key={link.url}
                   href={link.url}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="sponsored noopener noreferrer"
                   className="flex items-center justify-between bg-white/60 rounded-xl p-5 border border-wood/5 hover:border-forest/20 transition-colors group"
                 >
                   <div className="flex items-center gap-3">

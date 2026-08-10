@@ -42,6 +42,18 @@ const nextConfig = {
       // Old Beacons shop product UUIDs — send to shop
       { source: "/shop/51018455-b7e0-439c-a9f9-9a906e73de3b", destination: "/shop", permanent: true },
       { source: "/shop/bfca615e-ccca-4e1c-8582-0c8ee9437621", destination: "/shop", permanent: true },
+      // Old Squarespace URLs. Both still surface in Google results and were
+      // 404ing, throwing away whatever link equity they had accumulated.
+      { source: "/tools-i-use", destination: "/tools", permanent: true },
+      { source: "/jespers-blog", destination: "/blog", permanent: true },
+      { source: "/jespers-blog/:slug*", destination: "/blog", permanent: true },
+      // Remaining sponsor vanity paths, completing the set already covered
+      // above (rubiomonocoat, bambulab, xtool). One per brand in public/brands.
+      { source: "/festool", destination: "/tools/category/festool", permanent: true },
+      { source: "/navimow", destination: "/tools/segway-navimow-x450", permanent: true },
+      { source: "/epidemicsound", destination: "/tools/epidemic-sound", permanent: true },
+      { source: "/milanote", destination: "/tools", permanent: true },
+      { source: "/betterhelp", destination: "/tools", permanent: true },
     ];
   },
   async rewrites() {

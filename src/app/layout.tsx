@@ -32,6 +32,35 @@ export const metadata: Metadata = {
   // into every child route, so a canonical set here made each page that did not
   // override it declare itself the homepage — which drops it from the index.
   // Each page owns its canonical; the homepage's lives in app/page.tsx.
+  //
+  // openGraph/twitter, by contrast, *should* be inherited: a page that sets no
+  // image still gets a real share card instead of a blank one. Pages that do
+  // set their own (blog posts with a hero, tools with a product shot) override
+  // just the fields they specify.
+  openGraph: {
+    type: "website",
+    siteName: "Jesper Makes",
+    locale: "en_GB",
+    url: "https://jespermakes.com",
+    title: "Jesper Makes — Build something real",
+    description:
+      "Danish woodworker and maker. Real build guides, honest measurements, no shortcuts.",
+    images: [
+      {
+        url: "/og-default.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Jesper marking out a board in his workshop",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Jesper Makes — Build something real",
+    description:
+      "Danish woodworker and maker. Real build guides, honest measurements, no shortcuts.",
+    images: ["/og-default.jpg"],
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
+import { pageTitle } from "@/lib/seo";
+import { toolCategoryIntros } from "@/data/tool-category-intros";
 import { toolItems, images } from "@/lib/db/schema";
 import { eq, and, asc } from "drizzle-orm";
 import { SmartImage } from "@/components/smart-image";
@@ -18,8 +20,15 @@ export async function generateMetadata({ params }: { params: { categorySlug: str
   const categoryName = rows[0]?.category;
   if (!categoryName) return {};
 
+  const intro = toolCategoryIntros[params.categorySlug];
+
   return {
-    title: `${categoryName} — Tools — Jesper Makes`,
+    title: pageTitle(categoryName, "Tools", "Jesper Makes"),
+    // These pages carried no description at all, so Google was inventing one
+    // from the card grid. The intro's first sentence is a better answer.
+    description: intro
+      ? intro.split(". ")[0].slice(0, 160) + "."
+      : `${categoryName} I use in the workshop, with honest notes on each one.`,
     alternates: {
       canonical: `/tools/category/${params.categorySlug}`,
     },
@@ -37,6 +46,7 @@ export default async function CategoryPage({ params }: { params: { categorySlug:
   if (rows.length === 0) notFound();
 
   const { category, categoryIcon } = rows[0].tool;
+  const intro = toolCategoryIntros[params.categorySlug];
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-16 md:py-24">
@@ -50,7 +60,7 @@ export default async function CategoryPage({ params }: { params: { categorySlug:
       </nav>
 
       {/* Category header */}
-      <div className="flex items-center gap-4 mb-10">
+      <div className="flex items-center gap-4 mb-6">
         <span className="text-4xl">{categoryIcon}</span>
         <div>
           <h1 className="font-serif text-3xl md:text-4xl text-wood">
@@ -58,6 +68,12 @@ export default async function CategoryPage({ params }: { params: { categorySlug:
           </h1>
         </div>
       </div>
+
+      {intro && (
+        <p className="text-wood-light leading-relaxed max-w-2xl mb-10">
+          {intro}
+        </p>
+      )}
 
       {/* Tool grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

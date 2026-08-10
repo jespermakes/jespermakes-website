@@ -66,8 +66,8 @@ describe("tool category slugs", () => {
         join(appDir, "..", "components", file),
         "utf-8",
       );
-      const linked = [...source.matchAll(/slug: "([^"]+)", icon:/g)].map(
-        (m) => m[1],
+      const linked = (source.match(/slug: "[^"]+", icon:/g) ?? []).map((s) =>
+        s.replace(/^slug: "/, "").replace(/", icon:$/, ""),
       );
       expect(linked.length).toBeGreaterThan(0);
       for (const slug of linked) {
@@ -108,5 +108,82 @@ describe("sitemap", () => {
     expect(existsSync(join(appDir, "studio", "(canvas)", "layout.tsx"))).toBe(
       true,
     );
+  });
+});
+
+describe("share cards", () => {
+  const layout = read("layout.tsx");
+
+  it("root layout provides openGraph and twitter defaults", () => {
+    // 82 of 123 pages had no og:image, so every share was a blank card.
+    // These are inherited, so a page only needs its own when it has a better one.
+    expect(layout).toMatch(/openGraph:/);
+    expect(layout).toMatch(/twitter:/);
+    expect(layout).toContain("summary_large_image");
+    expect(layout).toContain("/og-default.jpg");
+  });
+
+  it("ships the default share image at the size Facebook and X expect", () => {
+    const og = join(appDir, "..", "..", "public", "og-default.jpg");
+    expect(existsSync(og)).toBe(true);
+    expect(layout).toMatch(/width:\s*1200/);
+    expect(layout).toMatch(/height:\s*630/);
+  });
+});
+
+describe("affiliate links", () => {
+  it('tool buy links are rel="sponsored"', () => {
+    // 19 of 73 tools carry Awin/partner-tagged URLs. Google asks for the whole
+    // class to be marked, not just the ones monetised on any given day.
+    const source = read("tools", "[slug]", "page.tsx");
+    expect(source).toContain('rel="sponsored noopener noreferrer"');
+  });
+
+  it("tool pages describe a Product, not an Article", () => {
+    const source = read("tools", "[slug]", "page.tsx");
+    expect(source).toContain('"@type": "Product"');
+    // No invented ratings or prices — that is structured-data spam. Matches the
+    // key rather than the word, so the comment explaining this does not count.
+    expect(source).not.toMatch(/aggregateRating:/);
+    expect(source).not.toMatch(/\bprice:/);
+  });
+});
+
+describe("recovered legacy URLs", () => {
+  const config = readFileSync(
+    join(appDir, "..", "..", "next.config.mjs"),
+    "utf-8",
+  );
+
+  it("redirects the old Squarespace paths that still rank", () => {
+    for (const source of ["/tools-i-use", "/jespers-blog"]) {
+      expect(config, `no redirect for ${source}`).toContain(
+        `source: "${source}"`,
+      );
+    }
+  });
+
+  it("does not redirect anything to a category slug that 404s", () => {
+    const targets = (
+      config.match(/destination: "\/tools\/category\/[^"]+"/g) ?? []
+    ).map((s) =>
+      s.replace(/^destination: "\/tools\/category\//, "").replace(/"$/, ""),
+    );
+    for (const slug of targets) {
+      expect(
+        ["festool", "office-youtube-gear", "plywood"],
+        `redirect points at unknown category "${slug}"`,
+      ).toContain(slug);
+    }
+  });
+});
+
+describe("dead ends", () => {
+  it("has a custom 404 that offers somewhere to go", () => {
+    const nf = read("not-found.tsx");
+    expect(nf).toContain("/tools");
+    expect(nf).toContain("/blog");
+    // Old Squarespace/Beacons links land here, so the visitor is a real one.
+    expect(nf).toContain("/contact");
   });
 });

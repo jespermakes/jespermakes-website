@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { db } from "@/lib/db";
+import { pageTitle, ogImages } from "@/lib/seo";
 import { blogPosts, images } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { SmartImage } from "@/components/smart-image";
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   if (!post) return { title: "Not found — Jesper Makes" };
 
   return {
-    title: `${post.title} — Jesper Makes`,
+    title: pageTitle(post.title, "Jesper Makes"),
     description: post.description,
     alternates: {
       canonical: `/blog/${post.slug}`,
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       publishedTime: post.publishedAt?.toISOString(),
       modifiedTime: post.updatedAt?.toISOString(),
       authors: [post.author ?? "Jesper"],
-      ...(post.heroImage && { images: [{ url: post.heroImage, alt: post.heroImageAlt ?? post.title }] }),
+      images: ogImages(post.heroImage, post.heroImageAlt ?? post.title),
     },
   };
 }
