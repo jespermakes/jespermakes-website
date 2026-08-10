@@ -8,16 +8,16 @@
  * Google that a stranger's account is his: @intherough looked right and is an
  * unrelated fashion channel. The second channel is @jespermakes2.
  *
- * The Facebook page is a numeric profile URL because it has no vanity handle
- * yet. That URL keeps resolving after a handle is set, so it is safe to list —
- * swap it for the handle once one exists.
+ * Pinterest is deliberately absent. The account is Jesper's and public, but it
+ * holds inspiration boards rather than his own work, so it does not yet
+ * represent him. Add it once he pins his own builds.
  */
 const PROFILES = [
   "https://www.youtube.com/@jespermakes",
   "https://www.youtube.com/@jespermakes2",
   "https://www.instagram.com/jespermakes/",
   "https://www.tiktok.com/@jespermakes",
-  "https://www.facebook.com/profile.php?id=100065584250685",
+  "https://www.facebook.com/jespermakes",
 ];
 
 export function SiteJsonLd() {

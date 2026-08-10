@@ -208,10 +208,14 @@ describe("social profiles", () => {
       "youtube.com/@jespermakes2",
       "instagram.com/jespermakes",
       "tiktok.com/@jespermakes",
-      "facebook.com/profile.php?id=100065584250685",
+      "facebook.com/jespermakes",
     ]) {
       expect(jsonLd, `sameAs missing ${url}`).toContain(url);
     }
+  });
+
+  it("uses the Facebook vanity handle, not the numeric profile URL", () => {
+    expect(jsonLd).not.toContain("profile.php");
   });
 
   it("keeps the Person and Organization sameAs lists identical", () => {
