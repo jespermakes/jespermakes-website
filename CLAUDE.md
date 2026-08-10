@@ -65,7 +65,7 @@ Two things that bite here:
   `-jespermakes.vercel.app` returns 404 and looks exactly like a failed build.
 - Previews sit behind Vercel Deployment Protection, so fetching one with curl
   gets a 302 to `vercel.com/sso-api`, not the page. You cannot verify preview
-  HTML from the CLI — open it in a browser.
+  HTML from the CLI. Open it in a browser.
 
 To check the build actually passed, ask GitHub rather than guessing from the URL:
 
@@ -74,8 +74,8 @@ gh api "repos/jespermakes/jespermakes-website/commits/$(git rev-parse HEAD)/stat
 ```
 
 `success` means the preview built. To verify rendered HTML (canonicals, meta
-tags, redirects) before merging, run the production build locally instead —
-`npm run build && PORT=3987 npm run start` — and curl that. Port 3000 is
+tags, redirects) before merging, run the production build locally instead:
+`npm run build && PORT=3987 npm run start`, then curl that. Port 3000 is
 usually taken by something else on this machine.
 
 If the build fails on Vercel, fix it on the branch and push again. Do NOT merge until the preview build is green.
@@ -107,7 +107,7 @@ It must return 200. If it doesn't, alert Jesper immediately with the URL and sta
 fast-forward merge puts the same SHA on main that the branch already had, so
 that commit is *already* carrying a green status from its preview build. Polling
 it returns `success` instantly and you will report a deploy that has not
-happened — production keeps serving the old build for another minute.
+happened, and production keeps serving the old build for another minute.
 
 Confirm by looking for your actual change in the live HTML, with a cache-buster:
 
