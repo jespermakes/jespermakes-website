@@ -24,6 +24,25 @@ export function registerUpdateTool(server: McpServer, _ctx: ToolContext) {
         ambassadorBadge: z.boolean().optional(),
         jesperNote: z.string().optional().describe("Jesper's personal note about the tool."),
         learnMoreUrl: z.string().optional().describe("External learn-more link."),
+        buyLinks: z
+          .array(
+            z.object({
+              label: z.string().min(1).describe("Shown on the button, e.g. \"Rubio Monocoat US\"."),
+              url: z.string().url(),
+              region: z
+                .enum(["us", "eu", "global"])
+                .optional()
+                .describe("Drives the flag shown next to the label."),
+              badge: z
+                .string()
+                .optional()
+                .describe("Small pill on the right, e.g. \"Affiliate\". Set it on every link that carries a tracking ref."),
+            }),
+          )
+          .optional()
+          .describe(
+            "Replaces the whole buy-links list, so send every link you want to keep, not just the changed one.",
+          ),
       },
     },
     async ({ id, ...fields }) => {
