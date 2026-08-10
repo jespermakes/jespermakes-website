@@ -173,7 +173,8 @@ export default function About() {
         </div>
       </section>
 
-      {/* Latvia barn photo */}
+      {/* Latvia barn photo. It sat here uncaptioned, which wasted the one
+          place on the page where the barn project explains itself. */}
       <section className="max-w-5xl mx-auto px-6 pb-12">
         <div className="relative aspect-[21/9] rounded-xl overflow-hidden shadow-2xl shadow-wood/10">
           <Image
@@ -183,6 +184,25 @@ export default function About() {
             className="object-cover"
           />
         </div>
+        <p className="mt-4 text-sm text-wood-light/70 leading-relaxed max-w-2xl">
+          That is Latvia, where I spent days cutting a timber frame by hand with
+          The Northmen. It is also where{" "}
+          <Link
+            href="/barn"
+            className="text-forest hover:text-forest-dark transition-colors font-medium"
+          >
+            the barn project
+          </Link>{" "}
+          started. I have an 1850s barn on Sydfyn that is going back up as a
+          hand-cut timber frame, and it has its own home at{" "}
+          <a
+            href="https://ohavsladen.dk"
+            className="text-forest hover:text-forest-dark transition-colors font-medium"
+          >
+            ohavsladen.dk
+          </a>
+          .
+        </p>
       </section>
 
       {/* Sponsors & values */}

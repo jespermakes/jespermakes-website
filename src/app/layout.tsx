@@ -131,7 +131,22 @@ function Footer() {
             <Link href="/contact" className="hover:text-forest transition-colors">
               Contact
             </Link>
+            <Link href="/barn" className="hover:text-forest transition-colors">
+              The Barn
+            </Link>
           </div>
+          {/* The barn has its own site. Sending people there from every page
+              is for them, not for Google: both sites are Jesper's, so the link
+              is not an editorial vote and passes close to nothing. */}
+          <p className="text-wood-light/40">
+            Øhavsladen, the barn project, lives at{" "}
+            <a
+              href="https://ohavsladen.dk"
+              className="hover:text-forest transition-colors underline underline-offset-2"
+            >
+              ohavsladen.dk
+            </a>
+          </p>
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-wood-light/40">
             <Link href="/refund" className="hover:text-forest transition-colors">
               Refund Policy
