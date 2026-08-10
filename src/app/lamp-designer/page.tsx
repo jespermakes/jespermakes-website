@@ -185,6 +185,10 @@ export default function LampDesignerPage() {
   if (currentStep === "start") {
     return (
       <div className="flex h-[calc(100vh-64px)] bg-parchment">
+        {/* "start" is the initial state, so this branch is what server-side
+            rendering emits and therefore what a crawler sees. The heading has
+            to be here, not only on the post-selection screen below. */}
+        <h1 className="sr-only">3D Lamp Designer</h1>
         <aside className="w-56 shrink-0 border-r border-wood/10 bg-cream/50 overflow-y-auto">
           <StepNav
             currentStep={currentStep}

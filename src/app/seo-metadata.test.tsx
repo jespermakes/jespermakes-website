@@ -178,6 +178,27 @@ describe("recovered legacy URLs", () => {
   });
 });
 
+describe("lamp designer headings", () => {
+  // /lamp-designer renders one of two branches. "start" is the initial state,
+  // so that branch is what SSR emits and what a crawler sees — putting the h1
+  // only on the other one looked correct in the editor and shipped a page with
+  // no heading at all.
+  const source = read("lamp-designer", "page.tsx");
+  const startBranch = source.slice(
+    source.indexOf('if (currentStep === "start")'),
+    source.lastIndexOf("  return ("),
+  );
+
+  it("the server-rendered start branch has an h1", () => {
+    expect(startBranch).toContain("<h1");
+  });
+
+  it("the post-selection branch has one too", () => {
+    const rest = source.slice(source.lastIndexOf("  return ("));
+    expect(rest).toContain("<h1");
+  });
+});
+
 describe("dead ends", () => {
   it("has a custom 404 that offers somewhere to go", () => {
     const nf = read("not-found.tsx");
