@@ -56,8 +56,27 @@ git push origin feature/<description>
 Vercel auto-builds a preview from every pushed branch. Wait ~60 seconds, then report the preview URL so it can be checked:
 
 ```
-https://jespermakes-website-git-feature-<description>-jespermakes.vercel.app
+https://jespermakes-website-git-<branch-with-slashes-as-hyphens>-floki-dgx-spark.vercel.app
 ```
+
+Two things that bite here:
+
+- The team slug is `floki-dgx-spark`, not `jespermakes`. A URL ending
+  `-jespermakes.vercel.app` returns 404 and looks exactly like a failed build.
+- Previews sit behind Vercel Deployment Protection, so fetching one with curl
+  gets a 302 to `vercel.com/sso-api`, not the page. You cannot verify preview
+  HTML from the CLI — open it in a browser.
+
+To check the build actually passed, ask GitHub rather than guessing from the URL:
+
+```bash
+gh api "repos/jespermakes/jespermakes-website/commits/$(git rev-parse HEAD)/status" --jq '.state, .statuses[0].target_url'
+```
+
+`success` means the preview built. To verify rendered HTML (canonicals, meta
+tags, redirects) before merging, run the production build locally instead —
+`npm run build && PORT=3987 npm run start` — and curl that. Port 3000 is
+usually taken by something else on this machine.
 
 If the build fails on Vercel, fix it on the branch and push again. Do NOT merge until the preview build is green.
 
