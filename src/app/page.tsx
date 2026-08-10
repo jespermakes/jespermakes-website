@@ -9,8 +9,13 @@ import BlogModule from "@/components/homepage/blog-module";
 import ShopModule from "@/components/homepage/shop-module";
 import YoutubeModule from "@/components/homepage/youtube-module";
 import NewsletterModule from "@/components/homepage/newsletter-module";
+import type { Metadata } from "next";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function Home() {
   const sections = await getHomepageSections();

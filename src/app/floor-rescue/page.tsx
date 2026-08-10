@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "The Floor Rescue | Jesper Makes",
   description:
     "Worst floor wins. Three worn wooden floors around Europe get rescued with Rubio Monocoat Oil Plus 2C. Enter yours.",
+  alternates: { canonical: "/floor-rescue" },
 };
 
 /* The Floor Rescue: Rubio Monocoat competition (Aug-Sep 2026). Mechanics agreed

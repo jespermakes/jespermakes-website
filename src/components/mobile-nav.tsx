@@ -8,9 +8,10 @@ const toolCategories = [
   { title: "Power Tools", slug: "power-tools", icon: "🔨" },
   { title: "Hand Tools", slug: "hand-tools", icon: "✋" },
   { title: "Finishing", slug: "finishing", icon: "🎨" },
+  { title: "Plywood", slug: "plywood", icon: "🪵" },
   { title: "3D Printing & Laser", slug: "3d-printing-laser", icon: "🖨️" },
   { title: "Workshop Essentials", slug: "workshop-essentials", icon: "🔧" },
-  { title: "Office & YouTube Gear", slug: "office-youtube", icon: "📷" },
+  { title: "Office & YouTube Gear", slug: "office-youtube-gear", icon: "📷" },
   { title: "Gardening & Outdoors", slug: "gardening-outdoors", icon: "🌿" },
 ];
 

@@ -14,6 +14,7 @@ export const metadata = {
   title: "Marketplace — Community Designs | Jesper Makes",
   description:
     "Maker plan exchange. Browse community CNC and laser designs, open them in the Studio, remix, and share back.",
+  alternates: { canonical: "/marketplace" },
 };
 
 const PAGE_SIZE = 24;

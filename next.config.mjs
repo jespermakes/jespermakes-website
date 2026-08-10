@@ -30,13 +30,13 @@ const nextConfig = {
       { source: "/jespermakes/jespermakes.com", destination: "/", permanent: true },
       { source: "/jespermakes/bambulab", destination: "/tools", permanent: true },
       { source: "/jespermakes/xtool", destination: "/tools", permanent: true },
-      { source: "/jespermakes/youtubegear", destination: "/tools/category/office-youtube", permanent: true },
+      { source: "/jespermakes/youtubegear", destination: "/tools/category/office-youtube-gear", permanent: true },
       { source: "/rubiomonocoat", destination: "/tools/rubio-monocoat-oil-plus-2c", permanent: true },
       { source: "/bambulab", destination: "/tools", permanent: true },
-      { source: "/youtubegear", destination: "/tools/category/office-youtube", permanent: true },
+      { source: "/youtubegear", destination: "/tools/category/office-youtube-gear", permanent: true },
       // Old Beacons versioned URLs
       { source: "/jespermakes/tools\\?__v\\=:v", destination: "/tools", permanent: true },
-      { source: "/jespermakes/youtubegear\\?__v\\=:v", destination: "/tools/category/office-youtube", permanent: true },
+      { source: "/jespermakes/youtubegear\\?__v\\=:v", destination: "/tools/category/office-youtube-gear", permanent: true },
       { source: "/jespermakes/xtool\\?__v\\=:v", destination: "/tools", permanent: true },
       { source: "/xtool", destination: "/tools", permanent: true },
       // Old Beacons shop product UUIDs — send to shop

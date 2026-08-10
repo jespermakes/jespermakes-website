@@ -10,6 +10,9 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "My Designs — Jesper Makes Studio",
+  // Login-gated: redirects to /login for anyone signed out, so there is nothing
+  // here for a crawler to index.
+  robots: { index: false, follow: false },
 };
 
 export default async function MyDesignsPage() {

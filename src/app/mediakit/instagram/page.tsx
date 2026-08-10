@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Instagram @jespermakes - Media Kit - Jesper Makes",
   description:
     "Instagram stats for Jesper Makes. 120K followers, 295 posts, 4.1% engagement rate.",
+  alternates: { canonical: "/mediakit/instagram" },
 };
 
 const stats = [

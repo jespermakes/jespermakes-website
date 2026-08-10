@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "TikTok @jespermakes - Media Kit - Jesper Makes",
   description:
     "TikTok stats for Jesper Makes. 44K followers, 132 videos, 2.6% engagement rate.",
+  alternates: { canonical: "/mediakit/tiktok" },
 };
 
 const stats = [

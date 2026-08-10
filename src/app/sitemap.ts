@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { db } from "@/lib/db";
 import { blogPosts, toolItems } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 const BASE_URL = "https://jespermakes.com";
 
@@ -82,6 +82,72 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.4,
     },
+    // Free interactive tools. These are the most linkable things on the site
+    // and were missing from the sitemap entirely. /studio is deliberately left
+    // out: its layout sets robots noindex, so submitting it would contradict
+    // that. /studio/designs and /profile/* are login-gated or user-specific.
+    {
+      url: `${BASE_URL}/cone-lamp`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/box-joint-jig`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/lamp-designer`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/title-lab`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/storyteller`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/marketplace`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/newsletter`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/floor-rescue`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/press-kit`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.4,
+    },
+    ...["youtube", "instagram", "tiktok", "facebook", "in-the-rough"].map(
+      (slug) => ({
+        url: `${BASE_URL}/mediakit/${slug}`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.3,
+      }),
+    ),
     {
       url: `${BASE_URL}/privacy`,
       lastModified: now,
@@ -126,11 +192,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // DB-backed pages
+  // DB-backed pages.
+  // Must match what /blog/[slug] actually serves: that route 404s anything
+  // whose status is not "published", so filtering on `hidden` alone put draft
+  // posts in the sitemap and told Google to crawl a 404.
   const posts = await db
     .select({ slug: blogPosts.slug, updatedAt: blogPosts.updatedAt })
     .from(blogPosts)
-    .where(eq(blogPosts.hidden, false));
+    .where(and(eq(blogPosts.hidden, false), eq(blogPosts.status, "published")));
 
   const tools = await db
     .select({

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "YouTube In The Rough - Media Kit - Jesper Makes",
   description:
     "In The Rough channel stats. 9.5K subscribers, top 5% engagement rate. Raw, unfiltered maker content.",
+  alternates: { canonical: "/mediakit/in-the-rough" },
 };
 
 const stats = [

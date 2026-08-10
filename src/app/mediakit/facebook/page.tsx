@@ -4,6 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Facebook - Media Kit - Jesper Makes",
   description: "Facebook page stats for Jesper Makes. 9.6K followers.",
+  alternates: { canonical: "/mediakit/facebook" },
 };
 
 const stats = [{ label: "Followers", value: "9.6K" }];

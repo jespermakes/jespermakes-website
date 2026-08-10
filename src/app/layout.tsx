@@ -28,9 +28,10 @@ export const metadata: Metadata = {
   title: "Jesper Makes — Build something real",
   description:
     "Danish woodworker and maker. Real build guides, honest measurements, no shortcuts.",
-  alternates: {
-    canonical: "/",
-  },
+  // No `alternates.canonical` here on purpose. Next.js inherits root metadata
+  // into every child route, so a canonical set here made each page that did not
+  // override it declare itself the homepage — which drops it from the index.
+  // Each page owns its canonical; the homepage's lives in app/page.tsx.
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

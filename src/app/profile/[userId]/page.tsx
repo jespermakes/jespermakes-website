@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: PageProps) {
   return {
     title: `${dn} — Jesper Makes`,
     description: `Designs by ${dn} on Marketplace.`,
+    alternates: { canonical: `/profile/${userId}` },
   };
 }
 
