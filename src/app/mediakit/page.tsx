@@ -91,7 +91,7 @@ const platforms = [
     platform: "youtube" as const,
     href: "/mediakit/youtube",
     stats: [
-      { label: "Subscribers", value: "360K" },
+      { label: "Subscribers", value: "361K" },
       { label: "Total Videos", value: "132" },
       { label: "Total Views", value: "44.1M" },
       { label: "Engagement", value: "6.1%" },
@@ -288,25 +288,46 @@ export default function MediaKit() {
         <p className="text-white/40 text-sm uppercase tracking-widest mb-6">
           Media Kit
         </p>
-        {/* No blended cross-platform view total, deliberately. Followers are
-            comparable across platforms; views are not (a YouTube view is ~30s
-            of intent, an IG Reel view is any play). The per-platform rows below
-            carry the view numbers, which is both honest and more legible. */}
+        {/* A combined view total is fine BECAUSE it is labelled "across 5
+            channels". The thing to avoid is an unlabelled total sitting beside
+            follower counts, which is how this page used to read: "543K+
+            followers. 44.8M+ views." implied both spanned every channel when
+            the views were YouTube alone. The per-platform rows below still
+            break it out, so nobody has to take the headline on trust.
+
+            61M+ is measured, not estimated. Verified 2026-08-10 against the
+            live APIs: YouTube Data API 44,143,835 (Jesper Makes) + 815,972 (In
+            The Rough) = 44,959,807; Meta Graph API 16,415,533 across all 302
+            Instagram posts. Total 61,375,340.
+
+            TikTok and Facebook views are real but unmeasured (no TikTok API,
+            and Facebook exposes no lifetime view figure), so the "+" carries
+            them honestly rather than being decoration. Raise this only against
+            a number someone can actually produce. */}
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
-          543K+ followers across five channels.
+          543K+ followers.{" "}
+          <span className="text-[#E8604C]">61M+ views.</span>
           <br />
-          <span className="text-[#E8604C]">Real builds, real audience.</span>
+          Real builds, real audience.
         </h1>
+
+        {/* Every clause here is measured, not asserted: male 88.6% (donut
+            below), 25-54 = 67.0% (20.1 + 25.6 + 21.3 from ageData), US 21.4% +
+            listed Europe 32.3% = 53.7% (countryData). If those arrays change,
+            re-check this sentence. */}
+        <p className="text-white/60 text-base md:text-lg max-w-2xl mx-auto">
+          Core audience: male, 25 to 54, predominantly US and Europe.
+        </p>
 
         {/* Views are shown per platform, never merged into one cross-platform
             figure: a YouTube view and an Instagram Reel view are not the same
             unit, and a blended total is the number sponsors discount. */}
         <div className="mt-10 grid gap-3 sm:gap-4 max-w-2xl mx-auto text-left">
           {[
-            { platform: "youtube", label: "YouTube", count: "360K", views: "44.1M views" },
+            { platform: "youtube", label: "YouTube", count: "361K", views: "44.1M views" },
             { platform: "instagram", label: "Instagram", count: "120K", views: "16.4M views" },
             { platform: "tiktok", label: "TikTok", count: "44K", views: null },
-            { platform: "youtube", label: "In The Rough", count: "9.5K", views: "0.7M views" },
+            { platform: "youtube", label: "In The Rough", count: "9.5K", views: "0.8M views" },
             { platform: "facebook", label: "Facebook", count: "9.6K", views: null },
           ].map((p) => (
             <div
@@ -328,8 +349,8 @@ export default function MediaKit() {
         </div>
 
         <p className="mt-6 text-white/40 text-sm max-w-2xl mx-auto">
-          Views are lifetime totals per platform. A typical Instagram reel in
-          the last 12 months does{" "}
+          Lifetime views per platform. A typical Instagram reel in the last 12
+          months does{" "}
           <span className="text-white/70 font-medium">21,486 views</span>; the
           best has done 6.6M.
         </p>
