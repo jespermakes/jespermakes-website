@@ -5,9 +5,9 @@
  * mostly card titles — while being the natural landing page for "best X for Y"
  * searches. This gives each one something of its own to say.
  *
- * DRAFT COPY: written to match the site's voice, not dictated by Jesper. Read
- * it before it stays up. Every string is plain prose with no markup, so editing
- * is just editing.
+ * Drafted to match the site's voice and approved by Jesper on 2026-08-10, so
+ * treat it as his words rather than placeholder. Every string is plain prose
+ * with no markup — editing is just editing.
  *
  * Where a category is entirely ambassador products the intro says so up front.
  * That is honest, and it is also the disclosure that belongs next to the
