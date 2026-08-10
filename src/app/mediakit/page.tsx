@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Media kit | Jesper Makes",
   description:
-    "Audience stats, demographics, and brand partnership info for Jesper Makes. 543K+ followers across YouTube, Instagram, TikTok, and Facebook. Updated August 2026.",
+    "Audience stats, demographics, and brand partnership info for Jesper Makes. 543K+ followers across YouTube, Instagram, TikTok, and Facebook. 44.1M YouTube views, 16.4M Instagram views. Verified via platform APIs. Updated August 2026.",
   alternates: { canonical: "/mediakit" },
 };
 
@@ -113,10 +113,20 @@ const platforms = [
     name: "Instagram @jespermakes",
     platform: "instagram" as const,
     href: "/mediakit/instagram",
+    // Meta Graph API, 2026-08-10. Lifetime figures cover all 302 posts back to
+    // Sept 2020. Median reel is the honest expectation-setter: the lifetime
+    // total is top-heavy (two viral reels are 58% of it), so a sponsor dividing
+    // total by posts would get a number no paid reel will hit.
+    // Engagement = (likes + comments) / followers, averaged over the last 12
+    // months (45 posts), the standard industry method. Measured 4.83%; the page
+    // previously claimed 4.1%, which was understating it.
     stats: [
       { label: "Followers", value: "120K" },
-      { label: "Posts", value: "295" },
-      { label: "Engagement", value: "4.1%" },
+      { label: "Posts", value: "302" },
+      { label: "Total Views", value: "16.4M" },
+      { label: "Median Reel", value: "21.5K" },
+      { label: "Engagement", value: "4.8%" },
+      { label: "Lifetime Likes", value: "618K" },
     ],
   },
   {
@@ -278,33 +288,51 @@ export default function MediaKit() {
         <p className="text-white/40 text-sm uppercase tracking-widest mb-6">
           Media Kit
         </p>
+        {/* No blended cross-platform view total, deliberately. Followers are
+            comparable across platforms; views are not (a YouTube view is ~30s
+            of intent, an IG Reel view is any play). The per-platform rows below
+            carry the view numbers, which is both honest and more legible. */}
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
-          543K+ followers.{" "}
-          <span className="text-[#E8604C]">44.8M+ views.</span>
+          543K+ followers across five channels.
           <br />
-          Real builds, real audience.
+          <span className="text-[#E8604C]">Real builds, real audience.</span>
         </h1>
 
-        <div className="mt-10 flex flex-wrap justify-center gap-6 md:gap-10">
+        {/* Views are shown per platform, never merged into one cross-platform
+            figure: a YouTube view and an Instagram Reel view are not the same
+            unit, and a blended total is the number sponsors discount. */}
+        <div className="mt-10 grid gap-3 sm:gap-4 max-w-2xl mx-auto text-left">
           {[
-            { platform: "youtube", label: "YouTube", count: "360K" },
-            { platform: "instagram", label: "Instagram", count: "120K" },
-            { platform: "tiktok", label: "TikTok", count: "44K" },
-            { platform: "youtube", label: "In The Rough", count: "9.5K" },
-            { platform: "facebook", label: "Facebook", count: "9.6K" },
+            { platform: "youtube", label: "YouTube", count: "360K", views: "44.1M views" },
+            { platform: "instagram", label: "Instagram", count: "120K", views: "16.4M views" },
+            { platform: "tiktok", label: "TikTok", count: "44K", views: null },
+            { platform: "youtube", label: "In The Rough", count: "9.5K", views: "0.7M views" },
+            { platform: "facebook", label: "Facebook", count: "9.6K", views: null },
           ].map((p) => (
             <div
               key={p.label}
-              className="flex items-center gap-2 text-white/70"
+              className="flex items-center gap-3 text-white/70 border-b border-white/5 pb-3 last:border-0"
             >
-              <div className="text-[#E8604C]">
+              <div className="text-[#E8604C] shrink-0">
                 <PlatformIcon platform={p.platform} />
               </div>
-              <span className="font-semibold text-white">{p.count}</span>
-              <span className="text-sm">{p.label}</span>
+              <span className="text-sm flex-1">{p.label}</span>
+              <span className="font-semibold text-white tabular-nums">
+                {p.count}
+              </span>
+              <span className="text-white/30 text-sm w-28 text-right tabular-nums">
+                {p.views ?? ""}
+              </span>
             </div>
           ))}
         </div>
+
+        <p className="mt-6 text-white/40 text-sm max-w-2xl mx-auto">
+          Views are lifetime totals per platform. A typical Instagram reel in
+          the last 12 months does{" "}
+          <span className="text-white/70 font-medium">21,486 views</span>; the
+          best has done 6.6M.
+        </p>
 
         <div className="mt-8 flex items-center justify-center gap-4 text-white/30 text-xs">
           <span>Updated August 2026</span>
@@ -313,7 +341,7 @@ export default function MediaKit() {
               <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
               <circle cx="12" cy="12" r="10" />
             </svg>
-            Verified via YouTube Analytics API
+            Verified via YouTube Analytics API + Meta Graph API
           </span>
         </div>
       </section>

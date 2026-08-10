@@ -4,14 +4,24 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Instagram stats | Jesper Makes media kit",
   description:
-    "Instagram stats for Jesper Makes. 120K followers, 295 posts, 4.1% engagement rate.",
+    "Instagram stats for Jesper Makes. 120K followers, 302 posts, 16.4M lifetime views, median reel 21.5K views. Verified via the Meta Graph API.",
   alternates: { canonical: "/mediakit/instagram" },
 };
 
+// Meta Graph API, pulled 2026-08-10 across all 302 posts back to Sept 2020.
+// "Median Reel" is here on purpose. Lifetime views are top-heavy (two viral
+// reels account for 58% of the total), so anyone dividing 16.4M by 302 lands on
+// ~54K, which no paid reel will deliver. The median is the number a sponsor can
+// actually plan against, and quoting it is what keeps a first campaign from
+// becoming a disappointed one.
 const stats = [
   { label: "Followers", value: "120K" },
-  { label: "Posts", value: "295" },
-  { label: "Engagement Rate", value: "4.1%" },
+  { label: "Posts", value: "302" },
+  { label: "Lifetime Views", value: "16.4M" },
+  { label: "Median Reel", value: "21.5K views" },
+  { label: "Best Reel", value: "6.6M views" },
+  { label: "Engagement Rate", value: "4.8%" },
+  { label: "Lifetime Likes", value: "618K" },
 ];
 
 const contentTypes = [
