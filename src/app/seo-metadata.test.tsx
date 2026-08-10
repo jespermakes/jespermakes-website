@@ -178,6 +178,50 @@ describe("recovered legacy URLs", () => {
   });
 });
 
+describe("social profiles", () => {
+  const jsonLd = readFileSync(
+    join(appDir, "..", "components", "site-json-ld.tsx"),
+    "utf-8",
+  );
+  const about = read("about", "page.tsx");
+
+  it("never links @intherough — that is someone else's channel", () => {
+    // youtube.com/@intherough is a fashion and beauty channel (UCQbRcMvwqHaQ...)
+    // that happens to share the name. Jesper's second channel is @jespermakes2
+    // (UCFZp2UXxHU87bdNSCsg_L7g). The about page pointed at the wrong one.
+    // Matches a URL, not the word, so the comments explaining this do not count.
+    const wrongChannel = /youtube\.com\/@intherough/i;
+    for (const [name, source] of [
+      ["about page", about],
+      ["site-json-ld", jsonLd],
+    ] as const) {
+      expect(source, `${name} links the wrong channel`).not.toMatch(
+        wrongChannel,
+      );
+    }
+    expect(about).toContain("youtube.com/@jespermakes2");
+  });
+
+  it("sameAs covers every profile Jesper actually owns", () => {
+    for (const url of [
+      "youtube.com/@jespermakes",
+      "youtube.com/@jespermakes2",
+      "instagram.com/jespermakes",
+      "tiktok.com/@jespermakes",
+      "facebook.com/profile.php?id=100065584250685",
+    ]) {
+      expect(jsonLd, `sameAs missing ${url}`).toContain(url);
+    }
+  });
+
+  it("keeps the Person and Organization sameAs lists identical", () => {
+    // They described the same accounts but were duplicated by hand, so they
+    // could drift. One constant now feeds both.
+    expect(jsonLd).toContain("sameAs: PROFILES");
+    expect(jsonLd.match(/sameAs: PROFILES/g)?.length).toBe(2);
+  });
+});
+
 describe("lamp designer headings", () => {
   // /lamp-designer renders one of two branches. "start" is the initial state,
   // so that branch is what SSR emits and what a crawler sees — putting the h1

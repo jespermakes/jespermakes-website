@@ -108,8 +108,11 @@ export default function About() {
               </p>
               <p>
                 I also have a second channel called{" "}
+                {/* @jespermakes2, NOT @intherough — that handle belongs to an
+                    unrelated fashion and beauty channel that happens to share
+                    the name. This link sent viewers to a stranger. */}
                 <a
-                  href="https://youtube.com/@intherough"
+                  href="https://youtube.com/@jespermakes2"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-forest hover:text-forest-dark transition-colors font-medium"
