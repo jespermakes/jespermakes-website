@@ -103,6 +103,20 @@ curl -o /dev/null -s -w "%{http_code}\n" https://jespermakes.com/
 
 It must return 200. If it doesn't, alert Jesper immediately with the URL and status code. Do not attempt to "fix" it without confirmation.
 
+**Do not use the GitHub commit status to confirm a production deploy.** A
+fast-forward merge puts the same SHA on main that the branch already had, so
+that commit is *already* carrying a green status from its preview build. Polling
+it returns `success` instantly and you will report a deploy that has not
+happened — production keeps serving the old build for another minute.
+
+Confirm by looking for your actual change in the live HTML, with a cache-buster:
+
+```bash
+curl -s "https://jespermakes.com/about?cb=$RANDOM" | grep "the-thing-you-changed"
+```
+
+A 200 only proves the site is up, not that it is running your code.
+
 If `./scripts/postflight.sh` exists in the repo, run that instead — it covers more URLs.
 
 ### 8. Clean up the branch
