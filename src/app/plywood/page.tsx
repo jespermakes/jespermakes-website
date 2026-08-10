@@ -3,11 +3,11 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Plywood | Jesper Makes",
+  title: "Birch and spruce plywood, done properly",
   description:
     "A maker's guide to plywood. What it is, which kind to buy, and the three WISA panels I use for every serious project.",
   openGraph: {
-    title: "Plywood | Jesper Makes",
+    title: "Birch and spruce plywood, done properly",
     description:
       "A maker's guide to plywood. What it is, which kind to buy, and the three WISA panels I use for every serious project.",
     images: ["/images/plywood/plywood-hub-hero.jpg"],

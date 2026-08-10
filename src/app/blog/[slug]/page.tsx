@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { db } from "@/lib/db";
-import { pageTitle, ogImages } from "@/lib/seo";
+import { pageTitle, ogImages, BRAND } from "@/lib/seo";
 import { blogPosts, images } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { SmartImage } from "@/components/smart-image";
@@ -19,10 +19,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     .limit(1);
 
   const post = rows[0];
-  if (!post) return { title: "Not found — Jesper Makes" };
+  if (!post) return { title: "Not found | Jesper Makes" };
 
   return {
-    title: pageTitle(post.title, "Jesper Makes"),
+    title: pageTitle(post.title, BRAND),
     description: post.description,
     alternates: {
       canonical: `/blog/${post.slug}`,

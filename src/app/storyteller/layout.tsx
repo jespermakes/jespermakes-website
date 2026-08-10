@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "The Storyteller Engine — Jesper Makes",
+  title: "The Storyteller Engine | Jesper Makes",
   description:
     "Find the hidden story inside your project. AI-powered story excavation, story cards, arc mapping, and creator DNA analysis for makers and YouTubers.",
   alternates: {

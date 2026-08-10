@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About — Jesper Makes",
+  title: "About Jesper, a Danish woodworker on Fyn",
   description:
     "Danish woodworker. Started with pallet wood in 2020. Now 357K subscribers, a workshop on Fyn, and a mission to get more people making things.",
   alternates: { canonical: "/about" },

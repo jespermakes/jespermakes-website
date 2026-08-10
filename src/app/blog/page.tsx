@@ -8,7 +8,7 @@ import { SmartImage } from "@/components/smart-image";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Blog — Jesper Makes",
+  title: "Build guides and workshop notes | Jesper Makes",
   description:
     "Woodworking tips, guides, and project ideas from a Danish maker. Honest, practical, no fluff.",
   alternates: {

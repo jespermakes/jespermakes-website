@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — Jesper Makes",
+  title: "Terms of service | Jesper Makes",
   alternates: { canonical: "/terms" },
 };
 

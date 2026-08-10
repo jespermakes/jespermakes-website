@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Reset Password — Jesper Makes",
+  title: "Reset password | Jesper Makes",
   robots: { index: false, follow: false },
 };
 

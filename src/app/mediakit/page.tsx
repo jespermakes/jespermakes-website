@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Media Kit - Jesper Makes",
+  title: "Media kit | Jesper Makes",
   description:
     "Audience stats, demographics, and brand partnership info for Jesper Makes. 543K+ followers across YouTube, Instagram, TikTok, and Facebook. Updated August 2026.",
   alternates: { canonical: "/mediakit" },

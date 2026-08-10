@@ -653,7 +653,7 @@ function PlaybookTab() {
     },
     {
       t: "The Banned List",
-      b: 'Motivational slogans ("Do What You Can\'t" — 68k). Diary framing ("A Build Diary" — 72k). Category descriptions ("Workshop Tour"). Anything that could be a LinkedIn post.',
+      b: 'Motivational slogans ("Do What You Can\'t", 68k). Diary framing ("A Build Diary", 72k). Category descriptions ("Workshop Tour"). Anything that could be a LinkedIn post.',
       h: "If it sounds meaningful to you but useless to a stranger, it's the wrong title.",
     },
   ];

@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { ProductJsonLd } from "@/components/product-json-ld";
 
 export const metadata: Metadata = {
-  title: "Cone Lamp Laser Cut File — SVG Download — Jesper Makes",
+  title: "Cone Lamp laser cut file: instant SVG download",
   description:
     "SVG laser cut file for the Jesper Makes Cone Lamp. All parts included: stretchers, rings in 5 sizes, top and bottom circles. Instant download.",
   openGraph: {
-    title: "Cone Lamp Laser Cut File — SVG Download",
+    title: "Cone Lamp laser cut file: instant SVG download",
     description:
       "SVG laser cut file for the Jesper Makes Cone Lamp. All parts included.",
     url: "https://jespermakes.com/shop/cone-lamp-laser",

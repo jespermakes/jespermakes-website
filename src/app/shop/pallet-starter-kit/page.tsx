@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "The Pallet Builder's Starter Kit — Jesper Makes",
+  title: "The Pallet Builder's Starter Kit | Jesper Makes",
   description:
     "5 complete build guides written the way Jesper actually builds. Real measurements, honest about what goes wrong.",
   alternates: { canonical: "/shop/pallet-starter-kit" },

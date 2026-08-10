@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { SupportButtons } from "@/components/shop/support-buttons";
 
 export const metadata: Metadata = {
-  title: "Support the workshop — Jesper Makes",
+  title: "Support the workshop | Jesper Makes",
   description:
     "The plans are free and stay free. If they save you time, you can leave something in the jar.",
   alternates: { canonical: "https://jespermakes.com/support" },

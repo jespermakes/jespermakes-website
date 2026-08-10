@@ -11,7 +11,7 @@ import { FilterBar } from "@/components/marketplace/filter-bar";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Marketplace — Community Designs | Jesper Makes",
+  title: "Marketplace: community designs | Jesper Makes",
   description:
     "Maker plan exchange. Browse community CNC and laser designs, open them in the Studio, remix, and share back.",
   alternates: { canonical: "/marketplace" },

@@ -1,13 +1,13 @@
 /**
  * Intro copy for each tool category page.
  *
- * The category pages were the thinnest thing on the site — 150-290 words of
- * mostly card titles — while being the natural landing page for "best X for Y"
+ * The category pages were the thinnest thing on the site (150-290 words of
+ * mostly card titles) while being the natural landing page for "best X for Y"
  * searches. This gives each one something of its own to say.
  *
  * Drafted to match the site's voice and approved by Jesper on 2026-08-10, so
  * treat it as his words rather than placeholder. Every string is plain prose
- * with no markup — editing is just editing.
+ * with no markup, so editing is just editing.
  *
  * Where a category is entirely ambassador products the intro says so up front.
  * That is honest, and it is also the disclosure that belongs next to the
@@ -16,10 +16,10 @@
 
 export const toolCategoryIntros: Record<string, string> = {
   festool:
-    "Festool makes up a large part of this workshop, and I am an ambassador for them in Denmark — worth knowing before you read a word of this. The system argument is the real one: a single battery platform, a dust extractor that talks to the tools, and rails that fit across the range. It is expensive kit. Whether that trade makes sense depends entirely on how many hours a week you spend behind the tool. Each page below has what I actually use it for.",
+    "Festool makes up a large part of this workshop, and I am an ambassador for them in Denmark, which is worth knowing before you read a word of this. The system argument is the real one: a single battery platform, a dust extractor that talks to the tools, and rails that fit across the range. It is expensive kit. Whether that trade makes sense depends entirely on how many hours a week you spend behind the tool. Each page below has what I actually use it for.",
 
   "power-tools":
-    "The machines that are not part of the Festool system but have earned their floor space anyway. Bandsaw, drum sander, cyclone extraction, the cordless nailer. This is the heavy, dusty, repetitive end of the work — the jobs that would take an afternoon by hand and ten minutes by machine. Most of these arrived because a specific build demanded them rather than because I planned the shop around them.",
+    "The machines that are not part of the Festool system but have earned their floor space anyway. Bandsaw, drum sander, cyclone extraction, the cordless nailer. This is the heavy, dusty, repetitive end of the work: the jobs that would take an afternoon by hand and ten minutes by machine. Most of these arrived because a specific build demanded them rather than because I planned the shop around them.",
 
   "hand-tools":
     "Chisels, saws, axes, mallets. Tools that need no power and do not care whether the extension lead reaches. A lot of the barn work on South Fyn is cut by hand, so this list keeps growing. Good hand tools also last decades and improve with use, which quietly makes them the cheapest things in the workshop over their lifetime.",

@@ -8,7 +8,7 @@ import { NewsletterToggle } from "./newsletter-toggle";
 import { ChangePasswordForm } from "./change-password-form";
 
 export const metadata = {
-  title: "My Account — Jesper Makes",
+  title: "My account | Jesper Makes",
   robots: { index: false, follow: false },
 };
 
@@ -40,7 +40,7 @@ const PRODUCT_INFO: Record<
   },
   "workshop-tee": {
     name: "Jesper Makes Workshop Tee",
-    description: "Unisex black tee — printed & shipped by Printful",
+    description: "Unisex black tee, printed and shipped by Printful",
   },
 };
 

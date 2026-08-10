@@ -1,28 +1,30 @@
 /**
  * Title helpers.
  *
- * Google shows roughly 60 characters of a title before it truncates. Titles
- * here are assembled as `<thing> — <context> — Jesper Makes`, which pushed a
- * dozen blog posts and tool pages past that: the brand suffix survived and the
- * end of the actual title got cut.
+ * Two rules here, and the first one is Jesper's:
  *
- * `pageTitle` keeps the most specific part and drops decoration from the right
- * until the whole thing fits. If the bare subject is itself over the limit it
- * is returned intact — Google truncating a real sentence reads better than us
- * cutting it mid-word, and the fix for those is a shorter post title.
+ * 1. No em dashes. Anywhere. A separator inside a title template is worth
+ *    hundreds of pages, and joining with " — " put an em dash on 116 of the
+ *    site's 137 titles, two of them on every tool category page. The separator
+ *    is a pipe.
+ *
+ * 2. Titles should read like a person wrote them. A title is the one line of
+ *    the site most people ever see, so "Festool tools I actually use" beats
+ *    "Festool | Tools" even though both fit. The stock pattern of stacking
+ *    breadcrumbs into a title is the thing that makes a site look generated.
+ *
+ * Google shows roughly 60 characters before truncating, so `pageTitle` keeps
+ * the subject and drops the brand rather than letting the end of a real
+ * sentence get cut.
  */
 
 export const TITLE_LIMIT = 60;
 
-/**
- * The site-wide share image.
- *
- * Next.js does not deep-merge `openGraph`: a page that sets its own replaces
- * the root object entirely, images included. So a blog post with no hero, or
- * one of the 45 tools with no product shot, silently lost the default card
- * even once the root layout had one. Any page that overrides `openGraph` and
- * might not have its own picture should fall back to this.
- */
+/** The one separator used across the site. Never an em dash. */
+export const TITLE_SEPARATOR = " | ";
+
+export const BRAND = "Jesper Makes";
+
 export interface OgImage {
   url: string;
   alt: string;
@@ -37,7 +39,11 @@ export const DEFAULT_OG_IMAGE: OgImage = {
   alt: "Jesper marking out a board in his workshop",
 };
 
-/** The page's own image if it has one, otherwise the site default. */
+/**
+ * Next.js does not deep-merge `openGraph`: a page that sets its own replaces
+ * the root object entirely, images included. Any page that overrides it and
+ * might not have its own picture should fall back to this.
+ */
 export function ogImages(
   url: string | null | undefined,
   alt: string,
@@ -48,18 +54,37 @@ export function ogImages(
 /**
  * Build a page title from a subject plus optional suffix segments, ordered
  * least-important-last. Segments are dropped from the right while the result
- * is over the limit.
+ * is over the limit; an over-long subject is returned intact, because Google
+ * truncating a real sentence beats us cutting it mid-word.
  *
- *   pageTitle("Festool DOMINO XL DF 700 EQ Joining Machine", "Tools", "Jesper Makes")
- *     -> "Festool DOMINO XL DF 700 EQ Joining Machine" (both suffixes dropped)
- *   pageTitle("Blog", "Jesper Makes")
- *     -> "Blog — Jesper Makes"
+ *   pageTitle("Festool DOMINO XL DF 700 EQ Joining Machine", BRAND)
+ *     -> "Festool DOMINO XL DF 700 EQ Joining Machine"
+ *   pageTitle("Get in touch", BRAND)
+ *     -> "Get in touch | Jesper Makes"
  */
 export function pageTitle(subject: string, ...suffixes: string[]): string {
   const base = subject.trim();
   for (let keep = suffixes.length; keep > 0; keep--) {
-    const candidate = [base, ...suffixes.slice(0, keep)].join(" — ");
+    const candidate = [base, ...suffixes.slice(0, keep)].join(TITLE_SEPARATOR);
     if (candidate.length <= TITLE_LIMIT) return candidate;
   }
   return base;
 }
+
+/**
+ * Titles for the tool category pages, written out rather than assembled from
+ * the category name. "Festool | Tools | Jesper Makes" is three nouns and no
+ * information; "Festool tools I actually use" tells you whose opinion you are
+ * about to read, which is the whole reason anyone lands there.
+ */
+export const CATEGORY_TITLES: Record<string, string> = {
+  festool: "Festool tools I actually use",
+  "power-tools": "Power tools that earn their space",
+  "hand-tools": "Hand tools for joinery and timber framing",
+  finishing: "Wood finishes I keep on the shelf",
+  plywood: "Birch and spruce plywood I build with",
+  "3d-printing-laser": "3D printers and lasers in the workshop",
+  "workshop-essentials": "Clamps, squares and workshop basics",
+  "office-youtube-gear": "Camera and studio gear I film with",
+  "gardening-outdoors": "Outdoor gear around the workshop",
+};

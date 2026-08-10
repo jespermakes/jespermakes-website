@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "The Barn — Øhavsladen — Jesper Makes",
+  title: "Øhavsladen: rebuilding an 1850s barn on Fyn",
   description:
     "We are rebuilding an 1850s barn on South Fyn as a hand-cut timber frame workshop. Axes, chisels, oak pegs, and The Northmen. Follow the build.",
   alternates: { canonical: "https://jespermakes.com/barn" },

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Instagram @jespermakes - Media Kit - Jesper Makes",
+  title: "Instagram stats | Jesper Makes media kit",
   description:
     "Instagram stats for Jesper Makes. 120K followers, 295 posts, 4.1% engagement rate.",
   alternates: { canonical: "/mediakit/instagram" },

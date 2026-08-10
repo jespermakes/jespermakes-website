@@ -9,7 +9,7 @@ import { NotesSignupForm } from "@/components/newsletter/notes-signup-form";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Tools & Links — Jesper Makes",
+  title: "The tools I actually use | Jesper Makes",
   description:
     "The tools, materials and products I actually use in my workshop. Honest recommendations from years of building.",
   alternates: { canonical: "/tools" },

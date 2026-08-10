@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
-import { pageTitle, ogImages } from "@/lib/seo";
+import { pageTitle, ogImages, BRAND } from "@/lib/seo";
 import { toolItems, images } from "@/lib/db/schema";
 import type { BuyLink, ColorSwatch, Spec } from "@/lib/db/schema";
 import { eq, and, asc } from "drizzle-orm";
@@ -29,13 +29,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const imgUrl = tool.image ?? undefined;
 
   return {
-    title: pageTitle(tool.name, "Tools", "Jesper Makes"),
+    // Just the tool and the brand. The old middle "Tools" segment carried no
+    // information and pushed six titles past the truncation limit.
+    title: pageTitle(tool.name, BRAND),
     description: tool.description,
     alternates: {
       canonical: `/tools/${tool.slug}`,
     },
     openGraph: {
-      title: pageTitle(tool.name, "Jesper Makes"),
+      title: pageTitle(tool.name, BRAND),
       description: tool.description,
       url: `https://jespermakes.com/tools/${tool.slug}`,
       type: "website",

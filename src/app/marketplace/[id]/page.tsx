@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps) {
     .limit(1);
   if (!row) return { title: "Marketplace Design" };
   return {
-    title: `${row.name} — Marketplace`,
+    title: `${row.name} | Marketplace`,
     description: (row.description || "").slice(0, 160) || "Community design on Marketplace.",
     alternates: { canonical: `/marketplace/${id}` },
   };

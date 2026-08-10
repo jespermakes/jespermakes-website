@@ -6,7 +6,7 @@ import { users } from "@/lib/db/schema";
 import { ProfileForm } from "./profile-form";
 
 export const metadata = {
-  title: "Profile — My Account",
+  title: "Profile | My account",
 };
 
 export default async function ProfileEditPage() {

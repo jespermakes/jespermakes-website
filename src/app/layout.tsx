@@ -25,7 +25,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://jespermakes.com"),
-  title: "Jesper Makes — Build something real",
+  title: "Jesper Makes | Build something real",
   description:
     "Danish woodworker and maker. Real build guides, honest measurements, no shortcuts.",
   // No `alternates.canonical` here on purpose. Next.js inherits root metadata
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: "Jesper Makes",
     locale: "en_GB",
     url: "https://jespermakes.com",
-    title: "Jesper Makes — Build something real",
+    title: "Jesper Makes | Build something real",
     description:
       "Danish woodworker and maker. Real build guides, honest measurements, no shortcuts.",
     images: [
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jesper Makes — Build something real",
+    title: "Jesper Makes | Build something real",
     description:
       "Danish woodworker and maker. Real build guides, honest measurements, no shortcuts.",
     images: ["/og-default.jpg"],

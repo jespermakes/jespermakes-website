@@ -8,7 +8,7 @@ import { notifications } from "@/lib/db/schema";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Notifications — My Account",
+  title: "Notifications | My account",
 };
 
 export default async function NotificationsPage() {

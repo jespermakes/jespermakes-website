@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { readFileSync, existsSync } from "fs";
+import { readFileSync, existsSync, readdirSync } from "fs";
 import { join } from "path";
 
 /**
@@ -175,6 +175,34 @@ describe("recovered legacy URLs", () => {
         `redirect points at unknown category "${slug}"`,
       ).toContain(slug);
     }
+  });
+});
+
+describe("no em dashes in page titles", () => {
+  // Jesper's standing rule, and the one that is easiest to break by accident:
+  // a title is written once in a template and lands on every page it covers.
+  // Walk every metadata title literal in the app and check the character.
+  const files: string[] = [];
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (/\.tsx?$/.test(entry.name) && !entry.name.includes(".test."))
+        files.push(full);
+    }
+  };
+  walk(appDir);
+
+  it("finds no em dash in any title: literal", () => {
+    const offenders: string[] = [];
+    for (const file of files) {
+      for (const line of readFileSync(file, "utf-8").split("\n")) {
+        if (/^\s*title:/.test(line) && line.includes("—")) {
+          offenders.push(`${file.replace(appDir, "src/app")}: ${line.trim()}`);
+        }
+      }
+    }
+    expect(offenders, offenders.join("\n")).toEqual([]);
   });
 });
 

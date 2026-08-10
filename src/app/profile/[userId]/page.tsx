@@ -28,10 +28,10 @@ export async function generateMetadata({ params }: PageProps) {
     .from(users)
     .where(eq(users.id, userId))
     .limit(1);
-  if (!u) return { title: "Maker — Jesper Makes" };
+  if (!u) return { title: "Maker | Jesper Makes" };
   const dn = publicDisplayName(u);
   return {
-    title: `${dn} — Jesper Makes`,
+    title: `${dn} | Jesper Makes`,
     description: `Designs by ${dn} on Marketplace.`,
     alternates: { canonical: `/profile/${userId}` },
   };

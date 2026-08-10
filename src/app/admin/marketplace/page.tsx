@@ -8,7 +8,7 @@ import { ModerationActions } from "./moderation-actions";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Workbench Moderation — Admin",
+  title: "Workbench moderation | Admin",
 };
 
 export default async function MarketplaceModerationPage() {

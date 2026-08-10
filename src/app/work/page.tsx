@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Work — Jesper Makes",
+  title: "Furniture and builds from the workshop | Jesper Makes",
   description:
     "Selected furniture and builds by Jesper Kjærgaard: designed on Fyn, Denmark, built from honest materials, filmed along the way.",
   alternates: { canonical: "https://jespermakes.com/work" },

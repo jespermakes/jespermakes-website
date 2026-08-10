@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
-import { pageTitle } from "@/lib/seo";
+import { pageTitle, BRAND, CATEGORY_TITLES } from "@/lib/seo";
 import { toolCategoryIntros } from "@/data/tool-category-intros";
 import { toolItems, images } from "@/lib/db/schema";
 import { eq, and, asc } from "drizzle-orm";
@@ -23,7 +23,9 @@ export async function generateMetadata({ params }: { params: { categorySlug: str
   const intro = toolCategoryIntros[params.categorySlug];
 
   return {
-    title: pageTitle(categoryName, "Tools", "Jesper Makes"),
+    // Hand-written where we have one, so the title says something. Falls back
+    // to the DB category name for any category added later.
+    title: pageTitle(CATEGORY_TITLES[params.categorySlug] ?? categoryName, BRAND),
     // These pages carried no description at all, so Google was inventing one
     // from the card grid. The intro's first sentence is a better answer.
     description: intro

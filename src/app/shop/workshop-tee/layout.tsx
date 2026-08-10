@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ProductJsonLd } from "@/components/product-json-ld";
 
 export const metadata: Metadata = {
-  title: "Workshop Tee — Jesper Makes",
+  title: "Workshop Tee | Jesper Makes",
   description:
     "Unisex black tee with the Jesper Makes Workshop logo. Bella+Canvas 3001, printed on demand and shipped worldwide.",
   openGraph: {

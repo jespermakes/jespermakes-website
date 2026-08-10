@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Cone Lamp Designer — Jesper Makes",
+  title: "Cone Lamp Designer: free SVG template",
   description:
     "Build the pinecone pendant lamp from any plywood thickness. Pick your stock, download a cut-ready SVG of all 159 pieces. Free, forever.",
   alternates: {

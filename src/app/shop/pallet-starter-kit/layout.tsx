@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { ProductJsonLd } from "@/components/product-json-ld";
 
 export const metadata: Metadata = {
-  title: "The Pallet Builder's Starter Kit — Jesper Makes",
+  title: "The Pallet Builder's Starter Kit | Jesper Makes",
   description:
     "5 build guides and tool recommendations to start building with pallet wood. From Jesper Makes, the woodworker who started with pallets.",
   openGraph: {
-    title: "The Pallet Builder's Starter Kit — Jesper Makes",
+    title: "The Pallet Builder's Starter Kit | Jesper Makes",
     description:
       "5 build guides and tool recommendations to start building with pallet wood.",
     url: "https://jespermakes.com/shop/pallet-starter-kit",

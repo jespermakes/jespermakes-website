@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "YouTube @jespermakes - Media Kit - Jesper Makes",
+  title: "YouTube stats | Jesper Makes media kit",
   description:
     "YouTube channel stats for Jesper Makes. 360K subscribers, 44.1M views, 132 videos.",
   alternates: { canonical: "/mediakit/youtube" },

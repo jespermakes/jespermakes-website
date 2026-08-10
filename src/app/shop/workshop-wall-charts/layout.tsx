@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { ProductJsonLd } from "@/components/product-json-ld";
 
 export const metadata: Metadata = {
-  title: "Jesper's Cheat Sheets — 8 Printable Workshop Wall Charts",
+  title: "Jesper's Cheat Sheets: 8 printable wall charts",
   description:
     "8 printable reference sheets for your workshop wall. Wood species, sandpaper grits, joinery, screws, metric/imperial conversions, and more. Instant PDF download.",
   openGraph: {
-    title: "Jesper's Cheat Sheets — 8 Printable Workshop Wall Charts",
+    title: "Jesper's Cheat Sheets: 8 printable wall charts",
     description:
       "8 printable reference sheets for your workshop wall. Wood species, sandpaper grits, joinery, screws, and more.",
     url: "https://jespermakes.com/shop/workshop-wall-charts",

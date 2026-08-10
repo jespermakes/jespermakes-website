@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Page not found — Jesper Makes",
+  title: "Page not found | Jesper Makes",
   description:
     "That page is not here any more. The tools, the plans and the blog are.",
   robots: { index: false, follow: true },
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 /* A dead end used to be a bare Next.js 404. The site moved from Squarespace and
  * then Beacons, so some of the URLs that land here are old links from search
- * results or someone's bookmarks — the visitor is real and came looking for
+ * results or someone's bookmarks, so the visitor is real and came looking for
  * something specific. Give them the shelves instead of an error code. */
 
 const destinations = [

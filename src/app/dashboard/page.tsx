@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth";
 import RevenueChart from "./revenue-chart";
 
 export const metadata: Metadata = {
-  title: "Dashboard — Jesper Makes",
+  title: "Dashboard | Jesper Makes",
   robots: { index: false, follow: false },
 };
 

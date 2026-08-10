@@ -6,7 +6,7 @@ import { desc } from "drizzle-orm";
 import LogViewer from "./log-viewer";
 
 export const metadata = {
-  title: "Daily Logs — Jesper Makes",
+  title: "Daily logs | Jesper Makes",
 };
 
 export const dynamic = "force-dynamic";

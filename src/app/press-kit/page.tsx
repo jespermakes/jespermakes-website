@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Press Kit — Jesper Makes",
+  title: "Press kit: photos and logos | Jesper Makes",
   description:
     "Download logos, photos, and assets for press and media use. Free to use with credit.",
   alternates: { canonical: "/press-kit" },

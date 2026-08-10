@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { ProductJsonLd } from "@/components/product-json-ld";
 
 export const metadata: Metadata = {
-  title: "Cone Lamp 3D Print Files — STL Download — Jesper Makes",
+  title: "Cone Lamp 3D print files: instant STL download",
   description:
     "Complete 3D print file pack for the Jesper Makes Cone Lamp. STL files for all parts plus a full PDF instruction guide. Instant download.",
   openGraph: {
-    title: "Cone Lamp 3D Print Files — STL Download",
+    title: "Cone Lamp 3D print files: instant STL download",
     description:
       "Complete 3D print STL file pack for the Jesper Makes Cone Lamp with PDF instructions.",
     url: "https://jespermakes.com/shop/cone-lamp-3dprint",
