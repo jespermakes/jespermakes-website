@@ -58,11 +58,12 @@ export default async function RubioShopPage() {
       </header>
 
       <section className="mx-auto max-w-6xl px-5 pb-16 pt-14 md:pt-20">
-        {/* No year here. Nothing on record establishes when the ambassadorship
-          * actually started, and Rubio would be the first to notice a wrong
-          * date on a page about them. */}
+        {/* 2022 is verified, not assumed. Anders Rysgaard of Rubio Monocoat
+          * Denmark first wrote to Jesper on 16 Nov 2022 after seeing him use
+          * Oil Plus 2C in a video, and Jesper confirms the ambassadorship
+          * started late that year. It is his longest running one. */}
         <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#fcc52c]">
-          Rubio Monocoat ambassador
+          Rubio Monocoat ambassador since 2022
         </p>
         <h1 className="max-w-3xl font-serif text-4xl font-medium leading-[1.08] md:text-6xl">
           The finishes I actually put on my own work.
