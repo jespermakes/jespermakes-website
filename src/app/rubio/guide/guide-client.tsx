@@ -859,11 +859,10 @@ export default function RubioGuideClient({
                   >
                     More about it first
                   </Link>
-                  {buyTargets[product].priceLabel && (
-                    <span className="text-sm text-white/45">
-                      from {buyTargets[product].priceLabel}
-                    </span>
-                  )}
+                  {/* No price here on purpose. The only figure we have is the
+                    * cheapest variant, which is a 6 mL sample, and putting
+                    * "from DKK 15" next to "1.3 L" reads as the price of the
+                    * 1.3 L tin. Rubio's page has the real per-size price. */}
                 </div>
                 <p className="mt-4 text-xs text-white/35">
                   Affiliate link. Costs you nothing extra, supports the channel.
