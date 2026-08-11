@@ -70,12 +70,20 @@ export default function FacebookPage() {
             that prefers the Facebook platform. The page also functions as a discussion
             hub where followers share their own projects and ask questions.
           </p>
+          {/* The page moved to a daily publishing cadence in August 2026 under
+              a distribution arrangement. Deliberately not named here: who
+              operates the page is a commercial detail, not something a media
+              kit reader needs.
+
+              This matters for how the numbers are read. The figures above are a
+              BASELINE measured before daily posting was fully underway, not a
+              steady state, and they should rise sharply. Re-measure before
+              quoting them to anyone; on this page they are floor, not ceiling. */}
           <p className="text-white/70 leading-relaxed mt-4">
-            It is the fastest-growing channel by output: 29 posts so far in 2026,
-            against 23 in all of 2025 and 11 in 2024, now running at close to
-            daily. Every post is video. It is offered as an add-on to a YouTube
-            sponsorship rather than a standalone buy, and the numbers above are
-            what that add-on is worth.
+            Output is climbing fast: 11 posts in 2024, 23 in 2025, 29 by August
+            2026, and the page moved to daily publishing in August. Every post
+            is video. The figures above were measured at the start of that
+            change, so treat them as a floor rather than a current reading.
           </p>
         </div>
 

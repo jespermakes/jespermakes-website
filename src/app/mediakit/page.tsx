@@ -153,7 +153,7 @@ const platforms = [
       { label: "Engagements", value: "354", sub: "28d" },
       { label: "Posts 2026", value: "29" },
     ],
-    note: "Fastest-growing channel by output, now near-daily",
+    note: "Now publishing daily. Figures are a floor, not a steady state",
   },
 ];
 
