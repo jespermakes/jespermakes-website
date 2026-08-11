@@ -180,11 +180,19 @@ export function MobileNav({
             </Link>
 
             <Link
-              href="/rubio"
+              href="/rubio/guide"
               onClick={() => setOpen(false)}
               className="block py-3 text-lg text-cream hover:text-amber transition-colors border-b border-cream/10"
             >
               🎨 Rubio Finish Guide
+            </Link>
+
+            <Link
+              href="/rubio"
+              onClick={() => setOpen(false)}
+              className="block py-3 text-lg text-cream hover:text-amber transition-colors border-b border-cream/10"
+            >
+              🪵 Rubio Shop
             </Link>
 
             {/* Lamp Designer hidden from nav until it is finished (page still reachable at /lamp-designer) */}

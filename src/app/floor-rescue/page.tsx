@@ -45,10 +45,17 @@ export default function FloorRescuePage() {
           <p>
             Not sure what your floor actually needs? I built a guide for exactly that:{" "}
             <a
-              href="/rubio"
+              href="/rubio/guide"
               className="text-[#fcc52c] underline decoration-[#fcc52c]/40 hover:decoration-[#fcc52c]"
             >
               the Rubio guide
+            </a>
+            . Everything I use from them is in{" "}
+            <a
+              href="/rubio"
+              className="text-[#fcc52c] underline decoration-[#fcc52c]/40 hover:decoration-[#fcc52c]"
+            >
+              the Rubio shop
             </a>
             .
           </p>

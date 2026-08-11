@@ -9,7 +9,8 @@ export type ModuleKind =
   | "blog"
   | "shop"
   | "youtube"
-  | "newsletter";
+  | "newsletter"
+  | "rubio";
 
 export const MODULE_KINDS: ModuleKind[] = [
   "hero",
@@ -21,6 +22,7 @@ export const MODULE_KINDS: ModuleKind[] = [
   "shop",
   "youtube",
   "newsletter",
+  "rubio",
 ];
 
 export const MODULE_LABELS: Record<ModuleKind, string> = {
@@ -33,6 +35,7 @@ export const MODULE_LABELS: Record<ModuleKind, string> = {
   shop: "Shop products",
   youtube: "YouTube videos",
   newsletter: "Newsletter",
+  rubio: "Rubio Monocoat",
 };
 
 export interface Cta {
@@ -139,6 +142,22 @@ export interface NewsletterData {
   theme?: ModuleTheme;
 }
 
+/** Rubio Monocoat band on the homepage. Leads on Matcha Green, the limited
+ * edition colour Rubio developed with Jesper, and sends people into the shop.
+ * Rendered in Rubio's own brand palette so it reads as a partner block. */
+export interface RubioData {
+  caps?: string;
+  title: string;
+  body: string;
+  image?: string;
+  imageAlt?: string;
+  videoEmbedUrl?: string;
+  ctaLabel?: string;
+  ctaUrl?: string;
+  secondaryLabel?: string;
+  secondaryUrl?: string;
+}
+
 export type ModuleData =
   | HeroData
   | AboutData
@@ -148,7 +167,8 @@ export type ModuleData =
   | BlogData
   | ShopData
   | YoutubeData
-  | NewsletterData;
+  | NewsletterData
+  | RubioData;
 
 export interface PageSection {
   id: string;
@@ -240,6 +260,16 @@ export function defaultDataFor(kind: ModuleKind): ModuleData {
         buttonLabel: "Subscribe",
         placeholder: "your@email.com",
         showSubscriberCount: true,
+      };
+    case "rubio":
+      return {
+        caps: "Rubio Monocoat",
+        title: "They let me make a colour",
+        body: "Matcha Green is a limited edition Oil Plus 2C that Rubio and I made together.",
+        ctaLabel: "See the colour",
+        ctaUrl: "/rubio/matcha-green",
+        secondaryLabel: "The whole Rubio shelf",
+        secondaryUrl: "/rubio",
       };
   }
 }

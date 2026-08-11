@@ -659,3 +659,64 @@ export const competitionEntries = pgTable("competition_entries", {
     .notNull()
     .defaultNow(),
 });
+
+// ============================================================================
+// Rubio shop
+// ============================================================================
+//
+// A curated storefront for the Rubio Monocoat range that checks out on Rubio's
+// own stores rather than ours. Two affiliate programs sit behind it and they
+// are unrelated (DR-199): the US runs BixGrow with a bg_ref param, Europe runs
+// UpPromote with an sca_ref param.
+//
+// Europe is one Shopify store served on per-country domains (.dk, .co.uk, .de,
+// .fr, .nl, .se), verified by identical product and variant ids across all of
+// them with different local prices. So one EU handle covers every European
+// domain and the visitor is sent to their own currency.
+//
+// Handles do NOT line up between the US and EU stores (10 of 83 match), because
+// the US sells bundles where Europe sells individual colours. Both handles are
+// therefore curated by hand rather than matched automatically.
+
+export const rubioProducts = pgTable("rubio_products", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
+  title: text("title").notNull(),
+  blurb: text("blurb").notNull().default(""),
+  longDescription: text("long_description"),
+  jesperNote: text("jesper_note"),
+
+  category: text("category").notNull().default("finishing"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  featured: boolean("featured").notNull().default(false),
+  hidden: boolean("hidden").notNull().default(false),
+
+  // Store handles. Null means "not sold in that region", which the UI has to
+  // say out loud rather than silently dropping the buy button.
+  usHandle: text("us_handle"),
+  euHandle: text("eu_handle"),
+
+  image: text("image"),
+  gallery: jsonb("gallery").notNull().default(sql`'[]'::jsonb`),
+  // Embedded video for the product page. Matcha Green has an Instagram reel
+  // from the build that produced the colour.
+  videoEmbedUrl: text("video_embed_url"),
+
+  // { "<regionKey>": { amount: "45.05", currency: "EUR", available: true } }
+  // Refreshed by the sync script off each storefront's public products.json.
+  prices: jsonb("prices").notNull().default(sql`'{}'::jsonb`),
+  lastSyncedAt: timestamp("last_synced_at", { mode: "date" }),
+  syncError: text("sync_error"),
+
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+});
+
+export type RubioProduct = typeof rubioProducts.$inferSelect;
+export type NewRubioProduct = typeof rubioProducts.$inferInsert;
+
+export type RubioPrice = {
+  amount: string;
+  currency: string;
+  available: boolean;
+};

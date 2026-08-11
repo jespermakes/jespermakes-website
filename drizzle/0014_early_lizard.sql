@@ -1,0 +1,23 @@
+CREATE TABLE "rubio_products" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"slug" text NOT NULL,
+	"title" text NOT NULL,
+	"blurb" text DEFAULT '' NOT NULL,
+	"long_description" text,
+	"jesper_note" text,
+	"category" text DEFAULT 'finishing' NOT NULL,
+	"sort_order" integer DEFAULT 0 NOT NULL,
+	"featured" boolean DEFAULT false NOT NULL,
+	"hidden" boolean DEFAULT false NOT NULL,
+	"us_handle" text,
+	"eu_handle" text,
+	"image" text,
+	"gallery" jsonb DEFAULT '[]'::jsonb NOT NULL,
+	"video_embed_url" text,
+	"prices" jsonb DEFAULT '{}'::jsonb NOT NULL,
+	"last_synced_at" timestamp,
+	"sync_error" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "rubio_products_slug_unique" UNIQUE("slug")
+);

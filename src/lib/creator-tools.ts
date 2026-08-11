@@ -60,7 +60,8 @@ export const CREATOR_TOOL_REGISTRY: Record<string, CreatorToolEntry> = {
     slug: "rubio",
     name: "Rubio Finish Guide",
     description: "Find the right finish and color for your wood.",
-    url: "/rubio",
+    // /rubio is the shop now; the wizard lives one level down.
+    url: "/rubio/guide",
     glyph: "\u25CD",
     tint: "amber",
   },
