@@ -115,6 +115,16 @@ export function MobileNav({
                   >
                     All Tools
                   </Link>
+                  {/* The finishing category folded into the shop, so the shop
+                    * has to be reachable from Gear or that path is just gone. */}
+                  <Link
+                    href="/rubio"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center gap-2.5 py-2 text-sm font-medium text-cream hover:text-amber transition-colors"
+                  >
+                    <span>🪵</span>
+                    Rubio Monocoat shop
+                  </Link>
                   {toolCategories.map((cat) => (
                     <Link
                       key={cat.slug}

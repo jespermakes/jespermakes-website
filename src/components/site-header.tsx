@@ -33,7 +33,7 @@ const APP_LINKS = [
   // Lamp Designer hidden from nav until it is finished (page still reachable at /lamp-designer)
   { title: "Box Joint Jig", href: "/box-joint-jig", icon: "🧰" },
   { title: "Cone Lamp", href: "/cone-lamp", icon: "◐" },
-  { title: "Rubio Finish Guide", href: "/rubio", icon: "🎨" },
+  { title: "Rubio Finish Guide", href: "/rubio/guide", icon: "🎨" },
   { title: "Title Lab", href: "/title-lab", icon: "🧪" },
   { title: "Storyteller Engine", href: "/storyteller", icon: "🎬" },
 ];
@@ -132,16 +132,26 @@ export function SiteHeader({
             <div className="relative group">
               <Link href="/tools" className={linkCls}>Gear</Link>
               {dropdown(
-                GEAR_CATEGORIES.map((cat) => (
+                <>
                   <Link
-                    key={cat.slug}
-                    href={`/tools/category/${cat.slug}`}
-                    className={`flex items-center gap-2.5 px-4 py-2 text-sm transition-colors ${panelItemCls}`}
+                    href="/rubio"
+                    className={`flex items-center gap-2.5 px-4 py-2 text-sm font-semibold transition-colors ${panelItemCls}`}
                   >
-                    <span className="text-base">{cat.icon}</span>
-                    {cat.title}
+                    <span className="text-base">🪵</span>
+                    Rubio Monocoat shop
                   </Link>
-                ))
+                  <span className={`block my-1 mx-3 h-px ${dividerCls}`} />
+                  {GEAR_CATEGORIES.map((cat) => (
+                    <Link
+                      key={cat.slug}
+                      href={`/tools/category/${cat.slug}`}
+                      className={`flex items-center gap-2.5 px-4 py-2 text-sm transition-colors ${panelItemCls}`}
+                    >
+                      <span className="text-base">{cat.icon}</span>
+                      {cat.title}
+                    </Link>
+                  ))}
+                </>
               )}
             </div>
             <div className="relative group">

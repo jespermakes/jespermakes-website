@@ -75,6 +75,27 @@ export default async function ToolsPage() {
         />
       </div>
 
+      {/* The finishing category used to live in the grid below and was folded
+        * into the shop, which left Gear with no route to the Rubio range at
+        * all. This is the replacement, in Rubio's own colours so it reads as a
+        * storefront rather than another category. */}
+      <Link
+        href="/rubio"
+        className="block bg-[#183029] rounded-2xl p-6 mb-4 border border-[#183029] hover:border-[#fcc52c]/60 transition-colors"
+      >
+        <p className="text-[10px] font-bold tracking-[0.15em] text-[#fcc52c] mb-2">
+          THE FINISHES I USE
+        </p>
+        <h3 className="font-serif text-2xl text-white mb-2">
+          The Rubio Monocoat shop
+        </h3>
+        <p className="text-white/70">
+          22 products, priced in your own currency and sent to your own Rubio store. Includes Matcha
+          Green, the colour they let me make, and a guide that works out which product you need and
+          how much of it.
+        </p>
+      </Link>
+
       <Link
         href="/plywood"
         className="block bg-forest/10 border border-forest/20 rounded-2xl p-6 mb-8 hover:border-forest/40 transition-colors"
@@ -107,6 +128,22 @@ export default async function ToolsPage() {
             </span>
           </Link>
         ))}
+
+        {/* Finishing is no longer a tool category, but people scan this grid
+          * for it. Same shape as the others so the habit still works, pointing
+          * at the shop that replaced it. */}
+        <Link
+          href="/rubio"
+          className="group bg-white/60 rounded-xl p-8 border border-wood/5 hover:border-forest/20 transition-colors flex flex-col"
+        >
+          <span className="text-4xl mb-4">🎨</span>
+          <h2 className="font-serif text-xl text-wood group-hover:text-forest transition-colors mb-2">
+            Finishing
+          </h2>
+          <span className="text-xs font-medium text-wood-light/50 mt-auto">
+            The Rubio shop
+          </span>
+        </Link>
       </div>
 
       {/* Newsletter: the gear costs money, the letter and the apps do not */}

@@ -143,9 +143,17 @@ const platforms = [
     name: "Facebook Page",
     platform: "facebook" as const,
     href: "/mediakit/facebook",
+    // Meta Graph API, 2026-08-10. Volume figures are 28-DAY windows because
+    // Facebook exposes no lifetime totals (period=lifetime returns nothing, and
+    // the page_impressions family was removed in v25.0). The 28d label is not
+    // optional: unlabelled, these read as lifetime and undersell the page badly.
     stats: [
       { label: "Followers", value: "9.6K" },
+      { label: "Video Views", value: "9.8K", sub: "28d" },
+      { label: "Engagements", value: "354", sub: "28d" },
+      { label: "Posts 2026", value: "29" },
     ],
+    note: "Fastest-growing channel by output, now near-daily",
   },
 ];
 
@@ -557,7 +565,15 @@ export default function MediaKit() {
                     <p className="text-[#E8604C] text-xl font-bold">
                       {s.value}
                     </p>
-                    <p className="text-white/50 text-xs mt-0.5">{s.label}</p>
+                    <p className="text-white/50 text-xs mt-0.5">
+                      {s.label}
+                      {/* Window label. Facebook's volume figures are 28-day,
+                          not lifetime, and unlabelled they read as lifetime and
+                          undersell the page by a wide margin. */}
+                      {"sub" in s && s.sub ? (
+                        <span className="text-white/30"> ({s.sub})</span>
+                      ) : null}
+                    </p>
                   </div>
                 ))}
               </div>

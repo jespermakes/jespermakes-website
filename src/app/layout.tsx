@@ -122,6 +122,9 @@ function Footer() {
             <Link href="/tools" className="hover:text-forest transition-colors">
               Tools
             </Link>
+            <Link href="/rubio" className="hover:text-forest transition-colors">
+              Rubio
+            </Link>
             <Link href="/blog" className="hover:text-forest transition-colors">
               Blog
             </Link>
