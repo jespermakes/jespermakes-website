@@ -58,8 +58,11 @@ export default async function RubioShopPage() {
       </header>
 
       <section className="mx-auto max-w-6xl px-5 pb-16 pt-14 md:pt-20">
+        {/* No year here. Nothing on record establishes when the ambassadorship
+          * actually started, and Rubio would be the first to notice a wrong
+          * date on a page about them. */}
         <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#fcc52c]">
-          Ambassador since 2024
+          Rubio Monocoat ambassador
         </p>
         <h1 className="max-w-3xl font-serif text-4xl font-medium leading-[1.08] md:text-6xl">
           The finishes I actually put on my own work.
