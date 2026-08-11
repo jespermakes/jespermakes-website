@@ -701,6 +701,9 @@ export const rubioProducts = pgTable("rubio_products", {
   // Embedded video for the product page. Matcha Green has an Instagram reel
   // from the build that produced the colour.
   videoEmbedUrl: text("video_embed_url"),
+  // Real oiled swatches, ported over from the old /tools pages when those were
+  // folded into the shop. Oil Plus 2C has 40, DuroGrit 16.
+  colorGrid: jsonb("color_grid").notNull().default(sql`'[]'::jsonb`),
 
   // { "<regionKey>": { amount: "45.05", currency: "EUR", available: true } }
   // Refreshed by the sync script off each storefront's public products.json.

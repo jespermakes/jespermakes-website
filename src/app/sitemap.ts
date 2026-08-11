@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { db } from "@/lib/db";
-import { blogPosts, toolItems } from "@/lib/db/schema";
+import { blogPosts, toolItems, rubioProducts } from "@/lib/db/schema";
 import { and, eq } from "drizzle-orm";
 
 const BASE_URL = "https://jespermakes.com";
@@ -233,6 +233,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
+  // The Rubio shop. Its product pages are the canonical home for the Rubio
+  // range now that the /tools versions redirect here, so they need to be
+  // discoverable or the redirects point at pages Google never crawls.
+  let rubioRows: Array<{ slug: string; updatedAt: Date }> = [];
+  try {
+    rubioRows = await db
+      .select({ slug: rubioProducts.slug, updatedAt: rubioProducts.updatedAt })
+      .from(rubioProducts)
+      .where(eq(rubioProducts.hidden, false));
+  } catch (err) {
+    console.error("[sitemap] rubio products unavailable:", err);
+  }
+
+  const rubioPages: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/rubio/guide`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    ...rubioRows.map((r) => ({
+      url: `${BASE_URL}/rubio/${r.slug}`,
+      lastModified: r.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    })),
+  ];
+
   return [
     ...staticPages,
     ...shopPages,
@@ -240,5 +268,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogPostPages,
     ...categoryPages,
     ...toolPages,
+    ...rubioPages,
   ];
 }

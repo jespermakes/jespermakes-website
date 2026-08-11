@@ -31,7 +31,22 @@ const nextConfig = {
       { source: "/jespermakes/bambulab", destination: "/tools", permanent: true },
       { source: "/jespermakes/xtool", destination: "/tools", permanent: true },
       { source: "/jespermakes/youtubegear", destination: "/tools/category/office-youtube-gear", permanent: true },
-      { source: "/rubiomonocoat", destination: "/tools/rubio-monocoat-oil-plus-2c", permanent: true },
+      // Was pointing at /tools/rubio-monocoat-oil-plus-2c, which is now hidden.
+      { source: "/rubiomonocoat", destination: "/rubio", permanent: true },
+
+      // The Rubio tool pages were folded into the shop (11 Aug 2026). They were
+      // duplicates of the /rubio product pages with worse links: hardcoded to
+      // the UK store, so a German visitor got pounds instead of euros. One
+      // canonical page per product now, and these keep their link equity.
+      { source: "/tools/rubio-monocoat-oil-plus-2c", destination: "/rubio/oil-plus-2c", permanent: true },
+      { source: "/tools/rubio-monocoat-durogrit", destination: "/rubio/durogrit", permanent: true },
+      { source: "/tools/rubio-monocoat-woodcream", destination: "/rubio/woodcream", permanent: true },
+      { source: "/tools/rubio-monocoat-matcha-green", destination: "/rubio/matcha-green", permanent: true },
+      // A kit of several products rather than one, so it lands on the shop
+      // where the whole care range sits together.
+      { source: "/tools/rubio-monocoat-care-kit", destination: "/rubio", permanent: true },
+      // Every entry in this category was Rubio, so the category is the shop now.
+      { source: "/tools/category/finishing", destination: "/rubio", permanent: true },
       { source: "/bambulab", destination: "/tools", permanent: true },
       { source: "/youtubegear", destination: "/tools/category/office-youtube-gear", permanent: true },
       // Old Beacons versioned URLs

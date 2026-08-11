@@ -1,0 +1,1 @@
+ALTER TABLE "rubio_products" ADD COLUMN "color_grid" jsonb DEFAULT '[]'::jsonb NOT NULL;

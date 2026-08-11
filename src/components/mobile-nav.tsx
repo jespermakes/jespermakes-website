@@ -7,7 +7,6 @@ const toolCategories = [
   { title: "Festool", slug: "festool", icon: "⚡" },
   { title: "Power Tools", slug: "power-tools", icon: "🔨" },
   { title: "Hand Tools", slug: "hand-tools", icon: "✋" },
-  { title: "Finishing", slug: "finishing", icon: "🎨" },
   { title: "Plywood", slug: "plywood", icon: "🪵" },
   { title: "3D Printing & Laser", slug: "3d-printing-laser", icon: "🖨️" },
   { title: "Workshop Essentials", slug: "workshop-essentials", icon: "🔧" },

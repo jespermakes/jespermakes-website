@@ -8,6 +8,7 @@ import { resolveRegion } from "@/lib/rubio-region-server";
 import { REGIONS, REGION_ORDER, formatPrice, productUrl } from "@/lib/rubio-shop";
 import RegionSwitcher from "@/components/rubio/region-switcher";
 import ProductCard, { BuyButton, priceFor } from "@/components/rubio/product-card";
+import ColourGrid, { type Swatch } from "@/components/rubio/colour-grid";
 
 export const revalidate = 300;
 
@@ -193,6 +194,11 @@ export default async function RubioProductPage({ params }: { params: { slug: str
             </div>
           </div>
         </div>
+
+        <ColourGrid
+          swatches={(Array.isArray(product.colorGrid) ? product.colorGrid : []) as Swatch[]}
+          productName={product.title}
+        />
 
         {related.length > 0 && (
           <section className="mt-20">

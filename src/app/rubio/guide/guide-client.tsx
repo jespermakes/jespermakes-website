@@ -339,10 +339,10 @@ export default function RubioGuideClient({
             className={
               "flex-1 h-[3px] rounded-full " +
               (n < current
-                ? "bg-wood"
+                ? "bg-[#fcc52c]"
                 : n === current
-                  ? "bg-forest"
-                  : "bg-wood/10")
+                  ? "bg-[#396948]"
+                  : "bg-white/10")
             }
           />
         ))}
@@ -355,21 +355,45 @@ export default function RubioGuideClient({
   // --------------------------------------------------------------------------
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen bg-[#183029] text-white">
+      {/* Same header as the shop, so moving between them feels like one place. */}
+      <header className="border-b border-white/10">
+        <div className="mx-auto max-w-6xl px-6 py-6">
+          <nav className="flex flex-wrap items-center justify-between gap-4 text-sm text-white/50">
+            <div>
+              <Link href="/rubio" className="hover:text-white">
+                Rubio Monocoat
+              </Link>
+              <span className="mx-2 text-white/25">/</span>
+              <span className="text-white/80">The guide</span>
+            </div>
+            <Link
+              href="/rubio"
+              className="rounded-full border border-white/25 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/10"
+            >
+              Browse the shop
+            </Link>
+          </nav>
+        </div>
+      </header>
+
       <div className="max-w-4xl mx-auto px-6 py-12 md:py-16 pb-24">
         {step === "intro" && (
           <section>
-            <p className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-6">
-              The Rubio Guide
+            <p className="text-[11px] font-bold tracking-[0.18em] text-[#fcc52c] uppercase mb-5">
+              Free guide · four questions
             </p>
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight text-wood mb-4 font-medium">
-              Find the right Rubio Monocoat for your project.
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.08] text-white mb-5 font-medium">
+              Which Rubio do I actually need?
             </h1>
-            <p className="text-lg text-wood-light/70 max-w-2xl leading-relaxed mb-8">
-              Picking the right Rubio product shouldn&apos;t require reading three
-              technical data sheets. Answer four questions, and I&apos;ll tell you
-              which product to buy, how much you need, what colour works on
-              your wood, and exactly how to apply it.
+            <p className="text-lg text-white/70 max-w-2xl leading-relaxed mb-4">
+              Picking the right Rubio product should not require reading three technical data
+              sheets. Answer four questions and I will tell you which product to buy, how much of
+              it, what colour works on your wood, and exactly how to put it on.
+            </p>
+            <p className="text-sm text-white/45 max-w-2xl leading-relaxed mb-9">
+              It ends with a buy button for the right tin in your own currency, and you can print
+              the whole plan and take it to the workshop.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-8">
@@ -380,24 +404,30 @@ export default function RubioGuideClient({
             </div>
 
             <button
-              className="inline-flex items-center gap-2 bg-wood text-cream rounded-xl px-5 py-3 text-sm font-semibold hover:bg-wood-light transition-colors"
+              className="inline-flex items-center gap-2 bg-[#fcc52c] text-[#183029] rounded-xl px-6 py-3.5 text-sm font-bold hover:bg-[#ffd457] transition-colors"
               onClick={() => goTo("location")}
             >
-              Start the guide →
+              Start the guide <span aria-hidden>→</span>
             </button>
+
+            <p className="mt-10 border-t border-white/10 pt-6 text-sm text-white/45 leading-relaxed max-w-2xl">
+              I am a Rubio Monocoat ambassador and I have used their finishes on nearly everything I
+              have built. The links here are affiliate links, which cost you nothing extra. The
+              advice is the same advice I would give you in the workshop.
+            </p>
           </section>
         )}
 
         {step === "location" && (
           <section>
             <ProgressBar current={1} />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-white/40 uppercase mb-6">
               Step 1 of 4
             </p>
-            <h2 className="font-serif text-3xl text-wood mb-3 font-medium leading-tight">
+            <h2 className="font-serif text-3xl text-white mb-3 font-medium leading-tight">
               Where is the project?
             </h2>
-            <p className="text-wood-light/60 text-sm mb-8">
+            <p className="text-white/55 text-sm mb-8">
               The single most important question. Interior and exterior
               products are fundamentally different and can&apos;t be swapped.
             </p>
@@ -421,13 +451,13 @@ export default function RubioGuideClient({
         {step === "interior" && (
           <section>
             <ProgressBar current={2} />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-white/40 uppercase mb-6">
               Step 2 of 4
             </p>
-            <h2 className="font-serif text-3xl text-wood mb-3 font-medium leading-tight">
+            <h2 className="font-serif text-3xl text-white mb-3 font-medium leading-tight">
               What are you finishing?
             </h2>
-            <p className="text-wood-light/60 text-sm mb-8">
+            <p className="text-white/55 text-sm mb-8">
               This doesn&apos;t change the product. For indoor raw wood, Oil Plus
               2C is always the answer. But it helps me give you better colour
               and coverage advice.
@@ -439,7 +469,7 @@ export default function RubioGuideClient({
               <OptionButton icon="📐" title="Walls or ceiling" body="Wood-panelled walls, ceilings, interior cladding." onClick={() => chooseInteriorSurface()} />
             </div>
             <div className="flex justify-between items-center mt-8 gap-4 flex-wrap">
-              <button className="text-wood-light/60 hover:text-wood px-5 py-3 text-sm font-semibold" onClick={goBack}>
+              <button className="text-white/55 hover:text-white px-5 py-3 text-sm font-semibold" onClick={goBack}>
                 ← Back
               </button>
             </div>
@@ -449,13 +479,13 @@ export default function RubioGuideClient({
         {step === "exterior" && (
           <section>
             <ProgressBar current={2} />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-white/40 uppercase mb-6">
               Step 2 of 4
             </p>
-            <h2 className="font-serif text-3xl text-wood mb-3 font-medium leading-tight">
+            <h2 className="font-serif text-3xl text-white mb-3 font-medium leading-tight">
               Is the wood raw, or already painted?
             </h2>
-            <p className="text-wood-light/60 text-sm mb-8">
+            <p className="text-white/55 text-sm mb-8">
               This is the question that splits DuroGrit from WoodCream. Get it
               right or the finish will fail.
             </p>
@@ -464,7 +494,7 @@ export default function RubioGuideClient({
               <OptionButton icon="🎨" title="Previously painted or stained" body="Old paint or stain you can't sand back to bare wood. Renovation work." onClick={() => chooseExteriorCondition("painted")} />
             </div>
             <div className="flex justify-between items-center mt-8 gap-4 flex-wrap">
-              <button className="text-wood-light/60 hover:text-wood px-5 py-3 text-sm font-semibold" onClick={goBack}>
+              <button className="text-white/55 hover:text-white px-5 py-3 text-sm font-semibold" onClick={goBack}>
                 ← Back
               </button>
             </div>
@@ -474,13 +504,13 @@ export default function RubioGuideClient({
         {step === "exterior-orientation" && (
           <section>
             <ProgressBar current={2} />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-white/40 uppercase mb-6">
               Step 2 of 4
             </p>
-            <h2 className="font-serif text-3xl text-wood mb-3 font-medium leading-tight">
+            <h2 className="font-serif text-3xl text-white mb-3 font-medium leading-tight">
               Vertical or horizontal surface?
             </h2>
-            <p className="text-wood-light/60 text-sm mb-8">
+            <p className="text-white/55 text-sm mb-8">
               DuroGrit handles both, but this affects durability expectations
               and maintenance frequency.
             </p>
@@ -489,7 +519,7 @@ export default function RubioGuideClient({
               <OptionButton icon="▮" title="Vertical" body="Siding, cladding, fencing, shed walls. Sheds water, less mechanical wear." onClick={() => chooseOrientation("vertical")} />
             </div>
             <div className="flex justify-between items-center mt-8 gap-4 flex-wrap">
-              <button className="text-wood-light/60 hover:text-wood px-5 py-3 text-sm font-semibold" onClick={goBack}>
+              <button className="text-white/55 hover:text-white px-5 py-3 text-sm font-semibold" onClick={goBack}>
                 ← Back
               </button>
             </div>
@@ -499,43 +529,43 @@ export default function RubioGuideClient({
         {step === "product" && currentProduct && (
           <section>
             <ProgressBar current={3} />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-forest uppercase mb-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-[#fcc52c] uppercase mb-6">
               Your product
             </p>
 
-            <div className="bg-white border border-wood/8 rounded-[20px] p-8 mb-6">
-              <div className="flex gap-6 items-start mb-6 pb-6 border-b border-wood/8">
-                <div className="text-3xl w-16 h-16 bg-forest/12 rounded-2xl flex items-center justify-center text-forest flex-shrink-0">
+            <div className="bg-white/[0.04] border border-white/10 rounded-[20px] p-8 mb-6">
+              <div className="flex gap-6 items-start mb-6 pb-6 border-b border-white/10">
+                <div className="text-3xl w-16 h-16 bg-[#fcc52c]/15 rounded-2xl flex items-center justify-center text-[#fcc52c] flex-shrink-0">
                   {currentProduct.icon}
                 </div>
                 <div>
-                  <div className="text-forest text-sm font-semibold tracking-wider uppercase mb-2">
+                  <div className="text-[#fcc52c] text-sm font-semibold tracking-wider uppercase mb-2">
                     {currentProduct.line}
                   </div>
-                  <h2 className="font-serif text-2xl text-wood mb-1 font-medium">
+                  <h2 className="font-serif text-2xl text-white mb-1 font-medium">
                     {currentProduct.name}
                   </h2>
-                  <p className="text-wood-light/75 leading-relaxed">
+                  <p className="text-white/70 leading-relaxed">
                     {currentProduct.desc}
                   </p>
                 </div>
               </div>
 
-              <div className="bg-forest/8 border border-forest/18 rounded-xl px-5 py-4 mb-6">
-                <div className="text-[10px] font-bold tracking-[0.15em] text-forest mb-1.5 uppercase">
+              <div className="bg-[#fcc52c]/10 border border-[#fcc52c]/25 rounded-xl px-5 py-4 mb-6">
+                <div className="text-[10px] font-bold tracking-[0.15em] text-[#fcc52c] mb-1.5 uppercase">
                   Why this one
                 </div>
-                <p className="text-wood-light text-sm leading-relaxed">
+                <p className="text-white/60 text-sm leading-relaxed">
                   {whyExplanation()}
                 </p>
               </div>
 
-              <h3 className="font-serif text-xl text-wood font-medium mb-3">
+              <h3 className="font-serif text-xl text-white font-medium mb-3">
                 Let&apos;s estimate how much you need
               </h3>
-              <div className="bg-white border border-wood/8 rounded-2xl p-6">
+              <div className="bg-white/[0.04] border border-white/10 rounded-2xl p-6">
                 <div className="flex gap-4 items-center mb-4 flex-wrap">
-                  <label className="font-medium min-w-[180px] text-wood text-sm">
+                  <label className="font-medium min-w-[180px] text-white text-sm">
                     Surface area
                   </label>
                   <input
@@ -546,15 +576,15 @@ export default function RubioGuideClient({
                     onChange={(e) =>
                       setArea(parseFloat(e.target.value) || 0)
                     }
-                    className="flex-1 min-w-[140px] bg-white border border-wood/15 rounded-[10px] px-3.5 py-2.5 text-wood outline-none focus:border-forest"
+                    className="flex-1 min-w-[140px] bg-white/[0.04] border border-white/20 rounded-[10px] px-3.5 py-2.5 text-white outline-none focus:border-[#fcc52c]"
                   />
-                  <div className="inline-flex bg-wood/6 rounded-[10px] p-[3px]">
+                  <div className="inline-flex bg-white/[0.06] rounded-[10px] p-[3px]">
                     <button
                       className={
                         "px-3.5 py-1.5 text-[13px] font-semibold rounded-lg " +
                         (unit === "m2"
-                          ? "bg-white text-wood shadow-sm"
-                          : "text-wood-light")
+                          ? "bg-white/[0.04] text-white shadow-sm"
+                          : "text-white/60")
                       }
                       onClick={() => setUnit("m2")}
                     >
@@ -564,8 +594,8 @@ export default function RubioGuideClient({
                       className={
                         "px-3.5 py-1.5 text-[13px] font-semibold rounded-lg " +
                         (unit === "ft2"
-                          ? "bg-white text-wood shadow-sm"
-                          : "text-wood-light")
+                          ? "bg-white/[0.04] text-white shadow-sm"
+                          : "text-white/60")
                       }
                       onClick={() => setUnit("ft2")}
                     >
@@ -574,13 +604,13 @@ export default function RubioGuideClient({
                   </div>
                 </div>
                 <div className="flex gap-4 items-center mb-4 flex-wrap">
-                  <label className="font-medium min-w-[180px] text-wood text-sm">
+                  <label className="font-medium min-w-[180px] text-white text-sm">
                     Wood species
                   </label>
                   <select
                     value={calcSpecies}
                     onChange={(e) => setCalcSpecies(e.target.value)}
-                    className="flex-1 min-w-[140px] bg-white border border-wood/15 rounded-[10px] px-3.5 py-2.5 text-wood outline-none focus:border-forest"
+                    className="flex-1 min-w-[140px] bg-white/[0.04] border border-white/20 rounded-[10px] px-3.5 py-2.5 text-white outline-none focus:border-[#fcc52c]"
                   >
                     {product &&
                       CALC_SPECIES[product].map((sp) => (
@@ -590,18 +620,18 @@ export default function RubioGuideClient({
                       ))}
                   </select>
                 </div>
-                <div className="bg-forest/8 border border-forest/20 rounded-xl px-6 py-5 mt-4">
-                  <div className="text-[10px] font-bold tracking-[0.15em] text-forest mb-2 uppercase">
+                <div className="bg-[#fcc52c]/10 border border-[#fcc52c]/25 rounded-xl px-6 py-5 mt-4">
+                  <div className="text-[10px] font-bold tracking-[0.15em] text-[#fcc52c] mb-2 uppercase">
                     You&apos;ll need
                   </div>
-                  <div className="font-serif text-3xl text-wood font-medium leading-tight mb-1">
+                  <div className="font-serif text-3xl text-white font-medium leading-tight mb-1">
                     {containerLabel}
                   </div>
-                  <div className="text-sm text-wood-light">
+                  <div className="text-sm text-white/60">
                     Needed: ~{Math.round(needed_mL)} mL. A {containerLabel} can
                     covers you with a buffer.
                   </div>
-                  <div className="text-xs text-wood-light mt-3 leading-relaxed">
+                  <div className="text-xs text-white/60 mt-3 leading-relaxed">
                     Based on ~{adjustedCoverage.toFixed(1)} m² per litre for{" "}
                     {speciesLabelForCalcNote}. Includes a 10% buffer for
                     real-world application.
@@ -612,13 +642,13 @@ export default function RubioGuideClient({
 
             <div className="flex justify-between items-center mt-8 gap-4 flex-wrap">
               <button
-                className="text-wood-light/60 hover:text-wood px-5 py-3 text-sm font-semibold"
+                className="text-white/55 hover:text-white px-5 py-3 text-sm font-semibold"
                 onClick={goBack}
               >
                 ← Back
               </button>
               <button
-                className="inline-flex items-center gap-2 bg-wood text-cream rounded-xl px-5 py-3 text-sm font-semibold hover:bg-wood-light"
+                className="inline-flex items-center gap-2 bg-[#fcc52c] text-[#183029] rounded-xl px-5 py-3 text-sm font-semibold hover:bg-[#ffd457]"
                 onClick={() => goTo("color")}
               >
                 Pick a colour →
@@ -630,13 +660,13 @@ export default function RubioGuideClient({
         {step === "color" && product && (
           <section>
             <ProgressBar current={4} />
-            <p className="text-[10px] font-bold tracking-[0.15em] text-wood-light/40 uppercase mb-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-white/40 uppercase mb-6">
               Step 4 of 4
             </p>
-            <h2 className="font-serif text-3xl text-wood mb-3 font-medium leading-tight">
+            <h2 className="font-serif text-3xl text-white mb-3 font-medium leading-tight">
               Pick your colour.
             </h2>
-            <p className="text-wood-light/60 text-sm mb-6">
+            <p className="text-white/55 text-sm mb-6">
               {product === "woodcream"
                 ? "WoodCream is an opaque wax-based cream. Rubio shows all its colours on pine, because the wood underneath shows through much less than with penetrating oils, so species matters less."
                 : "Colours look dramatically different on different woods. Tell me your species and I'll show real Rubio swatches on that species."}
@@ -644,7 +674,7 @@ export default function RubioGuideClient({
 
             {showSpeciesPicker && (
               <div>
-                <h3 className="font-serif text-xl text-wood font-medium mb-2 mt-6">
+                <h3 className="font-serif text-xl text-white font-medium mb-2 mt-6">
                   Your wood
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
@@ -654,8 +684,8 @@ export default function RubioGuideClient({
                       className={
                         "rounded-xl p-4 text-sm font-medium text-center transition-all " +
                         (species === sp.id
-                          ? "border-2 border-wood bg-white shadow-[0_0_0_3px_rgba(44,24,16,0.08)]"
-                          : "border border-wood/10 bg-white/60 hover:border-forest hover:bg-white")
+                          ? "border-2 border-white/60 bg-white/[0.04] shadow-[0_0_0_3px_rgba(44,24,16,0.08)]"
+                          : "border border-white/12 bg-white/[0.04]/[0.05] hover:border-[#fcc52c]/60 hover:bg-white/[0.04]/[0.08]")
                       }
                       onClick={() => pickSpecies(sp.id)}
                     >
@@ -669,7 +699,7 @@ export default function RubioGuideClient({
             {colorPickerVisible && (
               <div>
                 <div className="flex items-center justify-between mb-4 mt-8 flex-wrap gap-2">
-                  <h3 className="font-serif text-xl text-wood font-medium">
+                  <h3 className="font-serif text-xl text-white font-medium">
                     {product === "woodcream"
                       ? "WoodCream colours"
                       : `Colours on ${speciesDisplayLabel}`}
@@ -683,8 +713,8 @@ export default function RubioGuideClient({
                       className={
                         "px-3.5 py-1.5 rounded-full text-[13px] font-medium transition-all " +
                         (colorFilter === f.id
-                          ? "bg-wood text-cream border border-wood"
-                          : "border border-wood/15 bg-white text-wood-light hover:border-wood")
+                          ? "bg-[#fcc52c] text-[#183029] border border-white/60"
+                          : "border border-white/20 bg-white/[0.04] text-white/60 hover:border-white/40")
                       }
                     >
                       {f.label}
@@ -693,7 +723,7 @@ export default function RubioGuideClient({
                 </div>
 
                 {product === "durogrit" && species && (
-                  <div className="flex gap-5 items-center text-xs text-wood-light/60 mb-6 flex-wrap">
+                  <div className="flex gap-5 items-center text-xs text-white/55 mb-6 flex-wrap">
                     <span className="flex items-center gap-1.5">
                       <span className="w-3 h-3 rounded-full inline-block bg-[#4A7C59]"></span>
                       Recommended for a natural look
@@ -715,14 +745,14 @@ export default function RubioGuideClient({
                         key={c.id}
                         onClick={() => pickColor(c)}
                         className={
-                          "relative rounded-[10px] overflow-hidden bg-white/50 text-left transition-all " +
+                          "relative rounded-[10px] overflow-hidden bg-white/[0.04]/[0.05] text-left transition-all " +
                           (isSelected
-                            ? "border-2 border-wood shadow-[0_0_0_3px_rgba(44,24,16,0.15)]"
-                            : "border-2 border-transparent hover:border-forest")
+                            ? "border-2 border-white/60 shadow-[0_0_0_3px_rgba(44,24,16,0.15)]"
+                            : "border-2 border-transparent hover:border-[#fcc52c]/60")
                         }
                       >
                         {c.jesper && (
-                          <span className="absolute top-1.5 left-1.5 bg-wood/85 text-cream text-[9px] font-bold px-[7px] py-[3px] rounded-full tracking-wide z-[2]">
+                          <span className="absolute top-1.5 left-1.5 bg-[#fcc52c] text-[#183029] text-[9px] font-bold px-[7px] py-[3px] rounded-full tracking-wide z-[2]">
                             JESPER
                           </span>
                         )}
@@ -749,7 +779,7 @@ export default function RubioGuideClient({
                             label={`Rubio ${currentProduct?.name} ${c.label}`}
                           />
                         </div>
-                        <div className="px-2 pt-2 pb-2.5 text-xs text-center text-wood-light font-medium leading-tight">
+                        <div className="px-2 pt-2 pb-2.5 text-xs text-center text-white/60 font-medium leading-tight">
                           {c.label}
                         </div>
                       </button>
@@ -761,7 +791,7 @@ export default function RubioGuideClient({
 
             <div className="flex justify-between items-center mt-8 gap-4 flex-wrap">
               <button
-                className="text-wood-light/60 hover:text-wood px-5 py-3 text-sm font-semibold"
+                className="text-white/55 hover:text-white px-5 py-3 text-sm font-semibold"
                 onClick={goBack}
               >
                 ← Back
@@ -769,7 +799,7 @@ export default function RubioGuideClient({
               <button
                 disabled={!color}
                 onClick={viewSummary}
-                className="inline-flex items-center gap-2 bg-wood text-cream rounded-xl px-5 py-3 text-sm font-semibold hover:bg-wood-light disabled:opacity-40 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 bg-[#fcc52c] text-[#183029] rounded-xl px-5 py-3 text-sm font-semibold hover:bg-[#ffd457] disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 See your full plan →
               </button>
@@ -779,14 +809,14 @@ export default function RubioGuideClient({
 
         {step === "summary" && product && currentProduct && (
           <section>
-            <p className="text-[10px] font-bold tracking-[0.15em] text-forest uppercase mb-6">
+            <p className="text-[10px] font-bold tracking-[0.15em] text-[#fcc52c] uppercase mb-6">
               Your plan
             </p>
-            <h2 className="font-serif text-3xl text-wood mb-6 font-medium leading-tight">
+            <h2 className="font-serif text-3xl text-white mb-6 font-medium leading-tight">
               Everything you need to know.
             </h2>
 
-            <div className="bg-white border border-wood/8 rounded-2xl p-6 mb-6">
+            <div className="bg-white/[0.04] border border-white/10 rounded-2xl p-6 mb-6">
               <SummaryRow k="Product" v={currentProduct.name} />
               <SummaryRow k="Colour" v={colorLabel ?? "—"} />
               <SummaryRow k="Species" v={speciesDisplayLabel} />
@@ -841,38 +871,38 @@ export default function RubioGuideClient({
               </div>
             )}
 
-            <h3 className="font-serif text-xl text-wood font-medium mb-4 mt-8">
+            <h3 className="font-serif text-xl text-white font-medium mb-4 mt-8">
               How to apply it
             </h3>
             <ApplicationGuide product={product} />
 
             <div className="flex justify-between items-center mt-8 gap-4 flex-wrap">
               <button
-                className="border border-wood/15 text-wood-light/60 hover:border-wood/30 px-5 py-3 rounded-xl text-sm font-semibold"
+                className="border border-white/20 text-white/55 hover:border-white/35 px-5 py-3 rounded-xl text-sm font-semibold"
                 onClick={resetAll}
               >
                 Start over
               </button>
               <button
-                className="inline-flex items-center gap-2 bg-wood text-cream rounded-xl px-5 py-3 text-sm font-semibold hover:bg-wood-light"
+                className="inline-flex items-center gap-2 bg-[#fcc52c] text-[#183029] rounded-xl px-5 py-3 text-sm font-semibold hover:bg-[#ffd457]"
                 onClick={onPrint}
               >
                 Print or save as PDF
               </button>
             </div>
 
-            <div className="mt-10 pt-6 border-t border-wood/8 text-sm text-wood-light/70 leading-relaxed">
+            <div className="mt-10 pt-6 border-t border-white/10 text-sm text-white/65 leading-relaxed">
               <p>
-                A note from Jesper: I&apos;m a Rubio Monocoat ambassador, which
-                means I work with them and use their finishes. But I only
-                recommend what I actually use. If you buy through{" "}
+                A note from Jesper: I am a Rubio Monocoat ambassador, which means I work with them
+                and use their finishes. But I only recommend what I actually use. Everything I keep
+                on the shelf is in{" "}
                 <Link
-                  href="/tools"
-                  className="text-forest hover:text-forest-dark underline"
+                  href="/rubio"
+                  className="text-[#fcc52c] underline decoration-[#fcc52c]/40 underline-offset-4 hover:text-[#ffd457]"
                 >
-                  my tool recommendations
+                  the Rubio shop
                 </Link>
-                , you support the channel at no cost to you.
+                , and buying through it supports the channel at no cost to you.
               </p>
             </div>
           </section>
@@ -897,14 +927,14 @@ function FeatureRow({
 }) {
   return (
     <div className="flex gap-3 items-start">
-      <div className="bg-wood/6 text-wood w-7 h-7 rounded-full inline-flex items-center justify-center font-bold text-[13px] flex-shrink-0 font-serif">
+      <div className="bg-white/[0.06] text-white w-7 h-7 rounded-full inline-flex items-center justify-center font-bold text-[13px] flex-shrink-0 font-serif">
         {num}
       </div>
       <div>
-        <h3 className="font-serif text-[17px] mb-1 text-wood font-medium">
+        <h3 className="font-serif text-[17px] mb-1 text-white font-medium">
           {title}
         </h3>
-        <p className="text-sm text-wood-light/70 leading-relaxed">{body}</p>
+        <p className="text-sm text-white/65 leading-relaxed">{body}</p>
       </div>
     </div>
   );
@@ -924,16 +954,16 @@ function OptionButton({
   return (
     <button
       onClick={onClick}
-      className="bg-white/60 border border-wood/10 rounded-2xl p-6 text-left cursor-pointer transition-all hover:border-forest hover:bg-white/90 flex gap-4 items-start"
+      className="bg-white/[0.04]/[0.05] border border-white/12 rounded-2xl p-6 text-left cursor-pointer transition-all hover:border-[#fcc52c]/60 hover:bg-white/[0.04]/[0.08]/[0.09] flex gap-4 items-start"
     >
-      <div className="text-2xl w-10 h-10 bg-forest/12 rounded-[10px] flex items-center justify-center text-forest flex-shrink-0">
+      <div className="text-2xl w-10 h-10 bg-[#fcc52c]/15 rounded-[10px] flex items-center justify-center text-[#fcc52c] flex-shrink-0">
         {icon}
       </div>
       <div>
-        <h3 className="font-serif text-xl text-wood font-medium mb-1">
+        <h3 className="font-serif text-xl text-white font-medium mb-1">
           {title}
         </h3>
-        <p className="text-wood-light/65 text-sm leading-relaxed">{body}</p>
+        <p className="text-white/60 text-sm leading-relaxed">{body}</p>
       </div>
     </button>
   );
@@ -952,13 +982,13 @@ function SummaryRow({
     <div
       className={
         "flex justify-between items-start py-2.5 gap-4 " +
-        (last ? "" : "border-b border-wood/6")
+        (last ? "" : "border-b border-white/8")
       }
     >
-      <span className="text-[13px] text-wood-light/55 uppercase tracking-[0.1em] font-semibold min-w-[110px]">
+      <span className="text-[13px] text-white/50 uppercase tracking-[0.1em] font-semibold min-w-[110px]">
         {k}
       </span>
-      <span className="text-wood font-medium text-right flex-1">{v}</span>
+      <span className="text-white font-medium text-right flex-1">{v}</span>
     </div>
   );
 }
@@ -973,19 +1003,19 @@ function ApplicationGuide({ product }: { product: ProductKey }) {
         return (
           <div
             key={i}
-            className="bg-white border border-wood/8 rounded-2xl mb-2.5 overflow-hidden"
+            className="bg-white/[0.04] border border-white/10 rounded-2xl mb-2.5 overflow-hidden"
           >
             <button
               onClick={() => setOpenIndex(open ? -1 : i)}
-              className="w-full py-4 px-5 bg-transparent text-base font-medium text-wood text-left flex justify-between items-center cursor-pointer gap-4 hover:bg-wood/[0.02]"
+              className="w-full py-4 px-5 bg-transparent text-base font-medium text-white text-left flex justify-between items-center cursor-pointer gap-4 hover:bg-white/[0.04]/[0.08]/[0.03]"
             >
-              <span className="bg-forest/15 text-forest-dark w-7 h-7 rounded-full inline-flex items-center justify-center font-bold text-[13px] flex-shrink-0">
+              <span className="bg-[#fcc52c]/20 text-[#183029] w-7 h-7 rounded-full inline-flex items-center justify-center font-bold text-[13px] flex-shrink-0">
                 {i + 1}
               </span>
               <span className="flex-1 font-serif">{step.title}</span>
               <span
                 className={
-                  "text-wood-light/40 transition-transform " +
+                  "text-white/40 transition-transform " +
                   (open ? "rotate-180" : "")
                 }
               >
@@ -999,7 +1029,7 @@ function ApplicationGuide({ product }: { product: ProductKey }) {
               }
             >
               <div
-                className="px-5 pb-5 pl-[3.75rem] text-[15px] text-wood-light/80 leading-relaxed [&_strong]:text-wood [&_.pitfall]:bg-[#E24B4A]/6 [&_.pitfall]:border-l-4 [&_.pitfall]:border-[#E24B4A]/50 [&_.pitfall]:px-4 [&_.pitfall]:py-3 [&_.pitfall]:rounded-r-lg [&_.pitfall]:mt-3 [&_.pitfall_strong]:text-[#A32D2D]"
+                className="px-5 pb-5 pl-[3.75rem] text-[15px] text-white/70 leading-relaxed [&_strong]:text-white [&_.pitfall]:bg-[#E24B4A]/15 [&_.pitfall]:border-l-4 [&_.pitfall]:border-[#E24B4A] [&_.pitfall]:px-4 [&_.pitfall]:py-3 [&_.pitfall]:rounded-r-lg [&_.pitfall]:mt-3 [&_.pitfall]:text-white/80 [&_.pitfall_strong]:text-[#FF9B9A]"
                 dangerouslySetInnerHTML={{ __html: step.body }}
               />
             </div>
