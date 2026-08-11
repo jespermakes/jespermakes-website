@@ -85,7 +85,6 @@ export interface GuideBuyTarget {
   href: string;
   title: string;
   productPath: string;
-  priceLabel: string | null;
   storeLabel: string;
 }
 

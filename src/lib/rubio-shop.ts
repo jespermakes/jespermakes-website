@@ -120,6 +120,43 @@ export function formatPrice(amount: string | number, currency: string): string {
   }
 }
 
+/**
+ * Turn a stored price into something safe to put next to a product photo.
+ *
+ * The trap this exists to close: Rubio Europe sells "Oil Plus 2C" as one
+ * product whose variants are colour AND size, from a 6 mL sample at DKK 15.25
+ * to a 3.5 L tin at DKK 4569.75. Rendering the cheapest as "from DKK 15.25"
+ * under a photo of a 390 mL tin reads as the price of that tin. It is not.
+ *
+ * So: when the spread is small the product is effectively one price and we show
+ * "from X". When it spans sizes we show the range, which cannot be misread.
+ * Both are true statements about what Rubio charges.
+ */
+export function priceLabel(price: {
+  min: string;
+  max: string;
+  currency: string;
+}): { text: string; isRange: boolean } | null {
+  const min = parseFloat(price.min);
+  const max = parseFloat(price.max);
+  if (!Number.isFinite(min) || min <= 0) return null;
+
+  if (!Number.isFinite(max) || max <= min * 1.6) {
+    return { text: formatPrice(min, price.currency), isRange: false };
+  }
+  // Currency once, not twice. "DKK 15.25 to 4,569.75" reads; repeating the
+  // code on both ends does not.
+  const decimals = max % 1 === 0 ? 0 : 2;
+  const maxPlain = new Intl.NumberFormat("en-GB", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  }).format(max);
+  return {
+    text: `${formatPrice(min, price.currency)} to ${maxPlain}`,
+    isRange: true,
+  };
+}
+
 export const REGION_COOKIE = "rubio_region";
 
 /** Rubio's own brand palette, taken from their logo. Shared with /floor-rescue. */

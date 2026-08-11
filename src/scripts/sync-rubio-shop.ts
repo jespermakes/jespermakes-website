@@ -9,8 +9,11 @@
  *  - A region that fails to fetch leaves the previously known price alone
  *    rather than blanking it. A stale price beats a disappeared one, and the
  *    UI always links out to the live page anyway.
- *  - Prices are the MINIMUM variant price, because these products have many
- *    size and colour variants. The UI must render them as "from".
+ *  - Prices are stored as a min/max RANGE, never a single figure. Rubio Europe
+ *    sells one product whose variants combine colour and size, so its cheapest
+ *    variant is a 6 mL sample; quoting that alone put "from DKK 15.25" under a
+ *    photo of a 390 mL tin. Rubio USA splits sizes into separate products, so
+ *    there min and max are close and the UI can show one price.
  *  - A zero price means the feed is not exposing a real one, so it is dropped
  *    rather than shown as free.
  *
@@ -30,7 +33,7 @@ import { eq } from "drizzle-orm";
 import { CATALOGUE } from "../data/rubio-shop-catalogue";
 import { REGIONS, type RegionKey } from "../lib/rubio-shop";
 
-type Feed = Map<string, { price: number; currency: string; available: boolean; image: string | null }>;
+type Feed = Map<string, { min: number; max: number; available: boolean; image: string | null }>;
 
 async function loadFeed(host: string): Promise<Feed | null> {
   const out: Feed = new Map();
@@ -53,8 +56,8 @@ async function loadFeed(host: string): Promise<Feed | null> {
       const prices = p.variants.map((v) => parseFloat(v.price)).filter((n) => Number.isFinite(n) && n > 0);
       if (prices.length === 0) continue;
       out.set(p.handle, {
-        price: Math.min(...prices),
-        currency: "",
+        min: Math.min(...prices),
+        max: Math.max(...prices),
         available: p.variants.some((v) => v.available !== false),
         image: p.images?.[0]?.src ?? null,
       });
@@ -82,9 +85,9 @@ async function run() {
   for (const entry of CATALOGUE) {
     const existing = await db.select().from(rubioProducts).where(eq(rubioProducts.slug, entry.slug)).limit(1);
     const previous = existing[0];
-    const prices: Record<string, { amount: string; currency: string; available: boolean }> =
+    const prices: Record<string, { min: string; max: string; currency: string; available: boolean }> =
       previous?.prices && typeof previous.prices === "object"
-        ? { ...(previous.prices as Record<string, { amount: string; currency: string; available: boolean }>) }
+        ? { ...(previous.prices as Record<string, { min: string; max: string; currency: string; available: boolean }>) }
         : {};
 
     let image: string | null = previous?.image ?? null;
@@ -106,7 +109,8 @@ async function run() {
       }
 
       prices[key] = {
-        amount: row.price.toFixed(2),
+        min: row.min.toFixed(2),
+        max: row.max.toFixed(2),
         currency: region.currency,
         available: row.available,
       };

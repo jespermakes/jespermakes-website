@@ -718,8 +718,25 @@ export const rubioProducts = pgTable("rubio_products", {
 export type RubioProduct = typeof rubioProducts.$inferSelect;
 export type NewRubioProduct = typeof rubioProducts.$inferInsert;
 
+/**
+ * A price for one region.
+ *
+ * min and max, not a single figure, because the two stores are built
+ * differently. Rubio Europe sells one product whose variants combine colour
+ * AND size ("Pure / 6 ml" at DKK 15.25 up to "Pure / 3.5 L" at DKK 4569.75),
+ * so the cheapest variant is a sample and quoting it alone put "from DKK 15"
+ * under a photo of a 390 ml tin. Rubio USA splits sizes into separate products
+ * and varies only colour, so there a single "from" is honest.
+ *
+ * Callers decide: when min and max are close it is one price, when they are far
+ * apart it is a range and must be rendered as one.
+ */
 export type RubioPrice = {
-  amount: string;
+  min: string;
+  max: string;
   currency: string;
   available: boolean;
 };
+
+/** Above this ratio the product spans sizes, so never show a single figure. */
+export const PRICE_RANGE_THRESHOLD = 1.6;

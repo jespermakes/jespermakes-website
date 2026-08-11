@@ -2,9 +2,8 @@ import { inArray } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rubioProducts } from "@/lib/db/schema";
 import { resolveRegion } from "@/lib/rubio-region-server";
-import { productUrl, formatPrice, type RegionKey } from "@/lib/rubio-shop";
+import { productUrl } from "@/lib/rubio-shop";
 import { GUIDE_PRODUCT_TO_SLUG } from "@/data/rubio-shop-catalogue";
-import type { RubioPrice } from "@/lib/db/schema";
 import RubioGuideClient, { type GuideBuyTarget } from "./guide-client";
 
 export const revalidate = 300;
@@ -30,13 +29,12 @@ export default async function RubioGuidePage() {
     if (!product) continue;
     const href = productUrl(region, { usHandle: product.usHandle, euHandle: product.euHandle });
     if (!href) continue;
-    const prices = (product.prices ?? {}) as Record<string, RubioPrice>;
-    const price = prices[region.key as RegionKey] ?? null;
+    // No price passed. The guide names a specific tin size, and the only
+    // figure available is the cheapest variant, which is a 6 mL sample.
     buyTargets[guideKey] = {
       href,
       title: product.title,
       productPath: `/rubio/${product.slug}`,
-      priceLabel: price ? formatPrice(price.amount, price.currency) : null,
       storeLabel: region.label,
     };
   }

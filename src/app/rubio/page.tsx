@@ -8,7 +8,7 @@ import { resolveRegion } from "@/lib/rubio-region-server";
 import { storeUrl, REGIONS } from "@/lib/rubio-shop";
 import RegionSwitcher from "@/components/rubio/region-switcher";
 import ProductCard, { BuyButton, priceFor } from "@/components/rubio/product-card";
-import { formatPrice } from "@/lib/rubio-shop";
+import { priceLabel } from "@/lib/rubio-shop";
 
 export const revalidate = 300;
 
@@ -37,7 +37,8 @@ export default async function RubioShopPage() {
   const matchaRegion =
     matcha && region.program === "us" ? region : REGIONS.us;
   const matchaIsForeign = !!matcha && matchaRegion.key !== region.key;
-  const matchaPrice = matcha ? priceFor(matcha, matchaRegion) : null;
+  const matchaRaw = matcha ? priceFor(matcha, matchaRegion) : null;
+  const matchaPrice = matchaRaw ? priceLabel(matchaRaw) : null;
 
   return (
     <div className="bg-[#183029] text-white">
@@ -124,7 +125,7 @@ export default async function RubioShopPage() {
                 </Link>
                 {matchaPrice && (
                   <span className="text-sm text-white/50">
-                    {formatPrice(matchaPrice.amount, matchaPrice.currency)}
+                    {matchaPrice.isRange ? matchaPrice.text : `from ${matchaPrice.text}`}
                   </span>
                 )}
               </div>

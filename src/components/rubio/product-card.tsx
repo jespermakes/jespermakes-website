@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatPrice, productUrl, type Region } from "@/lib/rubio-shop";
+import { priceLabel, productUrl, type Region } from "@/lib/rubio-shop";
 import type { RubioProduct, RubioPrice } from "@/lib/db/schema";
 
 export function priceFor(product: RubioProduct, region: Region): RubioPrice | null {
@@ -20,6 +20,7 @@ export default function ProductCard({
   region: Region;
 }) {
   const price = priceFor(product, region);
+  const label = price ? priceLabel(price) : null;
   const carried = region.program === "us" ? !!product.usHandle : !!product.euHandle;
 
   return (
@@ -51,10 +52,12 @@ export default function ProductCard({
         <p className="mt-2 flex-1 text-sm leading-relaxed text-white/60">{product.blurb}</p>
 
         <div className="mt-4 flex items-baseline justify-between gap-3 border-t border-white/10 pt-3">
-          {price ? (
+          {label ? (
             <span className="text-sm font-semibold text-white">
-              <span className="text-[11px] font-normal uppercase tracking-wide text-white/40">from </span>
-              {formatPrice(price.amount, price.currency)}
+              {!label.isRange && (
+                <span className="text-[11px] font-normal uppercase tracking-wide text-white/40">from </span>
+              )}
+              {label.text}
             </span>
           ) : (
             <span className="text-xs text-white/40">{carried ? "Price at Rubio" : "US store only"}</span>

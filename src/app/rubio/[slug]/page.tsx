@@ -5,7 +5,7 @@ import { asc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { rubioProducts } from "@/lib/db/schema";
 import { resolveRegion } from "@/lib/rubio-region-server";
-import { REGIONS, REGION_ORDER, formatPrice, productUrl } from "@/lib/rubio-shop";
+import { REGIONS, REGION_ORDER, priceLabel, productUrl } from "@/lib/rubio-shop";
 import RegionSwitcher from "@/components/rubio/region-switcher";
 import ProductCard, { BuyButton, priceFor } from "@/components/rubio/product-card";
 import ColourGrid, { type Swatch } from "@/components/rubio/colour-grid";
@@ -38,6 +38,7 @@ export default async function RubioProductPage({ params }: { params: { slug: str
 
   const { region } = resolveRegion();
   const price = priceFor(product, region);
+  const label = price ? priceLabel(price) : null;
   const carried = region.program === "us" ? !!product.usHandle : !!product.euHandle;
 
   // Where else can they get it, if their own store does not carry it.
@@ -110,16 +111,16 @@ export default async function RubioProductPage({ params }: { params: { slug: str
             <p className="mt-4 text-lg leading-relaxed text-white/70">{product.blurb}</p>
 
             <div className="mt-8 rounded-2xl border border-white/12 bg-white/[0.04] p-6">
-              {price ? (
+              {label ? (
                 <div className="mb-4">
                   <span className="text-[11px] uppercase tracking-wide text-white/40">
-                    From, at Rubio {region.label}
+                    {label.isRange ? "Sizes range from" : "From"}, at Rubio {region.label}
                   </span>
-                  <div className="font-serif text-3xl font-medium">
-                    {formatPrice(price.amount, price.currency)}
-                  </div>
+                  <div className="font-serif text-3xl font-medium">{label.text}</div>
                   <p className="mt-1 text-xs text-white/40">
-                    Price and stock live at Rubio. Sizes and colours change the total.
+                    {label.isRange
+                      ? "That spread is the sample up to the largest tin. Pick your size and colour on Rubio's page for the real total."
+                      : "Price and stock live at Rubio. Colour can change the total."}
                   </p>
                 </div>
               ) : (
