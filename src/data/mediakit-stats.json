@@ -4,7 +4,7 @@
     "subscribers": 361000,
     "views": 44158996,
     "videos": 132,
-    "median_views_12mo": 88056
+    "median_views_12mo": 88077
   },
   "in_the_rough": {
     "subscribers": 9580,
@@ -12,8 +12,8 @@
     "videos": 24
   },
   "facebook": {
-    "followers": 10828,
-    "views_28d": 246049,
+    "followers": 10848,
+    "views_28d": 258219,
     "engagements_28d": 9226,
     "profile_views_28d": 3025,
     "posts_2026": 30
@@ -25,5 +25,10 @@
     "median_reel_12mo": 21485,
     "engagement_pct": 4.8,
     "lifetime_likes": 618166
+  },
+  "tiktok": {
+    "followers": 44000,
+    "videos": 132,
+    "engagement_pct": 2.6
   }
 }
