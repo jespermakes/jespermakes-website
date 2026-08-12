@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  stats as mk,
+  compact,
+  exact,
+  followerHeadline,
+  viewsHeadline,
+  measuredOn,
+} from "@/lib/mediakit-stats";
 
 export const metadata: Metadata = {
   title: "Media kit | Jesper Makes",
@@ -91,11 +99,11 @@ const platforms = [
     platform: "youtube" as const,
     href: "/mediakit/youtube",
     stats: [
-      { label: "Subscribers", value: "361K" },
-      { label: "Total Videos", value: "132" },
-      { label: "Total Views", value: "44.1M" },
+      { label: "Subscribers", value: compact(mk.youtube.subscribers) },
+      { label: "Total Videos", value: String(mk.youtube.videos) },
+      { label: "Total Views", value: compact(mk.youtube.views) },
+      { label: "Median Video", value: compact(mk.youtube.median_views_12mo), sub: "12mo" },
       { label: "Engagement", value: "6.1%" },
-      { label: "Avg Watch Time", value: "8:54" },
     ],
   },
   {
@@ -103,8 +111,9 @@ const platforms = [
     platform: "youtube" as const,
     href: "/mediakit/in-the-rough",
     stats: [
-      { label: "Subscribers", value: "9.5K" },
-      { label: "Total Videos", value: "24" },
+      { label: "Subscribers", value: compact(mk.in_the_rough.subscribers) },
+      { label: "Total Videos", value: String(mk.in_the_rough.videos) },
+      { label: "Total Views", value: compact(mk.in_the_rough.views) },
       { label: "Engagement", value: "8.0%" },
     ],
     note: "Top 5% engagement rate",
@@ -113,54 +122,44 @@ const platforms = [
     name: "Instagram @jespermakes",
     platform: "instagram" as const,
     href: "/mediakit/instagram",
-    // Meta Graph API, 2026-08-10. Lifetime figures cover all 302 posts back to
-    // Sept 2020. Median reel is the honest expectation-setter: the lifetime
-    // total is top-heavy (two viral reels are 58% of it), so a sponsor dividing
-    // total by posts would get a number no paid reel will hit.
-    // Engagement = (likes + comments) / followers, averaged over the last 12
-    // months (45 posts), the standard industry method. Measured 4.83%; the page
-    // previously claimed 4.1%, which was understating it.
+    // Median reel is the expectation-setter: lifetime views are top-heavy (two
+    // viral reels are 58% of the total), so total-divided-by-posts gives ~54K,
+    // which no paid reel will deliver.
     stats: [
-      { label: "Followers", value: "120K" },
-      { label: "Posts", value: "302" },
-      { label: "Total Views", value: "16.4M" },
-      { label: "Median Reel", value: "21.5K" },
-      { label: "Engagement", value: "4.8%" },
-      { label: "Lifetime Likes", value: "618K" },
+      { label: "Followers", value: compact(mk.instagram.followers) },
+      { label: "Posts", value: String(mk.instagram.posts) },
+      { label: "Total Views", value: compact(mk.instagram.lifetime_views) },
+      { label: "Median Reel", value: compact(mk.instagram.median_reel_12mo), sub: "12mo" },
+      { label: "Engagement", value: `${mk.instagram.engagement_pct}%` },
+      { label: "Lifetime Likes", value: compact(mk.instagram.lifetime_likes) },
     ],
   },
   {
     name: "TikTok @jespermakes",
     platform: "tiktok" as const,
     href: "/mediakit/tiktok",
+    // No API behind these yet, so they are not covered by the verified badge.
     stats: [
-      { label: "Followers", value: "44K" },
-      { label: "Videos", value: "132" },
-      { label: "Engagement", value: "2.6%" },
+      { label: "Followers", value: compact(mk.tiktok.followers) },
+      { label: "Videos", value: String(mk.tiktok.videos) },
+      { label: "Engagement", value: `${mk.tiktok.engagement_pct}%` },
     ],
   },
   {
     name: "Facebook Page",
     platform: "facebook" as const,
     href: "/mediakit/facebook",
-    // Meta Graph API, 2026-08-12. Volume figures are 28-DAY windows because
-    // Facebook exposes no lifetime totals (period=lifetime returns nothing, and
-    // the page_impressions family was removed in v25.0). The 28d label is not
-    // optional: unlabelled, these read as lifetime and undersell the page badly.
-    //
-    // These jumped 25x in two days when the page went daily. Refresh with
-    // meta_api.facebook_page_window(), NOT a bare {"period": "days_28"}, which
-    // silently returns a stale window (it reported 15,003 views against a true
-    // 232,636 on 2026-08-12).
+    // 28-day windows: Facebook publishes no lifetime totals at all.
     stats: [
-      { label: "Followers", value: "10.7K" },
-      { label: "Video Views", value: "233K", sub: "28d" },
-      { label: "Engagements", value: "8,842", sub: "28d" },
-      { label: "Posts 2026", value: "30" },
+      { label: "Followers", value: compact(mk.facebook.followers) },
+      { label: "Video Views", value: compact(mk.facebook.views_28d), sub: "28d" },
+      { label: "Engagements", value: exact(mk.facebook.engagements_28d), sub: "28d" },
+      { label: "Posts 2026", value: String(mk.facebook.posts_2026) },
     ],
     note: "Went daily in August. Past 10K followers, views up 25x in a week",
   },
 ];
+
 
 const ambassadorships = [
   { name: "Festool", logo: "/brands/festool.svg" },
@@ -318,30 +317,29 @@ export default function MediaKit() {
             them honestly rather than being decoration. Raise this only against
             a number someone can actually produce. */}
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
-          545K+ followers.{" "}
-          <span className="text-[#E8604C]">61M+ views.</span>
+          {followerHeadline()} followers.{" "}
+          <span className="text-[#E8604C]">{viewsHeadline()} views.</span>
           <br />
           Real builds, real audience.
         </h1>
 
-        {/* Every clause here is measured, not asserted: male 88.6% (donut
-            below), 25-54 = 67.0% (20.1 + 25.6 + 21.3 from ageData), US 21.4% +
-            listed Europe 32.3% = 53.7% (countryData). If those arrays change,
-            re-check this sentence. */}
+        {/* Every clause is measured, not asserted: male 88.6% (donut below),
+            25-54 = 67.0% (ageData), US 21.4% + listed Europe 32.3% (countryData). */}
         <p className="text-white/60 text-base md:text-lg max-w-2xl mx-auto">
           Core audience: male, 25 to 54, predominantly US and Europe.
         </p>
 
-        {/* Views are shown per platform, never merged into one cross-platform
-            figure: a YouTube view and an Instagram Reel view are not the same
-            unit, and a blended total is the number sponsors discount. */}
+        {/* Views sit against their own platform. A YouTube view and a Reel view
+            are not the same unit, so the per-channel breakdown does the work the
+            headline cannot. Facebook is a 28-day window, not lifetime, because
+            Facebook publishes no lifetime totals; it is labelled inline. */}
         <div className="mt-10 grid gap-3 sm:gap-4 max-w-2xl mx-auto text-left">
           {[
-            { platform: "youtube", label: "YouTube", count: "361K", views: "44.1M views" },
-            { platform: "instagram", label: "Instagram", count: "120K", views: "16.4M views" },
-            { platform: "tiktok", label: "TikTok", count: "44K", views: null },
-            { platform: "youtube", label: "In The Rough", count: "9.5K", views: "0.8M views" },
-            { platform: "facebook", label: "Facebook", count: "10.7K", views: null },
+            { platform: "youtube",   label: "YouTube",      count: compact(mk.youtube.subscribers),      views: `${compact(mk.youtube.views)} views`,           window: null },
+            { platform: "instagram", label: "Instagram",    count: compact(mk.instagram.followers),      views: `${compact(mk.instagram.lifetime_views)} views`, window: null },
+            { platform: "tiktok",    label: "TikTok",       count: compact(mk.tiktok.followers),         views: null,                                           window: null },
+            { platform: "youtube",   label: "In The Rough", count: compact(mk.in_the_rough.subscribers), views: `${compact(mk.in_the_rough.views)} views`,      window: null },
+            { platform: "facebook",  label: "Facebook",     count: compact(mk.facebook.followers),       views: `${compact(mk.facebook.views_28d)} views`,      window: "28d" },
           ].map((p) => (
             <div
               key={p.label}
@@ -351,25 +349,36 @@ export default function MediaKit() {
                 <PlatformIcon platform={p.platform} />
               </div>
               <span className="text-sm flex-1">{p.label}</span>
-              <span className="font-semibold text-white tabular-nums">
-                {p.count}
-              </span>
-              <span className="text-white/30 text-sm w-28 text-right tabular-nums">
+              <span className="font-semibold text-white tabular-nums">{p.count}</span>
+              <span className="text-white/30 text-sm w-32 text-right tabular-nums">
                 {p.views ?? ""}
+                {p.window && <span className="text-white/20"> ({p.window})</span>}
               </span>
             </div>
           ))}
         </div>
 
+        {/* Replaces a line that just restated Instagram's median. A sponsor is
+            not buying a channel, they are buying ONE placement, so the useful
+            number is what one placement does. Medians, not means: the means are
+            510K on YouTube and 54K on Instagram, both inflated by a handful of
+            virals into a figure no paid post will hit. "Half do better" is the
+            honest way to say a median without it sounding like a ceiling. */}
         <p className="mt-6 text-white/40 text-sm max-w-2xl mx-auto">
-          Lifetime views per platform. A typical Instagram reel in the last 12
-          months does{" "}
-          <span className="text-white/70 font-medium">21,486 views</span>; the
-          best has done 6.6M.
+          What one placement typically delivers:{" "}
+          <span className="text-white/70 font-medium">
+            {exact(mk.youtube.median_views_12mo)} views
+          </span>{" "}
+          on a YouTube video,{" "}
+          <span className="text-white/70 font-medium">
+            {exact(mk.instagram.median_reel_12mo)} views
+          </span>{" "}
+          on an Instagram reel. Median over the last 12 months, so half do
+          better. Lifetime totals above, except Facebook which publishes none.
         </p>
 
         <div className="mt-8 flex items-center justify-center gap-4 text-white/30 text-xs">
-          <span>Updated August 2026</span>
+          <span>Measured {measuredOn()}</span>
           <span className="inline-flex items-center gap-1.5 border border-white/10 rounded-full px-3 py-1 text-white/40">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
               <path d="M9 12l2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />

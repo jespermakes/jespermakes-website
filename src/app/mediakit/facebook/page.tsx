@@ -1,33 +1,33 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { stats as mk, exact, measuredOn } from "@/lib/mediakit-stats";
 
 export const metadata: Metadata = {
   title: "Facebook stats | Jesper Makes media kit",
   description:
-    "Facebook page stats for Jesper Makes. 10.7K followers, 232K video views and 8,842 engagements in the last 28 days. Verified via the Meta Graph API.",
+    "Facebook page stats for Jesper Makes. Follower count, video views and engagement over the last 28 days, refreshed daily from the Meta Graph API.",
   alternates: { canonical: "/mediakit/facebook" },
 };
 
-// Meta Graph API, measured 2026-08-12.
+// GENERATED. Figures come from src/data/mediakit-stats.json, rewritten daily
+// by the Brain job (brain-server scripts/mediakit_refresh.py) straight from the
+// Meta Graph API. Do not edit the numbers here.
 //
-// These figures moved 25x in TWO DAYS. On 10 Aug this page read 9.6K followers
-// and 9,807 video views; a single long-form post on 11 Aug ("This Will Change
-// How You See Pallets") did 88,838 views on day one and 128,809 on day two,
-// taking the page past 10,000 followers. Anything here dates fast right now.
+// Why it is generated: these moved 25x in TWO DAYS. On 10 Aug this page read
+// 9.6K followers and 9,807 video views; one long-form post on 11 Aug did 88,838
+// views on day one and 128,809 on day two, taking the page past 10,000
+// followers. Hand-maintained figures were wrong within 48 hours, twice.
 //
-// Every volume figure is a 28-DAY WINDOW carrying the date it was measured,
-// because Facebook exposes no lifetime totals at all: the page_impressions and
-// page_fans families were removed in v25.0 and period=lifetime returns nothing.
-//
-// MEASURE THESE WITH meta_api.facebook_page_window(), never a bare
-// {"period": "days_28"}. The bare call silently answers about a stale window:
-// on 2026-08-12 it returned 15,003 video views when the true figure was
-// 232,636. That is how the 9,807 above got published in the first place.
+// Volume figures are 28-DAY WINDOWS because Facebook exposes no lifetime totals
+// at all (period=lifetime returns nothing; the page_impressions family was
+// removed in v25.0). The refresh job measures them with
+// meta_api.facebook_page_window(), never a bare {"period": "days_28"}, which
+// silently answers about a stale window.
 const stats = [
-  { label: "Followers", value: "10,744", note: "past 10K on 11 Aug" },
-  { label: "Video views", value: "232,636", note: "28 days to 12 Aug 2026" },
-  { label: "Engagements", value: "8,842", note: "28 days to 12 Aug 2026" },
-  { label: "Profile views", value: "2,923", note: "28 days to 12 Aug 2026" },
+  { label: "Followers", value: exact(mk.facebook.followers), note: "past 10K on 11 Aug" },
+  { label: "Video views", value: exact(mk.facebook.views_28d), note: "last 28 days" },
+  { label: "Engagements", value: exact(mk.facebook.engagements_28d), note: "last 28 days" },
+  { label: "Profile views", value: exact(mk.facebook.profile_views_28d), note: "last 28 days" },
 ];
 
 export default function FacebookPage() {
@@ -62,9 +62,9 @@ export default function FacebookPage() {
         </div>
 
         <p className="text-white/40 text-sm mb-12">
-          Measured via the Meta Graph API on 12 August 2026. Facebook publishes
-          no lifetime view totals, so volume figures are 28-day windows. This
-          page is growing fast enough that these will understate it within days.
+          Measured via the Meta Graph API on {measuredOn()}, refreshed daily.
+          Facebook publishes no lifetime view totals, so volume figures are
+          rolling 28-day windows.
         </p>
 
         {/* About */}
