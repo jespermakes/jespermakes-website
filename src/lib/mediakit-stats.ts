@@ -16,10 +16,17 @@ import raw from "@/data/mediakit-stats.json";
 
 export const stats = raw;
 
-/** 44143835 -> "44.1M", 232636 -> "233K", 8842 -> "8,842". */
+/** 44143835 -> "44.1M", 246049 -> "246K", 10828 -> "10.8K", 44000 -> "44K".
+ *
+ *  One decimal below 100K, none above. 10,828 rendered as "11K" throws away
+ *  the precision on a number that only just crossed 10K, and on a media kit
+ *  the crossing is the point. Trailing ".0" is stripped so 44,000 reads "44K"
+ *  rather than "44.0K". */
 export function compact(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 10_000) return `${Math.round(n / 1000)}K`;
+  const trim = (x: string) => x.replace(/\.0$/, "");
+  if (n >= 1_000_000) return `${trim((n / 1_000_000).toFixed(1))}M`;
+  if (n >= 100_000) return `${Math.round(n / 1000)}K`;
+  if (n >= 1_000) return `${trim((n / 1000).toFixed(1))}K`;
   return n.toLocaleString("en-US");
 }
 
