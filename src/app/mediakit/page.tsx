@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Media kit | Jesper Makes",
   description:
-    "Audience stats, demographics, and brand partnership info for Jesper Makes. 543K+ followers across YouTube, Instagram, TikTok, and Facebook. 44.1M YouTube views, 16.4M Instagram views. Verified via platform APIs. Updated August 2026.",
+    "Audience stats, demographics, and brand partnership info for Jesper Makes. 545K+ followers across YouTube, Instagram, TikTok, and Facebook. 44.1M YouTube views, 16.4M Instagram views. Verified via platform APIs. Updated August 2026.",
   alternates: { canonical: "/mediakit" },
 };
 
@@ -143,17 +143,22 @@ const platforms = [
     name: "Facebook Page",
     platform: "facebook" as const,
     href: "/mediakit/facebook",
-    // Meta Graph API, 2026-08-10. Volume figures are 28-DAY windows because
+    // Meta Graph API, 2026-08-12. Volume figures are 28-DAY windows because
     // Facebook exposes no lifetime totals (period=lifetime returns nothing, and
     // the page_impressions family was removed in v25.0). The 28d label is not
     // optional: unlabelled, these read as lifetime and undersell the page badly.
+    //
+    // These jumped 25x in two days when the page went daily. Refresh with
+    // meta_api.facebook_page_window(), NOT a bare {"period": "days_28"}, which
+    // silently returns a stale window (it reported 15,003 views against a true
+    // 232,636 on 2026-08-12).
     stats: [
-      { label: "Followers", value: "9.6K" },
-      { label: "Video Views", value: "9.8K", sub: "28d" },
-      { label: "Engagements", value: "354", sub: "28d" },
-      { label: "Posts 2026", value: "29" },
+      { label: "Followers", value: "10.7K" },
+      { label: "Video Views", value: "233K", sub: "28d" },
+      { label: "Engagements", value: "8,842", sub: "28d" },
+      { label: "Posts 2026", value: "30" },
     ],
-    note: "Now publishing daily. Figures are a floor, not a steady state",
+    note: "Went daily in August. Past 10K followers, views up 25x in a week",
   },
 ];
 
@@ -313,7 +318,7 @@ export default function MediaKit() {
             them honestly rather than being decoration. Raise this only against
             a number someone can actually produce. */}
         <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-4">
-          543K+ followers.{" "}
+          545K+ followers.{" "}
           <span className="text-[#E8604C]">61M+ views.</span>
           <br />
           Real builds, real audience.
@@ -336,7 +341,7 @@ export default function MediaKit() {
             { platform: "instagram", label: "Instagram", count: "120K", views: "16.4M views" },
             { platform: "tiktok", label: "TikTok", count: "44K", views: null },
             { platform: "youtube", label: "In The Rough", count: "9.5K", views: "0.8M views" },
-            { platform: "facebook", label: "Facebook", count: "9.6K", views: null },
+            { platform: "facebook", label: "Facebook", count: "10.7K", views: null },
           ].map((p) => (
             <div
               key={p.label}

@@ -4,25 +4,30 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Facebook stats | Jesper Makes media kit",
   description:
-    "Facebook page stats for Jesper Makes. 9.6K followers, 9,807 video views and 354 engagements in the last 28 days. Verified via the Meta Graph API.",
+    "Facebook page stats for Jesper Makes. 10.7K followers, 232K video views and 8,842 engagements in the last 28 days. Verified via the Meta Graph API.",
   alternates: { canonical: "/mediakit/facebook" },
 };
 
-// Meta Graph API, measured 2026-08-10.
+// Meta Graph API, measured 2026-08-12.
 //
-// Every volume figure here is a 28-DAY WINDOW and is labelled as such, because
-// Facebook exposes no lifetime totals at all: the entire page_impressions and
-// page_fans families were removed in v25.0 (the June 2026 reach migration), and
-// period=lifetime returns nothing for any volume metric. days_28 is the ceiling.
+// These figures moved 25x in TWO DAYS. On 10 Aug this page read 9.6K followers
+// and 9,807 video views; a single long-form post on 11 Aug ("This Will Change
+// How You See Pallets") did 88,838 views on day one and 128,809 on day two,
+// taking the page past 10,000 followers. Anything here dates fast right now.
 //
-// A rolling window on a static page rots, so each one carries the date it was
-// measured. Do not restate these as "monthly" or drop the date; a stale window
-// presented as current is the thing the verified badge exists to prevent.
+// Every volume figure is a 28-DAY WINDOW carrying the date it was measured,
+// because Facebook exposes no lifetime totals at all: the page_impressions and
+// page_fans families were removed in v25.0 and period=lifetime returns nothing.
+//
+// MEASURE THESE WITH meta_api.facebook_page_window(), never a bare
+// {"period": "days_28"}. The bare call silently answers about a stale window:
+// on 2026-08-12 it returned 15,003 video views when the true figure was
+// 232,636. That is how the 9,807 above got published in the first place.
 const stats = [
-  { label: "Followers", value: "9.6K", note: null },
-  { label: "Video views", value: "9,807", note: "28 days to 10 Aug 2026" },
-  { label: "Engagements", value: "354", note: "28 days to 10 Aug 2026" },
-  { label: "Posts in 2026", value: "29", note: "vs 11 in all of 2024" },
+  { label: "Followers", value: "10,744", note: "past 10K on 11 Aug" },
+  { label: "Video views", value: "232,636", note: "28 days to 12 Aug 2026" },
+  { label: "Engagements", value: "8,842", note: "28 days to 12 Aug 2026" },
+  { label: "Profile views", value: "2,923", note: "28 days to 12 Aug 2026" },
 ];
 
 export default function FacebookPage() {
@@ -57,8 +62,9 @@ export default function FacebookPage() {
         </div>
 
         <p className="text-white/40 text-sm mb-12">
-          Measured via the Meta Graph API on 10 August 2026. Facebook publishes
-          no lifetime view totals, so volume figures are 28-day windows.
+          Measured via the Meta Graph API on 12 August 2026. Facebook publishes
+          no lifetime view totals, so volume figures are 28-day windows. This
+          page is growing fast enough that these will understate it within days.
         </p>
 
         {/* About */}
@@ -80,10 +86,12 @@ export default function FacebookPage() {
               steady state, and they should rise sharply. Re-measure before
               quoting them to anyone; on this page they are floor, not ceiling. */}
           <p className="text-white/70 leading-relaxed mt-4">
-            Output is climbing fast: 11 posts in 2024, 23 in 2025, 29 by August
-            2026, and the page moved to daily publishing in August. Every post
-            is video. The figures above were measured at the start of that
-            change, so treat them as a floor rather than a current reading.
+            The page moved to daily publishing in August 2026 and the effect was
+            immediate. One long-form video on 11 August did 88,838 views on its
+            first day and 128,809 on its second, and the page passed 10,000
+            followers on the back of it. Video views over the trailing 28 days
+            went from under 10,000 to over 230,000 in the same week. Every post
+            is video.
           </p>
         </div>
 
