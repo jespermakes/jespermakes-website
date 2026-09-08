@@ -28,7 +28,7 @@ const nextConfig = {
       // Old Beacons link-in-bio URLs
       { source: "/jespermakes/tools", destination: "/tools", permanent: true },
       { source: "/jespermakes/jespermakes.com", destination: "/", permanent: true },
-      { source: "/jespermakes/bambulab", destination: "/tools", permanent: true },
+      { source: "/jespermakes/bambulab", destination: "/tools/bambu-lab-h2d", permanent: true },
       { source: "/jespermakes/xtool", destination: "/tools", permanent: true },
       { source: "/jespermakes/youtubegear", destination: "/tools/category/office-youtube-gear", permanent: true },
       // Was pointing at /tools/rubio-monocoat-oil-plus-2c, which is now hidden.
@@ -47,7 +47,7 @@ const nextConfig = {
       { source: "/tools/rubio-monocoat-care-kit", destination: "/rubio", permanent: true },
       // Every entry in this category was Rubio, so the category is the shop now.
       { source: "/tools/category/finishing", destination: "/rubio", permanent: true },
-      { source: "/bambulab", destination: "/tools", permanent: true },
+      { source: "/bambulab", destination: "/tools/bambu-lab-h2d", permanent: true },
       { source: "/youtubegear", destination: "/tools/category/office-youtube-gear", permanent: true },
       // Old Beacons versioned URLs
       { source: "/jespermakes/tools\\?__v\\=:v", destination: "/tools", permanent: true },
