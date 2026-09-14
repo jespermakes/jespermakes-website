@@ -1,30 +1,30 @@
 {
-  "measured_at": "2026-09-13",
+  "measured_at": "2026-09-14",
   "youtube": {
     "subscribers": 362000,
-    "views": 44517197,
+    "views": 44530601,
     "videos": 135,
-    "median_views_12mo": 72352
+    "median_views_12mo": 72440
   },
   "in_the_rough": {
-    "subscribers": 9820,
-    "views": 880332,
+    "subscribers": 9860,
+    "views": 884742,
     "videos": 24
   },
   "facebook": {
-    "followers": 19934,
-    "views_28d": 1355620,
-    "engagements_28d": 54784,
-    "profile_views_28d": 15832,
-    "posts_2026": 75
+    "followers": 20063,
+    "views_28d": 1311551,
+    "engagements_28d": 53633,
+    "profile_views_28d": 14968,
+    "posts_2026": 76
   },
   "instagram": {
-    "followers": 123816,
+    "followers": 123898,
     "posts": 303,
-    "lifetime_views": 16816837,
-    "median_reel_12mo": 20431,
-    "engagement_pct": 4.6,
-    "lifetime_likes": 633426
+    "lifetime_views": 16824509,
+    "median_reel_12mo": 21046,
+    "engagement_pct": 4.7,
+    "lifetime_likes": 633725
   },
   "tiktok": {
     "followers": 44000,
