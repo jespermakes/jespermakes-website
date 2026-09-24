@@ -104,6 +104,13 @@ const SHOP_PRODUCTS: ShopProduct[] = [
     image: "/images/cone-lamp-3dprint/hero-firewood.jpg",
   },
   {
+    slug: "festool-kreg-adapter",
+    title: "Festool to Kreg Dust Adapter",
+    subtitle: "3D print file: Festool D27 hose to Kreg K5 jig",
+    price: "€0+",
+    image: "/images/festool-kreg-adapter/hero.jpg",
+  },
+  {
     slug: "workshop-tee",
     title: "Jesper Makes Workshop Tee",
     subtitle: "Unisex black tee \u2014 printed & shipped worldwide",

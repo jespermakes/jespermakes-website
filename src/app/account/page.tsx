@@ -34,6 +34,12 @@ const PRODUCT_INFO: Record<
     downloadSku: "cone-lamp-3dprint",
     downloadLabel: "Download ZIP",
   },
+  "festool-kreg-adapter": {
+    name: "Festool to Kreg Dust Adapter",
+    description: "STL + STEP 3D print files",
+    downloadSku: "festool-kreg-adapter",
+    downloadLabel: "Download ZIP",
+  },
   "pallet-starter-kit": {
     name: "The Pallet Builder's Starter Kit",
     description: "5 build guides + tool recommendations",

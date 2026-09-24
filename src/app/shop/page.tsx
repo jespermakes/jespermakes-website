@@ -39,6 +39,13 @@ const products = [
     price: "Free + support",
   },
   {
+    href: "/shop/festool-kreg-adapter",
+    image: "/images/festool-kreg-adapter/hero.jpg",
+    title: "Festool to Kreg Dust Adapter",
+    subtitle: "3D print file: Festool D27 hose to Kreg K5 jig",
+    price: "Free + support",
+  },
+  {
     href: "/shop/workshop-tee",
     image: "/images/products/tshirt-mockup-front.jpg",
     title: "Jesper Makes Workshop Tee",

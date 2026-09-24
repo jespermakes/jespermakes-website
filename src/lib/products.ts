@@ -49,6 +49,16 @@ export const PRODUCTS: Record<string, Product> = {
     file: { filename: "cone-lamp-3dprint.zip", contentType: "application/zip" },
     downloadLabel: "Download ZIP",
   },
+  "festool-kreg-adapter": {
+    sku: "festool-kreg-adapter",
+    name: "Festool to Kreg Dust Adapter",
+    description:
+      "3D print file for a push-fit adapter between a Festool D27 extractor hose and a Kreg K5 / K5MS pocket hole jig. STL + STEP.",
+    tier: "free",
+    priceCents: 0,
+    file: { filename: "festool-kreg-dust-adapter.zip", contentType: "application/zip" },
+    downloadLabel: "Download ZIP",
+  },
   "workshop-tee": {
     sku: "workshop-tee",
     name: "Jesper Makes Workshop Tee",

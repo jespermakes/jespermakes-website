@@ -173,6 +173,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "workshop-wall-charts",
     "cone-lamp-laser",
     "cone-lamp-3dprint",
+    "festool-kreg-adapter",
     "workshop-tee",
     "pallet-starter-kit",
   ].map((slug) => ({
