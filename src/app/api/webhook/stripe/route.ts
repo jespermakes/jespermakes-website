@@ -68,7 +68,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
     return {
       to,
       from: "Jesper Makes <hello@jespermakes.com>",
-      subject: "Your Cone Lamp 3D Print Files — Download",
+      subject: "Your Cone Lamp 3D Print Files download",
       html: `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
           <p>${greeting}</p>
@@ -83,7 +83,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
     return {
       to,
       from: "Jesper Makes <hello@jespermakes.com>",
-      subject: "Your Cheat Sheets — Download",
+      subject: "Your Cheat Sheets download",
       html: `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
           <p>${greeting}</p>
@@ -99,7 +99,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
     return {
       to,
       from: "Jesper Makes <hello@jespermakes.com>",
-      subject: "Your Cone Lamp Laser File — Download",
+      subject: "Your Cone Lamp Laser File download",
       html: `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
           <p>${greeting}</p>
