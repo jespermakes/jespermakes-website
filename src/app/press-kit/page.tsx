@@ -11,19 +11,24 @@ export const metadata: Metadata = {
 
 const portraits = [
   {
+    src: "/images/press/latvia/jesper-portrait-barn.jpg",
+    alt: "Jesper smiling in front of a timber barn, flannel shirt",
+    caption: "Portrait, at the barn",
+  },
+  {
     src: "/images/press/jesper-portrait-winter-1.jpg",
-    alt: "Jesper — portrait, winter outdoor, beanie and leather apron",
-    caption: "Portrait — outdoor winter",
+    alt: "Jesper, outdoor winter portrait, beanie and leather apron",
+    caption: "Portrait, outdoor winter",
   },
   {
     src: "/images/press/jesper-portrait-winter-2.jpg",
-    alt: "Jesper — portrait, winter outdoor close-up",
-    caption: "Portrait — outdoor close-up",
+    alt: "Jesper, outdoor winter close-up",
+    caption: "Portrait, outdoor close-up",
   },
   {
     src: "/images/press/jesper-outdoor-hat.jpg",
-    alt: "Jesper — outdoor portrait with hat, winter landscape",
-    caption: "Portrait — outdoor with hat",
+    alt: "Jesper, outdoor portrait with hat, winter landscape",
+    caption: "Portrait, outdoor with hat",
   },
 ];
 
@@ -31,12 +36,12 @@ const workshop = [
   {
     src: "/images/press/jesper-workshop-carrying.jpg",
     alt: "Jesper carrying a board in the workshop, logo sign on wall",
-    caption: "In the workshop — carrying lumber",
+    caption: "In the workshop, carrying lumber",
   },
   {
     src: "/images/press/jesper-workshop-measuring.jpg",
     alt: "Jesper measuring and marking wood at the workbench",
-    caption: "In the workshop — measuring",
+    caption: "In the workshop, measuring",
   },
   {
     src: "/images/press/jesper-festool-event.jpg",
@@ -45,17 +50,50 @@ const workshop = [
   },
 ];
 
+const timberFraming = [
+  {
+    src: "/images/press/latvia/jesper-axe-timber.jpg",
+    alt: "Jesper hewing a timber beam with an axe",
+    caption: "Hewing timber with an axe",
+  },
+  {
+    src: "/images/press/latvia/jesper-chisel-workshop.jpg",
+    alt: "Jesper cutting joinery on a long beam inside a timber workshop",
+    caption: "Cutting joinery in the workshop",
+  },
+  {
+    src: "/images/press/latvia/jesper-chisel-mortise.jpg",
+    alt: "Jesper cutting a mortise with a chisel",
+    caption: "Cutting a mortise by hand",
+  },
+  {
+    src: "/images/press/latvia/jesper-chisel-closeup.jpg",
+    alt: "Close-up of Jesper paring a joint with a chisel",
+    caption: "Chisel work, close-up",
+  },
+  {
+    src: "/images/press/latvia/jesper-marking-joinery.jpg",
+    alt: "Jesper checking a scribed joint on a timber beam outside the barn",
+    caption: "Checking a joint",
+  },
+  {
+    src: "/images/press/latvia/barn-evening-wide.jpg",
+    alt: "Jesper in the lit doorway of a timber barn at dusk",
+    caption: "At the barn, evening",
+  },
+];
+
 const logos = [
   {
     src: "/images/press/jesper-makes-logo.png",
-    alt: "Jesper Makes Workshop — full logo (cream on transparent)",
-    caption: "Full logo — PNG, transparent",
+    alt: "Jesper Makes Workshop full logo, cream on transparent",
+    caption: "Full logo, PNG, transparent",
     filename: "jesper-makes-logo.png",
   },
   {
     src: "/images/press/jesper-makes-logo-round.png",
-    alt: "Jesper Makes Workshop — round logo",
-    caption: "Round logo — PNG",
+    alt: "Jesper Makes Workshop round logo",
+    caption: "Round logo, PNG",
     filename: "jesper-makes-logo-round.png",
   },
 ];
@@ -151,7 +189,7 @@ export default function PressKit() {
       {/* Portraits */}
       <section className="mb-16">
         <h2 className="font-serif text-2xl text-wood mb-6">Portraits</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 gap-6">
           {portraits.map((img) => (
             <DownloadCard key={img.src} {...img} />
           ))}
@@ -163,6 +201,16 @@ export default function PressKit() {
         <h2 className="font-serif text-2xl text-wood mb-6">Workshop &amp; events</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {workshop.map((img) => (
+            <DownloadCard key={img.src} {...img} />
+          ))}
+        </div>
+      </section>
+
+      {/* Timber framing */}
+      <section className="mb-16">
+        <h2 className="font-serif text-2xl text-wood mb-6">Timber framing in Latvia</h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {timberFraming.map((img) => (
             <DownloadCard key={img.src} {...img} />
           ))}
         </div>
