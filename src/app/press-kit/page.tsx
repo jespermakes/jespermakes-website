@@ -50,6 +50,29 @@ const workshop = [
   },
 ];
 
+const festoolFriends = [
+  {
+    src: "/images/press/jesper-festool-friends-sanding.jpg",
+    alt: "Jesper sanding at Festool & Friends, safety glasses and overalls",
+    caption: "Sanding",
+  },
+  {
+    src: "/images/press/jesper-festool-friends-bench.jpg",
+    alt: "Jesper working on a frame at a Festool workbench",
+    caption: "At the bench",
+  },
+  {
+    src: "/images/press/jesper-festool-friends-saw.jpg",
+    alt: "Jesper cutting a board on a Festool table saw",
+    caption: "At the saw",
+  },
+  {
+    src: "/images/press/jesper-festool-friends-board.jpg",
+    alt: "Jesper feeding a board through a table saw",
+    caption: "Feeding a board",
+  },
+];
+
 const timberFraming = [
   {
     src: "/images/press/latvia/jesper-axe-timber.jpg",
@@ -202,6 +225,17 @@ export default function PressKit() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {workshop.map((img) => (
             <DownloadCard key={img.src} {...img} />
+          ))}
+        </div>
+      </section>
+
+      {/* Festool & Friends */}
+      <section className="mb-16">
+        <h2 className="font-serif text-2xl text-wood mb-2">Festool &amp; Friends, 2025</h2>
+        <p className="text-wood-light/60 text-sm mb-6">Photos: Festool.</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {festoolFriends.map((img) => (
+            <DownloadCard key={img.src} {...img} aspect="aspect-[2/3]" />
           ))}
         </div>
       </section>
