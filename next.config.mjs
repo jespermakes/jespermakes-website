@@ -69,6 +69,10 @@ const nextConfig = {
       { source: "/epidemicsound", destination: "/tools/epidemic-sound", permanent: true },
       { source: "/milanote", destination: "/tools", permanent: true },
       { source: "/betterhelp", destination: "/tools", permanent: true },
+      // Emails that end a sentence with "jespermakes.com/mediakit." get the
+      // full stop linked by mail clients, and that path 404ed.
+      { source: "/mediakit\\.", destination: "/mediakit", permanent: true },
+      { source: "/mediakit%2E", destination: "/mediakit", permanent: true },
     ];
   },
   async rewrites() {
