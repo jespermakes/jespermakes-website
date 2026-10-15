@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { images } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { isValidTagValue } from "@/data/image-tag-vocabulary";
+import { adminVoiceGate } from "@/lib/voice/gate-log";
+import { readOverride } from "@/lib/voice/gate";
 
 export const runtime = "nodejs";
 
@@ -27,6 +29,20 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json();
+
+  let voice: Awaited<ReturnType<typeof adminVoiceGate>> = {};
+  if (typeof body.description === "string") {
+    const currentRows = await db.select().from(images).where(eq(images.id, params.id)).limit(1);
+    if (!currentRows.length) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    // the description is the alt text a screen reader speaks: judged on what this edit adds
+    voice = await adminVoiceGate(
+      "admin.images.update",
+      (session.user as { id?: string } | undefined)?.id ?? null,
+      [{ field: "description", text: body.description.slice(0, 500), before: currentRows[0].description }],
+      readOverride(body.voiceOverride),
+    );
+    if (voice.response) return voice.response;
+  }
 
   const updates: Record<string, unknown> = { updatedAt: new Date(), reviewed: true };
 
@@ -91,7 +107,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     .returning();
 
   if (!updated) return NextResponse.json({ error: "Not found" }, { status: 404 });
-  return NextResponse.json({ image: updated });
+  return NextResponse.json({ image: updated, voice: voice.voice });
 }
 
 export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {

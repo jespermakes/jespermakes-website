@@ -4,10 +4,11 @@ import { revalidatePath } from "next/cache";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { db } from "@/lib/db";
 import { toolItems } from "@/lib/db/schema";
+import { mcpVoiceGate } from "@/lib/voice/gate-log";
+import { leafInputs, readOverride } from "@/lib/voice/gate";
 import type { ToolContext } from "./index";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function registerUpdateTool(server: McpServer, _ctx: ToolContext) {
+export function registerUpdateTool(server: McpServer, ctx: ToolContext) {
   server.registerTool(
     "update_tool",
     {
@@ -43,9 +44,15 @@ export function registerUpdateTool(server: McpServer, _ctx: ToolContext) {
           .describe(
             "Replaces the whole buy-links list, so send every link you want to keep, not just the changed one.",
           ),
+        voiceOverride: z
+          .object({ reason: z.string().min(8) })
+          .optional()
+          .describe(
+            "Only when the voice gate refused this text AND Jesper explicitly approved this exact text: his words as the reason. Logged. Never on your own.",
+          ),
       },
     },
-    async ({ id, ...fields }) => {
+    async ({ id, voiceOverride, ...fields }) => {
       const existing = await db
         .select()
         .from(toolItems)
@@ -62,6 +69,22 @@ export function registerUpdateTool(server: McpServer, _ctx: ToolContext) {
       }
 
       const tool = existing[0];
+
+      // judged on what this edit adds: a finding already on the same line of the stored text passes
+      const gate = await mcpVoiceGate(
+        "update_tool",
+        ctx,
+        [
+          { field: "name", text: fields.name, before: tool.name },
+          { field: "description", text: fields.description, before: tool.description },
+          { field: "longDescription", text: fields.longDescription, before: tool.longDescription },
+          { field: "category", text: fields.category, before: tool.category },
+          { field: "jesperNote", text: fields.jesperNote, before: tool.jesperNote },
+          ...(fields.buyLinks !== undefined ? leafInputs(fields.buyLinks, tool.buyLinks, "buyLinks") : []),
+        ],
+        readOverride(voiceOverride),
+      );
+      if (gate.refuse) return gate.refuse;
 
       const patch: Record<string, unknown> = { updatedAt: new Date() };
       for (const [key, value] of Object.entries(fields)) {
@@ -94,7 +117,7 @@ export function registerUpdateTool(server: McpServer, _ctx: ToolContext) {
         content: [
           {
             type: "text" as const,
-            text: `Updated tool "${tool.name}". Changed: ${Object.keys(patch).filter((k) => k !== "updatedAt").join(", ")}.`,
+            text: `Updated tool "${tool.name}". Changed: ${Object.keys(patch).filter((k) => k !== "updatedAt").join(", ")}.${gate.note ? `\n\n${gate.note}` : ""}`,
           },
         ],
       };

@@ -4,10 +4,11 @@ import { revalidatePath } from "next/cache";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { db } from "@/lib/db";
 import { blogPosts } from "@/lib/db/schema";
+import { mcpVoiceGate } from "@/lib/voice/gate-log";
+import { readOverride } from "@/lib/voice/gate";
 import type { ToolContext } from "./index";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function registerPublishBlogPost(server: McpServer, _ctx: ToolContext) {
+export function registerPublishBlogPost(server: McpServer, ctx: ToolContext) {
   server.registerTool(
     "publish_blog_post",
     {
@@ -16,9 +17,15 @@ export function registerPublishBlogPost(server: McpServer, _ctx: ToolContext) {
         "Publish a blog post by setting status='published' and publishedAt to now (if not already set). Refuses if the post is already published, hidden, or missing a title or content. Before calling this, read back the post details to confirm the publish is intended.",
       inputSchema: {
         id: z.string().uuid().describe("The blog post's UUID."),
+        voiceOverride: z
+          .object({ reason: z.string().min(8) })
+          .optional()
+          .describe(
+            "Only when the voice gate refused this text AND Jesper explicitly approved this exact text: his words as the reason. Logged. Never on your own.",
+          ),
       },
     },
-    async ({ id }) => {
+    async ({ id, voiceOverride }) => {
       const existing = await db
         .select()
         .from(blogPosts)
@@ -75,6 +82,19 @@ export function registerPublishBlogPost(server: McpServer, _ctx: ToolContext) {
         };
       }
 
+      // publishing puts the whole text in front of readers: judged in full
+      const gate = await mcpVoiceGate(
+        "publish_blog_post",
+        ctx,
+        [
+          { field: "title", text: post.title },
+          { field: "description", text: post.description },
+          { field: "content", text: post.content },
+        ],
+        readOverride(voiceOverride),
+      );
+      if (gate.refuse) return gate.refuse;
+
       const now = new Date();
       const patch: Partial<typeof blogPosts.$inferInsert> = {
         status: "published",
@@ -98,7 +118,7 @@ export function registerPublishBlogPost(server: McpServer, _ctx: ToolContext) {
         content: [
           {
             type: "text" as const,
-            text: `Published "${post.title}". Live at /blog/${post.slug}.`,
+            text: `Published "${post.title}". Live at /blog/${post.slug}.${gate.note ? `\n\n${gate.note}` : ""}`,
           },
         ],
       };

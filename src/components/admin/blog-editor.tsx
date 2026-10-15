@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { voiceFetch } from "@/lib/voice/client";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/navigation";
 import { ImagePicker } from "@/components/admin/image-picker";
@@ -108,7 +109,7 @@ export function BlogEditor({ initial }: { initial: BlogEditorInitialValues }) {
     try {
       const url = isNew ? "/api/admin/blog" : `/api/admin/blog/${initial.id}`;
       const method = isNew ? "POST" : "PATCH";
-      const res = await fetch(url, {
+      const res = await voiceFetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

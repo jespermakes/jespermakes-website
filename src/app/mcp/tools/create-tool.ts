@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { db } from "@/lib/db";
 import { toolItems } from "@/lib/db/schema";
+import { mcpVoiceGate } from "@/lib/voice/gate-log";
+import { readOverride } from "@/lib/voice/gate";
 import type { ToolContext } from "./index";
 
 function slugify(input: string): string {
@@ -33,8 +35,7 @@ async function uniqueSlug(base: string): Promise<string> {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function registerCreateTool(server: McpServer, _ctx: ToolContext) {
+export function registerCreateTool(server: McpServer, ctx: ToolContext) {
   server.registerTool(
     "create_tool",
     {
@@ -64,6 +65,12 @@ export function registerCreateTool(server: McpServer, _ctx: ToolContext) {
           .boolean()
           .optional()
           .describe("Whether this is an ambassador/sponsored tool."),
+        voiceOverride: z
+          .object({ reason: z.string().min(8) })
+          .optional()
+          .describe(
+            "Only when the voice gate refused this text AND Jesper explicitly approved this exact text: his words as the reason. Logged. Never on your own.",
+          ),
       },
     },
     async ({
@@ -73,7 +80,21 @@ export function registerCreateTool(server: McpServer, _ctx: ToolContext) {
       category,
       categorySlug,
       ambassadorBadge,
+      voiceOverride,
     }) => {
+      const gate = await mcpVoiceGate(
+        "create_tool",
+        ctx,
+        [
+          { field: "name", text: name },
+          { field: "description", text: description },
+          { field: "longDescription", text: longDescription },
+          { field: "category", text: category },
+        ],
+        readOverride(voiceOverride),
+      );
+      if (gate.refuse) return gate.refuse;
+
       const slug = await uniqueSlug(slugify(name));
       const now = new Date();
 
@@ -104,7 +125,7 @@ export function registerCreateTool(server: McpServer, _ctx: ToolContext) {
         content: [
           {
             type: "text" as const,
-            text: `Created tool "${name}" (id=${created.id}, slug=${created.slug}). Hidden by default. Use update_tool to add more fields, then publish_tool when ready to make it visible. View in admin: /admin/tools/${created.id}`,
+            text: `Created tool "${name}" (id=${created.id}, slug=${created.slug}). Hidden by default. Use update_tool to add more fields, then publish_tool when ready to make it visible. View in admin: /admin/tools/${created.id}${gate.note ? `\n\n${gate.note}` : ""}`,
           },
         ],
       };

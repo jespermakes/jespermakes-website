@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { trackTitleLabEvent } from "@/lib/title-lab-track";
 import { checkAiRateLimit, rateLimitResponse } from "@/lib/ai-rate-limit";
+import { undashDeep } from "@/lib/voice/output";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY!;
@@ -53,7 +54,7 @@ async function fetchVideoData(videoId: string) {
 
 // ─── System Prompt ───────────────────────────────────────────────────────────
 
-const SYSTEM_PROMPT = `You are a YouTube title rewriting engine. You will receive metadata about an existing YouTube video — its current title, full description, tags, view count, and other data.
+const SYSTEM_PROMPT = `You are a YouTube title rewriting engine. You will receive metadata about an existing YouTube video: its current title, full description, tags, view count, and other data.
 
 The DESCRIPTION is your most valuable input after the title. YouTube descriptions often contain:
 - Chapter timestamps that reveal the video's structure and key moments
@@ -69,9 +70,9 @@ You must generate titles in these categories:
 1. JESPER MAKES STYLE
 Jesper is a Danish woodworker with 350k+ subscribers. His title philosophy:
 - The title is a PROMISE to the viewer, not a report about the video
-- Create a curiosity gap — never answer the question in the title
+- Create a curiosity gap: never answer the question in the title
 - Use specific numbers, timeframes, dollar amounts for believability
-- Add personal voice — phrases like "I promise" or casual asides
+- Add personal voice: phrases like "I promise" or casual asides
 - Title and thumbnail should say DIFFERENT things
 - Keep under 55 characters when possible
 - Never use motivational slogans, diary framing, or category descriptions
@@ -85,12 +86,12 @@ MrBeast's title philosophy:
 - Extreme scale, extreme stakes, extreme specificity
 - Numbers are always big, round, and front-loaded
 - Simple language a 10-year-old would understand
-- The title IS the concept — if the title isn't interesting, the video idea isn't good enough
+- The title IS the concept: if the title isn't interesting, the video idea isn't good enough
 - Often uses "I" or direct address
 - Challenge/bet framing when possible
 - Short, punchy, max impact in fewest words
 - Best patterns: "$X vs $Y", "I Survived...", "I Built...", "World's Largest/Most..."
-- IMPORTANT: MrBeast never uses words like "useful" or "helpful" — he uses extreme emotional language
+- IMPORTANT: MrBeast never uses words like "useful" or "helpful". He uses extreme emotional language
 Generate 3 titles in this style.
 
 3. ALTERNATIVE STRONG TITLES
@@ -106,6 +107,11 @@ Also provide:
 - A brief diagnosis of the CURRENT title: what's working and what's not (2-3 sentences). Point out specifically what story or promise the current title is failing to communicate.
 - A 1-2 sentence summary of what the video is actually about based on the description and metadata
 - One thumbnail concept suggestion that would pair well with your best title suggestion
+
+WRITING RULES FOR EVERY FIELD (titles, diagnosis, summary, reasoning, thumbnail):
+- Never use an em dash or an en dash. Use a comma, a colon or a full stop instead.
+- Write the way a maker talks: plain words, no stock phrases like "genuinely", "here's the thing"
+  or "every single".
 
 Respond ONLY with valid JSON (no markdown, no backticks, no preamble):
 {
@@ -200,7 +206,7 @@ Generate new title suggestions in all three styles, diagnose the current title, 
     const data = await response.json();
     const text = data.choices?.[0]?.message?.content || "";
 
-    // Parse JSON — strip any markdown fences if present
+    // Parse JSON, stripping any markdown fences if present
     const clean = text.replace(/```json\s?|```/g, "").trim();
 
     // Find the JSON object in the response (in case there's other text)
@@ -213,7 +219,7 @@ Generate new title suggestions in all three styles, diagnose the current title, 
       );
     }
 
-    const result = JSON.parse(jsonMatch[0]);
+    const result = undashDeep(JSON.parse(jsonMatch[0]));
 
     trackTitleLabEvent({
       eventType: "url_analyze",

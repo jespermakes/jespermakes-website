@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { voiceFetch } from "@/lib/voice/client";
 import {
   DndContext,
   closestCenter,
@@ -66,7 +67,7 @@ export default function HomepageEditor({ initialSections }: Props) {
 
   async function saveData(section: PageSection, newData: ModuleData) {
     setSaving(section.id);
-    const res = await fetch(`/api/admin/homepage/${section.id}`, {
+    const res = await voiceFetch(`/api/admin/homepage/${section.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data: newData }),
@@ -76,7 +77,8 @@ export default function HomepageEditor({ initialSections }: Props) {
       setSections(sections.map((s) => (s.id === section.id ? { ...s, data: newData } : s)));
       setExpandedId(null);
     } else {
-      alert("Save failed. Check the console.");
+      const err = await res.json().catch(() => null);
+      alert(err?.error || "Save failed. Check the console.");
     }
   }
 
