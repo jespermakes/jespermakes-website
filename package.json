@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/voice-lint.mjs && next build",
+    "voice:lint": "node scripts/voice-lint.mjs",
+    "voice:baseline": "node scripts/voice-lint.mjs --write-baseline",
+    "voice:accept": "node scripts/voice-lint.mjs --accept",
     "start": "next start",
     "lint": "next lint"
   },

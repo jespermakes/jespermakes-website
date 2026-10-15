@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { toolItems } from "@/lib/db/schema";
 import { checkAdminApi } from "@/lib/admin/auth";
 import { and, eq, ne } from "drizzle-orm";
+import { adminVoiceGate } from "@/lib/voice/gate-log";
+import { leafInputs, readOverride } from "@/lib/voice/gate";
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   const gate = await checkAdminApi();
@@ -25,6 +27,27 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         );
       }
     }
+
+    const currentRows = await db.select().from(toolItems).where(eq(toolItems.id, id)).limit(1);
+    if (currentRows.length === 0) return NextResponse.json({ error: "Tool not found" }, { status: 404 });
+    const current = currentRows[0];
+    // judged on what this edit adds: a finding already on the same line of the stored text passes
+    const voice = await adminVoiceGate(
+      "admin.tools.update",
+      (gate.session.user as { id?: string } | undefined)?.id ?? null,
+      [
+        { field: "name", text: body.name, before: current.name },
+        { field: "category", text: body.category, before: current.category },
+        { field: "description", text: body.description, before: current.description },
+        { field: "longDescription", text: body.longDescription, before: current.longDescription },
+        { field: "jesperNote", text: body.jesperNote, before: current.jesperNote },
+        ...(["buyLinks", "colorGrid", "productList", "gallery", "useCases", "specs"] as const).flatMap((k) =>
+          body[k] !== undefined ? leafInputs(body[k], current[k], k) : [],
+        ),
+      ],
+      readOverride(body.voiceOverride),
+    );
+    if (voice.response) return voice.response;
 
     const updates: Partial<typeof toolItems.$inferInsert> = { updatedAt: new Date() };
 
@@ -66,7 +89,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
     const [updated] = await db.update(toolItems).set(updates).where(eq(toolItems.id, id)).returning();
     if (!updated) return NextResponse.json({ error: "Tool not found" }, { status: 404 });
-    return NextResponse.json({ tool: updated });
+    return NextResponse.json({ tool: updated, voice: voice.voice });
   } catch (e) {
     console.error("Update tool error:", e);
     return NextResponse.json({ error: "Update failed" }, { status: 500 });

@@ -68,7 +68,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
     return {
       to,
       from: "Jesper Makes <hello@jespermakes.com>",
-      subject: "Your Cone Lamp 3D Print Files — Download",
+      subject: "Your Cone Lamp 3D Print Files download",
       html: `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
           <p>${greeting}</p>
@@ -83,7 +83,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
     return {
       to,
       from: "Jesper Makes <hello@jespermakes.com>",
-      subject: "Your Cheat Sheets — Download",
+      subject: "Your Cheat Sheets download",
       html: `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
           <p>${greeting}</p>
@@ -99,7 +99,7 @@ function buildEmail({ to, firstName, sku }: EmailData) {
     return {
       to,
       from: "Jesper Makes <hello@jespermakes.com>",
-      subject: "Your Cone Lamp Laser File — Download",
+      subject: "Your Cone Lamp Laser File download",
       html: `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
           <p>${greeting}</p>
@@ -254,7 +254,7 @@ export async function POST(request: Request) {
               <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
                 <p>${firstName ? `Hi ${firstName},` : "Hi there,"}</p>
                 <p>Thank you for your purchase! Your <strong>Jesper Makes Workshop Tee (${size})</strong> has been sent to print.</p>
-                <p>You'll receive shipping updates directly from our print partner once it ships. Most orders arrive within 5–10 business days.</p>
+                <p>You'll receive shipping updates directly from our print partner once it ships. Most orders arrive within 5 to 10 business days.</p>
                 <p style="margin-top:32px">Jesper<br/><span style="color:#888">Jesper Makes</span></p>
               </div>`,
           };

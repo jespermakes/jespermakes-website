@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { voiceFetch } from "@/lib/voice/client";
 import { useRouter } from "next/navigation";
 import { ImagePicker } from "@/components/admin/image-picker";
 import type { Image, BuyLink, ColorSwatch, Spec } from "@/lib/db/schema";
@@ -142,7 +143,7 @@ export function ToolEditor({ initial }: { initial: ToolEditorInitialValues }) {
     };
 
     try {
-      const res = await fetch(`/api/admin/tools/${initial.id}`, {
+      const res = await voiceFetch(`/api/admin/tools/${initial.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

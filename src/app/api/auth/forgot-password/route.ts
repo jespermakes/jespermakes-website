@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         to: user.email,
         from: "Jesper Makes <hello@jespermakes.com>",
-        subject: "Reset your password — Jesper Makes",
+        subject: "Reset your Jesper Makes password",
         html: `
           <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
             <p>${firstName ? `Hi ${firstName},` : "Hi there,"}</p>

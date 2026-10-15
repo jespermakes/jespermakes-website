@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { blogPosts } from "@/lib/db/schema";
 import { checkAdminApi } from "@/lib/admin/auth";
 import { and, eq, ne } from "drizzle-orm";
+import { adminVoiceGate } from "@/lib/voice/gate-log";
+import { readOverride } from "@/lib/voice/gate";
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   const gate = await checkAdminApi();
@@ -32,6 +34,20 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       }
     }
 
+    // an edit is judged on what it adds; going live judges the whole post
+    const goingLive = body.status === "published" && current.status !== "published";
+    const field = (name: "title" | "description" | "content" | "heroImageAlt") =>
+      goingLive
+        ? { field: name, text: body[name] !== undefined ? body[name] : current[name] }
+        : { field: name, text: body[name], before: current[name] };
+    const voice = await adminVoiceGate(
+      "admin.blog.update",
+      (gate.session.user as { id?: string } | undefined)?.id ?? null,
+      [field("title"), field("description"), field("content"), field("heroImageAlt")],
+      readOverride(body.voiceOverride),
+    );
+    if (voice.response) return voice.response;
+
     let publishedAt = current.publishedAt;
     if (body.status === "published" && current.status !== "published" && !publishedAt) {
       publishedAt = new Date();
@@ -53,7 +69,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
     const [updated] = await db.update(blogPosts).set(updates).where(eq(blogPosts.id, id)).returning();
 
-    return NextResponse.json({ post: updated });
+    return NextResponse.json({ post: updated, voice: voice.voice });
   } catch (e) {
     console.error("Update post error:", e);
     return NextResponse.json({ error: "Update failed" }, { status: 500 });

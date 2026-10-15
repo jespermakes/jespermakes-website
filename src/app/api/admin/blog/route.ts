@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { blogPosts } from "@/lib/db/schema";
 import { checkAdminApi } from "@/lib/admin/auth";
 import { eq } from "drizzle-orm";
+import { adminVoiceGate } from "@/lib/voice/gate-log";
+import { readOverride } from "@/lib/voice/gate";
 
 export async function POST(request: NextRequest) {
   const gate = await checkAdminApi();
@@ -26,6 +28,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: `Slug "${body.slug}" already exists` }, { status: 409 });
     }
 
+    const voice = await adminVoiceGate(
+      "admin.blog.create",
+      (gate.session.user as { id?: string } | undefined)?.id ?? null,
+      [
+        { field: "title", text: body.title },
+        { field: "description", text: body.description },
+        { field: "content", text: body.content },
+        { field: "heroImageAlt", text: body.heroImageAlt },
+      ],
+      readOverride(body.voiceOverride),
+    );
+    if (voice.response) return voice.response;
+
     const now = new Date();
     const status = body.status === "published" ? "published" : "draft";
 
@@ -47,7 +62,7 @@ export async function POST(request: NextRequest) {
       })
       .returning();
 
-    return NextResponse.json({ post: created });
+    return NextResponse.json({ post: created, voice: voice.voice });
   } catch (e) {
     console.error("Create post error:", e);
     return NextResponse.json({ error: "Create failed" }, { status: 500 });

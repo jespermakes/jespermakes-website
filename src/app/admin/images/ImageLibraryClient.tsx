@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { voiceFetch } from "@/lib/voice/client";
 import type { Image } from "@/lib/db/schema";
 import { SmartImage } from "@/components/smart-image";
 import { IMAGE_TAG_VOCABULARY } from "@/data/image-tag-vocabulary";
@@ -405,7 +406,7 @@ function EditorPanel({
 
   const save = async () => {
     setSaving(true);
-    const res = await fetch(`/api/admin/images/${image.id}`, {
+    const res = await voiceFetch(`/api/admin/images/${image.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -422,6 +423,9 @@ function EditorPanel({
     if (res.ok) {
       const data = await res.json();
       onSaved(data.image);
+    } else {
+      const err = await res.json().catch(() => null);
+      alert(err?.error || "Save failed.");
     }
     setSaving(false);
   };
