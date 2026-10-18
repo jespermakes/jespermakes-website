@@ -1,0 +1,2559 @@
+{
+ "about": "Voice lint baseline (DR-287): findings already in the copy when the ratchet started, one entry per line hash. A build fails only on findings that are not in here. Written by scripts/voice-lint.mjs; never edit by hand.",
+ "engine": {
+  "version": "vc2-dcc1ce4cec",
+  "engine_sha": "6b15705fbd243633"
+ },
+ "total": 386,
+ "entries": [
+  {
+   "file": "src/app/about/page.tsx",
+   "key": "27babb55caed46ad",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "I only work with brands whose products I genuinely use in my own"
+  },
+  {
+   "file": "src/app/about/page.tsx",
+   "key": "a3a785021ad6d247",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "I started woodworking in 2020. No background in it. No training. I just grabbed some pallet wood, watched a few videos, and started building"
+  },
+  {
+   "file": "src/app/admin/images/ImageLibraryClient.tsx",
+   "key": "8997213eb4dda95a",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Just uploaded [dash] paste URL into Claude to tag"
+  },
+  {
+   "file": "src/app/admin/orders/page.tsx",
+   "key": "d5ab46d2681af04d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<div className=\"text-wood truncate font-mono text-xs\">{row.sku ?? \"[dash]\"}</div>"
+  },
+  {
+   "file": "src/app/admin/page.tsx",
+   "key": "916cfb85758add2d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<div className=\"font-mono text-xs text-wood-light/60 truncate flex-1\">{row.sku ?? \"[dash]\"}</div>"
+  },
+  {
+   "file": "src/app/admin/subscribers/page.tsx",
+   "key": "22e3e0b176cd6e4e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<div className=\"text-wood-light/60 truncate\">{row.firstName ?? \"[dash]\"}</div>"
+  },
+  {
+   "file": "src/app/admin/title-lab/page.tsx",
+   "key": "57d85110f77932a2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<p className=\"text-sm text-wood-light/25\">Private [dash] only visible to you.</p>"
+  },
+  {
+   "file": "src/app/admin/title-lab/page.tsx",
+   "key": "639b343237386482",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{e.country || \"[dash]\"}"
+  },
+  {
+   "file": "src/app/admin/title-lab/page.tsx",
+   "key": "8f79213dd8232d02",
+   "tell": "dash",
+   "count": 1,
+   "preview": ": \"[dash]\";"
+  },
+  {
+   "file": "src/app/admin/title-lab/page.tsx",
+   "key": "d5353e21e4320614",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Title Lab Admin [dash] jespermakes.com"
+  },
+  {
+   "file": "src/app/admin/title-lab/page.tsx",
+   "key": "f7e93f83fb0f0488",
+   "tell": "dash",
+   "count": 1,
+   "preview": "DAILY USAGE [dash] LAST 7 DAYS"
+  },
+  {
+   "file": "src/app/admin/videos/shorts/page.tsx",
+   "key": "378170db223e1fc0",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<div className=\"text-xs text-wood-light/70\">{openTaskCount > 0 ? openTaskCount : \"\\u2014\"}</div>"
+  },
+  {
+   "file": "src/app/api/marketplace/designs/[id]/comments/route.ts",
+   "key": "29ea6465ad0926fa",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ error: \"Slow down [dash] wait a moment before commenting again.\" },"
+  },
+  {
+   "file": "src/app/box-joint-jig/page.tsx",
+   "key": "7ebe32e2229f4607",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<strong className=\"text-wood-light\">A note from Jesper:</strong> I built this same jig for a video about making big planters with my wife. T"
+  },
+  {
+   "file": "src/app/box-joint-jig/page.tsx",
+   "key": "801fff93b5f3d264",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Works with Shaper Origin, most CNC routers, and laser cutters. Text exports as SVG text [dash] convert to paths in your CAM software if need"
+  },
+  {
+   "file": "src/app/box-joint-jig/page.tsx",
+   "key": "8d5cb4b3922da871",
+   "tell": "dash",
+   "count": 1,
+   "preview": "body: `Take ONE of the two plates and cut it cleanly down the long axis, splitting it into two narrower strips. A table saw or track saw mak"
+  },
+  {
+   "file": "src/app/box-joint-jig/page.tsx",
+   "key": "e42230d2636aae89",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<strong className=\"text-wood\">A note from Jesper:</strong> I built this same jig for a video about making big planters with my wife. The tri"
+  },
+  {
+   "file": "src/app/cone-lamp/page.tsx",
+   "key": "a7deb0a8a977982e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "SVG only fits that one thickness. Then I lost the CAD source [dash] so I had to"
+  },
+  {
+   "file": "src/app/contact/page.tsx",
+   "key": "1d2eadb43cc87759",
+   "tell": "dash",
+   "count": 1,
+   "preview": "📊 Media Kit [dash] Audience Stats"
+  },
+  {
+   "file": "src/app/contact/page.tsx",
+   "key": "4131bad28bc4f01f",
+   "tell": "dash",
+   "count": 1,
+   "preview": "hi? This is the right place. I read every email [dash] though I"
+  },
+  {
+   "file": "src/app/contact/page.tsx",
+   "key": "74dac4ced53915de",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "the workshop. I only work with products I&apos;d genuinely use"
+  },
+  {
+   "file": "src/app/contact/page.tsx",
+   "key": "991bc2fb0c31d920",
+   "tell": "dash",
+   "count": 1,
+   "preview": "myself [dash] no exceptions. If you think there&apos;s a fit, I&apos;d"
+  },
+  {
+   "file": "src/app/contact/page.tsx",
+   "key": "bdea1e0482d30b40",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Whether you want to say hi, ask about a build, or talk business [dash]"
+  },
+  {
+   "file": "src/app/contact/page.tsx",
+   "key": "be3d0bf30d2564cc",
+   "tell": "dash",
+   "count": 1,
+   "preview": "📸 Press Kit [dash] Photos &amp; Logos"
+  },
+  {
+   "file": "src/app/contact/page.tsx",
+   "key": "ffabd0d01926bd3b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Get in touch with Jesper Makes [dash] general inquiries, brand collaborations, press, and more.\","
+  },
+  {
+   "file": "src/app/dashboard/page.tsx",
+   "key": "17ebc6e6ec81cc4d",
+   "tell": "dash",
+   "count": 3,
+   "preview": "return { subscribers: \"[dash]\", totalViews: \"[dash]\", videoCount: \"[dash]\" };"
+  },
+  {
+   "file": "src/app/dashboard/page.tsx",
+   "key": "18e09b7e4831d2b8",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<h2 className=\"text-lg font-medium mb-4\">Daily Revenue [dash] Last 30 Days</h2>"
+  },
+  {
+   "file": "src/app/dashboard/page.tsx",
+   "key": "5e871e1612a4529f",
+   "tell": "dash",
+   "count": 3,
+   "preview": "if (!key) return { subscribers: \"[dash]\", totalViews: \"[dash]\", videoCount: \"[dash]\" };"
+  },
+  {
+   "file": "src/app/dashboard/page.tsx",
+   "key": "a6df0b4edcb35f04",
+   "tell": "dash",
+   "count": 3,
+   "preview": "if (!stats) return { subscribers: \"[dash]\", totalViews: \"[dash]\", videoCount: \"[dash]\" };"
+  },
+  {
+   "file": "src/app/dashboard/page.tsx",
+   "key": "cf656b4c3708ca65",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Jesper Makes [dash] Dashboard"
+  },
+  {
+   "file": "src/app/floor-rescue/page.tsx",
+   "key": "b6792b0ea207a212",
+   "tell": "stock_metaphor",
+   "count": 1,
+   "preview": "and it has been earning its keep ever since. Now three more floors get the same chance."
+  },
+  {
+   "file": "src/app/mediakit/page.tsx",
+   "key": "5063c19accc3bd8b",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "headline: \"Came for drama, stayed for a genuine story\","
+  },
+  {
+   "file": "src/app/mediakit/page.tsx",
+   "key": "94e941e61ff4140b",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "text: \"I thought I was just going to watch my usual youtuber explaining how other youtubers and influencers were destroying houses pretendin"
+  },
+  {
+   "file": "src/app/newsletter-form.tsx",
+   "key": "018b879675ed8e30",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Occasional notes from the shop [dash] new builds, honest tool thoughts,"
+  },
+  {
+   "file": "src/app/newsletter/page.tsx",
+   "key": "0cdd309735d3bec2",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "urgency.</span> No countdowns, no last chances. Nothing here is ever about to run out. </p> <p> <span className=\"text-wood font-semibold\">Yo"
+  },
+  {
+   "file": "src/app/plywood/page.tsx",
+   "key": "51de5b60f50654fa",
+   "tell": "dash",
+   "count": 1,
+   "preview": "WISA&apos;s official distributor finder at the bottom &mdash; their"
+  },
+  {
+   "file": "src/app/plywood/page.tsx",
+   "key": "7eeb7cdedf55f66e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Grades [dash] what they actually mean"
+  },
+  {
+   "file": "src/app/plywood/page.tsx",
+   "key": "841baf097687cef1",
+   "tell": "dash",
+   "count": 1,
+   "preview": "note: \"Use WISA's distributor finder [dash] their dropdown has the current Norwegian retailers.\","
+  },
+  {
+   "file": "src/app/plywood/page.tsx",
+   "key": "ce1fc016b60b6eff",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Birch vs spruce [dash] the one decision that matters"
+  },
+  {
+   "file": "src/app/plywood/page.tsx",
+   "key": "d34593f1e13c91c1",
+   "tell": "salience",
+   "count": 1,
+   "preview": "Birch vs spruce [dash] the one decision that matters"
+  },
+  {
+   "file": "src/app/plywood/page.tsx",
+   "key": "da8dba84d81de01e",
+   "tell": "discovery",
+   "count": 1,
+   "preview": "The stuff no one tells you on your first sheet."
+  },
+  {
+   "file": "src/app/privacy/page.tsx",
+   "key": "1e430a242d3b194c",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "<p>Some links on this website are affiliate links. When you click them and make a purchase, we may earn a small commission at no extra cost "
+  },
+  {
+   "file": "src/app/rubio/guide/guide-client.tsx",
+   "key": "5ebe95c9175cf8e4",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return SPECIES_DUROGRIT.find((s) => s.id === species)?.label ?? \"[dash]\";"
+  },
+  {
+   "file": "src/app/rubio/guide/guide-client.tsx",
+   "key": "669b07adde942eb2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<SummaryRow k=\"Colour\" v={colorLabel ?? \"[dash]\"} />"
+  },
+  {
+   "file": "src/app/rubio/guide/guide-client.tsx",
+   "key": "71947ff760271ead",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return \"[dash]\";"
+  },
+  {
+   "file": "src/app/rubio/guide/guide-client.tsx",
+   "key": "8f79213dd8232d02",
+   "tell": "dash",
+   "count": 1,
+   "preview": ": \"[dash]\";"
+  },
+  {
+   "file": "src/app/rubio/guide/guide-client.tsx",
+   "key": "efeba5a264b88e3a",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return SPECIES_OIL2C.find((s) => s.id === species)?.label ?? \"[dash]\";"
+  },
+  {
+   "file": "src/app/shop/cone-lamp-3dprint/page.tsx",
+   "key": "79b5431750874869",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Total print time: ~60 hours. I used two Bambu Lab P1S printers [dash] brass PLA for the stretchers, transparent ePETG for the blades. 132 bl"
+  },
+  {
+   "file": "src/app/shop/cone-lamp-3dprint/page.tsx",
+   "key": "f83fde3b5b6110ad",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ name: \"Blades XS, S, M, L, XL\", desc: \"All 5 blade sizes [dash] 132 total\" },"
+  },
+  {
+   "file": "src/app/shop/page.tsx",
+   "key": "6fea5bd0a47dfa5a",
+   "tell": "dash",
+   "count": 1,
+   "preview": "subtitle: \"Unisex black tee [dash] printed & shipped worldwide\","
+  },
+  {
+   "file": "src/app/shop/page.tsx",
+   "key": "b504cdfa896f04f5",
+   "tell": "dash",
+   "count": 1,
+   "preview": "subtitle: \"SVG laser cut file [dash] all parts included\","
+  },
+  {
+   "file": "src/app/shop/page.tsx",
+   "key": "bcf2f3d53dc17b91",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Build guides written the way I actually work [dash] not polished CAD"
+  },
+  {
+   "file": "src/app/shop/pallet-starter-kit/page.tsx",
+   "key": "1c07ba123551977d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "woodworking to me when I started [dash] with real talk about mistakes,"
+  },
+  {
+   "file": "src/app/shop/pallet-starter-kit/page.tsx",
+   "key": "37ef1c95f38b03ec",
+   "tell": "dash",
+   "count": 1,
+   "preview": "5 complete build guides written the way I actually build [dash] rough"
+  },
+  {
+   "file": "src/app/shop/pallet-starter-kit/page.tsx",
+   "key": "5dbd3e237c09fc4c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "desc: \"Budget kit & pro kit [dash] what to buy and what to skip\","
+  },
+  {
+   "file": "src/app/shop/pallet-starter-kit/page.tsx",
+   "key": "8b6e73c6e569ba7d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "[dash] Jesper, 357K subscribers on YouTube"
+  },
+  {
+   "file": "src/app/shop/workshop-tee/page.tsx",
+   "key": "160b8623c4533c43",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Unisex black tee with the Jesper Makes Workshop logo [dash] small on the"
+  },
+  {
+   "file": "src/app/shop/workshop-tee/page.tsx",
+   "key": "26a70bd81d9d6770",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ name: \"Brand\", desc: \"Bella+Canvas 3001 [dash] industry standard\" },"
+  },
+  {
+   "file": "src/app/shop/workshop-tee/page.tsx",
+   "key": "2c028cca96f469dc",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ src: \"/images/products/tshirt-mockup-front.jpg\", alt: \"Workshop Tee [dash] front\" },"
+  },
+  {
+   "file": "src/app/shop/workshop-tee/page.tsx",
+   "key": "748f6a0174e156d5",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ name: \"Fit\", desc: \"Unisex retail fit [dash] true to size\" },"
+  },
+  {
+   "file": "src/app/shop/workshop-tee/page.tsx",
+   "key": "77c7595e1733eb04",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{loading ? \"Redirecting…\" : \"Buy now [dash] €35\"}"
+  },
+  {
+   "file": "src/app/shop/workshop-tee/page.tsx",
+   "key": "8bc8b1c36d691100",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ src: \"/images/products/tshirt-mockup-back.jpg\", alt: \"Workshop Tee [dash] back\" },"
+  },
+  {
+   "file": "src/app/shop/workshop-tee/page.tsx",
+   "key": "e3cfef5e73ec2fe2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ name: \"Weight\", desc: \"4.2 oz / 142 gsm [dash] lightweight\" },"
+  },
+  {
+   "file": "src/app/shop/workshop-wall-charts/buy-button.tsx",
+   "key": "f956a86e6913df2b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{loading ? \"Redirecting\\u2026\" : \"Buy now \\u2014 \\u20AC3\"}"
+  },
+  {
+   "file": "src/app/shop/workshop-wall-charts/page.tsx",
+   "key": "53244d541a73c417",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "need in the shop. Turns out, I use them every single day. Now"
+  },
+  {
+   "file": "src/app/sponsors/page.tsx",
+   "key": "049fc243944378d1",
+   "tell": "dash",
+   "count": 1,
+   "preview": "materials. Not passive scrollers [dash] buyers."
+  },
+  {
+   "file": "src/app/sponsors/page.tsx",
+   "key": "7d52f89f08a2d02c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "90% male, 25[dash]54, hands-on makers who spend money on tools and"
+  },
+  {
+   "file": "src/app/sponsors/page.tsx",
+   "key": "9525ddfae1614e87",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Work with Jesper Makes [dash] 351,000 woodworkers, makers and builders who trust real craft over influencer noise.\","
+  },
+  {
+   "file": "src/app/storyteller/page.tsx",
+   "key": "0e274c7f4970863a",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Built by Jesper Makes [dash] because great videos deserve great stories."
+  },
+  {
+   "file": "src/app/studio/(canvas)/page.tsx",
+   "key": "1fa9f4ebb1265cf9",
+   "tell": "dash",
+   "count": 1,
+   "preview": "? `Imported ${centered.length} shape${centered.length === 1 ? \"\" : \"s\"} [dash] skipped ${result.skipped.join(\", \")}.`"
+  },
+  {
+   "file": "src/app/terms/page.tsx",
+   "key": "20156133fc6fc76a",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "<p>This website contains affiliate links to third-party products. When you purchase through these links, we may earn a commission at no extr"
+  },
+  {
+   "file": "src/app/title-lab/page.tsx",
+   "key": "0c09f24bd779c6d3",
+   "tell": "dash",
+   "count": 2,
+   "preview": "b: \"Two halves of one machine. Thumbnail creates the emotional hook [dash] something visual that stops the scroll. Title delivers the intell"
+  },
+  {
+   "file": "src/app/title-lab/page.tsx",
+   "key": "193172090e8e0c70",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Next [dash] the hook\","
+  },
+  {
+   "file": "src/app/title-lab/page.tsx",
+   "key": "5d6ce1ba5d36b154",
+   "tell": "dash",
+   "count": 2,
+   "preview": "h: 'Read it out loud. If a stranger says \"so what?\" [dash] kill it. If they say \"wait, how?\" [dash] ship it.',"
+  },
+  {
+   "file": "src/app/title-lab/page.tsx",
+   "key": "73384d62601ba734",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Next [dash] tell me the promise\","
+  },
+  {
+   "file": "src/app/title-lab/page.tsx",
+   "key": "9f7d1053b09dc5f5",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Next [dash] the story\","
+  },
+  {
+   "file": "src/app/title-lab/page.tsx",
+   "key": "ccebacb11c4c2561",
+   "tell": "dash",
+   "count": 1,
+   "preview": "PROVEN PATTERNS [dash] RANKED BY AVG VIEWS"
+  },
+  {
+   "file": "src/app/title-lab/page.tsx",
+   "key": "de90863b62b844e7",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Built by Jesper Makes [dash] from pallet wood to 350k+ subscribers."
+  },
+  {
+   "file": "src/app/title-lab/page.tsx",
+   "key": "e1cf36c729b22204",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Limited context [dash] analysis based on metadata only"
+  },
+  {
+   "file": "src/app/tools/[slug]/page.tsx",
+   "key": "fae8b84ee645db6b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Links coming soon [dash] I&apos;m gathering the best places to buy this"
+  },
+  {
+   "file": "src/app/tools/page.tsx",
+   "key": "3f2189ff28a1a658",
+   "tell": "dash",
+   "count": 1,
+   "preview": "NEW [dash] MATERIAL GUIDE"
+  },
+  {
+   "file": "src/components/admin/homepage-forms/feed-form.tsx",
+   "key": "0436680b9dda2bf6",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<Field label={`How many (1\\u20136), currently ${d.count ?? 3}`}>"
+  },
+  {
+   "file": "src/components/admin/image-picker.tsx",
+   "key": "4aa68e46cd1f6cb2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "title=\"Unreviewed [dash] tags may be inaccurate\""
+  },
+  {
+   "file": "src/components/admin/tool-editor.tsx",
+   "key": "00907583bbb46243",
+   "tell": "dash",
+   "count": 1,
+   "preview": "<option value=\"\">[dash]</option>"
+  },
+  {
+   "file": "src/components/admin/video-editor.tsx",
+   "key": "142be9065d9deac3",
+   "tell": "dash",
+   "count": 1,
+   "preview": "placeholder=\"Ongoing log [dash] what happened, what you figured out, what still bothers you.\""
+  },
+  {
+   "file": "src/components/lamp-designer/steps/check-step.tsx",
+   "key": "ad950e1743bb1ed2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Some checks failed [dash] go back and adjust your design before exporting."
+  },
+  {
+   "file": "src/components/lamp-designer/steps/export-step.tsx",
+   "key": "36e12f500a3273a7",
+   "tell": "dash",
+   "count": 1,
+   "preview": "description: \"Universal mesh format [dash] works with any slicer\","
+  },
+  {
+   "file": "src/components/lamp-designer/steps/export-step.tsx",
+   "key": "65f411342ed8ffcd",
+   "tell": "dash",
+   "count": 1,
+   "preview": "description: \"Recommended [dash] opens directly in Bambu Studio, watertight and welded\","
+  },
+  {
+   "file": "src/components/lamp-designer/steps/export-step.tsx",
+   "key": "bfac284f827a508b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "? \"Failed [dash] try again\""
+  },
+  {
+   "file": "src/components/lamp-designer/steps/export-step.tsx",
+   "key": "d7728c9f445eda68",
+   "tell": "dash",
+   "count": 1,
+   "preview": "surface pattern are part of the exported shell [dash] what you see is"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/fixture-step.tsx",
+   "key": "bfac284f827a508b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "? \"Failed [dash] try again\""
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "0f991afd1c63a6bd",
+   "tell": "dash",
+   "count": 1,
+   "preview": "if (kelvin <= 2400) return \"Candlelight [dash] very warm and cozy\";"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "4294e64761e0def2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "if (angle <= 25) return \"Narrow spot [dash] highlights a small area\";"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "5db370b6a9bf8800",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return \"Daylight [dash] bright and energizing\";"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "67812622cacd8682",
+   "tell": "dash",
+   "count": 1,
+   "preview": "if (kelvin <= 3500) return \"Neutral [dash] balanced everyday light\";"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "69b2cb3fa47b7a00",
+   "tell": "dash",
+   "count": 1,
+   "preview": "if (kelvin <= 4500) return \"Cool white [dash] crisp and focused\";"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "737c6002ead78e5b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "if (angle <= 45) return \"Focused [dash] good for reading and task work\";"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "a678720051b31566",
+   "tell": "dash",
+   "count": 1,
+   "preview": "if (angle <= 80) return \"Medium [dash] lights the table without spilling far\";"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "b4cf27e4b9da505f",
+   "tell": "dash",
+   "count": 1,
+   "preview": "if (kelvin <= 2900) return \"Warm white [dash] relaxed and inviting\";"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "c07b7747d1934bad",
+   "tell": "dash",
+   "count": 1,
+   "preview": "description: \"Focuses light on the surface below [dash] best for tasks and dining\","
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "d80e054c807585b6",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return \"Extra wide [dash] even light everywhere\";"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/light-step.tsx",
+   "key": "ea984d3f291f1940",
+   "tell": "dash",
+   "count": 1,
+   "preview": "if (angle <= 120) return \"Wide [dash] fills most of the room\";"
+  },
+  {
+   "file": "src/components/lamp-designer/steps/reveal-step.tsx",
+   "key": "d83949fc7c4695f9",
+   "tell": "dash",
+   "count": 1,
+   "preview": "aria-label={`Lamp preview in ${CONTEXT_LABELS[context].toLowerCase()} [dash] light ${lightOn ? \"on\" : \"off\"}`}"
+  },
+  {
+   "file": "src/components/marketplace/design-detail.tsx",
+   "key": "dffa7e0f871465b1",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Thanks [dash] we&apos;ll review it."
+  },
+  {
+   "file": "src/components/shop/free-plan-claim.tsx",
+   "key": "5aacf27daf6d73e7",
+   "tell": "dash",
+   "count": 1,
+   "preview": "? `Get the files [dash] €${parsedAmount % 1 === 0 ? parsedAmount : parsedAmount.toFixed(2)}`"
+  },
+  {
+   "file": "src/components/studio/status-bar.tsx",
+   "key": "8f79213dd8232d02",
+   "tell": "dash",
+   "count": 1,
+   "preview": ": \"[dash]\";"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "071bf7ea92e6073d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"A tree fell in a storm. I turned it into a Viking-style dining table. Here's the full build [dash] from chainsaw to finish.\","
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "09c2703fbc19d89c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "- **Hard wax oil** (Rubio Monocoat, Osmo) [dash] natural look, easy to apply, repairable"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "0ac04ebb27300893",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Not always bad, but often inconsistent. Knots, twist, and green timber show up regularly. If you're buying from a chain, take your time pick"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "0ed2b4725ebfb98a",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "I spent my first year of serious plywood work hiding every single edge. Solid wood lippings, veneer tape, fillers, paint. The edge was alway"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "181dcbcd81ccdf05",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Avoid anything that feels heavy and damp [dash] green (undried) pine will warp as it dries in your workshop."
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "199e0b17f0e14fc3",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "I've used [Epidemic Sound](/tools/epidemic-sound) since I started the channel. Every single video. There's a reason for that."
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "1b87b2a0a9598a67",
+   "tell": "salience",
+   "count": 1,
+   "preview": "title: \"How I Use Music in My Videos (And Why It Matters More Than You Think)\","
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "203f6fdbdd6b903e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "And if you want the video version eventually [dash] I've been saying for a while that I want to make one called \"This Will Change How You Se"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "24d0af2ed153dbdf",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Pine is soft, workable, and widely available. It takes screws well, accepts stain and paint, and is forgiving when you make mistakes. The ma"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "2997e6fd0fec9d96",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "A No. 5 jack plane, working diagonally across the grain to knock down the high spots. Then a No. 4 smoothing plane with the grain to clean u"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "2ae6b9933473ef2b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Plywood isn't a compromise. Good plywood, used on purpose, is a better choice than solid wood for most of what makers actually build [dash] "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "2c29c5009ec079c3",
+   "tell": "dash",
+   "count": 1,
+   "preview": "**Specialist hardwood merchants** [dash] for oak, ash, beech, walnut, and anything else. Often sell by the cubic metre or board foot. Many w"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "2e389eab390fc7d6",
+   "tell": "dash",
+   "count": 1,
+   "preview": "**Reclaimed and salvage** [dash] old floorboards, scaffold boards, beam sections. Fully dried, full of character, often cheap. Needs more pr"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "32bf372392ec1f26",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"A practical guide to choosing your first wood [dash] common species explained, where to buy, what to avoid, and how to not waste money.\","
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "35fe60733999c5f7",
+   "tell": "stock_metaphor",
+   "count": 1,
+   "preview": "This table costs maybe €10 in materials if you source free pallets. The tools do the heavy lifting. A good saw for trimming, a sander for sm"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "380dddd5a0b2a207",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Walnut, teak, padauk, purpleheart [dash] stunning woods, but expensive and often difficult to work. Some are oily and don't glue well. Some "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "3935db89260dfc87",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "You won't get furniture-grade lumber. But you can get clean, flat boards that look genuinely good once they're finished. And here's somethin"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "39cbb3db181376b5",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "This is what I did, what I learned, and how it changed the way I work every single day."
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "3d8a09c53c14035d",
+   "tell": "discovery",
+   "count": 1,
+   "preview": "That's the part nobody tells you about woodworking. Sometimes the best part of a build isn't the finished thing. Sometimes it's a jig that c"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "418c1c07ec54b8b2",
+   "tell": "dash",
+   "count": 2,
+   "preview": "Then I saw a chair with raw birch plywood edges, sanded smooth and finished with hard wax oil, and I realised I'd been fighting the material"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "4c065fe72a2fa729",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "The wedged stretcher is what people ask about first. It looks like a detail and it is. But it also tells you exactly how the table was made."
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "53edd472f308ab67",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "Beech is dense, stable, and very strong. It's the standard choice for workbench tops because it can take a beating. Not the most exciting gr"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "559c9100e7fde411",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "Fir is also kind to the wallet, easy to work, and ages to a soft silver-grey outdoors that I genuinely love. No stain, no paint, no fuss. Le"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "55a262fe5095196f",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "The reel was free. The vise mechanism was about €40. Glue, oil, and a few bolts maybe €20 more. Total cost: roughly €60 for a solid workshop"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "584581932e472ef2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "**Online hardwood suppliers** [dash] increasingly good, especially if you don't have a local merchant. Can be more expensive but gives you a"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "5a021b162b592a02",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Not solid wood, but worth mentioning. MDF is flat, stable, and cheap [dash] good for painted panels and jigs. Plywood (especially birch ply)"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "5eed87d6b892d1ac",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Start with 180-grit at the lowest. Work up to 240 or 320. Trust the factory surface [dash] it's usually better than anything you'll achieve "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "6435c1b5d2d8fda1",
+   "tell": "dash",
+   "count": 2,
+   "preview": "For the frame members, look for straight grain running along the length of the board. Boards with grain running off the edge [dash] called s"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "64fa46e1a5100dd0",
+   "tell": "dash",
+   "count": 1,
+   "preview": "I've put together reference sheets covering wood species, finish types, and tool selection in the [Workshop Wall Charts](/shop/workshop-wall"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "664835891e8d6011",
+   "tell": "discovery",
+   "count": 1,
+   "preview": "The problem has never been the material. The problem is that nobody tells you how to read a grade stamp, how to seal an edge, or which side "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "66ac9bd53fb363cf",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "This is genuinely one of the simplest finishes to apply and it's the one I reach for on almost every project now."
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "6f5617540677c6b9",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "That's it. That's the whole system. No elaborate filing. No color-coded labels. Just one rule: put it back."
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "799cd51fa7097aa5",
+   "tell": "dash",
+   "count": 1,
+   "preview": "- **Paint** [dash] hides a lot, great for pine and poplar"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "7acfdabe41d21847",
+   "tell": "reframe",
+   "count": 1,
+   "preview": "The bracket supports connect to the shelf board with through-tenons. That means the tenon passes all the way through the shelf and shows on "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "7b6f3626e1d58359",
+   "tell": "heres_the_thing",
+   "count": 1,
+   "preview": "Here's the truth. You need about five things to start building real projects. Everything else can wait until you actually need it. I started"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "7e75626ec49446ee",
+   "tell": "dash",
+   "count": 1,
+   "preview": "The tool choices matter too [dash] check out the [tools hub](/tools) for recommendations on what to buy at each stage."
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "81384568bfb65808",
+   "tell": "dash",
+   "count": 1,
+   "preview": "- **Danish oil** [dash] simple, penetrating, good for first projects"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "85e02e58875cad94",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "Then I hand-planed the faces. This is the step where ash rewards you. The grain catches the light and shifts as you move around the piece. A"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "891f547a13076408",
+   "tell": "reframe",
+   "count": 1,
+   "preview": "My dad asked if I'd ever make anything from that log. He wasn't being cruel. He was being honest. He knew me. He knew I had a pile of good i"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "902035dc4f381a25",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "That's it. No second coat. No sanding between coats. No waiting overnight and reapplying. --- ## The Color Range This is where it gets inter"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "944030ed74f4be52",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Buy from places that store timber properly (indoors, stickered). Ask about moisture content if you're unsure. Aim for around 8[dash]12% for "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "969ec9a126e842eb",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "I don't have a sawmill. I used an Alaskan chainsaw mill attachment on my guide bar to turn the logs into slabs. It's slow work and you end u"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "96b687997ff377ae",
+   "tell": "discovery",
+   "count": 1,
+   "preview": "The thing I keep coming back to is this: a rich man isn't the one who has the most. He's the one who needs the least. I could have a bigger "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "9bd155df6b2f9dd0",
+   "tell": "salience",
+   "count": 1,
+   "preview": "The biggest takeaway: surface preparation matters more than the finish itself. A perfectly sanded piece of cheap pine will look better than "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "9c78cfb9ac9c58b8",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "I wanted to build something where the wood does all the work. No metal fasteners hiding inside. No screw heads filled with putty pretending "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "9d2d7c78270d17e2",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "**Pull all the nails.** Every single one. Run a magnet over each board to find the hidden ones. A nail through your planer blade is an expen"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "a26a65853a66b7af",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "The base is a pair of thick trestles, joined by a central stretcher. The stretcher is held in place with wedged through-tenons. No glue. No "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "a5113db29f2f1563",
+   "tell": "reframe",
+   "count": 1,
+   "preview": "The door is all traditional joinery. Mortise and tenon, cut by hand with chisels. Some half-lap joints. No Domino on this one. This wasn't a"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "a8078ee8bdefcfde",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "I'm a [Rubio Monocoat ambassador](/tools/rubio-monocoat-oil-plus-2c) now, which means I genuinely believe in the product. I wouldn't put my "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "a8603d826723d434",
+   "tell": "salience",
+   "count": 1,
+   "preview": "There are 10 spots. The course fee is **1,350 euros** and it covers everything. Tuition, materials, accommodation, and full board for all si"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "ac7ad78031db0d76",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "I decided to fix it. Not tidy it up. Not reorganize a drawer. I stripped the entire workshop back to bare walls and rebuilt it from scratch."
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "b430bef7e6ed66a0",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "The [Festool ETS 150 sander](/tools/festool-random-orbital-sander-ets-150) did the main surfaces. 80 grit to remove any tool marks, 120 for "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "b6f2b646505ea459",
+   "tell": "dash",
+   "count": 2,
+   "preview": "This is the single biggest source of beginner problems. Wood that isn't properly dried will move [dash] warp, cup, twist [dash] after you've"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "b879c95575fba61e",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "The chair turned out beautiful. Pallet wood, leather seat, walnut pegs that started as a mistake and became a design feature. I sat down in "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "b9ea459c0b523a20",
+   "tell": "dash",
+   "count": 2,
+   "preview": "Plywood edges drink water like a sponge. Leave a raw edge exposed outdoors [dash] even under a roof, even for a weekend [dash] and the sheet"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "bac964b6d7eeba24",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "Every connection is a joint. No screws. No brackets. No metal. The brackets attach to the shelf with through-tenons. The brackets attach to "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "bc9b76f1074b18f1",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Sand progressively [dash] 80, 120, 180, sometimes 240. Remove all machine marks. Then choose your finish based on the project:"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "c5c75b62ee2720a1",
+   "tell": "dash",
+   "count": 1,
+   "preview": "A BB-grade birch panel and a III-grade birch panel have the same glue, the same veneer structure, and the same load-bearing capacity. The on"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "c84cea87a278c05a",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "**Every day.** The tools I reach for on every single project. [Tape measure and speed square](/tools/tape-measure-and-speed-square). Pencils"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "cf852ebe33830843",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "Good lighting costs almost nothing compared to tools. But it affects every single thing you do in the workshop. If your lighting is bad, fix"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "d12fd0a990feae5a",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "No complicated plan. No months of design work. I just started."
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "d48cd3c7b5ed7dab",
+   "tell": "heres_the_thing",
+   "count": 1,
+   "preview": "Here's the part I got a little obsessed with."
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "d92b00bd82bc4f7e",
+   "tell": "salience",
+   "count": 1,
+   "preview": "This matters because premium-face plywood costs serious money. If the sheet is going behind cladding, getting painted, or used as a template"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "d9535167d2891f8f",
+   "tell": "reframe",
+   "count": 1,
+   "preview": "But every now and then, a piece of material comes along that reminds you what all of this is actually about. It's not about having the perfe"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "dddbb4d766453d2a",
+   "tell": "dash",
+   "count": 1,
+   "preview": "For your first projects, a sheet of birch ply will often give you better results than solid wood [dash] it won't warp, the edges are clean, "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "df440e28c76e636b",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "The workbench is for working. Not for storing. Not for stacking. When I finish a session now, the bench gets cleared. Every tool goes back t"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "e11995d52b2a91ea",
+   "tell": "dash",
+   "count": 1,
+   "preview": "**Builder's merchants** [dash] best for construction timber (pine, spruce) in standard sizes. Usually better quality and better dried than D"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "e5f0df19f2d53e89",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "Cordless, clips onto a guide rail, cuts as clean as a corded track saw. For work around the bench and in the workshop, not having a cord is "
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "ec3b11380bdf627a",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "But the result is different too. When someone picks up this shelf, there's nothing to rattle. No screw heads to feel. No metal to corrode ov"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "f9a306241b2d300c",
+   "tell": "discovery",
+   "count": 1,
+   "preview": "I've tried a lot of finishes. Danish oil, polyurethane, lacquer, wax, tung oil. They all have their place. But Rubio Monocoat Oil Plus 2C is"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "fd4d701f83b33381",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Oak is the classic furniture hardwood. Heavy, strong, and with a grain that looks great with almost any finish. The main barrier is cost [da"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "fd9ed1e70e4b6e11",
+   "tell": "dash",
+   "count": 1,
+   "preview": "- **Varnish/lacquer** [dash] more durable but harder to apply well"
+  },
+  {
+   "file": "src/data/blog-posts.ts",
+   "key": "fea7fdc07a1053ca",
+   "tell": "not_not_z",
+   "count": 1,
+   "preview": "This is a 2.5 hour film about one year. Not a tutorial. Not a how-to. A diary of the projects, the disasters, and the moments that made up t"
+  },
+  {
+   "file": "src/data/rubio-guide-data.ts",
+   "key": "0f03fc05966c11e7",
+   "tell": "dash",
+   "count": 1,
+   "preview": "body: `Work in sections of 1&ndash;2 boards wide. Always finish a full board before stopping. Maintain a wet edge.<div class=\"pitfall\"><stro"
+  },
+  {
+   "file": "src/data/rubio-guide-data.ts",
+   "key": "282dd2e453e08b54",
+   "tell": "dash",
+   "count": 2,
+   "preview": "body: `Apply only in <strong>frost-free, dry conditions</strong>. Don&apos;t apply if rain is expected within <strong>10 hours</strong>. Ide"
+  },
+  {
+   "file": "src/data/rubio-guide-data.ts",
+   "key": "752e78fcd2070aa6",
+   "tell": "dash",
+   "count": 1,
+   "preview": "body: `Finish with 100&ndash;150 grit. Don&apos;t go finer. The wood needs open pores for the oil to bond. A polished surface will reject th"
+  },
+  {
+   "file": "src/data/rubio-guide-data.ts",
+   "key": "a34b96db064e7474",
+   "tell": "dash",
+   "count": 2,
+   "preview": "body: `New installed wood with natural extractives (oak, cedar, redwood) or hardwoods (ipé, teak) should weather <strong>4&ndash;6 weeks</st"
+  },
+  {
+   "file": "src/data/rubio-guide-data.ts",
+   "key": "cb69db80ce8945d2",
+   "tell": "dash",
+   "count": 2,
+   "preview": "body: `Work in zones of 5&ndash;10 m² (50&ndash;100 sq ft). Spread a small amount with the <strong>Rubio applicator pad</strong> or a plasti"
+  },
+  {
+   "file": "src/data/rubio-guide-data.ts",
+   "key": "da5a384a9d231d1f",
+   "tell": "dash",
+   "count": 2,
+   "preview": "body: `This is a two-component product. Mix at a <strong>3:1 ratio</strong> (three parts Oil, one part Accelerator) by volume. Stir well for"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "08987bfcd7bc82ff",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"Jesper's pacing instinct: he slows down when the object begins to feel meaningful. He lets quiet moments feel quiet. That's "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "0aa492923001f997",
+   "tell": "dash",
+   "count": 1,
+   "preview": "howToUse: \"Tell the memory first. Be specific [dash] not 'my grandmother' but the specific thing about her you're trying to hold onto. Then "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "0daa00a8c454d54b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Personal risk [dash] am I good enough? Can I pull off the vision?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "0e1e298541d35d59",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Material risk [dash] can ugly, weak, discarded material become great?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "0e28bea881cfa865",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"The project is for someone else [dash] a family member, a friend, a partner. That immediately changes the stakes. It's no longer ab"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "179360215142a7da",
+   "tell": "dash",
+   "count": 1,
+   "preview": "tagline: \"Design-thinking as narrative [dash] the 'why' behind every aesthetic decision becomes the story.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "1b35482b9e571159",
+   "tell": "dash",
+   "count": 1,
+   "preview": "howToUse: \"Establish 'home' first [dash] what's normal for you. Then show the departure: what makes this project different? Let the audience"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "1d609a15229de3d2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"Any video where early success led to a mistake. The arc is honest and educational [dash] it's not about shame, it's about wh"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "1dc4387de0514962",
+   "tell": "dash",
+   "count": 1,
+   "preview": "howToUse: \"Tell us who it's for and why they matter. Show the build through the lens of 'will this be good enough for them?' The reveal at t"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "24ccdc31c7833856",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Scale vs skill [dash] projects that push the limits of one-person capability\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "27b249a74a0e2a31",
+   "tell": "dash",
+   "count": 1,
+   "preview": "coreTruth: \"The Swedish Maker's strength is relatable ambition [dash] he's not a polished expert, he's a regular guy who dives in and figure"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "2809ed8b6f0bbd16",
+   "tell": "reframe",
+   "count": 1,
+   "preview": "jesperExample: \"Any video where early success led to a mistake. The arc is honest and educational [dash] it's not about shame, it's about wh"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "28eedc5ef7a917d6",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"Reject the shortcut. Show the real effort, the real difficulty, the real grind. This isn't suffering for drama [dash] it's trust-bu"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "29cfa8e5f4648eae",
+   "tell": "salience",
+   "count": 1,
+   "preview": "jesperExample: \"Jesper consistently chooses difficult methods and materials. Hand tools over power tools. Reclaimed wood over clean lumber. "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "2d661dad86c90ebb",
+   "tell": "reframe",
+   "count": 1,
+   "preview": "coreTruth: \"The Swedish Maker's strength is relatable ambition [dash] he's not a polished expert, he's a regular guy who dives in and figure"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "2e41f050decd3f7c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "example: \"'How I Priced My Largest Commission Ever' [dash] the pricing process IS the story. Most makers hide this. Cam makes it the hook.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "2e5f1ee71bd41149",
+   "tell": "dash",
+   "count": 1,
+   "preview": "description: \"Things are going well [dash] too well. A warning is ignored. Consequences follow. Great for cautionary or teaching videos.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "334d41bfea1617d6",
+   "tell": "dash",
+   "count": 1,
+   "preview": "description: \"Material transformation isn't just visual [dash] it's moral. Waste has dignity. Discarded things deserve attention. The build "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "380fc33f09671bf7",
+   "tell": "dash",
+   "count": 1,
+   "preview": "transformation: { label: \"Transformation\", color: \"#22c55e\", description: \"Stories about change [dash] material, personal, or both.\" },"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "39454965e73bf79b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Identity tension [dash] being a content creator vs being a designer/maker\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "3ccae59a00ae8e93",
+   "tell": "dash",
+   "count": 1,
+   "preview": "tagline: \"Radical transparency as entertainment [dash] showing the real business of making expensive things.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "3d9b2d64c7b45c22",
+   "tell": "dash",
+   "count": 1,
+   "preview": "howToUse: \"State the opinion clearly and early. Don't hedge. Then support it with evidence from your own work. The opinion doesn't have to b"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "3f58c7656a139455",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Return Changed\", position: 100, prompt: \"You're back [dash] but different. What did you bring home with you?\" },"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "40dd8bc8085c8608",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"The real transformation isn't the project [dash] it's you. This story is about capability, growth, and identity change through the "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "438e2ef46ece09a6",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Your design decisions are story beats. Show the rejected ideas [dash] each one is a turning point.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "490044c5d1a42695",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Home\", position: 0, prompt: \"What's your normal [dash] your workshop, your usual materials, your comfort zone?\" },"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "524407380fba3ca4",
+   "tell": "dash",
+   "count": 1,
+   "preview": "example: \"Videos about design principles, the uncanny valley in furniture, or what makes something 'honest' [dash] these are essays with bui"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "55a03e29fc276fcc",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "\"What part of this process is genuinely boring or painful?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "56cd03c56a742b7b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"In 'The Hardest Year of My Life: A Build Diary,' the dragon isn't a woodworking problem [dash] it's life itself pressing aga"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "576bcb964dd6a6f7",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"Every good story has an antagonist. In maker videos, the dragon isn't a villain [dash] it's the thing that threatens your project, "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "5e495c90354ba5d5",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Resource tension [dash] working with what's available, not ideal\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "60d5ef8443d27316",
+   "tell": "dash",
+   "count": 2,
+   "preview": "\"What specific detail [dash] a sound, a smell, a moment [dash] are you trying to preserve?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "65c9d0102fb11c85",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Design tension [dash] will this idea work in reality, or only on paper?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "6c836477c44b1ce0",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"Somewhere in your build, there's a five-second moment where everything shifts. A realization. A mistake. A decision. A feeling. Fin"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "6d2f6faba2700532",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Your setting is a character. Use your environment [dash] it adds texture no studio can match.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "6fbf168955ff6cf1",
+   "tell": "dash",
+   "count": 1,
+   "preview": "howToUse: \"Pick one moment in your build [dash] the most important one. Now describe it like a film director: what do we see? Hear? Feel? Ho"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "701244e9f6cabd65",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"What's your 'home' [dash] your comfort zone in making?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "702a804b2291d45e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"Your project starts with something discarded, cheap, or ugly. The story is about revealing hidden value [dash] proving that what ot"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "7121d5fa3e3d951e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "emotion: { label: \"Emotion\", color: \"#3F6B4A\", description: \"Stories driven by feeling [dash] vulnerability, memory, love, fear.\" },"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "7149e7e9fd62e180",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"Almost every Jesper build has this moment [dash] the cut that went wrong, the wood that split, the design that failed. 'I al"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "745c28ece186790c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "description: \"Steady rise from raw to refined. The before/after arc [dash] but with enough struggle in the middle to make the payoff earned."
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "759163f50bcb4bdf",
+   "tell": "dash",
+   "count": 1,
+   "preview": "howToUse: \"Name the doubt. Who said it? Was it someone else, or your own fear? Then show the work. Let the result speak. You don't need to g"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "77e6684b4859d9a1",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"A deadline turns any build into a race. The constraint creates natural tension [dash] will you finish? What gets cut? What do you r"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "78ea56c1613d296b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "tagline: \"The Nordic neighbor building in his barn [dash] authenticity and community as the quiet story engine.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "7b513f81afea75f7",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"'I Had 7 Days to Build This Bench' [dash] 576k views. The deadline isn't just a constraint. It's a character test. What do y"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "7d251fe7be23f41f",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Skill gap tension [dash] attempting things above current ability\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "7e8f6e2fe39365ac",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Growth tension [dash] building a creative life from a small Swedish farm\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "81380fca1e8138f6",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Scale creates instant curiosity [dash] but you need story underneath it or it's just spectacle.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "838bd4c9b36bbcf4",
+   "tell": "salience",
+   "count": 1,
+   "preview": "example: \"Lets the audience feel two things at once: 'this matters' and 'I know how ridiculous this all is.'\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "84fe712337d72004",
+   "tell": "reframe",
+   "count": 1,
+   "preview": "tagline: \"This isn't for you. It's for someone who matters.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "87c863d5c00645f3",
+   "tell": "dash",
+   "count": 2,
+   "preview": "description: \"The setting [dash] a farm in Sweden [dash] is itself a character. The environment adds texture, season, and a sense of place t"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "8a1d931ec88af1e4",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "\"What common practice makes you genuinely frustrated?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "8b4c8b65918069fd",
+   "tell": "dash",
+   "count": 1,
+   "preview": "example: \"'Improving On a Stolen Design' [dash] a 33-minute video about creativity, copying, and what originality actually means. The build "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "8cf6849a10820fc2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Intellectual tension [dash] questions about creativity, copying, originality\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "8ebf1ba5f4c4955d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "coreTruth: \"Chris doesn't just build furniture [dash] he thinks about furniture design on camera. The intellectual process of solving a desi"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "932102f0165fa084",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Your vulnerability is not weakness [dash] it's proof that something is at stake.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "93802e4cc6b268ec",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Financial stakes [dash] real money, real commissions, real consequences\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "94e905c38d8efe08",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"Jesper's turntable cabinet from junk wood [dash] framed as something that 'could have come from the 1980s and survive until "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "9706a251fb29454f",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Client expectations [dash] someone paid thousands and is waiting\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "9df132ce8eda72d9",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"Doubt is fuel. Whether it's external skepticism or your own inner voice saying 'this is above your level,' the story becomes about "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "a2a94b8c27f57045",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Sometimes trusts vibe more than structure [dash] middles can drift\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "a3b73598df17876a",
+   "tell": "dash",
+   "count": 2,
+   "preview": "tagline: \"Someone [dash] maybe you [dash] said this couldn't be done.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "a53d139219b03890",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Who doubted this would work [dash] including yourself?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "a9f3de5232df60b5",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "\"The everyman positioning can undersell genuine expertise\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "aa6a5d6fcfa7dfb2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Innovation tension [dash] combining 3D printing with traditional methods\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "b062e9da6ce98f1b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Can become formula-dependent [dash] expensive slab + epoxy + reveal\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "b188911d7b0b4ac7",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"'Beginner to full-time woodworker in 2 years' [dash] 4.2M views. The video isn't really about woodworking. It's about identi"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "c01a5a2e2211cc1e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Meaning risk [dash] will this object become what it emotionally needs to be?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "c04150b17d76289f",
+   "tell": "reframe",
+   "count": 1,
+   "preview": "jesperExample: \"'Beginner to full-time woodworker in 2 years' [dash] 4.2M views. The video isn't really about woodworking. It's about identi"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "c05add303cfbf4ce",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"From Storyworthy: 'But and Therefore' forces cause and effect. Jesper does this instinctively [dash] his videos don't just s"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "c9bda2837c88d9c4",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"You start in familiar territory [dash] your workshop, your usual materials, your comfort zone. Then you venture into something new."
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "cb48dbaa18bb9be2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"Vulnerability isn't weakness [dash] it's proof of stakes. If you're nervous about this build, say so. If you're not sure you're goo"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "cc53ecb7a36a99c1",
+   "tell": "dash",
+   "count": 1,
+   "preview": "example: \"Using 3D-printed jigs and accessories alongside hand tools [dash] the combination is inherently interesting because most makers ch"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "ce1a589ca2294c42",
+   "tell": "salience",
+   "count": 1,
+   "preview": "\"Plant the emotional seed early. Don't wait until the end to tell us why this matters.\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "d391306f937fa310",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"What does this build connect [dash] which past to which future?\""
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "d42f91e4754bcbbe",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"Jesper's whole relationship with hand tools and traditional methods. When he chooses the slow, old way, it's not nostalgia ["
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "d4a0ac3ec270d3e9",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"The Reveal\", position: 100, prompt: \"Show the finished result [dash] but also what it means, not just how it looks.\" },"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "d58f35f5d79eee5c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Material risk [dash] expensive slabs that can't be replaced if ruined\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "d6ecd49e3e858ab2",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"Your project starts okay, then something goes wrong [dash] badly wrong. You fall into the hole. The story is about the climb back o"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "d80a2d91c1914462",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"What does this transformation say about value [dash] not just the object, but in life?\""
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "dd62d681ea2e8c73",
+   "tell": "reframe",
+   "count": 1,
+   "preview": "jesperExample: \"Jesper's turntable cabinet from junk wood [dash] framed as something that 'could have come from the 1980s and survive until "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "e002c992a2a46589",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"'Idiot YouTubers Are Destroying Their Houses' [dash] 1.4M views. Strong opinion + specific target. The opinion creates debat"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "e173c5459fdb468b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"How did it feel in that moment [dash] honestly?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "e3e7c22bedbbc56e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "description: \"Somewhere mid-video, the project stops being about the object and becomes about something bigger [dash] identity, time, memory"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "e493f5417bb60112",
+   "tell": "dash",
+   "count": 2,
+   "preview": "prompt: \"Take something ancient [dash] a technique, a material, a tool, a method [dash] and show why it's still superior. The surprise isn't"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "e4eefa4af9b40cfd",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"The pallet wood era. Scrap → furniture. The curve rises slowly because the transformation takes work [dash] that's what make"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "e7aa2a4dda06b028",
+   "tell": "dash",
+   "count": 2,
+   "preview": "prompt: \"The surface project is one thing. The real story is another. A shelf isn't about storage [dash] it's about making order from chaos."
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "e90893bca6039795",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"The build is tied to something from the past [dash] a person, a place, an era, a feeling. The object becomes a vessel for memory. Y"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "e9f9b0308ad478a7",
+   "tell": "dash",
+   "count": 1,
+   "preview": "prompt: \"Every beat in your video should connect to the next through cause and effect [dash] not just sequence. 'I cut the board BUT it spli"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "ebf75171ac0c88a1",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Aesthetic risk [dash] will the final piece match the vision?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "ebf8cf512cfc576e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"Jesper consistently chooses difficult methods and materials. Hand tools over power tools. Reclaimed wood over clean lumber. "
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "ec7cccfd87733edb",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "\"What genuinely scares you about this project?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "ed0b4089da45cc13",
+   "tell": "dash",
+   "count": 1,
+   "preview": "jesperExample: \"Jesper's entire pallet wood era. 'I made a coffee table from this. Sold for $1599' [dash] the 'this' was scrap wood nobody w"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "f5ed5bd06984483d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"The Cost\", position: 80, prompt: \"What did the failure cost [dash] time, materials, money, pride?\" },"
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "fbd9d2d67ef048ed",
+   "tell": "dash",
+   "count": 1,
+   "preview": "example: \"Walking around the farm, transforming fallen logs and found materials. The location isn't backdrop [dash] it's part of the story.\""
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "ff367707183c62a0",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Life-friction risk [dash] can the build survive reality, time, energy, mood?\","
+  },
+  {
+   "file": "src/data/storyteller-data.ts",
+   "key": "ff78b58791af3fce",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Less emotional depth than story-driven channels [dash] stakes are financial more than existential\","
+  },
+  {
+   "file": "src/data/tool-category-intros.ts",
+   "key": "1cc8c66adfc7c041",
+   "tell": "honest_frame",
+   "count": 1,
+   "preview": "\"The digital corner of the workshop. Laser cutters, 3D printers, and the machines that turn a file into a physical part. I use these mostly "
+  },
+  {
+   "file": "src/data/tool-category-intros.ts",
+   "key": "f97ab4c3a7bb2a2d",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "\"The unglamorous half of the workshop. Clamps, tape measures, squares, the bench itself. Nobody films a video about a tape measure, but you "
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "04ce9d7e6e848c43",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool International\", url: \"https://www.festool.com/products/saws/circular-saws/576147---hk-85-eb-plus\", region: \"global\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "09faf473fb69535d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool Denmark\", url: \"https://www.festool.dk/produkter/save/kap-geringssave/575302---ks-120-reb\", region: \"eu\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "0a0e204a5a204c18",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool UK\", url: \"https://www.festool.co.uk/products/cordless-products/cordless-portable-circular-saws/578302---hkc-55-keb-basic\""
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "17d18c02a7e0b041",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool Denmark\", url: \"https://www.festool.dk/produkter/save/stiksave/576178---psc-420-ebi-basic\", region: \"eu\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "181e30ffae98938f",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "\"Most miter saw clamps are so annoying that you stop using them after a week. The KAPEX is different. The quick clamp system is so fast and "
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "1b62805e37989329",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Built my own from construction timber. Doesn't need to be pretty [dash] needs to be solid and flat.\","
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "245177c7a5730e7f",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool Denmark\", url: \"https://www.festool.dk/produkter/nyheder/v%C3%A6rkt%C3%B8j/578302---hkc-55-keb-basic\", region: \"eu\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "261d794898f037f4",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "\"The two tools I check every single measurement with. Nothing fancy, just reliable.\","
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "2833005e1e6df556",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool International\", url: \"https://www.festool.com/products/domino-jointing-system/domino-joining-machine-df-700/574320---df-70"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "2a88f3f6af2a197c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Brushless random orbital sander. The upgraded version with EC motor [dash] quieter and more powerful.\","
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "2ebdb48b5cb28546",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "jesperNote: \"The only plywood in my shop that I'd call genuinely tough. If you're building outside, or your shop humidity is a disaster, thi"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "35f5dff9b0363324",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Cyclone pre-separator. Goes between your tool and extractor [dash] catches the heavy stuff before it hits the filter.\","
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "369f463d52ed4758",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool International\", url: \"https://www.festool.com/products/cordless-products/cordless-portable-circular-saws/578302---hkc-55-k"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "3f071133f1eba069",
+   "tell": "dash",
+   "count": 1,
+   "preview": "This is what we used for the roof and the exterior sheathing of our off-grid cabin. It's also become my go-to for serious shop projects [das"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "42f74708ace21fd9",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "\"The Navimow X450 is a robotic lawn mower that uses RTK+GPS positioning instead of boundary wires. That means no digging up your garden to i"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "450225817c8db776",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Details coming soon [dash] I'll add the full filming setup here.\","
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "45f54da8f2c6a3da",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool Denmark\", url: \"https://www.festool.dk/produkter/save/rundrundsave/576147---hk-85-eb-plus\", region: \"eu\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "480280c1a1430f5c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool International\", url: \"https://www.festool.com/products/saws/jigsaws/576178---psc-420-ebi-basic\", region: \"global\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "4dabaefb2855309f",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool Denmark\", url: \"https://www.festool.dk/produkter/slibemaskiner/baandslibere/575769---bs-75-e-plus\", region: \"eu\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "50c6933574bc11aa",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool Denmark\", url: \"https://www.festool.dk/produkter/nyheder/v%C3%A6rkt%C3%B8j/576820---csc-sys-50\", region: \"eu\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "50cea16654d1ba03",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool Denmark\", url: \"https://www.festool.dk/tilbehoer/save/maskintilbeh%C3%B8r/notanordning/576803---vn-hk85-130x16-25\", region"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "5306ae0c90117212",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool International\", url: \"https://www.festool.com/products/drills-and-screwdrivers/cordless-percussion-drills/577600---tpc-18-"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "548ea1ceea5a820d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool USA\", url: \"https://www.festoolusa.com/products/domino-joiners/domino-joining-machine-df-700/574320---df-700-eq-plus\", reg"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "59f16997dde6af84",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Battery and charger set. SCA16 charger plus TCL 6 rapid charger [dash] keeps everything topped up.\","
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "613e7d074933296d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Important caveat from WISA: BT is a construction-phase protection, not a permanent outdoor finish. Any BT panel that will stay visible outsi"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "71fa2b09cc1bb3a6",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool USA\", url: \"https://www.festoolusa.com/products/saws/jigsaws/576178---psc-420-ebi-basic\", region: \"us\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "72cee950b40076a3",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Handheld CNC router guided by computer vision. Cuts precise shapes [dash] a truly unique tool.\","
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "73324dface46ae7c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Cordless oscillating multi-tool. Cuts, scrapes, sands [dash] the Swiss army knife of power tools.\","
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "75d9ae97685937fb",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Seriously. Buy more clamps. Then buy more. F-clamps, bar clamps, spring clamps [dash] all of them.\","
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "7a628a3ff17563a8",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool USA\", url: \"https://www.festoolusa.com/products/cordless-products/cordless-portable-circular-saws/578302---hkc-55-keb-basi"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "80a3160333ddcdd6",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool International\", url: \"https://www.festool.com/products/cordless-products/cordless-table-saw/576820---csc-sys-50\", region: "
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "842a0e3cd01eb129",
+   "tell": "discovery",
+   "count": 1,
+   "preview": "\"The F1 Ultra is the tool that surprised me most. Two lasers in one compact machine: a 20W fiber laser for metal engraving and a diode laser"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "86533b54da2ce89d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool International\", url: \"https://www.festool.com/products/saws/sliding-compound-mitre-saws/575302---ks-120-reb\", region: \"glo"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "8e4fd01bbcf88dd8",
+   "tell": "every_single",
+   "count": 1,
+   "preview": "\"Music makes or breaks a video. I've used Epidemic Sound since I started the channel and it's in every single video I've made. The library i"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "9036f8e2c31dae27",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool International\", url: \"https://www.festool.com/accessory/saws/machine-accessories/groove-cutting-unit/576803---vn-hk85-130x"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "b38fd987348e7787",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool USA\", url: \"https://www.festoolusa.com/products/sanders-and-grinders/belt-sanders/575769---bs-75-e-plus\", region: \"us\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "b6a85fff52b44767",
+   "tell": "dash",
+   "count": 1,
+   "preview": "I used it for the interior of the off-grid cabin my family is building, and it's my default for shop projects where I'd rather spend my wood"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "b7d9b97345ddf37c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool USA\", url: \"https://www.festoolusa.com/products/saws/circular-saws/576147---hk-85-eb-plus\", region: \"us\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "c47cd7ab3bfe0e2e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool USA\", url: \"https://www.festoolusa.com/products/drills-and-screwdrivers/cordless-percussion-drills/576998---tpc-18-4-i-plu"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "c5ae5d706dd73642",
+   "tell": "dash",
+   "count": 1,
+   "preview": "longDescription: `WISA-Spruce is Nordic spruce plywood built for structural work [dash] roofing, flooring, wall sheathing, and anything else"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "c81a6a9abb34ff57",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool USA\", url: \"https://www.festoolusa.com/products/saws/sliding-compound-mitre-saws/575302---ks-120-reb\", region: \"us\" },"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "d0e2586bac71ebf3",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool International\", url: \"https://www.festool.com/products/sanders-and-grinders/belt-sanders/575769---bs-75-e-plus\", region: \""
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "dc1f14fd088472f3",
+   "tell": "genuinely",
+   "count": 1,
+   "preview": "\"The DF 700 is the Domino you reach for when the material gets serious. Thick hardwood slabs, bed frames, heavy tables, timber framing joint"
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "e0ea9abdc2d619dc",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool UK\", url: \"https://www.festool.co.uk/products/cordless-products/cordless-table-saw/576820---csc-sys-50\", region: \"global\" "
+  },
+  {
+   "file": "src/data/tools.ts",
+   "key": "f991fa998386ee97",
+   "tell": "dash",
+   "count": 1,
+   "preview": "{ label: \"Festool Denmark\", url: \"https://www.festool.dk/produkter/domino-samlingssystem/domino-maskine-df-700/574320---df-700-eq-plus\", reg"
+  },
+  {
+   "file": "src/lib/cone-lamp/cut-sheet.ts",
+   "key": "026e4c109435b6b9",
+   "tell": "dash",
+   "count": 1,
+   "preview": "const footerText = `<text x=\"${margin}\" y=\"${footerY}\" font-family=\"Helvetica, Arial, sans-serif\" font-size=\"20\" fill=\"#000\">Generated on je"
+  },
+  {
+   "file": "src/lib/cone-lamp/cut-sheet.ts",
+   "key": "d256b5befb725683",
+   "tell": "dash",
+   "count": 1,
+   "preview": "const headerText = `<text x=\"${margin}\" y=\"${headerY}\" font-family=\"Helvetica, Arial, sans-serif\" font-size=\"42\" font-weight=\"bold\" fill=\"#0"
+  },
+  {
+   "file": "src/lib/email/welcome.ts",
+   "key": "c0f92a6add37ae9a",
+   "tell": "heres_the_thing",
+   "count": 1,
+   "preview": "\"So you do not have to dig through anything, here is the best of what I have built, free, no account, no catch.\","
+  },
+  {
+   "file": "src/lib/homepage/fetch.ts",
+   "key": "0d4e92a40484a313",
+   "tell": "dash",
+   "count": 1,
+   "preview": "subtitle: \"SVG laser cut file \\u2014 all parts included\","
+  },
+  {
+   "file": "src/lib/homepage/fetch.ts",
+   "key": "505c1e0a0eaafb95",
+   "tell": "dash",
+   "count": 1,
+   "preview": "subtitle: \"Unisex black tee \\u2014 printed & shipped worldwide\","
+  },
+  {
+   "file": "src/lib/lamp-designer/checks.ts",
+   "key": "1c82d79fc8adc990",
+   "tell": "dash",
+   "count": 1,
+   "preview": "const infill = \"0% (walls only [dash] infill would shadow the light)\";"
+  },
+  {
+   "file": "src/lib/lamp-designer/checks.ts",
+   "key": "2a6110849a54ccb2",
+   "tell": "dash",
+   "count": 1,
+   "preview": ": \"Overhang exceeds 45° [dash] supports will be needed\","
+  },
+  {
+   "file": "src/lib/lamp-designer/checks.ts",
+   "key": "3adfb61c07d390d0",
+   "tell": "dash",
+   "count": 1,
+   "preview": "print.infill = \"solid walls [dash] the thickness is the image\";"
+  },
+  {
+   "file": "src/lib/lamp-designer/checks.ts",
+   "key": "51f14469f1fa9aae",
+   "tell": "dash",
+   "count": 1,
+   "preview": ": `Opening too small [dash] need ${BULB_E27_DIMS.fitDiameter} mm, have ${opening} mm`,"
+  },
+  {
+   "file": "src/lib/lamp-designer/checks.ts",
+   "key": "b8a7242f17b96fac",
+   "tell": "dash",
+   "count": 1,
+   "preview": "estimatedTime: `${hours}[dash]${hours + 2} hours`,"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "036ce02b81a93373",
+   "tell": "dash",
+   "count": 1,
+   "preview": "message: `Top opening ${shape.topDiameter} mm too small [dash] the ${fixtureModule.name} needs ≥ ${minTop} mm`,"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "0bdfc2d9895a481b",
+   "tell": "dash",
+   "count": 1,
+   "preview": "message: `${Math.round(gap)} mm to the ${env.bulbName} [dash] PLA up to ${wPla} W, PETG up to ${wPetg} W LED`,"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "170dc1698218116a",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return { ok: true, value: angleDeg, message: `Overhang ${Math.round(angleDeg)}° [dash] no supports needed`, severity: \"info\" };"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "25b664642e110d60",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return { ok: false, value: angleDeg, message: `Shielding angle ${Math.round(angleDeg)}° [dash] bulb visible (need ≥ 25°)`, severity: \"error\""
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "2c77b7777fcdec8d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return { ok: true, value: angleDeg, message: `Shielding angle ${Math.round(angleDeg)}° [dash] bulb barely hidden`, severity: \"warn\" };"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "4ad8ea0e6853167e",
+   "tell": "dash",
+   "count": 2,
+   "preview": "return { ok: false, value: ratio, message: `Opening ratio ${ratio.toFixed(2)} [dash] ${desc} (need 0.2[dash]1.5)`, severity: \"warn\" };"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "5455bfb684a8d6ad",
+   "tell": "dash",
+   "count": 1,
+   "preview": "message: `${Math.round(gap)} mm to the ${env.bulbName} [dash] PETG only, up to ${wPetg} W LED`,"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "6bc4dec1dac8b143",
+   "tell": "dash",
+   "count": 1,
+   "preview": "message: `Wall enters the bulb zone (${Math.round(gap)} mm) [dash] widen the shade or shorten it`,"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "75ff7d72901d6a82",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return { ok: false, value: t, message: `Wall thickness ${t} mm too thin [dash] need ≥ 0.8 mm`, severity: \"error\" };"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "7f6ba06bd7d36e8d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return { ok: true, value: ratio, message: `Opening ratio ${ratio.toFixed(2)} [dash] within range`, severity: \"info\" };"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "9015487bb1553f91",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return { ok: true, value: angleDeg, message: `Shielding angle ${Math.round(angleDeg)}° [dash] bulb well hidden`, severity: \"info\" };"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "9c8b0ae5be98bb07",
+   "tell": "dash",
+   "count": 1,
+   "preview": "message: `Shade ends above the bulb zone [dash] the ${env.bulbName} hangs free, any LED is fine`,"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "ad8de889337747db",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return { ok: true, value: t, message: `Wall thickness ${t} mm [dash] printable`, severity: \"info\" };"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "b500e804743ac06c",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return { ok: false, value: angleDeg, message: `Overhang ${Math.round(angleDeg)}° [dash] supports needed (max 45°)`, severity: \"warn\" };"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "db9a4b9a8034646f",
+   "tell": "dash",
+   "count": 2,
+   "preview": "return { ok: false, value: ratio, message: `Proportion ratio ${ratio.toFixed(2)} [dash] ${desc} (need 0.5[dash]2.5)`, severity: \"warn\" };"
+  },
+  {
+   "file": "src/lib/lamp-designer/constraints.ts",
+   "key": "f86774bc5961f511",
+   "tell": "dash",
+   "count": 1,
+   "preview": "return { ok: true, value: ratio, message: `Proportion ratio ${ratio.toFixed(2)} [dash] balanced`, severity: \"info\" };"
+  },
+  {
+   "file": "src/lib/lamp-designer/materials.ts",
+   "key": "681c202418dd1d2d",
+   "tell": "dash",
+   "count": 1,
+   "preview": "? `${moonBulbBase}: too tight at this size [dash] use the Kit 001 seat or grow the moon`"
+  },
+  {
+   "file": "src/lib/products.ts",
+   "key": "975d4d967b40b682",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Unisex black tee [dash] Bella+Canvas 3001. Logo on front & back. Printed & shipped by Printful.\","
+  },
+  {
+   "file": "src/lib/storyteller-export.ts",
+   "key": "d8bdbe40ec25e8ad",
+   "tell": "dash",
+   "count": 1,
+   "preview": "Generated by The Storyteller Engine [dash] jespermakes.com/storyteller"
+  },
+  {
+   "file": "src/lib/studio/export-profiles.ts",
+   "key": "ce03dfd94d9606ef",
+   "tell": "dash",
+   "count": 1,
+   "preview": "\"Generated by Jesper Makes Studio. Cut paths in the SVG are kerf-compensated (outside cuts grew, inside cuts shrunk by kerf/2). Tab and dogb"
+  },
+  {
+   "file": "src/lib/studio/review-checks.ts",
+   "key": "27f516590217313a",
+   "tell": "dash",
+   "count": 1,
+   "preview": "message: `${label} has no tabs [dash] the part may break free during cutting`,"
+  },
+  {
+   "file": "src/lib/studio/review-checks.ts",
+   "key": "800af8fc304fc27e",
+   "tell": "dash",
+   "count": 1,
+   "preview": "message: `${label} is open [dash] only 'on-line' or 'guide' apply`,"
+  },
+  {
+   "file": "src/scripts/render-letter-1.ts",
+   "key": "a12411c4d136c3cb",
+   "tell": "salience",
+   "count": 1,
+   "preview": "\"Over the years the videos have become more honest. More personal. That is harder than it sounds. When I burned my father's workbench and ta"
+  },
+  {
+   "file": "src/scripts/render-letter-1.ts",
+   "key": "a60a9e1378e40401",
+   "tell": "heres_the_thing",
+   "count": 1,
+   "preview": "\"And here is the deal going forward: new tools land with newsletter subscribers first, before I mention them anywhere else. You are already "
+  }
+ ],
+ "history": [
+  {
+   "at": "2026-10-15",
+   "reason": "first baseline: the copy as it stood when the ratchet started (2026-10-15)",
+   "added": 386,
+   "removed": 0
+  }
+ ]
+}

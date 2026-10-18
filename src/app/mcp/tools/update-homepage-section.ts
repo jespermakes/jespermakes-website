@@ -5,9 +5,11 @@ import { revalidatePath } from "next/cache";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { db } from "@/lib/db";
 import { pageSections } from "@/lib/db/schema";
+import { mcpVoiceGate } from "@/lib/voice/gate-log";
+import { leafInputs, readOverride } from "@/lib/voice/gate";
 import type { ToolContext } from "./index";
 
-export function registerUpdateHomepageSection(server: McpServer, _ctx: ToolContext) {
+export function registerUpdateHomepageSection(server: McpServer, ctx: ToolContext) {
   server.registerTool(
     "update_homepage_section",
     {
@@ -24,9 +26,15 @@ export function registerUpdateHomepageSection(server: McpServer, _ctx: ToolConte
           .record(z.string(), z.unknown())
           .optional()
           .describe("Partial fields to merge into the existing data object. Mutually exclusive with data."),
+        voiceOverride: z
+          .object({ reason: z.string().min(8) })
+          .optional()
+          .describe(
+            "Only when the voice gate refused this text AND Jesper explicitly approved this exact text: his words as the reason. Logged. Never on your own.",
+          ),
       },
     },
-    async ({ id, data, patch }) => {
+    async ({ id, data, patch, voiceOverride }) => {
       if (data === undefined && patch === undefined) {
         return {
           content: [{ type: "text" as const, text: "Pass either 'data' (full replacement) or 'patch' (partial merge)." }],
@@ -56,6 +64,15 @@ export function registerUpdateHomepageSection(server: McpServer, _ctx: ToolConte
       const section = existing[0];
       const newData = data !== undefined ? data : { ...(section.data as Record<string, unknown>), ...patch };
 
+      // every copy string in the section, judged on what this edit adds
+      const gate = await mcpVoiceGate(
+        "update_homepage_section",
+        ctx,
+        leafInputs(newData, section.data, "data"),
+        readOverride(voiceOverride),
+      );
+      if (gate.refuse) return gate.refuse;
+
       await db
         .update(pageSections)
         .set({ data: newData, updatedAt: new Date() })
@@ -68,7 +85,7 @@ export function registerUpdateHomepageSection(server: McpServer, _ctx: ToolConte
         content: [
           {
             type: "text" as const,
-            text: `Updated section "${section.kind}" (id=${id}). New data: ${JSON.stringify(newData, null, 2)}`,
+            text: `Updated section "${section.kind}" (id=${id}). New data: ${JSON.stringify(newData, null, 2)}${gate.note ? `\n\n${gate.note}` : ""}`,
           },
         ],
       };

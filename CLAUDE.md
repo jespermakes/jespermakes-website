@@ -139,6 +139,23 @@ Never `vercel --prod` from the CLI. Vercel's GitHub integration is the only depl
 
 Never "just this once" without those four steps.
 
+## Voice check (DR-287)
+
+`npm run build` runs `scripts/voice-lint.mjs` before `next build`, here and on Vercel. It fails the
+build when the copy ADDS a long dash (also `&mdash;`, `--`, an escape), an invisible character, a
+look-alike letter or a Claude signature tell ("genuinely", "Not X. Not Y. Z.", "It isn't X. It's
+Y." and the rest of the Spark voice check's short list). What was there when the ratchet started
+sits in `voice-baseline.json` and does not break a deploy; editing a line that carries one means
+fixing it. After fixing old lines, `npm run voice:baseline` tightens the baseline. Only on Jesper's
+word: `npm run voice:accept -- --reason "<what he said>"` (logged in the baseline).
+
+The same check runs server side in the seven site MCP write tools and the admin API
+(`src/lib/voice/gate.ts`): a block refuses with the lines, `voiceOverride: { reason }` passes and is
+logged as a `voice_gate.*` row in `mcp_activity`. `voicecheck/` (the checker, its tell catalogue
+and fixtures) and `scripts/voice-lint.mjs` are generated from brain-server
+(`scripts/voicecheck_export_site.py`): never edit them here. They sit outside `src` on purpose:
+the catalogue spells out the tells, so any copy check would read it as copy.
+
 ## Never do these things
 
 - Never run `git reset --hard` or `git clean -fdx` without asking Jesper first — these destroy uncommitted work

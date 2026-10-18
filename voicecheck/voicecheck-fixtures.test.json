@@ -1,0 +1,423 @@
+{
+ "about": "Generated with voicecheck.json. Each text (placeholders [[XXXX]] = U+XXXX) with the band and findings brain/voicecheck gives it in short mode. check.mjs must reproduce them exactly; voice-lint.mjs runs this before every build.",
+ "engine_sha": "6b15705fbd243633",
+ "cases": [
+  {
+   "text": "I built the bench from three old pallets and it took a weekend.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "The bench is done [[2014]] and it looks great.",
+   "band": "block",
+   "findings": [
+    [
+     "dash",
+     18,
+     19
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "Ten to fifteen minutes, 10[[2013]]15 minutes.",
+   "band": "block",
+   "findings": [
+    [
+     "dash",
+     26,
+     27
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "The finish is oil and wax &mdash; nothing else.",
+   "band": "block",
+   "findings": [
+    [
+     "dash",
+     26,
+     33
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "It took two coats -- then it was done.",
+   "band": "block",
+   "findings": [
+    [
+     "dash",
+     17,
+     21
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "The wood here is genuinely beautiful.",
+   "band": "flag",
+   "findings": [
+    [
+     "genuinely",
+     17,
+     26
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "Here's the thing about pallets: they are free.",
+   "band": "flag",
+   "findings": [
+    [
+     "heres_the_thing",
+     0,
+     16
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "Every single board had a nail in it.",
+   "band": "flag",
+   "findings": [
+    [
+     "every_single",
+     0,
+     12
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "I want to be honest with you about the cost.",
+   "band": "flag",
+   "findings": [
+    [
+     "honest_frame",
+     0,
+     24
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "This one really earns its keep in the shop.",
+   "band": "flag",
+   "findings": [
+    [
+     "stock_metaphor",
+     16,
+     30
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "These beams were load-bearing once, in the old barn.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "The jig does the heavy lifting.",
+   "band": "flag",
+   "findings": [
+    [
+     "stock_metaphor",
+     8,
+     30
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "And that is what matters most.",
+   "band": "flag",
+   "findings": [
+    [
+     "salience",
+     4,
+     24
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "It feels less like a shelf and more like a sculpture.",
+   "band": "flag",
+   "findings": [
+    [
+     "less_more",
+     9,
+     42
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "That's the part I didn't expect.",
+   "band": "flag",
+   "findings": [
+    [
+     "discovery",
+     7,
+     31
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "Nobody tells you how heavy oak is.",
+   "band": "flag",
+   "findings": [
+    [
+     "discovery",
+     0,
+     16
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "It works in the way that a good plane works.",
+   "band": "flag",
+   "findings": [
+    [
+     "in_the_way",
+     9,
+     24
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "Not for the views. Not for the money. For my daughter.",
+   "band": "flag",
+   "findings": [
+    [
+     "not_not_z",
+     0,
+     54
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "It isn't a shelf. It's a promise.",
+   "band": "flag",
+   "findings": [
+    [
+     "reframe",
+     0,
+     33
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "It doesn't feel like work. It feels like play.",
+   "band": "flag",
+   "findings": [
+    [
+     "reframe",
+     0,
+     46
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "It's not a very difficult joint, but there are many of them.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "He said \"Not now. Not here. Later.\" and left the shop.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "She wrote \"this is genuinely the best\" in the comments.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "# Here's the thing\n\nThe glue dried overnight and the clamps came off in the morning.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "Check [the genuinely good guide](https://example.com/genuinely) before you start.",
+   "band": "flag",
+   "findings": [
+    [
+     "genuinely",
+     11,
+     20
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "Use `every single` as the search term.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "A quiet motor is nice. Very quiet.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "Det er ikke en hylde. Det er et l\u00f8fte.",
+   "band": "flag",
+   "findings": [
+    [
+     "da_reframe",
+     0,
+     38
+    ]
+   ],
+   "language": "da"
+  },
+  {
+   "text": "Ikke for pengene. Ikke for visningerne. For min datter.",
+   "band": "flag",
+   "findings": [
+    [
+     "da_ikke_ladder",
+     0,
+     55
+    ]
+   ],
+   "language": "da"
+  },
+  {
+   "text": "Jeg byggede b\u00e6nken af tre gamle paller, og det tog en weekend.",
+   "band": "pass",
+   "findings": [],
+   "language": "da"
+  },
+  {
+   "text": "This is gen\u200buinely nice wood.",
+   "band": "flag",
+   "findings": [
+    [
+     "genuinely",
+     8,
+     17
+    ],
+    [
+     "hidden_char",
+     8,
+     18
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "The \u0441olour is great.",
+   "band": "flag",
+   "findings": [
+    [
+     "mixed_script",
+     4,
+     10
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "Honestly I think it is the best bench I have made so far, and I am really happy with it!",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "No glue. No screws. Just joinery.",
+   "band": "flag",
+   "findings": [
+    [
+     "not_not_z",
+     0,
+     33
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "Mr. Smith said it was fine. Then he left.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "Chapter 1 [[2014]] the start\n\nChapter 2 [[2014]] the end",
+   "band": "block",
+   "findings": [
+    [
+     "dash",
+     10,
+     11
+    ],
+    [
+     "dash",
+     33,
+     34
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "here is a lowercase line without any punctuation that goes on and on and on for a long time with no full stops at all and It feels less like a shelf and more like a sculpture and nobody tells you that",
+   "band": "block",
+   "findings": [
+    [
+     "discovery",
+     179,
+     195
+    ],
+    [
+     "less_more",
+     131,
+     164
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "<p>The <strong>genuinely</strong> good stuff</p>",
+   "band": "flag",
+   "findings": [
+    [
+     "genuinely",
+     15,
+     24
+    ]
+   ],
+   "language": "en"
+  },
+  {
+   "text": "Not bad. Pretty good actually.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  },
+  {
+   "text": "The kind of shelf that lasts forever.",
+   "band": "pass",
+   "findings": [],
+   "language": "en"
+  }
+ ]
+}

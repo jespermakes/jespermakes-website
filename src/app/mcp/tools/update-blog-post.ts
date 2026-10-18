@@ -4,10 +4,11 @@ import { revalidatePath } from "next/cache";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { db } from "@/lib/db";
 import { blogPosts } from "@/lib/db/schema";
+import { mcpVoiceGate } from "@/lib/voice/gate-log";
+import { readOverride } from "@/lib/voice/gate";
 import type { ToolContext } from "./index";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function registerUpdateBlogPost(server: McpServer, _ctx: ToolContext) {
+export function registerUpdateBlogPost(server: McpServer, ctx: ToolContext) {
   server.registerTool(
     "update_blog_post",
     {
@@ -29,9 +30,15 @@ export function registerUpdateBlogPost(server: McpServer, _ctx: ToolContext) {
           .describe(
             "URL to hero image. Pass empty string to clear.",
           ),
+        voiceOverride: z
+          .object({ reason: z.string().min(8) })
+          .optional()
+          .describe(
+            "Only when the voice gate refused this text AND Jesper explicitly approved this exact text: his words as the reason. Logged. Never on your own.",
+          ),
       },
     },
-    async ({ id, title, description, content, tags, heroImage }) => {
+    async ({ id, title, description, content, tags, heroImage, voiceOverride }) => {
       const existing = await db
         .select()
         .from(blogPosts)
@@ -59,6 +66,19 @@ export function registerUpdateBlogPost(server: McpServer, _ctx: ToolContext) {
           ],
         };
       }
+
+      // judged on what this edit adds: a finding already on the same line of the stored text passes
+      const gate = await mcpVoiceGate(
+        "update_blog_post",
+        ctx,
+        [
+          { field: "title", text: title, before: post.title },
+          { field: "description", text: description, before: post.description },
+          { field: "content", text: content, before: post.content },
+        ],
+        readOverride(voiceOverride),
+      );
+      if (gate.refuse) return gate.refuse;
 
       const patch: Partial<typeof blogPosts.$inferInsert> = {
         updatedAt: new Date(),
@@ -92,7 +112,7 @@ export function registerUpdateBlogPost(server: McpServer, _ctx: ToolContext) {
         content: [
           {
             type: "text" as const,
-            text: `Updated post "${title ?? post.title}" (status=${post.status}). Changed: ${Object.keys(patch).filter((k) => k !== "updatedAt").join(", ")}.`,
+            text: `Updated post "${title ?? post.title}" (status=${post.status}). Changed: ${Object.keys(patch).filter((k) => k !== "updatedAt").join(", ")}.${gate.note ? `\n\n${gate.note}` : ""}`,
           },
         ],
       };

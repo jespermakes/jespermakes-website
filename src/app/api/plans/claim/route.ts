@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           to: cleanEmail,
           from: "Jesper Makes <hello@jespermakes.com>",
-          subject: `Your ${product.name} — Download`,
+          subject: `Your ${product.name} download`,
           html: `
             <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222">
               <p>Hi there,</p>

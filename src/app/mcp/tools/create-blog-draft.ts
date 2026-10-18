@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { db } from "@/lib/db";
 import { blogPosts } from "@/lib/db/schema";
+import { mcpVoiceGate } from "@/lib/voice/gate-log";
+import { readOverride } from "@/lib/voice/gate";
 import type { ToolContext } from "./index";
 
 function slugify(input: string): string {
@@ -35,8 +37,7 @@ async function uniqueSlug(base: string): Promise<string> {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function registerCreateBlogDraft(server: McpServer, _ctx: ToolContext) {
+export function registerCreateBlogDraft(server: McpServer, ctx: ToolContext) {
   server.registerTool(
     "create_blog_draft",
     {
@@ -64,9 +65,27 @@ export function registerCreateBlogDraft(server: McpServer, _ctx: ToolContext) {
           .array(z.string())
           .optional()
           .describe("List of tag slugs."),
+        voiceOverride: z
+          .object({ reason: z.string().min(8) })
+          .optional()
+          .describe(
+            "Only when the voice gate refused this text AND Jesper explicitly approved this exact text: his words as the reason. Logged. Never on your own.",
+          ),
       },
     },
-    async ({ title, description, content, tags }) => {
+    async ({ title, description, content, tags, voiceOverride }) => {
+      const gate = await mcpVoiceGate(
+        "create_blog_draft",
+        ctx,
+        [
+          { field: "title", text: title },
+          { field: "description", text: description },
+          { field: "content", text: content },
+        ],
+        readOverride(voiceOverride),
+      );
+      if (gate.refuse) return gate.refuse;
+
       const baseSlug = slugify(title);
       const slug = await uniqueSlug(baseSlug);
 
@@ -92,7 +111,7 @@ export function registerCreateBlogDraft(server: McpServer, _ctx: ToolContext) {
         content: [
           {
             type: "text" as const,
-            text: `Created draft. id=${created.id}, slug=${created.slug}. Use get_blog_post or update_blog_draft to continue working on it. View in admin: /admin/blog/${created.id}`,
+            text: `Created draft. id=${created.id}, slug=${created.slug}. Use get_blog_post or update_blog_draft to continue working on it. View in admin: /admin/blog/${created.id}${gate.note ? `\n\n${gate.note}` : ""}`,
           },
         ],
       };

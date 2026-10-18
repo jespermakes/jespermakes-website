@@ -4,10 +4,11 @@ import { revalidatePath } from "next/cache";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { db } from "@/lib/db";
 import { images } from "@/lib/db/schema";
+import { mcpVoiceGate } from "@/lib/voice/gate-log";
+import { readOverride } from "@/lib/voice/gate";
 import type { ToolContext } from "./index";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function registerUpdateImageMetadata(server: McpServer, _ctx: ToolContext) {
+export function registerUpdateImageMetadata(server: McpServer, ctx: ToolContext) {
   server.registerTool(
     "update_image_metadata",
     {
@@ -32,9 +33,15 @@ export function registerUpdateImageMetadata(server: McpServer, _ctx: ToolContext
           .describe(
             "Array of lowercase, hyphen-separated custom tags. Use existing library taxonomy when applicable.",
           ),
+        voiceOverride: z
+          .object({ reason: z.string().min(8) })
+          .optional()
+          .describe(
+            "Only when the voice gate refused this text AND Jesper explicitly approved this exact text: his words as the reason. Logged. Never on your own.",
+          ),
       },
     },
-    async ({ imageIdOrPath, description, tags }) => {
+    async ({ imageIdOrPath, description, tags, voiceOverride }) => {
       const looksLikeUuid =
         /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
           imageIdOrPath,
@@ -71,6 +78,15 @@ export function registerUpdateImageMetadata(server: McpServer, _ctx: ToolContext
 
       const image = existing[0];
 
+      // the description is the alt text a screen reader speaks: judged on what this edit adds
+      const gate = await mcpVoiceGate(
+        "update_image_metadata",
+        ctx,
+        [{ field: "description", text: description, before: image.description }],
+        readOverride(voiceOverride),
+      );
+      if (gate.refuse) return gate.refuse;
+
       const patch: Partial<typeof images.$inferInsert> = {
         updatedAt: new Date(),
         reviewed: true,
@@ -106,7 +122,7 @@ export function registerUpdateImageMetadata(server: McpServer, _ctx: ToolContext
         content: [
           {
             type: "text" as const,
-            text: `Updated metadata for "${image.filename}". Changed: ${changed.join(", ")}. Marked as reviewed.`,
+            text: `Updated metadata for "${image.filename}". Changed: ${changed.join(", ")}. Marked as reviewed.${gate.note ? `\n\n${gate.note}` : ""}`,
           },
         ],
       };
