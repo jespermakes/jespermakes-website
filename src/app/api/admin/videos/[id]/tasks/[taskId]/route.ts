@@ -6,8 +6,9 @@ import { and, eq } from "drizzle-orm";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string; taskId: string } }
+  props: { params: Promise<{ id: string; taskId: string }> }
 ) {
+  const params = await props.params;
   const gate = await checkAdminApi();
   if (!gate.ok) return NextResponse.json({ error: gate.error }, { status: gate.status });
 
@@ -44,8 +45,9 @@ export async function PATCH(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string; taskId: string } }
+  props: { params: Promise<{ id: string; taskId: string }> }
 ) {
+  const params = await props.params;
   const gate = await checkAdminApi();
   if (!gate.ok) return NextResponse.json({ error: gate.error }, { status: gate.status });
 

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RubioShopPage() {
-  const { region } = resolveRegion();
+  const { region } = await resolveRegion();
   const products = await db
     .select()
     .from(rubioProducts)

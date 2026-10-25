@@ -133,7 +133,7 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <a
+        <Link
           href="/admin/videos/longform"
           className="block bg-white/50 border border-wood/[0.06] rounded-2xl p-5 hover:border-wood/[0.15] no-underline"
         >
@@ -159,7 +159,7 @@ export default async function AdminDashboard() {
               {readyShortsCount} short{readyShortsCount === 1 ? "" : "s"} ready to publish &rarr;
             </div>
           )}
-        </a>
+        </Link>
         <Link
           href="/admin/images"
           className="bg-white/55 border border-wood/[0.07] rounded-2xl p-5 hover:border-wood/[0.15]"

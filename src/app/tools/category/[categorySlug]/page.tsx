@@ -10,7 +10,8 @@ import { SmartImage } from "@/components/smart-image";
 
 export const revalidate = 60;
 
-export async function generateMetadata({ params }: { params: { categorySlug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ categorySlug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const rows = await db
     .select({ category: toolItems.category })
     .from(toolItems)
@@ -37,7 +38,8 @@ export async function generateMetadata({ params }: { params: { categorySlug: str
   };
 }
 
-export default async function CategoryPage({ params }: { params: { categorySlug: string } }) {
+export default async function CategoryPage(props: { params: Promise<{ categorySlug: string }> }) {
+  const params = await props.params;
   const rows = await db
     .select({ tool: toolItems, image: images })
     .from(toolItems)

@@ -4,7 +4,8 @@ import { blogPosts, images } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { BlogEditor } from "@/components/admin/blog-editor";
 
-export default async function EditBlogPostPage({ params }: { params: { id: string } }) {
+export default async function EditBlogPostPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const rows = await db.select().from(blogPosts).where(eq(blogPosts.id, params.id)).limit(1);
   const post = rows[0];
   if (!post) notFound();

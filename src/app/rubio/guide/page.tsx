@@ -18,7 +18,7 @@ export const revalidate = 300;
  * rather than the client guessing.
  */
 export default async function RubioGuidePage() {
-  const { region } = resolveRegion();
+  const { region } = await resolveRegion();
 
   const slugs = Object.values(GUIDE_PRODUCT_TO_SLUG);
   const rows = await db.select().from(rubioProducts).where(inArray(rubioProducts.slug, slugs));

@@ -5,7 +5,8 @@ import type { BuyLink, ColorSwatch, Spec } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { ToolEditor } from "@/components/admin/tool-editor";
 
-export default async function EditToolPage({ params }: { params: { id: string } }) {
+export default async function EditToolPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const rows = await db.select().from(toolItems).where(eq(toolItems.id, params.id)).limit(1);
   const tool = rows[0];
   if (!tool) notFound();

@@ -15,7 +15,7 @@ interface TrackEventParams {
 
 export async function trackTitleLabEvent(params: TrackEventParams) {
   try {
-    const headersList = headers();
+    const headersList = await headers();
     const userAgent = headersList.get("user-agent") || undefined;
     const country = headersList.get("x-vercel-ip-country") || undefined;
     const sessionId = headersList.get("x-vercel-id") || undefined;

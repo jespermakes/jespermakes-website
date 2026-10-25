@@ -17,7 +17,8 @@ async function getProduct(slug: string) {
   return rows[0] ?? null;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const product = await getProduct(params.slug);
   if (!product) return { title: "Not found" };
   return {
@@ -32,11 +33,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function RubioProductPage({ params }: { params: { slug: string } }) {
+export default async function RubioProductPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const product = await getProduct(params.slug);
   if (!product || product.hidden) notFound();
 
-  const { region } = resolveRegion();
+  const { region } = await resolveRegion();
   const price = priceFor(product, region);
   const label = price ? priceLabel(price) : null;
   const carried = region.program === "us" ? !!product.usHandle : !!product.euHandle;

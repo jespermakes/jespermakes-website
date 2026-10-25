@@ -16,13 +16,13 @@ import {
  * Vercel resolved from their IP, then the EUR store. The explicit choice has to
  * win, otherwise anyone who switches gets bounced back on the next page load.
  */
-export function resolveRegion(): { region: Region; source: "cookie" | "geo" | "default" } {
-  const chosen = cookies().get(REGION_COOKIE)?.value;
+export async function resolveRegion(): Promise<{ region: Region; source: "cookie" | "geo" | "default" }> {
+  const chosen = (await cookies()).get(REGION_COOKIE)?.value;
   if (isRegionKey(chosen)) {
     return { region: REGIONS[chosen], source: "cookie" };
   }
 
-  const country = headers().get("x-vercel-ip-country");
+  const country = (await headers()).get("x-vercel-ip-country");
   if (country) {
     return { region: REGIONS[regionFromCountry(country)], source: "geo" };
   }

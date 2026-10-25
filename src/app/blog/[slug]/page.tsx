@@ -11,7 +11,8 @@ import { NotesSignupForm } from "@/components/newsletter/notes-signup-form";
 
 export const revalidate = 60;
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const rows = await db
     .select()
     .from(blogPosts)
@@ -48,7 +49,8 @@ function formatDate(d: Date | null): string {
   });
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const rows = await db
     .select({ post: blogPosts, image: images })
     .from(blogPosts)

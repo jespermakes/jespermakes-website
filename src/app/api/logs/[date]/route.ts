@@ -9,10 +9,8 @@ function authorize(req: NextRequest) {
   return header.slice(7) === process.env.LOG_API_SECRET;
 }
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { date: string } }
-) {
+export async function GET(req: NextRequest, props: { params: Promise<{ date: string }> }) {
+  const params = await props.params;
   if (!authorize(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

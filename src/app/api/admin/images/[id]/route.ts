@@ -13,7 +13,8 @@ async function requireAdmin() {
   return session;
 }
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await requireAdmin();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -22,7 +23,8 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   return NextResponse.json({ image: rows[0] });
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await requireAdmin();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -94,7 +96,8 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   return NextResponse.json({ image: updated });
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await requireAdmin();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

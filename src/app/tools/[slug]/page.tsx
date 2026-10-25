@@ -16,7 +16,8 @@ const regionFlag: Record<string, string> = {
   global: "\u{1F30D}",
 };
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const rows = await db
     .select()
     .from(toolItems)
@@ -46,7 +47,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function ToolPage({ params }: { params: { slug: string } }) {
+export default async function ToolPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const rows = await db
     .select({ tool: toolItems, image: images })
     .from(toolItems)

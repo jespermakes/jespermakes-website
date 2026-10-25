@@ -4,7 +4,8 @@ import { videos, videoTasks } from "@/lib/db/schema";
 import { checkAdminApi } from "@/lib/admin/auth";
 import { eq } from "drizzle-orm";
 
-export async function GET(_request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const gate = await checkAdminApi();
   if (!gate.ok) return NextResponse.json({ error: gate.error }, { status: gate.status });
 
@@ -17,7 +18,8 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
   return NextResponse.json({ tasks });
 }
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const gate = await checkAdminApi();
   if (!gate.ok) return NextResponse.json({ error: gate.error }, { status: gate.status });
 

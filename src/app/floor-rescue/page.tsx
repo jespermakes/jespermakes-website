@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import EntryForm from "./entry-form";
 
 export const metadata: Metadata = {
@@ -44,19 +45,19 @@ export default function FloorRescuePage() {
           </p>
           <p>
             Not sure what your floor actually needs? I built a guide for exactly that:{" "}
-            <a
+            <Link
               href="/rubio/guide"
               className="text-[#fcc52c] underline decoration-[#fcc52c]/40 hover:decoration-[#fcc52c]"
             >
               the Rubio guide
-            </a>
+            </Link>
             . Everything I use from them is in{" "}
-            <a
+            <Link
               href="/rubio"
               className="text-[#fcc52c] underline decoration-[#fcc52c]/40 hover:decoration-[#fcc52c]"
             >
               the Rubio shop
-            </a>
+            </Link>
             .
           </p>
         </div>

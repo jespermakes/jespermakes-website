@@ -8,7 +8,8 @@ import { autoTagImage } from "@/lib/image-ai";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(_req: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await auth();
   if (!session?.user?.email || session.user.email !== process.env.ADMIN_EMAIL) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

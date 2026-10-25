@@ -4,7 +4,8 @@ import { toolItems } from "@/lib/db/schema";
 import { checkAdminApi } from "@/lib/admin/auth";
 import { and, eq, ne } from "drizzle-orm";
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const gate = await checkAdminApi();
   if (!gate.ok) return NextResponse.json({ error: gate.error }, { status: gate.status });
 
@@ -73,7 +74,8 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   }
 }
 
-export async function DELETE(_request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const gate = await checkAdminApi();
   if (!gate.ok) return NextResponse.json({ error: gate.error }, { status: gate.status });
 

@@ -7,11 +7,12 @@ import type { VideoKind } from "@/lib/video-stages";
 
 export const dynamic = "force-dynamic";
 
-export default async function VideoDetailPage({
-  params,
-}: {
-  params: { kind: string; id: string };
-}) {
+export default async function VideoDetailPage(
+  props: {
+    params: Promise<{ kind: string; id: string }>;
+  }
+) {
+  const params = await props.params;
   if (params.kind !== "longform" && params.kind !== "shorts") notFound();
 
   const [video] = await db.select().from(videos).where(eq(videos.id, params.id)).limit(1);
