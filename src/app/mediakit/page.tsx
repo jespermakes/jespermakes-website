@@ -131,7 +131,10 @@ const platforms = [
       { label: "Posts", value: String(mk.instagram.posts) },
       { label: "Total Views", value: compact(mk.instagram.lifetime_views) },
       { label: "Median Reel", value: compact(mk.instagram.median_reel_12mo), sub: "12mo" },
-      { label: "Engagement", value: `${mk.instagram.engagement_pct}%` },
+      // Median post, interactions over its own reach, 12 months (DR-295). The
+      // old average over followers fell from 4.7 to 1.8 when one viral reel
+      // aged out of the window; the label says what this one measures.
+      { label: "Engagement", value: `${mk.instagram.engagement_median_reach_pct}%`, sub: "median post, of reach, 12 mo" },
       { label: "Lifetime Likes", value: compact(mk.instagram.lifetime_likes) },
     ],
   },

@@ -1,27 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { stats as mk, compact } from "@/lib/mediakit-stats";
 
 export const metadata: Metadata = {
   title: "Instagram stats | Jesper Makes media kit",
   description:
-    "Instagram stats for Jesper Makes. 120K followers, 302 posts, 16.4M lifetime views, median reel 21.5K views. Verified via the Meta Graph API.",
+    `Instagram stats for Jesper Makes. ${compact(mk.instagram.followers)} followers, ${mk.instagram.posts} posts, ${compact(mk.instagram.lifetime_views)} lifetime views, median reel ${compact(mk.instagram.median_reel_12mo)} views. Verified via the Meta Graph API.`,
   alternates: { canonical: "/mediakit/instagram" },
 };
 
-// Meta Graph API, pulled 2026-08-10 across all 302 posts back to Sept 2020.
+// GENERATED, except Best Reel. Figures come from src/data/mediakit-stats.json,
+// rewritten daily by the Brain job (brain-server scripts/mediakit_refresh.py),
+// the same file the main kit reads. Until 2026-10-29 this page held its own
+// hand-written copy from 2026-08-10, and its engagement rate (4.8% here, 4.1%
+// in the text below) matched nothing the main kit published.
+//
 // "Median Reel" is here on purpose. Lifetime views are top-heavy (two viral
-// reels account for 58% of the total), so anyone dividing 16.4M by 302 lands on
+// reels account for 58% of the total), so total divided by posts lands on
 // ~54K, which no paid reel will deliver. The median is the number a sponsor can
 // actually plan against, and quoting it is what keeps a first campaign from
 // becoming a disappointed one.
+//
+// Engagement is the median post of the last 12 months, likes + comments +
+// shares + saves over that post's reach (DR-295). The old average over
+// followers was carried by one viral reel and halved the day it turned a year
+// old. Best Reel (the Sept 2023 coffee table, 6,589,382 views) is a lifetime
+// maximum, so it can only go up; it is not in the generated file.
 const stats = [
-  { label: "Followers", value: "120K" },
-  { label: "Posts", value: "302" },
-  { label: "Lifetime Views", value: "16.4M" },
-  { label: "Median Reel", value: "21.5K views" },
+  { label: "Followers", value: compact(mk.instagram.followers) },
+  { label: "Posts", value: String(mk.instagram.posts) },
+  { label: "Lifetime Views", value: compact(mk.instagram.lifetime_views) },
+  { label: "Median Reel", value: `${compact(mk.instagram.median_reel_12mo)} views` },
   { label: "Best Reel", value: "6.6M views" },
-  { label: "Engagement Rate", value: "4.8%" },
-  { label: "Lifetime Likes", value: "618K" },
+  { label: "Engagement Rate", value: `${mk.instagram.engagement_median_reach_pct}%`, sub: "median post, of reach, 12 mo" },
+  { label: "Lifetime Likes", value: compact(mk.instagram.lifetime_likes) },
 ];
 
 const contentTypes = [
@@ -53,7 +65,12 @@ export default function InstagramPage() {
           {stats.map((s) => (
             <div key={s.label} className="bg-[#1a1a1a] rounded-xl p-5">
               <p className="text-[#E8604C] text-2xl font-bold">{s.value}</p>
-              <p className="text-white/50 text-sm mt-1">{s.label}</p>
+              <p className="text-white/50 text-sm mt-1">
+                {s.label}
+                {"sub" in s && s.sub ? (
+                  <span className="text-white/30"> ({s.sub})</span>
+                ) : null}
+              </p>
             </div>
           ))}
         </div>
@@ -75,8 +92,9 @@ export default function InstagramPage() {
           <p className="text-white/70 leading-relaxed">
             The Instagram audience skews slightly younger than YouTube, with strong engagement
             on Reels and carousel posts. Followers are active DIY enthusiasts, woodworkers,
-            and design-conscious homeowners. The 4.1% engagement rate is well above the
-            platform average for accounts this size.
+            and design-conscious homeowners. On the median post of the last 12 months,
+            likes, comments, shares and saves add up to{" "}
+            {mk.instagram.engagement_median_reach_pct}% of the people it reached.
           </p>
         </div>
 
