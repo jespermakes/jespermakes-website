@@ -92,7 +92,6 @@ describe("sitemap", () => {
     for (const path of [
       "/cone-lamp",
       "/box-joint-jig",
-      "/lamp-designer",
       "/title-lab",
       "/storyteller",
       "/marketplace",

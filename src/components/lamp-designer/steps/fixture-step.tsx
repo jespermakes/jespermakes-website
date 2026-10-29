@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import type { FixtureModuleId, FixtureSpec, LampContext } from "@/lib/lamp-designer/types";
 import { FIXTURE_MODULES } from "@/lib/lamp-designer/fixtures";
 
@@ -20,31 +19,8 @@ const SUGGESTED_BY_CONTEXT: Record<LampContext, FixtureModuleId> = {
   shelf: "kit001-seat",
 };
 
-type CouponStatus = "idle" | "preparing" | "ready" | "error";
-
 export function FixtureStep({ fixture, context, onChange }: FixtureStepProps) {
-  const [couponStatus, setCouponStatus] = useState<CouponStatus>("idle");
   const suggested = SUGGESTED_BY_CONTEXT[context];
-
-  async function downloadCoupon() {
-    setCouponStatus("preparing");
-    try {
-      const { couponToStlBlob } = await import("@/lib/lamp-designer/export");
-      const blob = couponToStlBlob(fixture.moduleId);
-      const url = URL.createObjectURL(blob);
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = `fit-test-${fixture.moduleId}.stl`;
-      document.body.appendChild(anchor);
-      anchor.click();
-      anchor.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 10_000);
-      setCouponStatus("ready");
-    } catch (err) {
-      console.error("Coupon export failed:", err);
-      setCouponStatus("error");
-    }
-  }
 
   return (
     <div>
@@ -64,10 +40,7 @@ export function FixtureStep({ fixture, context, onChange }: FixtureStepProps) {
             <button
               key={mod.id}
               type="button"
-              onClick={() => {
-                if (!isSelected) setCouponStatus("idle");
-                onChange({ moduleId: mod.id });
-              }}
+              onClick={() => onChange({ moduleId: mod.id })}
               aria-pressed={isSelected}
               className={[
                 "flex flex-col gap-1 p-3 rounded-xl border-2 text-left transition-all",
@@ -101,26 +74,6 @@ export function FixtureStep({ fixture, context, onChange }: FixtureStepProps) {
         })}
       </div>
 
-      <div className="mt-5 p-3 rounded-xl bg-wood/5">
-        <p className="text-xs text-wood/60 leading-snug mb-2">
-          Before a long shade print: print this 15-minute test ring and check
-          it fits your hardware.
-        </p>
-        <button
-          type="button"
-          onClick={downloadCoupon}
-          disabled={couponStatus === "preparing"}
-          className="w-full p-2.5 rounded-lg border-2 border-wood/15 bg-white text-sm font-medium text-wood hover:border-forest/30 hover:bg-forest/5 transition-colors"
-        >
-          {couponStatus === "preparing"
-            ? "Preparing…"
-            : couponStatus === "ready"
-              ? "✓ Fit test downloaded"
-              : couponStatus === "error"
-                ? "Failed — try again"
-                : "Download fit test (STL)"}
-        </button>
-      </div>
     </div>
   );
 }

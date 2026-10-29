@@ -73,8 +73,7 @@ export function PatternStep({ pattern, archetype, onChange }: PatternStepProps) 
         Choose a surface pattern
       </h2>
       <p className="text-sm text-wood/60 mb-5">
-        The pattern is real geometry: what you see here is exactly what
-        prints. Depths self-limit to stay printable.
+        The pattern is real geometry, not a painted texture.
       </p>
 
       <div className="grid grid-cols-2 gap-3">

@@ -82,8 +82,7 @@ export function CheckStep({ shape, light, pattern, fixture, templateId, archetyp
         Pre-flight check
       </h2>
       <p className="text-sm text-wood/60 mb-5">
-        Review dimensions, bulb fit, print settings, and material before
-        exporting.
+        Dimensions, bulb fit, print settings and material for your design.
       </p>
 
       <div className="mb-5 p-3 rounded-xl bg-forest/5 border border-forest/15">
@@ -110,7 +109,7 @@ export function CheckStep({ shape, light, pattern, fixture, templateId, archetyp
 
       {hasErrors && (
         <div className="mt-5 p-3 rounded-xl border-2 border-red-200 bg-red-50 text-sm text-red-700">
-          Some checks failed — go back and adjust your design before exporting.
+          Some checks failed. Go back and adjust your design.
         </div>
       )}
     </div>

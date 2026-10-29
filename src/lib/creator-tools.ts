@@ -65,14 +65,6 @@ export const CREATOR_TOOL_REGISTRY: Record<string, CreatorToolEntry> = {
     glyph: "\u25CD",
     tint: "amber",
   },
-  "lamp-designer": {
-    slug: "lamp-designer",
-    name: "Lamp Designer",
-    description: "Design your own printable lamp in 3D. Beta.",
-    url: "/lamp-designer",
-    glyph: "\u25CB",
-    tint: "green",
-  },
 };
 
 export const CREATOR_TOOL_SLUGS = Object.keys(CREATOR_TOOL_REGISTRY);

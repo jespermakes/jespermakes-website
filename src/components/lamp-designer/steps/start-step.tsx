@@ -179,9 +179,8 @@ export function StartStep({ selectedId, onSelect }: StartStepProps) {
     <div>
       <h2 className="text-2xl font-semibold text-wood mb-1">Pick a lamp</h2>
       <p className="text-sm text-wood/60 mb-6 max-w-xl">
-        Every one of these is a finished, printable lamp: hardware, shape
-        and pattern already matched. Pick one and make it yours; the 3D
-        workshop opens the moment you choose.
+        Hardware, shape and pattern already matched. Pick one and make it
+        yours; the 3D workshop opens the moment you choose.
       </p>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">

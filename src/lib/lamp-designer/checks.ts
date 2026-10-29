@@ -60,7 +60,7 @@ export function getPrintSettings(
 
   // Any infill in a lit region projects as a shadow web when the lamp is
   // on, so shades are walls-only regardless of pattern.
-  const infill = "0% (walls only — infill would shadow the light)";
+  const infill = "0% (walls only, infill would shadow the light)";
 
   return {
     layerHeight,
@@ -162,7 +162,7 @@ export function runAllChecks(input: CheckInput): CheckSection[] {
   const print = getPrintSettings(shape, pattern.presetId);
   if (archetype === "moon") {
     print.layerHeight = "0.12 mm";
-    print.infill = "solid walls — the thickness is the image";
+    print.infill = "solid walls, the thickness is the image";
     print.supports = false;
   }
   const plan = recommendLampPlan(input);
@@ -175,15 +175,9 @@ export function runAllChecks(input: CheckInput): CheckSection[] {
         { label: "Top diameter", value: dims.topDiameter, ok: true, severity: "info" },
         { label: "Bottom diameter", value: dims.bottomDiameter, ok: true, severity: "info" },
         { label: "Wall thickness", value: dims.wallThickness, ok: true, severity: "info" },
-        {
-          label: "Max overhang",
-          value: `${dims.maxOverhangAngle}°`,
-          ok: dims.overhangOk,
-          severity: dims.overhangOk ? "info" : "warn",
-          hint: dims.overhangOk
-            ? undefined
-            : "Overhang exceeds 45° — supports will be needed",
-        },
+        // No "Max overhang" or "Supports" rows: both were slider rules, not
+        // measured on the mesh, and the 9 Oct audit found them wrong (57 of
+        // 76 exports that need supports said "Not needed").
       ],
     },
     {
@@ -211,12 +205,6 @@ export function runAllChecks(input: CheckInput): CheckSection[] {
         { label: "Layer height", value: print.layerHeight, ok: true, severity: "info" },
         { label: "Infill", value: print.infill, ok: true, severity: "info" },
         { label: "Wall loops", value: `${print.wallLoops}`, ok: true, severity: "info" },
-        {
-          label: "Supports",
-          value: print.supports ? "Required" : "Not needed",
-          ok: !print.supports,
-          severity: print.supports ? "warn" : "info",
-        },
         { label: "Estimated time", value: print.estimatedTime, ok: true, severity: "info" },
       ],
     },
