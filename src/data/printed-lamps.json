@@ -1,0 +1,1009 @@
+{
+ "generated": "2026-11-02T09:50:57Z",
+ "lamps": [
+  {
+   "id": "flower",
+   "name": "Flower Lamp",
+   "blurb": "A tall vase shade in matte ivory with yellow roses that go right through the wall, so they glow when the light is on. Two colours in one print, and it stands on a printed foot that holds the Bambu LED kit.",
+   "printedNote": "The one I printed is 320 mm, in PLA Matte Ivory White and PLA Translucent Mellow Yellow, printed twice in October 2026.",
+   "knobs": [
+    {
+     "key": "H",
+     "label": "Height of the shade",
+     "unit": "mm",
+     "values": [
+      240,
+      280,
+      320
+     ]
+    },
+    {
+     "key": "seed",
+     "label": "Rose pattern",
+     "values": [
+      3,
+      7,
+      11
+     ],
+     "labels": [
+      "1",
+      "2",
+      "3"
+     ]
+    }
+   ],
+   "hardware": [
+    "Bambu Lab LED Lamp Kit 001 (USB, 5 V)",
+    "3 x BT3x12 screws (come with the kit)"
+   ],
+   "parts": [
+    {
+     "name": "Foot",
+     "note": "Prints flat, in one colour, the same foot for every height. The LED kit sits in it and its cable leaves through the slot at the back.",
+     "printTime": "2h 26m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 86,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "shared/flower-foot/flower-foot.3mf",
+      "project3mfMb": 0.16,
+      "stlZip": "shared/flower-foot/flower-foot-stl.zip",
+      "stlZipMb": 0.202
+     }
+    }
+   ],
+   "variants": [
+    {
+     "id": "h240-s11",
+     "params": {
+      "H": 240,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 166,
+     "printHeightMm": 240,
+     "printTime": "13h 00m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 282,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 67,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h240-s11/flower-h240-s11.3mf",
+      "project3mfMb": 84.03,
+      "stlZip": "flower/h240-s11/flower-h240-s11-stl.zip",
+      "stlZipMb": 129.917
+     },
+     "image": "/printed-lamps/flower/h240-s11.webp",
+     "imageLit": "/printed-lamps/flower/h240-s11-lit.webp"
+    },
+    {
+     "id": "h240-s3",
+     "params": {
+      "H": 240,
+      "seed": 3
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 166,
+     "printHeightMm": 240,
+     "printTime": "13h 19m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 281,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 67,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h240-s3/flower-h240-s3.3mf",
+      "project3mfMb": 85.26,
+      "stlZip": "flower/h240-s3/flower-h240-s3-stl.zip",
+      "stlZipMb": 131.996
+     },
+     "image": "/printed-lamps/flower/h240-s3.webp",
+     "imageLit": "/printed-lamps/flower/h240-s3-lit.webp"
+    },
+    {
+     "id": "h240-s7",
+     "params": {
+      "H": 240,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 166,
+     "printHeightMm": 240,
+     "printTime": "12h 39m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 284,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 63,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h240-s7/flower-h240-s7.3mf",
+      "project3mfMb": 80.654,
+      "stlZip": "flower/h240-s7/flower-h240-s7-stl.zip",
+      "stlZipMb": 124.167
+     },
+     "image": "/printed-lamps/flower/h240-s7.webp",
+     "imageLit": "/printed-lamps/flower/h240-s7-lit.webp"
+    },
+    {
+     "id": "h280-s11",
+     "params": {
+      "H": 280,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 166,
+     "printHeightMm": 280,
+     "printTime": "15h 40m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 317,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 82,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h280-s11/flower-h280-s11.3mf",
+      "project3mfMb": 102.08,
+      "stlZip": "flower/h280-s11/flower-h280-s11-stl.zip",
+      "stlZipMb": 156.79
+     },
+     "image": "/printed-lamps/flower/h280-s11.webp",
+     "imageLit": "/printed-lamps/flower/h280-s11-lit.webp"
+    },
+    {
+     "id": "h280-s3",
+     "params": {
+      "H": 280,
+      "seed": 3
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 166,
+     "printHeightMm": 280,
+     "printTime": "15h 33m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 317,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 81,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h280-s3/flower-h280-s3.3mf",
+      "project3mfMb": 99.049,
+      "stlZip": "flower/h280-s3/flower-h280-s3-stl.zip",
+      "stlZipMb": 151.794
+     },
+     "image": "/printed-lamps/flower/h280-s3.webp",
+     "imageLit": "/printed-lamps/flower/h280-s3-lit.webp"
+    },
+    {
+     "id": "h280-s7",
+     "params": {
+      "H": 280,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 166,
+     "printHeightMm": 280,
+     "printTime": "15h 34m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 317,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 80,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h280-s7/flower-h280-s7.3mf",
+      "project3mfMb": 100.518,
+      "stlZip": "flower/h280-s7/flower-h280-s7-stl.zip",
+      "stlZipMb": 154.256
+     },
+     "image": "/printed-lamps/flower/h280-s7.webp",
+     "imageLit": "/printed-lamps/flower/h280-s7-lit.webp"
+    },
+    {
+     "id": "h320-s11",
+     "params": {
+      "H": 320,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 334,
+     "widthMm": 166,
+     "printHeightMm": 320,
+     "printTime": "18h 13m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 353,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 97,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h320-s11/flower-h320-s11.3mf",
+      "project3mfMb": 119.405,
+      "stlZip": "flower/h320-s11/flower-h320-s11-stl.zip",
+      "stlZipMb": 182.737
+     },
+     "image": "/printed-lamps/flower/h320-s11.webp",
+     "imageLit": "/printed-lamps/flower/h320-s11-lit.webp"
+    },
+    {
+     "id": "h320-s3",
+     "params": {
+      "H": 320,
+      "seed": 3
+     },
+     "printed": true,
+     "heightMm": 334,
+     "widthMm": 166,
+     "printHeightMm": 320,
+     "printTime": "18h 33m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 351,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 99,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h320-s3/flower-h320-s3.3mf",
+      "project3mfMb": 119.111,
+      "stlZip": "flower/h320-s3/flower-h320-s3-stl.zip",
+      "stlZipMb": 182.256
+     },
+     "image": "/printed-lamps/flower/h320-s3.webp",
+     "imageLit": "/printed-lamps/flower/h320-s3-lit.webp"
+    },
+    {
+     "id": "h320-s7",
+     "params": {
+      "H": 320,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 334,
+     "widthMm": 166,
+     "printHeightMm": 320,
+     "printTime": "17h 39m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 355,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 91,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h320-s7/flower-h320-s7.3mf",
+      "project3mfMb": 115.078,
+      "stlZip": "flower/h320-s7/flower-h320-s7-stl.zip",
+      "stlZipMb": 175.514
+     },
+     "image": "/printed-lamps/flower/h320-s7.webp",
+     "imageLit": "/printed-lamps/flower/h320-s7-lit.webp"
+    }
+   ]
+  },
+  {
+   "id": "poppy",
+   "name": "Poppy Lamp",
+   "blurb": "The same vase as the Flower Lamp, in blue, with yellow poppies on long stems all the way round. It stands on the same printed foot.",
+   "printedNote": "The one I printed is 320 mm, in PLA Matte blue and PLA Translucent Mellow Yellow, printed in October 2026.",
+   "knobs": [
+    {
+     "key": "H",
+     "label": "Height of the shade",
+     "unit": "mm",
+     "values": [
+      240,
+      280,
+      320
+     ]
+    },
+    {
+     "key": "seed",
+     "label": "Poppy pattern",
+     "values": [
+      3,
+      7,
+      11
+     ],
+     "labels": [
+      "1",
+      "2",
+      "3"
+     ]
+    }
+   ],
+   "hardware": [
+    "Bambu Lab LED Lamp Kit 001 (USB, 5 V)",
+    "3 x BT3x12 screws (come with the kit)"
+   ],
+   "parts": [
+    {
+     "name": "Foot",
+     "note": "Prints flat, in one colour, the same foot for every height. The LED kit sits in it and its cable leaves through the slot at the back.",
+     "printTime": "2h 26m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 86,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "shared/flower-foot/flower-foot.3mf",
+      "project3mfMb": 0.16,
+      "stlZip": "shared/flower-foot/flower-foot-stl.zip",
+      "stlZipMb": 0.202
+     }
+    }
+   ],
+   "variants": [
+    {
+     "id": "h240-s11",
+     "params": {
+      "H": 240,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 157,
+     "printHeightMm": 240,
+     "printTime": "14h 00m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 300,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 51,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h240-s11/poppy-h240-s11.3mf",
+      "project3mfMb": 89.854,
+      "stlZip": "poppy/h240-s11/poppy-h240-s11-stl.zip",
+      "stlZipMb": 139.85
+     },
+     "image": "/printed-lamps/poppy/h240-s11.webp",
+     "imageLit": "/printed-lamps/poppy/h240-s11-lit.webp"
+    },
+    {
+     "id": "h240-s3",
+     "params": {
+      "H": 240,
+      "seed": 3
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 157,
+     "printHeightMm": 240,
+     "printTime": "13h 33m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 302,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 50,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h240-s3/poppy-h240-s3.3mf",
+      "project3mfMb": 88.565,
+      "stlZip": "poppy/h240-s3/poppy-h240-s3-stl.zip",
+      "stlZipMb": 137.63
+     },
+     "image": "/printed-lamps/poppy/h240-s3.webp",
+     "imageLit": "/printed-lamps/poppy/h240-s3-lit.webp"
+    },
+    {
+     "id": "h240-s7",
+     "params": {
+      "H": 240,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 157,
+     "printHeightMm": 240,
+     "printTime": "14h 04m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 300,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 53,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h240-s7/poppy-h240-s7.3mf",
+      "project3mfMb": 95.152,
+      "stlZip": "poppy/h240-s7/poppy-h240-s7-stl.zip",
+      "stlZipMb": 149.247
+     },
+     "image": "/printed-lamps/poppy/h240-s7.webp",
+     "imageLit": "/printed-lamps/poppy/h240-s7-lit.webp"
+    },
+    {
+     "id": "h280-s11",
+     "params": {
+      "H": 280,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 157,
+     "printHeightMm": 280,
+     "printTime": "16h 44m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 337,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 61,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h280-s11/poppy-h280-s11.3mf",
+      "project3mfMb": 106.98,
+      "stlZip": "poppy/h280-s11/poppy-h280-s11-stl.zip",
+      "stlZipMb": 165.802
+     },
+     "image": "/printed-lamps/poppy/h280-s11.webp",
+     "imageLit": "/printed-lamps/poppy/h280-s11-lit.webp"
+    },
+    {
+     "id": "h280-s3",
+     "params": {
+      "H": 280,
+      "seed": 3
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 157,
+     "printHeightMm": 280,
+     "printTime": "16h 28m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 336,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 63,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h280-s3/poppy-h280-s3.3mf",
+      "project3mfMb": 112.984,
+      "stlZip": "poppy/h280-s3/poppy-h280-s3-stl.zip",
+      "stlZipMb": 176.116
+     },
+     "image": "/printed-lamps/poppy/h280-s3.webp",
+     "imageLit": "/printed-lamps/poppy/h280-s3-lit.webp"
+    },
+    {
+     "id": "h280-s7",
+     "params": {
+      "H": 280,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 157,
+     "printHeightMm": 280,
+     "printTime": "16h 09m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 338,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 61,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h280-s7/poppy-h280-s7.3mf",
+      "project3mfMb": 108.609,
+      "stlZip": "poppy/h280-s7/poppy-h280-s7-stl.zip",
+      "stlZipMb": 168.476
+     },
+     "image": "/printed-lamps/poppy/h280-s7.webp",
+     "imageLit": "/printed-lamps/poppy/h280-s7-lit.webp"
+    },
+    {
+     "id": "h320-s11",
+     "params": {
+      "H": 320,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 334,
+     "widthMm": 157,
+     "printHeightMm": 320,
+     "printTime": "20h 03m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 373,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 75,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h320-s11/poppy-h320-s11.3mf",
+      "project3mfMb": 131.299,
+      "stlZip": "poppy/h320-s11/poppy-h320-s11-stl.zip",
+      "stlZipMb": 204.702
+     },
+     "image": "/printed-lamps/poppy/h320-s11.webp",
+     "imageLit": "/printed-lamps/poppy/h320-s11-lit.webp"
+    },
+    {
+     "id": "h320-s3",
+     "params": {
+      "H": 320,
+      "seed": 3
+     },
+     "printed": true,
+     "heightMm": 334,
+     "widthMm": 157,
+     "printHeightMm": 320,
+     "printTime": "19h 39m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 373,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 73,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h320-s3/poppy-h320-s3.3mf",
+      "project3mfMb": 130.178,
+      "stlZip": "poppy/h320-s3/poppy-h320-s3-stl.zip",
+      "stlZipMb": 202.688
+     },
+     "image": "/printed-lamps/poppy/h320-s3.webp",
+     "imageLit": "/printed-lamps/poppy/h320-s3-lit.webp"
+    },
+    {
+     "id": "h320-s7",
+     "params": {
+      "H": 320,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 334,
+     "widthMm": 157,
+     "printHeightMm": 320,
+     "printTime": "18h 56m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 372,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 70,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h320-s7/poppy-h320-s7.3mf",
+      "project3mfMb": 125.431,
+      "stlZip": "poppy/h320-s7/poppy-h320-s7-stl.zip",
+      "stlZipMb": 194.601
+     },
+     "image": "/printed-lamps/poppy/h320-s7.webp",
+     "imageLit": "/printed-lamps/poppy/h320-s7-lit.webp"
+    }
+   ]
+  },
+  {
+   "id": "beehive",
+   "name": "Beehive",
+   "blurb": "A round shade with ledges running up it, wide at the belly and open at the top, on a printed tripod base. It takes a normal E27 socket and an LED bulb.",
+   "printedNote": "The one I printed is 200 mm, the shade in PLA Matte white and the base in black PETG, in September 2026.",
+   "knobs": [
+    {
+     "key": "H",
+     "label": "Height of the shade",
+     "unit": "mm",
+     "values": [
+      160,
+      200,
+      240
+     ]
+    }
+   ],
+   "hardware": [
+    "E27 lamp holder with shade rings (EN 60238), clamped through the 41 mm crown hole and the tripod ring",
+    "E27 LED bulb (A60, frosted). LED only: never a hot bulb inside PLA"
+   ],
+   "parts": [
+    {
+     "name": "Tripod base",
+     "note": "Prints upside down with the ring on the bed, the same base for every height. Turn it over and the E27 holder clamps through the 41 mm hole, with its flange in the recess underneath.",
+     "printTime": "5h 34m",
+     "filaments": [
+      {
+       "name": "PETG Basic black",
+       "colour": "#1A1A1A",
+       "grams": 112,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "shared/beehive/beehive-tripod-base.3mf",
+      "project3mfMb": 0.051,
+      "stlZip": "shared/beehive/beehive-tripod-base-stl.zip",
+      "stlZipMb": 0.032
+     }
+    }
+   ],
+   "variants": [
+    {
+     "id": "h160",
+     "params": {
+      "H": 160
+     },
+     "printed": false,
+     "heightMm": 423,
+     "widthMm": 260,
+     "printHeightMm": 160,
+     "printTime": "5h 01m",
+     "filaments": [
+      {
+       "name": "PLA Matte white",
+       "colour": "#F4F1EA",
+       "grams": 226,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "beehive/h160/beehive-h160.3mf",
+      "project3mfMb": 2.589,
+      "stlZip": "beehive/h160/beehive-h160-stl.zip",
+      "stlZipMb": 3.811
+     },
+     "image": "/printed-lamps/beehive/h160.webp",
+     "imageLit": "/printed-lamps/beehive/h160-lit.webp"
+    },
+    {
+     "id": "h200",
+     "params": {
+      "H": 200
+     },
+     "printed": true,
+     "heightMm": 463,
+     "widthMm": 260,
+     "printHeightMm": 200,
+     "printTime": "5h 17m",
+     "filaments": [
+      {
+       "name": "PLA Matte white",
+       "colour": "#F4F1EA",
+       "grams": 265,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "beehive/h200/beehive-h200.3mf",
+      "project3mfMb": 2.595,
+      "stlZip": "beehive/h200/beehive-h200-stl.zip",
+      "stlZipMb": 3.81
+     },
+     "image": "/printed-lamps/beehive/h200.webp",
+     "imageLit": "/printed-lamps/beehive/h200-lit.webp"
+    },
+    {
+     "id": "h240",
+     "params": {
+      "H": 240
+     },
+     "printed": false,
+     "heightMm": 503,
+     "widthMm": 260,
+     "printHeightMm": 240,
+     "printTime": "5h 28m",
+     "filaments": [
+      {
+       "name": "PLA Matte white",
+       "colour": "#F4F1EA",
+       "grams": 305,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "beehive/h240/beehive-h240.3mf",
+      "project3mfMb": 2.597,
+      "stlZip": "beehive/h240/beehive-h240-stl.zip",
+      "stlZipMb": 3.809
+     },
+     "image": "/printed-lamps/beehive/h240.webp",
+     "imageLit": "/printed-lamps/beehive/h240-lit.webp"
+    }
+   ]
+  },
+  {
+   "id": "cradle",
+   "name": "Cradle",
+   "blurb": "A ledged column shade held by a round plate and four legs. The legs are worked out from the shade, so every height gets its own base.",
+   "printedNote": "The one I printed is 200 mm, the shade in white PLA and the base in black PETG, in September 2026.",
+   "knobs": [
+    {
+     "key": "H",
+     "label": "Height of the shade",
+     "unit": "mm",
+     "values": [
+      160,
+      200,
+      240
+     ]
+    }
+   ],
+   "hardware": [
+    "E27 lamp holder with shade rings (EN 60238): the thread through the 41 mm hole in the shade crown and the base plate, the flange in the 51 mm recess under the plate",
+    "E27 LED bulb (A60, frosted). LED only: never a hot bulb inside PLA"
+   ],
+   "parts": [],
+   "variants": [
+    {
+     "id": "h160",
+     "params": {
+      "H": 160
+     },
+     "printed": false,
+     "heightMm": 240,
+     "widthMm": 150,
+     "printHeightMm": 160,
+     "printTime": "4h 43m",
+     "filaments": [
+      {
+       "name": "PLA Basic Jade White",
+       "colour": "#FFFFFF",
+       "grams": 107,
+       "nozzle": "right"
+      },
+      {
+       "name": "PETG Basic black",
+       "colour": "#1A1A1A",
+       "grams": 109,
+       "nozzle": "right",
+       "part": "base"
+      }
+     ],
+     "files": {
+      "project3mf": "cradle/h160/cradle-h160.3mf",
+      "project3mfMb": 2.544,
+      "stlZip": "cradle/h160/cradle-h160-stl.zip",
+      "stlZipMb": 3.573,
+      "extra": [
+       {
+        "label": "Base (plate + 4 legs, one plate)",
+        "path": "cradle/h160/cradle-h160-base.3mf",
+        "mb": 0.041
+       }
+      ]
+     },
+     "image": "/printed-lamps/cradle/h160.webp",
+     "imageLit": "/printed-lamps/cradle/h160-lit.webp"
+    },
+    {
+     "id": "h200",
+     "params": {
+      "H": 200
+     },
+     "printed": true,
+     "heightMm": 280,
+     "widthMm": 150,
+     "printHeightMm": 200,
+     "printTime": "5h 03m",
+     "filaments": [
+      {
+       "name": "PLA Basic Jade White",
+       "colour": "#FFFFFF",
+       "grams": 130,
+       "nozzle": "right"
+      },
+      {
+       "name": "PETG Basic black",
+       "colour": "#1A1A1A",
+       "grams": 109,
+       "nozzle": "right",
+       "part": "base"
+      }
+     ],
+     "files": {
+      "project3mf": "cradle/h200/cradle-h200.3mf",
+      "project3mfMb": 2.545,
+      "stlZip": "cradle/h200/cradle-h200-stl.zip",
+      "stlZipMb": 3.578,
+      "extra": [
+       {
+        "label": "Base (plate + 4 legs, one plate)",
+        "path": "cradle/h200/cradle-h200-base.3mf",
+        "mb": 0.041
+       }
+      ]
+     },
+     "image": "/printed-lamps/cradle/h200.webp",
+     "imageLit": "/printed-lamps/cradle/h200-lit.webp"
+    },
+    {
+     "id": "h240",
+     "params": {
+      "H": 240
+     },
+     "printed": false,
+     "heightMm": 320,
+     "widthMm": 150,
+     "printHeightMm": 240,
+     "printTime": "5h 19m",
+     "filaments": [
+      {
+       "name": "PLA Basic Jade White",
+       "colour": "#FFFFFF",
+       "grams": 154,
+       "nozzle": "right"
+      },
+      {
+       "name": "PETG Basic black",
+       "colour": "#1A1A1A",
+       "grams": 109,
+       "nozzle": "right",
+       "part": "base"
+      }
+     ],
+     "files": {
+      "project3mf": "cradle/h240/cradle-h240.3mf",
+      "project3mfMb": 2.544,
+      "stlZip": "cradle/h240/cradle-h240-stl.zip",
+      "stlZipMb": 3.555,
+      "extra": [
+       {
+        "label": "Base (plate + 4 legs, one plate)",
+        "path": "cradle/h240/cradle-h240-base.3mf",
+        "mb": 0.041
+       }
+      ]
+     },
+     "image": "/printed-lamps/cradle/h240.webp",
+     "imageLit": "/printed-lamps/cradle/h240-lit.webp"
+    }
+   ]
+  }
+ ]
+}

@@ -65,6 +65,14 @@ export const CREATOR_TOOL_REGISTRY: Record<string, CreatorToolEntry> = {
     glyph: "\u25CD",
     tint: "amber",
   },
+  "printed-lamps": {
+    slug: "printed-lamps",
+    name: "Printed Lamps",
+    description: "Lamps I've printed on the H2D, as checked 3MF and STL files.",
+    url: "/printed-lamps",
+    glyph: "\u25CB",
+    tint: "green",
+  },
 };
 
 export const CREATOR_TOOL_SLUGS = Object.keys(CREATOR_TOOL_REGISTRY);
