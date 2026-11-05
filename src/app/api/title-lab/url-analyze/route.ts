@@ -4,7 +4,7 @@ import { checkAiRateLimit, rateLimitResponse } from "@/lib/ai-rate-limit";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY!;
-const MODEL = "anthropic/claude-sonnet-4";
+const MODEL = "anthropic/claude-sonnet-5.5";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -180,7 +180,7 @@ Generate new title suggestions in all three styles, diagnose the current title, 
         },
         body: JSON.stringify({
           model: MODEL,
-          max_tokens: 3000,
+          max_tokens: 8000,
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
             { role: "user", content: userMessage },

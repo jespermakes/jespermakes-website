@@ -3,7 +3,7 @@ import { trackTitleLabEvent } from "@/lib/title-lab-track";
 import { checkAiRateLimit, rateLimitResponse } from "@/lib/ai-rate-limit";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY!;
-const MODEL = "anthropic/claude-sonnet-4";
+const MODEL = "anthropic/claude-sonnet-5.5";
 
 const SYSTEM_PROMPT = `You are a YouTube title brainstorming engine. The user will provide structured information about a video they're planning:
 
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         model: MODEL,
-        max_tokens: 2000,
+        max_tokens: 8000,
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: userMessage },

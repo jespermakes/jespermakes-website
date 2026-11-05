@@ -1,6 +1,6 @@
 import { IMAGE_TAG_VOCABULARY } from "@/data/image-tag-vocabulary";
 
-const MODEL = "anthropic/claude-sonnet-4";
+const MODEL = "anthropic/claude-sonnet-5.5";
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 export interface AutoTagResult {
@@ -43,7 +43,7 @@ Never guess wildly. If unsure, use null or an empty array.`;
 
   const body = {
     model: MODEL,
-    max_tokens: 600,
+    max_tokens: 4000,
     messages: [
       { role: "system", content: systemPrompt },
       {
