@@ -191,12 +191,12 @@ export default async function RubioShopPage() {
         </div>
       </section>
 
-      {/* ------------------------------------------ guide + floor rescue */}
+      {/* ------------------------------------------ guide */}
       <section className="border-t border-white/10 bg-black/15">
-        <div className="mx-auto grid max-w-6xl gap-5 px-5 py-16 md:grid-cols-2">
+        <div className="mx-auto max-w-3xl px-5 py-16">
           <Link
             href="/rubio/guide"
-            className="group rounded-3xl border border-white/12 bg-white/[0.04] p-8 transition-colors hover:border-[#fcc52c]/50 hover:bg-white/[0.07]"
+            className="group block rounded-3xl border border-white/12 bg-white/[0.04] p-8 transition-colors hover:border-[#fcc52c]/50 hover:bg-white/[0.07]"
           >
             <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#fcc52c]">
               Free guide
@@ -212,16 +212,6 @@ export default async function RubioShopPage() {
             </span>
           </Link>
 
-          <div className="rounded-3xl border border-white/12 bg-white/[0.04] p-8">
-            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#fcc52c]">
-              Closed
-            </p>
-            <h3 className="font-serif text-2xl font-medium">The Floor Rescue has closed</h3>
-            <p className="mt-3 text-sm leading-relaxed text-white/60">
-              Thank you to everyone who sent in a floor. We are not taking any more entries. The
-              winners have been contacted.
-            </p>
-          </div>
         </div>
       </section>
     </div>
