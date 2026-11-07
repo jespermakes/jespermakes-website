@@ -212,23 +212,16 @@ export default async function RubioShopPage() {
             </span>
           </Link>
 
-          <Link
-            href="/floor-rescue"
-            className="group rounded-3xl border border-[#fcc52c]/30 bg-[#fcc52c]/[0.07] p-8 transition-colors hover:border-[#fcc52c]/60 hover:bg-[#fcc52c]/[0.12]"
-          >
+          <div className="rounded-3xl border border-white/12 bg-white/[0.04] p-8">
             <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#fcc52c]">
-              Competition, entries close 31 August
+              Closed
             </p>
-            <h3 className="font-serif text-2xl font-medium">The Floor Rescue</h3>
+            <h3 className="font-serif text-2xl font-medium">The Floor Rescue has closed</h3>
             <p className="mt-3 text-sm leading-relaxed text-white/60">
-              Worst floor wins. Three worn wooden floors around Europe get rescued, and each winner
-              gets 1.3 L of Oil Plus 2C in the colour they choose. Real wood only. Show me the worst
-              one you have.
+              Thank you to everyone who sent in a floor. We are not taking any more entries. The
+              winners have been contacted.
             </p>
-            <span className="mt-5 inline-block text-sm font-semibold text-[#fcc52c]">
-              Enter your floor <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">→</span>
-            </span>
-          </Link>
+          </div>
         </div>
       </section>
     </div>

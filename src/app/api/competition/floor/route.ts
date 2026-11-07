@@ -1,125 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
-import { put } from "@vercel/blob";
-import { db } from "@/lib/db";
-import { competitionEntries } from "@/lib/db/schema";
-import { subscribeToNewsletter } from "@/lib/newsletter";
+import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
 /**
- * The Floor Rescue (Rubio Monocoat competition, Aug-Sep 2026).
- * POST multipart form: name, email, country, floorStory?, photo (image, <=8MB),
- * consent (required), newsletter (optional). Stores the entry (photo in Vercel
- * Blob), sends the confirmation email (carries the Rubio discount code when
- * RUBIO_DISCOUNT_CODE is set), optionally subscribes to the newsletter (which
- * triggers the Starter Kit welcome via the normal signup path).
- * Mechanics agreed with Rubio on the "Code" thread: three winners, worst floor
- * wins, real wood only, entries close end of August, winners early September.
- * Duplicate emails are allowed and deduped at judging time.
+ * The Floor Rescue (Rubio Monocoat competition, Aug-Sep 2026) is closed.
+ * Closed on 2026-11-08: this endpoint no longer accepts entries. It reads no
+ * form data, stores nothing and sends no email. Existing entries stay in the
+ * database untouched. The old handler is in git history.
  */
-
-const MAX_PHOTO_BYTES = 8 * 1024 * 1024;
-const PHOTO_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"]);
-const EXT: Record<string, string> = {
-  "image/jpeg": "jpg",
-  "image/png": "png",
-  "image/webp": "webp",
-  "image/heic": "heic",
-  "image/heif": "heif",
-};
-
-export async function POST(request: NextRequest) {
-  try {
-    const form = await request.formData();
-    const name = String(form.get("name") ?? "").trim().slice(0, 120);
-    const email = String(form.get("email") ??"").trim().toLowerCase().slice(0, 320);
-    const country = String(form.get("country") ?? "").trim().slice(0, 60);
-    const floorStory = String(form.get("floorStory") ?? "").trim().slice(0, 2000);
-    const consent = form.get("consent") === "on" || form.get("consent") === "true";
-    const newsletter = form.get("newsletter") === "on" || form.get("newsletter") === "true";
-    const photo = form.get("photo");
-
-    if (!name || !email.includes("@") || !country) {
-      return NextResponse.json({ error: "Name, email and country are required." }, { status: 400 });
-    }
-    if (!consent) {
-      return NextResponse.json(
-        { error: "The consent box is required; without it we cannot share your entry with Rubio." },
-        { status: 400 },
-      );
-    }
-    if (!(photo instanceof File) || photo.size === 0) {
-      return NextResponse.json({ error: "A photo of the floor is required." }, { status: 400 });
-    }
-    if (photo.size > MAX_PHOTO_BYTES) {
-      return NextResponse.json({ error: "Photo too large (max 8MB)." }, { status: 400 });
-    }
-    if (!PHOTO_TYPES.has(photo.type)) {
-      return NextResponse.json({ error: "Photo must be JPEG, PNG, WebP or HEIC." }, { status: 400 });
-    }
-
-    const blob = await put(
-      `floor-rescue/${crypto.randomUUID()}.${EXT[photo.type] ?? "jpg"}`,
-      photo,
-      { access: "public", contentType: photo.type },
-    );
-
-    await db.insert(competitionEntries).values({
-      name,
-      email,
-      country,
-      floorStory,
-      photoUrl: blob.url,
-      consentShare: true,
-      newsletterOptIn: newsletter,
-    });
-
-    if (newsletter) {
-      // Normal signup path; fires the Starter Kit welcome for new subscribers.
-      subscribeToNewsletter({ email, firstName: name.split(" ")[0] ?? null, source: "competition" }).catch(
-        (e) => console.error("floor-rescue newsletter opt-in failed:", e),
-      );
-    }
-
-    const code = process.env.RUBIO_DISCOUNT_CODE;
-    const codeBlock = code
-      ? `<p>And whatever the judges decide, here is your Rubio Monocoat code: <strong>${code}</strong>. Pay for one sample, get two free. Paste it at checkout on rubiomonocoat.com. It runs until the end of August, so try the oil on a corner of that floor before you commit to the whole thing.</p>`
-      : `<p>Your Rubio Monocoat sample code follows in a separate email once the campaign officially opens.</p>`;
-    try {
-      await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: email,
-          from: "Jesper Makes <hello@jespermakes.com>",
-          subject: "Your floor is in the running",
-          html: `
-            <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#222;line-height:1.6">
-              <p>Hi ${name.split(" ")[0] ?? ""},</p>
-              <p>Your floor is officially entered in The Floor Rescue. The worst floor wins, so in this one competition, do not fix anything yet.</p>
-              <p>How it works from here: entries close at the end of August. Three winners, ideally from three different countries, get 1.3L of Rubio Monocoat Oil Plus 2C in the colour of their choice, roughly a floor's worth. Winners are picked in early September on need and story, and agree to share before and after photos.</p>
-              ${codeBlock}
-              <p>Not sure what your floor actually needs? I built a guide: <a href="https://jespermakes.com/rubio" style="color:#C17F3C">the Rubio guide</a>.</p>
-              <p>Good luck. I mean it: may the worst floor win.</p>
-              <p>Jesper</p>
-            </div>
-          `,
-        }),
-      });
-    } catch (e) {
-      console.error("floor-rescue confirmation email failed:", e);
-    }
-
-    // The code goes back to the client so the success state can show it
-    // immediately (Rubio's request, 2026-08-05): entrants copy it straight
-    // into checkout without waiting for the email. Server-configured, so the
-    // env var stays the single source of truth.
-    return NextResponse.json({ ok: true, code: code ?? null });
-  } catch (e) {
-    console.error("floor-rescue entry error:", e);
-    return NextResponse.json({ error: "Something broke on our end. Try again." }, { status: 500 });
-  }
+export async function POST() {
+  return NextResponse.json(
+    { error: "The Floor Rescue has closed. We are not taking any more entries." },
+    { status: 410 },
+  );
 }
