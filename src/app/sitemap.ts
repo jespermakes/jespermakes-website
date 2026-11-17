@@ -35,6 +35,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/bambulab`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/bambulab/picker`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/bambulab/filament`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    {
       url: `${BASE_URL}/support`,
       lastModified: now,
       changeFrequency: "yearly",

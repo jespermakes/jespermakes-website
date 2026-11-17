@@ -1,0 +1,1057 @@
+{
+ "checkedAt": "2026-11-17T18:51:57.135Z",
+ "checkedFrom": "Spark, Denmark",
+ "failures": 0,
+ "results": [
+  {
+   "handle": "a1-mini",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/a1-mini",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/a1-mini",
+    "ok": true
+   }
+  },
+  {
+   "handle": "a1",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/a1",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/a1",
+    "ok": true
+   }
+  },
+  {
+   "handle": "a2l",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/a2l",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/a2l",
+    "ok": true
+   }
+  },
+  {
+   "handle": "p1s",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/p1s",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/p1s",
+    "ok": true
+   }
+  },
+  {
+   "handle": "p2s",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/p2s",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/p2s",
+    "ok": true
+   }
+  },
+  {
+   "handle": "x1e",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/x1e",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/x1e",
+    "ok": true
+   }
+  },
+  {
+   "handle": "x2d",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/x2d",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/x2d",
+    "ok": true
+   }
+  },
+  {
+   "handle": "h2s",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/h2s",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/h2s",
+    "ok": true
+   }
+  },
+  {
+   "handle": "h2d",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/h2d",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/h2d",
+    "ok": true
+   }
+  },
+  {
+   "handle": "h2d-pro",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/h2d-pro",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/h2d-pro",
+    "ok": true
+   }
+  },
+  {
+   "handle": "h2c",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/h2c",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/h2c",
+    "ok": true
+   }
+  },
+  {
+   "handle": "h3c",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/h3c",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/h3c",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-basic-filament",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-basic-filament",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-basic-filament",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-matte",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-matte",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-matte",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-basic-gradient",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-basic-gradient",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-basic-gradient",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-pure",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-pure",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-pure",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-tough-upgrade",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-tough-upgrade",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-tough-upgrade",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-silk-upgrade",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-silk-upgrade",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-silk-upgrade",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-silk-multi-color",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-silk-multi-color",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-silk-multi-color",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-translucent",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-translucent",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-translucent",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-sparkle",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-sparkle",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-sparkle",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-metal",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-metal",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-metal",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-marble",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-marble",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-marble",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-galaxy",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-galaxy",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-galaxy",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-glow",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-glow",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-glow",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-wood",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-wood",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-wood",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-aero",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-aero",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-aero",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-cf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-cf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-cf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-cmyk-lithophane",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-cmyk-lithophane",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-cmyk-lithophane",
+    "ok": true
+   }
+  },
+  {
+   "handle": "petg-basic",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/petg-basic",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/petg-basic",
+    "ok": true
+   }
+  },
+  {
+   "handle": "petg-matte",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/petg-matte",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/petg-matte",
+    "ok": true
+   }
+  },
+  {
+   "handle": "petg-translucent",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/petg-translucent",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/petg-translucent",
+    "ok": true
+   }
+  },
+  {
+   "handle": "petg-cf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/petg-cf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/petg-cf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "abs-filament",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/abs-filament",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/abs-filament",
+    "ok": true
+   }
+  },
+  {
+   "handle": "abs-gf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/abs-gf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/abs-gf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "asa-filament",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/asa-filament",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/asa-filament",
+    "ok": true
+   }
+  },
+  {
+   "handle": "asa-aero",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/asa-aero",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/asa-aero",
+    "ok": true
+   }
+  },
+  {
+   "handle": "asa-cf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/asa-cf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/asa-cf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pc-filament",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pc-filament",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pc-filament",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pc-fr",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pc-fr",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pc-fr",
+    "ok": true
+   }
+  },
+  {
+   "handle": "tpu-for-ams",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/tpu-for-ams",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/tpu-for-ams",
+    "ok": true
+   }
+  },
+  {
+   "handle": "tpu-95a-hf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/tpu-95a-hf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/tpu-95a-hf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "tpu-85a-tpu-90a",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/tpu-85a-tpu-90a",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/tpu-85a-tpu-90a",
+    "ok": true
+   }
+  },
+  {
+   "handle": "paht-cf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/paht-cf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/paht-cf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pa6-cf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pa6-cf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pa6-cf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pa6-gf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pa6-gf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pa6-gf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pet-cf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pet-cf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pet-cf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "ppa-cf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/ppa-cf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/ppa-cf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pps-cf",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pps-cf",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pps-cf",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pva",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pva",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pva",
+    "ok": true
+   }
+  },
+  {
+   "handle": "support-for-pla-petg",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/support-for-pla-petg",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/support-for-pla-petg",
+    "ok": true
+   }
+  },
+  {
+   "handle": "support-for-pla-new",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/support-for-pla-new",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/support-for-pla-new",
+    "ok": true
+   }
+  },
+  {
+   "handle": "support-for-abs",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/support-for-abs",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/support-for-abs",
+    "ok": true
+   }
+  },
+  {
+   "handle": "support-for-pa-pet",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/support-for-pa-pet",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/support-for-pa-pet",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-basic-color-trial-set",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-basic-color-trial-set",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-basic-color-trial-set",
+    "ok": true
+   }
+  },
+  {
+   "handle": "pla-basic-beginner-s-filament-pack",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/pla-basic-beginner-s-filament-pack",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/pla-basic-beginner-s-filament-pack",
+    "ok": true
+   }
+  },
+  {
+   "handle": "ams-lite",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/ams-lite",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/ams-lite",
+    "ok": true
+   }
+  },
+  {
+   "handle": "ams-multicolor-printing",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/ams-multicolor-printing",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/ams-multicolor-printing",
+    "ok": true
+   }
+  },
+  {
+   "handle": "ams-2-pro",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/ams-2-pro",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/ams-2-pro",
+    "ok": true
+   }
+  },
+  {
+   "handle": "ams-ht",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/ams-ht",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/ams-ht",
+    "ok": true
+   }
+  },
+  {
+   "handle": "ams-hub",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/ams-hub",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/ams-hub",
+    "ok": true
+   }
+  },
+  {
+   "handle": "ams-hub-a1-series",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/ams-hub-a1-series",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/ams-hub-a1-series",
+    "ok": true
+   }
+  },
+  {
+   "handle": "bambu-textured-pei-plate",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/bambu-textured-pei-plate",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/bambu-textured-pei-plate",
+    "ok": true
+   }
+  },
+  {
+   "handle": "bambu-smooth-pei-plate",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/bambu-smooth-pei-plate",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/bambu-smooth-pei-plate",
+    "ok": true
+   }
+  },
+  {
+   "handle": "bambu-cool-plate-supertack",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/bambu-cool-plate-supertack",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/bambu-cool-plate-supertack",
+    "ok": true
+   }
+  },
+  {
+   "handle": "bambu-engineering-plate",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/bambu-engineering-plate",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/bambu-engineering-plate",
+    "ok": true
+   }
+  },
+  {
+   "handle": "bambu-dual-texture-pei-plate",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/bambu-dual-texture-pei-plate",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/bambu-dual-texture-pei-plate",
+    "ok": true
+   }
+  },
+  {
+   "handle": "bambu-3d-effect-plate",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/bambu-3d-effect-plate",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/bambu-3d-effect-plate",
+    "ok": true
+   }
+  },
+  {
+   "handle": "bambu-hotend-a1-a2",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/bambu-hotend-a1-a2",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/bambu-hotend-a1-a2",
+    "ok": true
+   }
+  },
+  {
+   "handle": "bambu-hotend-h2-p2s",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/bambu-hotend-h2-p2s",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/bambu-hotend-h2-p2s",
+    "ok": true
+   }
+  },
+  {
+   "handle": "multi-size-hotends-kit",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/multi-size-hotends-kit",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/multi-size-hotends-kit",
+    "ok": true
+   }
+  },
+  {
+   "handle": "hardened-steel-upgrade-combo",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/hardened-steel-upgrade-combo",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/hardened-steel-upgrade-combo",
+    "ok": true
+   }
+  },
+  {
+   "handle": "laser-module",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/laser-module",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/laser-module",
+    "ok": true
+   }
+  },
+  {
+   "handle": "laser-upgrade-kit",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/laser-upgrade-kit",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/laser-upgrade-kit",
+    "ok": true
+   }
+  },
+  {
+   "handle": "cutting-upgrade-kit-h2-series-a2l",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/cutting-upgrade-kit-h2-series-a2l",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/cutting-upgrade-kit-h2-series-a2l",
+    "ok": true
+   }
+  },
+  {
+   "handle": "printer-maintenance-kit",
+   "linkOk": true,
+   "eu": {
+    "status": 200,
+    "finalUrl": "https://eu.store.bambulab.com/products/printer-maintenance-kit",
+    "ok": true
+   },
+   "us": {
+    "hreflang": "https://us.store.bambulab.com/products/printer-maintenance-kit",
+    "ok": true
+   }
+  }
+ ],
+ "awinChecks": [
+  {
+   "store": "eu",
+   "handle": "h2d",
+   "ok": true,
+   "hops": [
+    {
+     "url": "https://www.awin1.com/cread.php?awinmid=46345&awinaffid=2412491&ued=https%3A%2F%2Feu.store.bambulab.com%2Fproducts%2Fh2d",
+     "status": 302
+    },
+    {
+     "url": "https://eu.store.bambulab.com/products/h2d?sv1=affiliate&sv_campaign_id=2412491&utm_source=ShareASale&utm_medium=Affiliate&utm_campaign=2412491_https%3A%2F%2Fjespermakes.com&utm_term=0&sscid=46345_1794941516_fd2d9e4df2bd57c6f3f73a69c5b6139e&awc=46345_1794941516_fd2d9e4df2bd57c6f3f73a69c5b6139e",
+     "status": "store"
+    }
+   ]
+  },
+  {
+   "store": "us",
+   "handle": "h2d",
+   "ok": true,
+   "hops": [
+    {
+     "url": "https://www.awin1.com/cread.php?awinmid=46345&awinaffid=2412491&ued=https%3A%2F%2Fstore.bambulab.com%2Fproducts%2Fh2d",
+     "status": 302
+    },
+    {
+     "url": "https://store.bambulab.com/products/h2d?sv1=affiliate&sv_campaign_id=2412491&utm_source=ShareASale&utm_medium=Affiliate&utm_campaign=2412491_https%3A%2F%2Fjespermakes.com&utm_term=0&sscid=46345_1794941516_3715ff8cf36ae1882d9e4baaf720dd81&awc=46345_1794941516_3715ff8cf36ae1882d9e4baaf720dd81",
+     "status": "store"
+    }
+   ]
+  },
+  {
+   "store": "eu",
+   "handle": "pla-basic-filament",
+   "ok": true,
+   "hops": [
+    {
+     "url": "https://www.awin1.com/cread.php?awinmid=46345&awinaffid=2412491&ued=https%3A%2F%2Feu.store.bambulab.com%2Fproducts%2Fpla-basic-filament",
+     "status": 302
+    },
+    {
+     "url": "https://eu.store.bambulab.com/products/pla-basic-filament?sv1=affiliate&sv_campaign_id=2412491&utm_source=ShareASale&utm_medium=Affiliate&utm_campaign=2412491_https%3A%2F%2Fjespermakes.com&utm_term=0&sscid=46345_1794941517_26f874aa913bf465fbea8de42bf8915e&awc=46345_1794941517_26f874aa913bf465fbea8de42bf8915e",
+     "status": "store"
+    }
+   ]
+  },
+  {
+   "store": "us",
+   "handle": "a1",
+   "ok": true,
+   "hops": [
+    {
+     "url": "https://www.awin1.com/cread.php?awinmid=46345&awinaffid=2412491&ued=https%3A%2F%2Fstore.bambulab.com%2Fproducts%2Fa1",
+     "status": 302
+    },
+    {
+     "url": "https://store.bambulab.com/products/a1?sv1=affiliate&sv_campaign_id=2412491&utm_source=ShareASale&utm_medium=Affiliate&utm_campaign=2412491_https%3A%2F%2Fjespermakes.com&utm_term=0&sscid=46345_1794941517_b071321d4b193647aab8357538782d4d&awc=46345_1794941517_b071321d4b193647aab8357538782d4d",
+     "status": "store"
+    }
+   ]
+  }
+ ]
+}

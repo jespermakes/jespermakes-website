@@ -1,0 +1,6092 @@
+{
+ "generatedAt": "2026-11-17T18:56:38.609Z",
+ "products": {
+  "a1-mini": {
+   "eu": {
+    "name": "Bambu Lab A1 mini 3D Printer",
+    "url": "https://eu.store.bambulab.com/products/a1-mini",
+    "image": "https://store.bblcdn.eu/s8/default/bdad2d286ff64b61a355d99d71495e93/A1_mini.jpg",
+    "currency": "EUR",
+    "from": 179,
+    "to": 279,
+    "variants": [
+     {
+      "sku": "599117891173982224",
+      "name": "A1 mini",
+      "price": 179,
+      "compareAt": 189,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "599117891173982220",
+      "name": "A1 mini Combo",
+      "price": 279,
+      "compareAt": 299,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/a1-mini",
+    "checkedAt": "2026-11-17T18:52:26.868Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "a1": {
+   "eu": {
+    "name": "Bambu Lab A1 3D Printer",
+    "url": "https://eu.store.bambulab.com/products/a1",
+    "image": "https://store.bblcdn.eu/s8/default/2bd8fc2c88724284987aac662800d78e/A1.jpg",
+    "currency": "EUR",
+    "from": 239,
+    "to": 339,
+    "variants": [
+     {
+      "sku": "599117150694776840",
+      "name": "A1",
+      "price": 239,
+      "compareAt": 259,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "599117150694776844",
+      "name": "A1 Combo",
+      "price": 339,
+      "compareAt": 369,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/a1",
+    "checkedAt": "2026-11-17T18:52:30.259Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "p1s": {
+   "eu": {
+    "name": "Bambu Lab P1S 3D Printer",
+    "url": "https://eu.store.bambulab.com/products/p1s",
+    "image": "https://store.bblcdn.eu/s8/default/83e321ae524944c88cf7c4a6b99fc2ae/P1S.jpg",
+    "currency": "EUR",
+    "from": 349,
+    "to": 499,
+    "variants": [
+     {
+      "sku": "739325862157025287",
+      "name": "P1S",
+      "price": 349,
+      "compareAt": 379,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "739325862157025293",
+      "name": "P1S AMS Combo",
+      "price": 469,
+      "compareAt": 529,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "739325862161219589",
+      "name": "P1S AMS 2 Pro Combo",
+      "price": 499,
+      "compareAt": 549,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/p1s",
+    "checkedAt": "2026-11-17T18:52:36.794Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "a2l": {
+   "eu": {
+    "name": "Bambu Lab A2L",
+    "url": "https://eu.store.bambulab.com/products/a2l",
+    "image": "https://store.bblcdn.eu/s8/default/8561b55778d142a9a3f1e4392de94d37/A2L.jpg",
+    "currency": "EUR",
+    "from": 349,
+    "to": 509,
+    "variants": [
+     {
+      "sku": "736783674588553220",
+      "name": "A2L",
+      "price": 349,
+      "compareAt": 379,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "736783674588553226",
+      "name": "A2L Combo",
+      "price": 449,
+      "compareAt": 489,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "758118105875480578",
+      "name": "A2L Cutting Full Combo",
+      "price": 509,
+      "compareAt": 549,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/a2l",
+    "checkedAt": "2026-11-17T18:52:33.685Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "p2s": {
+   "eu": {
+    "name": "Bambu Lab P2S 3D Printer",
+    "url": "https://eu.store.bambulab.com/products/p2s",
+    "image": "https://store.bblcdn.eu/s8/default/537d49db2d4a4268ade57f48285de195/P2S.jpg",
+    "currency": "EUR",
+    "from": 449,
+    "to": 639,
+    "variants": [
+     {
+      "sku": "654444275327889410",
+      "name": "P2S",
+      "price": 449,
+      "compareAt": 519,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "654444275323695108",
+      "name": "P2S Combo",
+      "price": 599,
+      "compareAt": 699,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776216580714450946",
+      "name": "P2S Combo Print with Care Bundle",
+      "price": 639,
+      "compareAt": 739,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/p2s",
+    "checkedAt": "2026-11-17T18:52:40.157Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "h2s": {
+   "eu": {
+    "name": "Bambu Lab H2S",
+    "url": "https://eu.store.bambulab.com/products/h2s",
+    "image": "https://store.bblcdn.eu/s8/default/6095270032f54622b59bd5415764ec00/H2S.jpg",
+    "currency": "EUR",
+    "from": 999,
+    "to": 1499,
+    "variants": [
+     {
+      "sku": "636738543243517957",
+      "name": "H2S",
+      "price": 999,
+      "compareAt": 1099,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "636738543243517961",
+      "name": "H2S AMS Combo",
+      "price": 1149,
+      "compareAt": 1299,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "636738543243517965",
+      "name": "H2S Laser Full Combo",
+      "price": 1499,
+      "compareAt": 1699,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/h2s",
+    "checkedAt": "2026-11-17T18:52:50.329Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "x2d": {
+   "eu": {
+    "name": "Bambu Lab X2D",
+    "url": "https://eu.store.bambulab.com/products/x2d",
+    "image": "https://store.bblcdn.eu/s8/default/34bd98682bd24c918f2411ad333b94b3/X2D.jpg",
+    "currency": "EUR",
+    "from": 549,
+    "to": 999,
+    "variants": [
+     {
+      "sku": "720057962001530884",
+      "name": "X2D",
+      "price": 549,
+      "compareAt": 629,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720057962001530888",
+      "name": "X2D AMS Combo",
+      "price": 749,
+      "compareAt": 849,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "753851744855769090",
+      "name": "X2D Print More Bundle",
+      "price": 999,
+      "compareAt": 1099,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776216578906652674",
+      "name": "X2D Combo Print with Care Bundle",
+      "price": 789,
+      "compareAt": 889,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/x2d",
+    "checkedAt": "2026-11-17T18:52:46.788Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "h2d": {
+   "eu": {
+    "name": "Bambu Lab H2D",
+    "url": "https://eu.store.bambulab.com/products/h2d",
+    "image": "https://store.bblcdn.eu/s8/default/4c4c581e49454eef9dadde0b93be060d/H2D.jpg",
+    "currency": "EUR",
+    "from": 1399,
+    "to": 2299,
+    "variants": [
+     {
+      "sku": "596571526990503947",
+      "name": "H2D / Standard",
+      "price": 1399,
+      "compareAt": 1549,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "596571526982115329",
+      "name": "H2D AMS Combo / Standard",
+      "price": 1599,
+      "compareAt": 1749,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "622679523065323523",
+      "name": "H2D AMS Combo / AMS HT bundle",
+      "price": 1699,
+      "compareAt": 1849,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "596571526990503937",
+      "name": "H2D Laser Full Combo / 10W",
+      "price": 1949,
+      "compareAt": 2149,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "596571526990503942",
+      "name": "H2D Laser Full Combo / 40W",
+      "price": 2299,
+      "compareAt": 2549,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "789701095558488064",
+      "name": "H2D Print More Bundle / Standard",
+      "price": 1849,
+      "compareAt": 1999,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/h2d",
+    "checkedAt": "2026-11-17T18:52:53.728Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "h2c": {
+   "eu": {
+    "name": "Bambu Lab H2C",
+    "url": "https://eu.store.bambulab.com/products/h2c",
+    "image": "https://store.bblcdn.eu/s8/default/d14aa670afba4c108bf068324e0c006c/H2CC.jpg",
+    "currency": "EUR",
+    "from": 1799,
+    "to": 2499,
+    "variants": [
+     {
+      "sku": "666136020008767488",
+      "name": "H2C AMS Combo / Standard",
+      "price": 1799,
+      "compareAt": 2149,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "666136020008767498",
+      "name": "H2C Laser Full Combo / 10W Laser",
+      "price": 2149,
+      "compareAt": 2549,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "666136020008767503",
+      "name": "H2C Laser Full Combo / 40W Laser",
+      "price": 2499,
+      "compareAt": 2949,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "761060179809759232",
+      "name": "H2C Vortek Ultimate Bundle / Standard",
+      "price": 2019,
+      "compareAt": 2449,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/h2c",
+    "checkedAt": "2026-11-17T18:53:00.386Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "h3c": {
+   "eu": {
+    "name": "Bambu Lab H3C",
+    "url": "https://eu.store.bambulab.com/products/h3c",
+    "image": "https://store.bblcdn.eu/s8/qmpte/36fb1f7eb27c4ab09551a04786329adb/1-1-compressed.jpg",
+    "currency": "EUR",
+    "from": 2499,
+    "to": 2789,
+    "variants": [
+     {
+      "sku": "792545753296838662",
+      "name": "Bambu Lab H3C Combo",
+      "price": 2499,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "792545753296838668",
+      "name": "Bambu Lab H3C Combo with Filament Starter Pack (TPU+CMYKW)",
+      "price": 2579,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "792545753296838674",
+      "name": "Bambu Lab H3C Combo with Filament Starter Pack (Colourful TPU+CMYKW)",
+      "price": 2579,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "792545753296838680",
+      "name": "Bambu Lab H3C Full Combo - Bambu Station L FRAME Edition",
+      "price": 2789,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/h3c",
+    "checkedAt": "2026-11-17T18:53:03.795Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-basic-filament": {
+   "eu": {
+    "name": "PLA Basic",
+    "url": "https://eu.store.bambulab.com/products/pla-basic-filament",
+    "image": "https://store.bblcdn.eu/s8/default/0e0f2442945b482eac4ecb20182faf6b/pla_baisc_white.jpg",
+    "currency": "EUR",
+    "from": 16.99,
+    "to": 19.99,
+    "variants": [
+     {
+      "sku": "42911327846619",
+      "name": "Jade White (10100) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43992829919451",
+      "name": "Jade White (10100) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42911327977691",
+      "name": "Beige (10201) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49299256148316",
+      "name": "Light Gray (10104) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42911328043227",
+      "name": "Yellow (10400) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49636014031196",
+      "name": "Sunflower Yellow (10402) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53951741002076",
+      "name": "Sunflower Yellow (10402) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47794656706908",
+      "name": "Gold (10401) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49636029530460",
+      "name": "Pumpkin Orange (10301) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53951744213340",
+      "name": "Pumpkin Orange (10301) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42911327879387",
+      "name": "Orange (10300) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49636024353116",
+      "name": "Bright Green (10503) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47794655461724",
+      "name": "Bambu Green (10501) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46673378607452",
+      "name": "Bambu Green (10501) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47794656477532",
+      "name": "Mistletoe Green (10502) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "599083438524203008",
+      "name": "Mistletoe Green (10502) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "42911328141531",
+      "name": "Pink (10203) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49636028285276",
+      "name": "Hot Pink (10204) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53951742509404",
+      "name": "Hot Pink (10204) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "47794655068508",
+      "name": "Magenta (10202) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42911328239835",
+      "name": "Red (10200) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43992829952219",
+      "name": "Red (10200) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49636008395100",
+      "name": "Maroon Red (10205) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47794657362268",
+      "name": "Purple (10700) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49636021436764",
+      "name": "Indigo Purple (10701) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53951741821276",
+      "name": "Indigo Purple (10701) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49636016783708",
+      "name": "Turquoise (10605) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47794657329500",
+      "name": "Cyan (10603) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54004785217884",
+      "name": "Cyan (10603) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49636029006172",
+      "name": "Cobalt Blue (10604) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42911327912155",
+      "name": "Blue (10601) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46738546622812",
+      "name": "Blue (10601) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42911328207067",
+      "name": "Brown (10800) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49636027236700",
+      "name": "Cocoa Brown (10802) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53951748702556",
+      "name": "Cocoa Brown (10802) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47794655101276",
+      "name": "Bronze (10801) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42911327944923",
+      "name": "Gray (10103) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46956524241244",
+      "name": "Gray (10103) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42911328010459",
+      "name": "Silver (10102) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42911328075995",
+      "name": "Blue Grey (10602) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49299261423964",
+      "name": "Dark Gray (10105) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43923829129435",
+      "name": "Black (10101) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43992830017755",
+      "name": "Black (10101) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-basic-filament",
+    "checkedAt": "2026-11-17T18:53:06.909Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-matte": {
+   "eu": {
+    "name": "PLA Matte",
+    "url": "https://eu.store.bambulab.com/products/pla-matte",
+    "image": "https://store.bblcdn.eu/s8/default/8221709b8311467cb756b4325da9c5a2/PLA_Matte_white.jpg",
+    "currency": "EUR",
+    "from": 16.99,
+    "to": 19.99,
+    "variants": [
+     {
+      "sku": "42996742586587",
+      "name": "Ivory White (11100) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43992833229019",
+      "name": "Ivory White (11100) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53926028607836",
+      "name": "Bone White (11103) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "42996742717659",
+      "name": "Lemon Yellow (11400) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "42996742652123",
+      "name": "Mandarin Orange (11300) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46893218038108",
+      "name": "Mandarin Orange (11300) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42996742684891",
+      "name": "Sakura Pink (11201) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "42996742914267",
+      "name": "Lilac purple (11700) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53926028640604",
+      "name": "Plum (11204) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "42996742848731",
+      "name": "Scarlet Red (11200) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43992833294555",
+      "name": "Scarlet Red (11200) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47794659164508",
+      "name": "Dark Red (11202) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53926028706140",
+      "name": "Apple Green (11502) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42996742783195",
+      "name": "Grass Green (11500) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47794659656028",
+      "name": "Dark Green (11501) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42996742881499",
+      "name": "Ice Blue (11601) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53926028673372",
+      "name": "Sky Blue (11603) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42996751073499",
+      "name": "Marine Blue (11600) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43992833360091",
+      "name": "Marine Blue (11600) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47794659688796",
+      "name": "Dark Blue (11602) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48612736401756",
+      "name": "Desert Tan (11401) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42996742815963",
+      "name": "Latte Brown (11800) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "53926028771676",
+      "name": "Caramel (11803) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53926028804444",
+      "name": "Terracotta (11203) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "47794659426652",
+      "name": "Dark Brown (11801) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53926028738908",
+      "name": "Dark Chocolate (11802) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "42996742619355",
+      "name": "Ash Gray (11102) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43992833327323",
+      "name": "Ash Gray (11102) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53926028837212",
+      "name": "Nardo Gray (11104) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "42996742750427",
+      "name": "Charcoal (11101) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43992833261787",
+      "name": "Charcoal (11101) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-matte",
+    "checkedAt": "2026-11-17T18:53:10.019Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-pure": {
+   "eu": {
+    "name": "PLA Pure",
+    "url": "https://eu.store.bambulab.com/products/pla-pure",
+    "image": "https://store.bblcdn.eu/s8/default/ddad17bc01ba4519965ad3d8ada7fa42/PLA_purePLA_pure.jpg",
+    "currency": "EUR",
+    "from": 18.99,
+    "to": 21.99,
+    "variants": [
+     {
+      "sku": "738891519803023370",
+      "name": "Milky Pink (17200) / Refill / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738891519803023378",
+      "name": "Milky Pink (17200) / Filament with spool / 1kg",
+      "price": 21.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738891519803023386",
+      "name": "Baby Blue (17600) / Refill / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738891519803023394",
+      "name": "Baby Blue (17600) / Filament with spool / 1kg",
+      "price": 21.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738891519803023402",
+      "name": "Apricot (17300) / Refill / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738891519803023410",
+      "name": "Apricot (17300) / Filament with spool / 1kg",
+      "price": 21.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738891519803023418",
+      "name": "Pure White (17100) / Refill / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738891519803023426",
+      "name": "Pure White (17100) / Filament with spool / 1kg",
+      "price": 21.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738891519803023434",
+      "name": "Absolute Black (17101) / Refill / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738891519803023442",
+      "name": "Absolute Black (17101) / Filament with spool / 1kg",
+      "price": 21.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-pure",
+    "checkedAt": "2026-11-17T18:53:16.782Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-basic-gradient": {
+   "eu": {
+    "name": "PLA Basic Gradient",
+    "url": "https://eu.store.bambulab.com/products/pla-basic-gradient",
+    "image": "https://store.bblcdn.eu/s8/default/9c7b5bb7e49a42749b500490e1cbe948/pink_blue.jpg",
+    "currency": "EUR",
+    "from": 27.99,
+    "to": 27.99,
+    "variants": [
+     {
+      "sku": "53638219039068",
+      "name": "Cotton Candy Cloud (10907) / Filament with spool / 1kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53638219006300",
+      "name": "Blueberry Bubblegum (10905) / Filament with spool / 1kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53638219071836",
+      "name": "Pink Citrus (10903) / Filament with spool / 1kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53638219104604",
+      "name": "Mint Lime (10904) / Filament with spool / 1kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53687078420828",
+      "name": "Dusk Glare (10906) / Filament with spool / 1kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46901930557788",
+      "name": "Ocean to Meadow (10902) / Filament with spool / 1kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46901930492252",
+      "name": "Arctic Whisper (10900) / Filament with spool / 1kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46901930525020",
+      "name": "Solar Breeze (10901) / Filament with spool / 1kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-basic-gradient",
+    "checkedAt": "2026-11-17T18:53:13.389Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-silk-upgrade": {
+   "eu": {
+    "name": "PLA Silk+",
+    "url": "https://eu.store.bambulab.com/products/pla-silk-upgrade",
+    "image": "https://store.bblcdn.eu/s8/default/9aaebe748b88497387f3c159307aa5bf/cf2723db072c4371b3606938b8cccdb9.jpg",
+    "currency": "EUR",
+    "from": 16.99,
+    "to": 19.99,
+    "variants": [
+     {
+      "sku": "53583205925212",
+      "name": "Titan Gray (13108) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "678380546391728130",
+      "name": "Titan Gray (13108) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "53583205957980",
+      "name": "Rose Gold (13206) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53583206023516",
+      "name": "Baby Blue (13603) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53583205990748",
+      "name": "Champagne (13404) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53583205892444",
+      "name": "Mint (13507) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53583205663068",
+      "name": "Candy Red (13205) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53583205630300",
+      "name": "Candy Green (13506) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53583205695836",
+      "name": "Blue (13604) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53583205728604",
+      "name": "Purple (13702) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53583205761372",
+      "name": "Pink (13207) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53583205794140",
+      "name": "White (13110) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "678380546395922432",
+      "name": "White (13110) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53583205826908",
+      "name": "Silver (13109) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "678380546395922438",
+      "name": "Silver (13109) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "53583205859676",
+      "name": "Gold (13405) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "678380546395922444",
+      "name": "Gold (13405) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-silk-upgrade",
+    "checkedAt": "2026-11-17T18:53:23.548Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-tough-upgrade": {
+   "eu": {
+    "name": "PLA Tough+",
+    "url": "https://eu.store.bambulab.com/products/pla-tough-upgrade",
+    "image": "https://store.bblcdn.eu/s8/default/76a53975eaab4238ab610612c4efdc5f/PLA_Tough_(3).jpg",
+    "currency": "EUR",
+    "from": 23.99,
+    "to": 26.99,
+    "variants": [
+     {
+      "sku": "624496486489088018",
+      "name": "Yellow (12401) / Filament with spool / 1kg",
+      "price": 26.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "624496486489088012",
+      "name": "White (12107) / Filament with spool / 1kg",
+      "price": 26.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "661695156312956930",
+      "name": "White (12107) / Refill / 1kg",
+      "price": 23.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "624496486489088024",
+      "name": "Orange (12301) / Filament with spool / 1kg",
+      "price": 26.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "624496486489088030",
+      "name": "Gray (12105) / Filament with spool / 1kg",
+      "price": 26.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "661695156312956936",
+      "name": "Gray (12105) / Refill / 1kg",
+      "price": 23.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "624496486489088036",
+      "name": "Silver (12106) / Filament with spool / 1kg",
+      "price": 26.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "624496486489088042",
+      "name": "Cyan (12601) / Filament with spool / 1kg",
+      "price": 26.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "624496486489088048",
+      "name": "Black (12104) / Filament with spool / 1kg",
+      "price": 26.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "661695156312956942",
+      "name": "Black (12104) / Refill / 1kg",
+      "price": 23.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-tough-upgrade",
+    "checkedAt": "2026-11-17T18:53:20.152Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-silk-multi-color": {
+   "eu": {
+    "name": "PLA Silk Multi-Color",
+    "url": "https://eu.store.bambulab.com/products/pla-silk-multi-color",
+    "image": "https://store.bblcdn.eu/s8/default/d8c78612d63b43e7ae78a19d760744d0/Mystic_Magenta.jpg",
+    "currency": "EUR",
+    "from": 27.99,
+    "to": 27.99,
+    "variants": [
+     {
+      "sku": "665320335394844675",
+      "name": "Mystic Magenta (13913) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "665320335394844681",
+      "name": "Phantom Blue (13916) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53515458085212",
+      "name": "Velvet Eclipse (13905) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47489270841692",
+      "name": "Neon City (13903) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47489270808924",
+      "name": "Midnight Blaze (13902) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47489270776156",
+      "name": "Gilded Rose (13901) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47489270874460",
+      "name": "Blue Hawaii (13904) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "601314264425144324",
+      "name": "Dawn Radiance (13912) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "601314264425144330",
+      "name": "Aurora Purple (13909) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "601314264425144336",
+      "name": "South Beach (13906) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-silk-multi-color",
+    "checkedAt": "2026-11-17T18:53:26.860Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-translucent": {
+   "eu": {
+    "name": "PLA Translucent",
+    "url": "https://eu.store.bambulab.com/products/pla-translucent",
+    "image": "https://store.bblcdn.eu/s8/default/18aacd2b879441cd80c2cd067b2ad0a1/teal_4dc29df4-13e2-4c00-9e6a-7dbf9183952a.jpg",
+    "currency": "EUR",
+    "from": 19.99,
+    "to": 19.99,
+    "variants": [
+     {
+      "sku": "54345716564316",
+      "name": "Teal (13612) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54345716597084",
+      "name": "Blue (13611) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54345716629852",
+      "name": "Purple (13710) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54345716662620",
+      "name": "Orange (13301) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "54345716695388",
+      "name": "Red (13210) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54407222985052",
+      "name": "Light Jade (13510) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54407223017820",
+      "name": "Mellow Yellow (13410) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54407223050588",
+      "name": "Cherry Pink (13211) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54407223083356",
+      "name": "Ice Blue (13610) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54407223116124",
+      "name": "Lavender (13711) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-translucent",
+    "checkedAt": "2026-11-17T18:53:30.214Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-metal": {
+   "eu": {
+    "name": "PLA Metal",
+    "url": "https://eu.store.bambulab.com/products/pla-metal",
+    "image": "https://store.bblcdn.eu/s8/default/a8cb6b37d9d8430b88743d1784093c1a/A02-B2-1.75-1000-spl.png",
+    "currency": "EUR",
+    "from": 27.99,
+    "to": 27.99,
+    "variants": [
+     {
+      "sku": "43959185244379",
+      "name": "Cobalt Blue Metallic (13600) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43959185277147",
+      "name": "Oxide Green Metallic (13500) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46797851099484",
+      "name": "Iridium Gold Metallic (13400) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "43959185015003",
+      "name": "Copper Brown Metallic (13800) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46797850902876",
+      "name": "Iron Gray Metallic (13100) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-metal",
+    "checkedAt": "2026-11-17T18:53:36.877Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-sparkle": {
+   "eu": {
+    "name": "PLA Sparkle",
+    "url": "https://eu.store.bambulab.com/products/pla-sparkle",
+    "image": "https://store.bblcdn.eu/s8/default/7407fc887147448bbbf89189c9539952/Sparklegreen.png",
+    "currency": "EUR",
+    "from": 27.99,
+    "to": 27.99,
+    "variants": [
+     {
+      "sku": "43959190880475",
+      "name": "Alpine Green Sparkle (13501) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46797853163868",
+      "name": "Slate Gray Sparkle (13102) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46797853032796",
+      "name": "Royal Purple Sparkle (13700) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43959190913243",
+      "name": "Crimson Red Sparkle (13200) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "43959190946011",
+      "name": "Onyx Black Sparkle (13101) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48725896266076",
+      "name": "Classic Gold Sparkle (13402) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-sparkle",
+    "checkedAt": "2026-11-17T18:53:33.595Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-marble": {
+   "eu": {
+    "name": "PLA Marble",
+    "url": "https://eu.store.bambulab.com/products/pla-marble",
+    "image": "https://store.bblcdn.eu/s8/default/403434f58f2e4ba8a72159a24315dd2b/A07-R5-1.75-1000-spl.jpg",
+    "currency": "EUR",
+    "from": 27.99,
+    "to": 27.99,
+    "variants": [
+     {
+      "sku": "46756997333340",
+      "name": "Red Granite (13201) / Filament with spool / 1kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43964050964699",
+      "name": "White Marble (13103) / Filament with spool / 1kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-marble",
+    "checkedAt": "2026-11-17T18:53:40.272Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-galaxy": {
+   "eu": {
+    "name": "PLA Galaxy",
+    "url": "https://eu.store.bambulab.com/products/pla-galaxy",
+    "image": "https://store.bblcdn.eu/s8/default/5a46d227df6e4ed4bbe44dd87d31d069/purle.jpg",
+    "currency": "EUR",
+    "from": 27.99,
+    "to": 27.99,
+    "variants": [
+     {
+      "sku": "47730388173148",
+      "name": "Purple (13602) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47730388107612",
+      "name": "Green (13503) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47730388140380",
+      "name": "Nebulae (13504) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47730388074844",
+      "name": "Brown (13203) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-galaxy",
+    "checkedAt": "2026-11-17T18:53:43.631Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-wood": {
+   "eu": {
+    "name": "PLA Wood",
+    "url": "https://eu.store.bambulab.com/products/pla-wood",
+    "image": "https://store.bblcdn.eu/s8/default/c731fddceeb641a3872e4020a87ab3b2/5_335a103f-01a9-4d9e-90e1-f09e885ea39a.jpg",
+    "currency": "EUR",
+    "from": 27.99,
+    "to": 27.99,
+    "variants": [
+     {
+      "sku": "53441583153500",
+      "name": "Classic Birch (13505) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53441583055196",
+      "name": "Black Walnut (13107) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53441583087964",
+      "name": "Rosewood (13204) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "53441583120732",
+      "name": "Clay Brown (13801) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53441583186268",
+      "name": "White Oak (13106) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53441583219036",
+      "name": "Ochre Yellow (13403) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-wood",
+    "checkedAt": "2026-11-17T18:53:50.333Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-glow": {
+   "eu": {
+    "name": "PLA Glow",
+    "url": "https://eu.store.bambulab.com/products/pla-glow",
+    "image": "https://store.bblcdn.eu/s8/default/043e37328a0a4b428546f3c3b135221e/e40cbbf6e7fed96557d8e2be99e4b9cf_874f9392-3fe3-4c65-87cc-91b158674eb3.png",
+    "currency": "EUR",
+    "from": 27.99,
+    "to": 27.99,
+    "variants": [
+     {
+      "sku": "47396823531868",
+      "name": "Glow Orange (15300) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47396823662940",
+      "name": "Glow Yellow (15400) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47396823597404",
+      "name": "Glow Green (15500) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47396823630172",
+      "name": "Glow Pink (15200) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47396823564636",
+      "name": "Glow Blue (15600) / Filament with spool / 1 kg",
+      "price": 27.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-glow",
+    "checkedAt": "2026-11-17T18:53:46.995Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-aero": {
+   "eu": {
+    "name": "PLA Aero",
+    "url": "https://eu.store.bambulab.com/products/pla-aero",
+    "image": "https://store.bblcdn.eu/s8/default/c2e94607bb684af49bcaa25ec9dac8da/AERO_bc503e27-6fed-4b8e-a505-342f6050dc27.png",
+    "currency": "EUR",
+    "from": 28.79,
+    "to": 28.79,
+    "variants": [
+     {
+      "sku": "46953506505052",
+      "name": "White (14102) / Filament with spool / 1kg",
+      "price": 28.79,
+      "compareAt": 47.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49078101279068",
+      "name": "Gray (14104) / Filament with spool / 1kg",
+      "price": 28.79,
+      "compareAt": 47.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-aero",
+    "checkedAt": "2026-11-17T18:53:53.673Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-cf": {
+   "eu": {
+    "name": "PLA-CF",
+    "url": "https://eu.store.bambulab.com/products/pla-cf",
+    "image": "https://store.bblcdn.eu/s8/default/6c62179718bc473c94f3e629543e001b/c0f99c4f6c04f5422dcd8db2da060392.png",
+    "currency": "EUR",
+    "from": 26.99,
+    "to": 29.99,
+    "variants": [
+     {
+      "sku": "46797856342364",
+      "name": "Matcha Green (14500) / Filament with spool / 1 kg",
+      "price": 29.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46702306230620",
+      "name": "Burgundy Red (14200) / Filament with spool / 1 kg",
+      "price": 29.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46702306263388",
+      "name": "Jeans Blue (14600) / Filament with spool / 1 kg",
+      "price": 29.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46702306296156",
+      "name": "Lava Gray (14101) / Filament with spool / 1 kg",
+      "price": 29.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49238028845404",
+      "name": "Lava Gray (14101) / Refill / 1 kg",
+      "price": 26.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "43944001994971",
+      "name": "Black (14100) / Filament with spool / 1 kg",
+      "price": 29.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49200517448028",
+      "name": "Black (14100) / Refill / 1 kg",
+      "price": 26.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47068316565852",
+      "name": "Royal Blue (14601) / Filament with spool / 1 kg",
+      "price": 29.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "47068316598620",
+      "name": "Iris Purple (14700) / Filament with spool / 1 kg",
+      "price": 29.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-cf",
+    "checkedAt": "2026-11-17T18:53:57.052Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-cmyk-lithophane": {
+   "eu": {
+    "name": "PLA CMYK Lithophane Bundle",
+    "url": "https://eu.store.bambulab.com/products/pla-cmyk-lithophane",
+    "image": "https://store.bblcdn.eu/s8/default/8a6a418a0ead49e782c184a125226483/CMYK.jpg",
+    "currency": "EUR",
+    "from": 50.99,
+    "to": 56.99,
+    "variants": [
+     {
+      "sku": "46669434552668",
+      "name": "CMYK Lithophane Bundle / Filament with spool / 1kg*4",
+      "price": 50.99,
+      "compareAt": 79.96,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47172230414684",
+      "name": "CMYK Lithophane Bundle + Backlight Board / Filament with spool / 1kg*4",
+      "price": 56.99,
+      "compareAt": 90.95,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-cmyk-lithophane",
+    "checkedAt": "2026-11-17T18:54:00.307Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "petg-basic": {
+   "eu": {
+    "name": "PETG Basic",
+    "url": "https://eu.store.bambulab.com/products/petg-basic",
+    "image": "https://store.bblcdn.eu/s8/default/2aec282c1ec545f880a7aa75fbec8f95/PETG_Basic_orange.jpg",
+    "currency": "EUR",
+    "from": 15.99,
+    "to": 18.99,
+    "variants": [
+     {
+      "sku": "738173299117862919",
+      "name": "Orange(30301) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117862927",
+      "name": "Orange(30301) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440176",
+      "name": "Red(30201) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440182",
+      "name": "Red(30201) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440188",
+      "name": "Yellow(30402) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440194",
+      "name": "Yellow(30402) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117862935",
+      "name": "Green(30502) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117862943",
+      "name": "Green(30502) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117862951",
+      "name": "Navy Blue(30604) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117862959",
+      "name": "Navy Blue(30604) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440200",
+      "name": "Reflex Blue(30603) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440206",
+      "name": "Reflex Blue(30603) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117862967",
+      "name": "Dark Beige(30403) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117862975",
+      "name": "Dark Beige(30403) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440152",
+      "name": "White(30106) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440158",
+      "name": "White(30106) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "703100873995440140",
+      "name": "Black(30105) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440146",
+      "name": "Black(30105) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440212",
+      "name": "Dark Brown(30800) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440218",
+      "name": "Dark Brown(30800) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440164",
+      "name": "Gray(30107) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "703100873995440170",
+      "name": "Gray(30107) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117862983",
+      "name": "Misty Blue(30108) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117862991",
+      "name": "Misty Blue(30108) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117862999",
+      "name": "Pine Green(30503) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738173299117863007",
+      "name": "Pine Green(30503) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/petg-basic",
+    "checkedAt": "2026-11-17T18:54:03.741Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "petg-matte": {
+   "eu": {
+    "name": "PETG Matte",
+    "url": "https://eu.store.bambulab.com/products/petg-matte",
+    "image": "https://store.bblcdn.eu/s8/default/d70a3897529942a9b9ef310ee10112d0/black.png",
+    "currency": "EUR",
+    "from": 15.99,
+    "to": 18.99,
+    "variants": [
+     {
+      "sku": "775952393450868766",
+      "name": "Black(35101) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868774",
+      "name": "Black(35101) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868750",
+      "name": "White(35100) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868758",
+      "name": "White(35100) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868798",
+      "name": "Gray(35102) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868806",
+      "name": "Gray(35102) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868814",
+      "name": "Pink(35700) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868822",
+      "name": "Pink(35700) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868846",
+      "name": "Violet(35702) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868854",
+      "name": "Violet(35702) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868830",
+      "name": "Baby Blue(35600) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868838",
+      "name": "Baby Blue(35600) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868862",
+      "name": "Avocado Green(35501) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868870",
+      "name": "Avocado Green(35501) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868782",
+      "name": "Lime(35500) / Refill / 1kg",
+      "price": 15.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "775952393450868790",
+      "name": "Lime(35500) / Filament with spool / 1kg",
+      "price": 18.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/petg-matte",
+    "checkedAt": "2026-11-17T18:54:06.851Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "petg-translucent": {
+   "eu": {
+    "name": "PETG Translucent",
+    "url": "https://eu.store.bambulab.com/products/petg-translucent",
+    "image": "https://store.bblcdn.eu/s8/default/e39842a1bdb243a2bbb809444d83ad94/JP34951_dfb10fec-368d-47a7-8bd8-bb506498a9bd.jpg",
+    "currency": "EUR",
+    "from": 16.99,
+    "to": 19.99,
+    "variants": [
+     {
+      "sku": "49074122162524",
+      "name": "Teal (32501) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47502089290076",
+      "name": "Teal (32501) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49192018149724",
+      "name": "Light Blue (32600) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47502089191772",
+      "name": "Light Blue (32600) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48786708922716",
+      "name": "Clear (32101) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48055896047964",
+      "name": "Clear (32101) / Filament with spool / 1 kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49074123145564",
+      "name": "Pink (32200) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49130705977692",
+      "name": "Olive (32500) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49130706469212",
+      "name": "Orange (32300) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49130706829660",
+      "name": "Purple (32700) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49192019788124",
+      "name": "Brown (32800) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49271784472924",
+      "name": "Gray (32100) / Refill / 1 kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/petg-translucent",
+    "checkedAt": "2026-11-17T18:54:10.257Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "abs-filament": {
+   "eu": {
+    "name": "ABS",
+    "url": "https://eu.store.bambulab.com/products/abs-filament",
+    "image": "https://store.bblcdn.eu/s8/default/5d297742b7744e58a742421ec967a0ea/ABSsilver.png",
+    "currency": "EUR",
+    "from": 16.99,
+    "to": 19.99,
+    "variants": [
+     {
+      "sku": "49503790596444",
+      "name": "Silver (40102) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46841277022556",
+      "name": "Silver (40102) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42917259051227",
+      "name": "Black (40101) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46963744145756",
+      "name": "Black (40101) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "42917259083995",
+      "name": "White (40100) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46963746046300",
+      "name": "White (40100) / Filament with spool / 1kg",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42917259116763",
+      "name": "Red (40200) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48953688850780",
+      "name": "Bambu Green (40500) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48953684394332",
+      "name": "Orange (40300) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49130708009308",
+      "name": "Navy Blue (40602) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49130709418332",
+      "name": "Tangerine Yellow (40402) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "42917259182299",
+      "name": "Blue (40600) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49037506216284",
+      "name": "Olive (40502) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49130708730204",
+      "name": "Azure (40601) / Refill / 1kg",
+      "price": 16.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/abs-filament",
+    "checkedAt": "2026-11-17T18:54:16.999Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "petg-cf": {
+   "eu": {
+    "name": "PETG-CF",
+    "url": "https://eu.store.bambulab.com/products/petg-cf",
+    "image": "https://store.bblcdn.eu/s8/default/7e67cea6705a4709a7452e1b0fb113e4/PETG-CFpurp_37ad5532-5d64-4eb9-90b0-d183f2511e9e.png",
+    "currency": "EUR",
+    "from": 32.99,
+    "to": 35.99,
+    "variants": [
+     {
+      "sku": "46935828267356",
+      "name": "Violet Purple (31700) / Filament with spool / 1 kg",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46935828365660",
+      "name": "Malachite Green (31500) / Filament with spool / 1 kg",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46935828332892",
+      "name": "Indigo Blue (31600) / Filament with spool / 1 kg",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "43982559412443",
+      "name": "Black (31100) / Filament with spool / 1 kg",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "49238020686172",
+      "name": "Black (31100) / Refill / 1 kg",
+      "price": 32.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47228683714908",
+      "name": "Titan Gray  (31101) / Filament with spool / 1 kg",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "785030589559357440",
+      "name": "Titan Gray  (31101) / Refill / 1 kg",
+      "price": 32.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "46935828300124",
+      "name": "Brick Red (31200) / Filament with spool / 1 kg",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/petg-cf",
+    "checkedAt": "2026-11-17T18:54:13.623Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "asa-filament": {
+   "eu": {
+    "name": "ASA",
+    "url": "https://eu.store.bambulab.com/products/asa-filament",
+    "image": "https://store.bblcdn.eu/s8/default/18f6171039aa4ca484c3fb9e246a0a51/ab6743fac3b96abc3a53833a12993981.png",
+    "currency": "EUR",
+    "from": 14.99,
+    "to": 14.99,
+    "variants": [
+     {
+      "sku": "46930444386652",
+      "name": "Green (45500) / Filament with spool / 1kg",
+      "price": 14.99,
+      "compareAt": 24.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46930444288348",
+      "name": "Red (45200) / Filament with spool / 1kg",
+      "price": 14.99,
+      "compareAt": 24.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46930444321116",
+      "name": "Blue (45600) / Filament with spool / 1kg",
+      "price": 14.99,
+      "compareAt": 24.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46930444353884",
+      "name": "White (45100) / Filament with spool / 1kg",
+      "price": 14.99,
+      "compareAt": 24.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46930444255580",
+      "name": "Gray (45102) / Filament with spool / 1kg",
+      "price": 14.99,
+      "compareAt": 24.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46930444222812",
+      "name": "Black (45101) / Filament with spool / 1kg",
+      "price": 14.99,
+      "compareAt": 24.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/asa-filament",
+    "checkedAt": "2026-11-17T18:54:23.574Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "abs-gf": {
+   "eu": {
+    "name": "ABS-GF",
+    "url": "https://eu.store.bambulab.com/products/abs-gf",
+    "image": "https://store.bblcdn.eu/s8/default/f10c8381233a457abfd61dd3c8bf5554/JP36183.png",
+    "currency": "EUR",
+    "from": 19.19,
+    "to": 19.19,
+    "variants": [
+     {
+      "sku": "48011475714396",
+      "name": "Orange (41300) / Filament with spool / 1 kg",
+      "price": 19.19,
+      "compareAt": 31.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48011475779932",
+      "name": "Red (41200) / Filament with spool / 1 kg",
+      "price": 19.19,
+      "compareAt": 31.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48725868872028",
+      "name": "Blue (41600) / Filament with spool / 1 kg",
+      "price": 19.19,
+      "compareAt": 31.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48011475845468",
+      "name": "White (41100) / Filament with spool / 1 kg",
+      "price": 19.19,
+      "compareAt": 31.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "48011475878236",
+      "name": "Gray (41102) / Filament with spool / 1 kg",
+      "price": 19.19,
+      "compareAt": 31.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48011475911004",
+      "name": "Black (41101) / Filament with spool / 1 kg",
+      "price": 19.19,
+      "compareAt": 31.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/abs-gf",
+    "checkedAt": "2026-11-17T18:54:20.314Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "asa-aero": {
+   "eu": {
+    "name": "ASA Aero",
+    "url": "https://eu.store.bambulab.com/products/asa-aero",
+    "image": "https://store.bblcdn.eu/s8/default/b2516f844d3644a6b722b1238dfd63e2/asaaeroball.png",
+    "currency": "EUR",
+    "from": 31.19,
+    "to": 31.19,
+    "variants": [
+     {
+      "sku": "47966894096732",
+      "name": "White (46100) / Filament with spool / 1 kg",
+      "price": 31.19,
+      "compareAt": 51.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/asa-aero",
+    "checkedAt": "2026-11-17T18:54:26.944Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "asa-cf": {
+   "eu": {
+    "name": "ASA-CF",
+    "url": "https://eu.store.bambulab.com/products/asa-cf",
+    "image": "https://store.bblcdn.eu/s8/default/782c8db0e72b43799b3164741380111f/1_db8508ce-9151-474f-8fc4-e57ec533edc0.jpg",
+    "currency": "EUR",
+    "from": 23.39,
+    "to": 23.39,
+    "variants": [
+     {
+      "sku": "49410590409052",
+      "name": "Black (46101) / Filament with spool / 1 kg",
+      "price": 23.39,
+      "compareAt": 38.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/asa-cf",
+    "checkedAt": "2026-11-17T18:54:30.192Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pc-fr": {
+   "eu": {
+    "name": "PC FR",
+    "url": "https://eu.store.bambulab.com/products/pc-fr",
+    "image": "https://store.bblcdn.eu/s8/default/d327d3a6a0514c6093a376e61551c11c/3_2bfbabcc-c211-415c-926b-f5891b308048.jpg",
+    "currency": "EUR",
+    "from": 34.19,
+    "to": 34.19,
+    "variants": [
+     {
+      "sku": "53649920950620",
+      "name": "Black (63100) / Filament with spool / 1 kg",
+      "price": 34.19,
+      "compareAt": 56.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "53649920983388",
+      "name": "White (63101) / Filament with spool / 1 kg",
+      "price": 34.19,
+      "compareAt": 56.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "53649921016156",
+      "name": "Gray (63102) / Filament with spool / 1 kg",
+      "price": 34.19,
+      "compareAt": 56.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pc-fr",
+    "checkedAt": "2026-11-17T18:54:36.839Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pc-filament": {
+   "eu": {
+    "name": "PC",
+    "url": "https://eu.store.bambulab.com/products/pc-filament",
+    "image": "https://store.bblcdn.eu/s8/default/c6edead629b04fb48155d9e665c1e7d3/C00-C1-1.75-1000-spl.png",
+    "currency": "EUR",
+    "from": 25.79,
+    "to": 25.79,
+    "variants": [
+     {
+      "sku": "46673173774684",
+      "name": "Transparent (60103) / Filament with spool / 1kg",
+      "price": 25.79,
+      "compareAt": 42.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "43408627106011",
+      "name": "Clear Black (60102) / Filament with spool / 1kg",
+      "price": 25.79,
+      "compareAt": 42.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "46673173807452",
+      "name": "Black (60101) / Filament with spool / 1kg",
+      "price": 25.79,
+      "compareAt": 42.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "43408627138779",
+      "name": "White (60100) / Filament with spool / 1kg",
+      "price": 25.79,
+      "compareAt": 42.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pc-filament",
+    "checkedAt": "2026-11-17T18:54:33.551Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "tpu-for-ams": {
+   "eu": {
+    "name": "TPU for AMS",
+    "url": "https://eu.store.bambulab.com/products/tpu-for-ams",
+    "image": "https://store.bblcdn.eu/s8/default/5b848554718b444faa29355ce6f54264/d4fb1dd751904e1ea09d142c68d7ec36.jpg",
+    "currency": "EUR",
+    "from": 21.59,
+    "to": 23.99,
+    "variants": [
+     {
+      "sku": "53421837255004",
+      "name": "Blue (53600) / Filament with spool / 1 kg",
+      "price": 23.99,
+      "compareAt": 39.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "53421837353308",
+      "name": "Gray (53102) / Filament with spool / 1 kg",
+      "price": 23.99,
+      "compareAt": 39.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "53421837386076",
+      "name": "Black (53101) / Filament with spool / 1 kg",
+      "price": 23.99,
+      "compareAt": 39.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "680212034153209858",
+      "name": "Black (53101) / Refill / 1 kg",
+      "price": 21.59,
+      "compareAt": 35.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53421837222236",
+      "name": "Yellow (53400) / Filament with spool / 1 kg",
+      "price": 23.99,
+      "compareAt": 39.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "53421837189468",
+      "name": "Red (53200) / Filament with spool / 1 kg",
+      "price": 23.99,
+      "compareAt": 39.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "53421837287772",
+      "name": "Neon Green (53500) / Filament with spool / 1 kg",
+      "price": 23.99,
+      "compareAt": 39.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "53421837320540",
+      "name": "White (53100) / Filament with spool / 1 kg",
+      "price": 23.99,
+      "compareAt": 39.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/tpu-for-ams",
+    "checkedAt": "2026-11-17T18:54:40.100Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "tpu-95a-hf": {
+   "eu": {
+    "name": "TPU 95A HF",
+    "url": "https://eu.store.bambulab.com/products/tpu-95a-hf",
+    "image": "https://store.bblcdn.eu/s8/default/59379e6c40124c21bc7dd55245fb1ebe/TPUHF_1.png",
+    "currency": "EUR",
+    "from": 20.99,
+    "to": 20.99,
+    "variants": [
+     {
+      "sku": "47305218752860",
+      "name": "White (51102) / Filament with spool / 1 kg",
+      "price": 20.99,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47305218785628",
+      "name": "Gray (51101) / Filament with spool / 1 kg",
+      "price": 20.99,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47305218818396",
+      "name": "Yellow (51400) / Filament with spool / 1 kg",
+      "price": 20.99,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47305218851164",
+      "name": "Blue (51600) / Filament with spool / 1 kg",
+      "price": 20.99,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "47305218883932",
+      "name": "Red (51200) / Filament with spool / 1 kg",
+      "price": 20.99,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47305218687324",
+      "name": "Black (51100) / Filament with spool / 1 kg",
+      "price": 20.99,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/tpu-95a-hf",
+    "checkedAt": "2026-11-17T18:54:43.353Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "tpu-85a-tpu-90a": {
+   "eu": {
+    "name": "TPU 85A / TPU 90A",
+    "url": "https://eu.store.bambulab.com/products/tpu-85a-tpu-90a",
+    "image": "https://store.bblcdn.eu/s8/default/1eeceedbdb53455aa251f4d32daa0017/TPU_90_White.jpg",
+    "currency": "EUR",
+    "from": 26.39,
+    "to": 37.79,
+    "variants": [
+     {
+      "sku": "664621573916450817",
+      "name": "TPU 90A / 1 kg / White (51105)",
+      "price": 26.39,
+      "compareAt": 43.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54085774541148",
+      "name": "TPU 90A / 1 kg / Black (51103)",
+      "price": 26.39,
+      "compareAt": 43.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "682714606946189330",
+      "name": "TPU 90A / 1 kg / Cocoa Brown (51800)",
+      "price": 26.39,
+      "compareAt": 43.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "697574082204368897",
+      "name": "TPU 90A / 1 kg / Quicksilver(51106)",
+      "price": 26.39,
+      "compareAt": 43.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54085774508380",
+      "name": "TPU 90A / 1 kg / Frozen (51900)",
+      "price": 37.79,
+      "compareAt": 62.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54084062511452",
+      "name": "TPU 90A / 1 kg / Blaze (51901)",
+      "price": 37.79,
+      "compareAt": 62.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "682714606946189318",
+      "name": "TPU 90A / 1 kg / Grape Jelly (51700)",
+      "price": 26.39,
+      "compareAt": 43.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "682714606946189324",
+      "name": "TPU 90A / 1 kg / Crystal Blue (51601)",
+      "price": 26.39,
+      "compareAt": 43.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "682714606946189336",
+      "name": "TPU 85A / 1 kg / Black (51107)",
+      "price": 28.79,
+      "compareAt": 47.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "54085774442844",
+      "name": "TPU 85A / 1 kg / Light Cyan (51500)",
+      "price": 28.79,
+      "compareAt": 47.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "669790315686178817",
+      "name": "TPU 85A / 1 kg / Neon Orange (51305)",
+      "price": 28.79,
+      "compareAt": 47.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "682714606946189342",
+      "name": "TPU 85A / 1 kg / Rose Beige/Flesh(51201)",
+      "price": 28.79,
+      "compareAt": 47.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "682714606946189348",
+      "name": "TPU 85A / 1 kg / Lime Green (51501)",
+      "price": 28.79,
+      "compareAt": 47.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/tpu-85a-tpu-90a",
+    "checkedAt": "2026-11-17T18:54:46.778Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "paht-cf": {
+   "eu": {
+    "name": "PAHT-CF",
+    "url": "https://eu.store.bambulab.com/products/paht-cf",
+    "image": "https://store.bblcdn.eu/s8/default/1adca385b4fd4502b492ed2651908f51/PAHTCFORIGINAL.png",
+    "currency": "EUR",
+    "from": 32.39,
+    "to": 61.19,
+    "variants": [
+     {
+      "sku": "43923846856923",
+      "name": "Black (70100) / Filament with spool / 0.5 kg",
+      "price": 32.39,
+      "compareAt": 53.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "43923846889691",
+      "name": "Black (70100) / Filament with spool / 1 kg",
+      "price": 61.19,
+      "compareAt": 101.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/paht-cf",
+    "checkedAt": "2026-11-17T18:54:50.103Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pa6-gf": {
+   "eu": {
+    "name": "PA6-GF",
+    "url": "https://eu.store.bambulab.com/products/pa6-gf",
+    "image": "https://store.bblcdn.eu/s8/default/206b1f9df0a64848becdf721b2541936/JP35952.jpg",
+    "currency": "EUR",
+    "from": 37.79,
+    "to": 37.79,
+    "variants": [
+     {
+      "sku": "47833416106332",
+      "name": "Blue (72600) / Filament with spool / 1 kg",
+      "price": 37.79,
+      "compareAt": 62.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47833416139100",
+      "name": "Orange (72200) / Filament with spool / 1 kg",
+      "price": 37.79,
+      "compareAt": 62.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "47833416171868",
+      "name": "Yellow (72400) / Filament with spool / 1 kg",
+      "price": 37.79,
+      "compareAt": 62.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "47833416204636",
+      "name": "Lime (72500) / Filament with spool / 1 kg",
+      "price": 37.79,
+      "compareAt": 62.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "47833416237404",
+      "name": "Brown (72800) / Filament with spool / 1 kg",
+      "price": 37.79,
+      "compareAt": 62.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "47833416270172",
+      "name": "White (72102) / Filament with spool / 1 kg",
+      "price": 37.79,
+      "compareAt": 62.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "47833416302940",
+      "name": "Gray (72103) / Filament with spool / 1 kg",
+      "price": 37.79,
+      "compareAt": 62.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "47833416335708",
+      "name": "Black (72104) / Filament with spool / 1 kg",
+      "price": 37.79,
+      "compareAt": 62.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pa6-gf",
+    "checkedAt": "2026-11-17T18:54:56.715Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pa6-cf": {
+   "eu": {
+    "name": "PA6-CF",
+    "url": "https://eu.store.bambulab.com/products/pa6-cf",
+    "image": "https://store.bblcdn.eu/s8/default/a73fe23577b84ea58c333a714eae4cad/PA6-CF.png",
+    "currency": "EUR",
+    "from": 26.99,
+    "to": 49.79,
+    "variants": [
+     {
+      "sku": "47023571468636",
+      "name": "Black (72100) / Filament with spool / 0.5kg",
+      "price": 26.99,
+      "compareAt": 44.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "47023571534172",
+      "name": "Black (72100) / Filament with spool / 1kg",
+      "price": 49.79,
+      "compareAt": 82.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pa6-cf",
+    "checkedAt": "2026-11-17T18:54:53.389Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pet-cf": {
+   "eu": {
+    "name": "PET-CF",
+    "url": "https://eu.store.bambulab.com/products/pet-cf",
+    "image": "https://store.bblcdn.eu/s8/default/c69a75229e824ec2a92b2e37f8510b01/pet-cr.png",
+    "currency": "EUR",
+    "from": 29.39,
+    "to": 54.59,
+    "variants": [
+     {
+      "sku": "44012072730843",
+      "name": "Black (71100) / Filament with spool / 0.5 kg",
+      "price": 29.39,
+      "compareAt": 48.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "44012072763611",
+      "name": "Black (71100) / Filament with spool / 1 kg",
+      "price": 54.59,
+      "compareAt": 90.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pet-cf",
+    "checkedAt": "2026-11-17T18:55:00.012Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "ppa-cf": {
+   "eu": {
+    "name": "PPA-CF",
+    "url": "https://eu.store.bambulab.com/products/ppa-cf",
+    "image": "https://store.bblcdn.eu/s8/default/0db74d6bbfd54a3f9756c4395a519457/PPA1.jpg",
+    "currency": "EUR",
+    "from": 93.59,
+    "to": 93.59,
+    "variants": [
+     {
+      "sku": "49237640642908",
+      "name": "Black (73100) / Filament with spool / 0.75 kg",
+      "price": 93.59,
+      "compareAt": 155.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/ppa-cf",
+    "checkedAt": "2026-11-17T18:55:03.290Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pps-cf": {
+   "eu": {
+    "name": "PPS-CF",
+    "url": "https://eu.store.bambulab.com/products/pps-cf",
+    "image": "https://store.bblcdn.eu/s8/default/b9b9f671b9754c84b45ecd4c9e58f7e5/Mainimage.png",
+    "currency": "EUR",
+    "from": 80.39,
+    "to": 80.39,
+    "variants": [
+     {
+      "sku": "49259815731548",
+      "name": "Black (76100) / Filament with spool / 0.75kg",
+      "price": 80.39,
+      "compareAt": 133.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pps-cf",
+    "checkedAt": "2026-11-17T18:55:06.614Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pva": {
+   "eu": {
+    "name": "PVA",
+    "url": "https://eu.store.bambulab.com/products/pva",
+    "image": "https://store.bblcdn.eu/s8/default/151690be785849e88d3d926351a85a6b/pvasupport12.jpg",
+    "currency": "EUR",
+    "from": 25.19,
+    "to": 25.19,
+    "variants": [
+     {
+      "sku": "47790189281628",
+      "name": "Filament with spool / 0.5 kg / Clear (66400)",
+      "price": 25.19,
+      "compareAt": 41.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pva",
+    "checkedAt": "2026-11-17T18:55:10.005Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "support-for-pla-new": {
+   "eu": {
+    "name": "Support for PLA (New Version)",
+    "url": "https://eu.store.bambulab.com/products/support-for-pla-new",
+    "image": "https://store.bblcdn.eu/s8/default/14e3097a64b04e27b61ff9e2c36a1e68/Support3.png",
+    "currency": "EUR",
+    "from": 15.59,
+    "to": 15.59,
+    "variants": [
+     {
+      "sku": "54200625725788",
+      "name": "White (65104) / Filament with spool / 0.5 kg",
+      "price": 15.59,
+      "compareAt": 25.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/support-for-pla-new",
+    "checkedAt": "2026-11-17T18:55:16.674Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "support-for-pla-petg": {
+   "eu": {
+    "name": "Support for PLA/PETG",
+    "url": "https://eu.store.bambulab.com/products/support-for-pla-petg",
+    "image": "https://store.bblcdn.eu/s8/default/6ff466e230394f269fef20190cffbdfc/supportforplablack.png",
+    "currency": "EUR",
+    "from": 22.19,
+    "to": 22.19,
+    "variants": [
+     {
+      "sku": "53534477320540",
+      "name": "Black (65103) / Filament with spool / 0.5 kg",
+      "price": 22.19,
+      "compareAt": 36.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48921550553436",
+      "name": "Nature (65102) / Filament with spool / 0.5 kg",
+      "price": 22.19,
+      "compareAt": 36.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/support-for-pla-petg",
+    "checkedAt": "2026-11-17T18:55:13.309Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "support-for-pa-pet": {
+   "eu": {
+    "name": "Support for PA/PET",
+    "url": "https://eu.store.bambulab.com/products/support-for-pa-pet",
+    "image": "https://store.bblcdn.eu/s8/default/51c284b0cc7b4dc8ba24601c4b35d9c7/SupportforPAPET.png",
+    "currency": "EUR",
+    "from": 25.19,
+    "to": 25.19,
+    "variants": [
+     {
+      "sku": "43050119364827",
+      "name": "Green (65500) / Filament with spool / 0.5kg",
+      "price": 25.19,
+      "compareAt": 41.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/support-for-pa-pet",
+    "checkedAt": "2026-11-17T18:55:23.221Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "support-for-abs": {
+   "eu": {
+    "name": "Support for ABS",
+    "url": "https://eu.store.bambulab.com/products/support-for-abs",
+    "image": "https://store.bblcdn.eu/s8/default/1037a943c71d40e99da4609bb4934b61/20240704-172034.png",
+    "currency": "EUR",
+    "from": 10.19,
+    "to": 10.19,
+    "variants": [
+     {
+      "sku": "49063577420124",
+      "name": "White (66100) / Filament with spool / 0.5 kg",
+      "price": 10.19,
+      "compareAt": 16.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/support-for-abs",
+    "checkedAt": "2026-11-17T18:55:19.919Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-basic-color-trial-set": {
+   "eu": {
+    "name": "PLA Basic Color Trial Set",
+    "url": "https://eu.store.bambulab.com/products/pla-basic-color-trial-set",
+    "image": "https://store.bblcdn.eu/s8/default/363052853dc5440d885c4fb7b2453a46/1.jpg",
+    "currency": "EUR",
+    "from": 40.99,
+    "to": 76.99,
+    "variants": [
+     {
+      "sku": "759644623206408192",
+      "name": "PLA Basic Color Trial Set / 250g*12",
+      "price": 40.99,
+      "compareAt": 42.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759644623206408199",
+      "name": "PLA Basic Color Trial Set + 4 Reusable Spools / 250g*12",
+      "price": 76.99,
+      "compareAt": 78.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-basic-color-trial-set",
+    "checkedAt": "2026-11-17T18:55:26.498Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "pla-basic-beginner-s-filament-pack": {
+   "eu": {
+    "name": "PLA Basic Starter Classic Pack",
+    "url": "https://eu.store.bambulab.com/products/pla-basic-beginner-s-filament-pack",
+    "image": "https://store.bblcdn.eu/s8/default/3b5dc43ef5f0413f90af5652604724fe/20250811-115747.jpg",
+    "currency": "EUR",
+    "from": 50.99,
+    "to": 50.99,
+    "variants": [
+     {
+      "sku": "630668132748963844",
+      "name": "Filament with spool / 1kg*4",
+      "price": 50.99,
+      "compareAt": 79.96,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/pla-basic-beginner-s-filament-pack",
+    "checkedAt": "2026-11-17T18:55:29.824Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "ams-lite": {
+   "eu": {
+    "name": "Bambu Lab AMS lite - Automatic Material System",
+    "url": "https://eu.store.bambulab.com/products/ams-lite",
+    "image": "https://store.bblcdn.eu/s8/default/c920b74c70054cbe937d7f5c29a68bcc/AMS_lite.jpg",
+    "currency": "EUR",
+    "from": 149,
+    "to": 149,
+    "variants": [
+     {
+      "sku": "596570769320755201",
+      "name": "A1&A2 Series",
+      "price": 149,
+      "compareAt": 189,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/ams-lite",
+    "checkedAt": "2026-11-17T18:55:33.160Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "ams-multicolor-printing": {
+   "eu": {
+    "name": "Bambu Lab AMS - Automatic Material System",
+    "url": "https://eu.store.bambulab.com/products/ams-multicolor-printing",
+    "image": "https://store.bblcdn.eu/s8/default/03d9a2f493bd44728ff6a390175124ba/AMS.jpg",
+    "currency": "EUR",
+    "from": 189,
+    "to": 189,
+    "variants": [
+     {
+      "sku": "692576586745913357",
+      "name": "A1 series / Connect 1 or more AMS unit(s) / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692576586745913363",
+      "name": "X1/P1 series / Connect 1 AMS unit / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692576586745913369",
+      "name": "X1/P1 series / Connect 2 or more AMS units / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692576586745913375",
+      "name": "P2S / Connect 1 or 2 AMS unit(s) / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692576586745913381",
+      "name": "P2S / Connect 3 or more AMS units / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692576586745913387",
+      "name": "H2S / Connect 1 AMS unit / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692576586745913393",
+      "name": "H2S / Connect 2 or more AMS units / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692576586745913399",
+      "name": "H2D/H2C / Connect 1 or 2 AMS unit(s) / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692576586745913405",
+      "name": "H2D/H2C / Connect 3 or more AMS units / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720831022653411330",
+      "name": "X2D / Connect 1 or 2 AMS unit(s) / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720831022653411336",
+      "name": "X2D / Connect 3 or more AMS units / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738525391345958912",
+      "name": "A2L / Connect 1 AMS unit / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738525391345958920",
+      "name": "A2L / Connect 2 or more AMS units / AMS",
+      "price": 189,
+      "compareAt": 239,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/ams-multicolor-printing",
+    "checkedAt": "2026-11-17T18:55:36.551Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "ams-ht": {
+   "eu": {
+    "name": "Bambu Lab AMS HT - Automatic Material System",
+    "url": "https://eu.store.bambulab.com/products/ams-ht",
+    "image": "https://store.bblcdn.eu/s8/default/2e2cba7e1e6d44ce91438ef4f1d03b35/AMS_HT.jpg",
+    "currency": "EUR",
+    "from": 109,
+    "to": 109,
+    "variants": [
+     {
+      "sku": "692625462546800651",
+      "name": "A1 Series / Connect 1 or more AMS HT unit(s)",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692625462546800656",
+      "name": "X1/P1 Series / Connect 1 AMS HT unit",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692625462546800661",
+      "name": "X1/P1 Series / Connect 2 or more AMS HT units",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692625462546800666",
+      "name": "P2S / Connect 1 or 2 AMS HT unit(s)",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692625462546800671",
+      "name": "P2S / Connect 3 or more AMS HT units",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692625462546800676",
+      "name": "H2S / Connect 1 AMS HT unit",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692625462546800681",
+      "name": "H2S / Connect 2 or more AMS HT units",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692625462546800686",
+      "name": "H2D/H2C / Connect 1 or 2 AMS HT unit(s)",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692625462546800691",
+      "name": "H2D/H2C / Connect 3 or more AMS HT units",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720831024221487104",
+      "name": "X2D / Connect 1 or 2 AMS HT unit(s)",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720831024221487109",
+      "name": "X2D / Connect 3 or more AMS HT units",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738525392701829122",
+      "name": "A2L / Connect 1 AMS HT unit",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738525392701829129",
+      "name": "A2L / Connect 2 or more AMS HT units",
+      "price": 109,
+      "compareAt": 129,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/ams-ht",
+    "checkedAt": "2026-11-17T18:55:43.283Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "ams-2-pro": {
+   "eu": {
+    "name": "Bambu Lab AMS 2 Pro - Automatic Material System",
+    "url": "https://eu.store.bambulab.com/products/ams-2-pro",
+    "image": "https://store.bblcdn.eu/s8/default/4f9f4a4dfe57435ab0c6ae865e86d066/AMS_2_PRO.jpg",
+    "currency": "EUR",
+    "from": 219,
+    "to": 219,
+    "variants": [
+     {
+      "sku": "692954507365048326",
+      "name": "A1 Series / Connect 1 or more AMS 2 Pro unit(s)",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692954507365048331",
+      "name": "X1/P1 Series / Connect 1 AMS 2 Pro unit",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692954507365048336",
+      "name": "X1/P1 Series / Connect 2 or more AMS 2 Pro units",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692954507365048341",
+      "name": "P2S / Connect 1 or 2 AMS 2 Pro unit(s)",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692954507365048346",
+      "name": "P2S / Connect 3 or more AMS 2 Pro units",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692954507365048351",
+      "name": "H2S / Connect 1 AMS 2 Pro unit",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692954507365048356",
+      "name": "H2S / Connect 2 or more AMS 2 Pro units",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692954507365048361",
+      "name": "H2D/H2C / Connect 1 or 2 AMS 2 Pro unit(s)",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "692954507365048366",
+      "name": "H2D/H2C / Connect 3 or more AMS 2 Pro units",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720831021096452098",
+      "name": "X2D / Connect 1 or 2 AMS 2 Pro unit(s)",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720831021096452103",
+      "name": "X2D / Connect 3 or more AMS 2 Pro units",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738525394011447298",
+      "name": "A2L / Connect 1 AMS 2 Pro unit",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "738525394011447305",
+      "name": "A2L / Connect 2 or more AMS 2 Pro units",
+      "price": 219,
+      "compareAt": 289,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/ams-2-pro",
+    "checkedAt": "2026-11-17T18:55:39.909Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "ams-hub": {
+   "eu": {
+    "name": "Bambu Lab AMS Hub",
+    "url": "https://eu.store.bambulab.com/products/ams-hub",
+    "image": "https://store.bblcdn.eu/s8/default/aefcf47895594ee6a3c47b922a44c6f9/a48f8e8fd473b2275ef04b008e8779ba_66ced993-ab04-455c-a0f8-7439c4fb1cc1.png",
+    "currency": "EUR",
+    "from": 54.99,
+    "to": 54.99,
+    "variants": [
+     {
+      "sku": "43718660063451",
+      "name": "X1 Series and P1 Series",
+      "price": 54.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/ams-hub",
+    "checkedAt": "2026-11-17T18:55:46.521Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "ams-hub-a1-series": {
+   "eu": {
+    "name": "AMS Hub - A1 Series",
+    "url": "https://eu.store.bambulab.com/products/ams-hub-a1-series",
+    "image": "https://store.bblcdn.eu/s8/default/34c9559ccd3044149e7ce02106b6ab2e/AMS_Hub.png",
+    "currency": "EUR",
+    "from": 21.99,
+    "to": 21.99,
+    "variants": [
+     {
+      "sku": "654456223710007298",
+      "name": "A1 Series",
+      "price": 21.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/ams-hub-a1-series",
+    "checkedAt": "2026-11-17T18:55:49.780Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "bambu-smooth-pei-plate": {
+   "eu": {
+    "name": "Bambu Smooth PEI Plate",
+    "url": "https://eu.store.bambulab.com/products/bambu-smooth-pei-plate",
+    "image": "https://store.bblcdn.eu/s8/default/249e9640c35f4171ae921ec705a4b2a0/Smooth_PEI_mini.png",
+    "currency": "EUR",
+    "from": 21.99,
+    "to": 21.99,
+    "variants": [
+     {
+      "sku": "48790460596572",
+      "name": "A1 mini",
+      "price": 21.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/bambu-smooth-pei-plate",
+    "checkedAt": "2026-11-17T18:55:56.264Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "bambu-textured-pei-plate": {
+   "eu": {
+    "name": "Bambu Textured PEI Plate",
+    "url": "https://eu.store.bambulab.com/products/bambu-textured-pei-plate",
+    "image": "https://store.bblcdn.eu/s8/default/8b6825aabfad40a3b46fca65ffb2001b/fap043.png",
+    "currency": "EUR",
+    "from": 19.99,
+    "to": 59.99,
+    "variants": [
+     {
+      "sku": "794151803439587330",
+      "name": "Bambu Lab H3C",
+      "price": 56.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888420768530438",
+      "name": "A2L",
+      "price": 55.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "768950975057727494",
+      "name": "X2D",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "654583152638226433",
+      "name": "P2S",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888420768530432",
+      "name": "H2C",
+      "price": 55.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "768950975057727500",
+      "name": "H2S",
+      "price": 59.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54209472594268",
+      "name": "H2D",
+      "price": 59.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "768950975057727506",
+      "name": "A1",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48790482485596",
+      "name": "A1 mini",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "768950975061921792",
+      "name": "P1 Series",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "768950975061921798",
+      "name": "X1 Series",
+      "price": 35.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/bambu-textured-pei-plate",
+    "checkedAt": "2026-11-17T18:55:53.010Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "bambu-cool-plate-supertack": {
+   "eu": {
+    "name": "Bambu Cool Plate SuperTack Series",
+    "url": "https://eu.store.bambulab.com/products/bambu-cool-plate-supertack",
+    "image": "https://store.bblcdn.eu/s8/default/6781c0c268ae4617bb5cf4c034ff454e/FAP045.jpg",
+    "currency": "EUR",
+    "from": 24.49,
+    "to": 60.99,
+    "variants": [
+     {
+      "sku": "794151805322825730",
+      "name": "Bambu Lab H3C / Cool Plate SuperTack Pro",
+      "price": 60.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "794413472061386752",
+      "name": "A2L / Cool Plate SuperTack Pro",
+      "price": 60.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "761800756834689039",
+      "name": "X2D / Cool Plate SuperTack",
+      "price": 24.49,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762103916732182534",
+      "name": "X2D / Cool Plate SuperTack + Mag-Alloy Scraper",
+      "price": 38.49,
+      "compareAt": 54.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "761800756834689045",
+      "name": "P2S / Cool Plate SuperTack",
+      "price": 24.49,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762103916732182542",
+      "name": "P2S / Cool Plate SuperTack + Mag-Alloy Scraper",
+      "price": 38.49,
+      "compareAt": 54.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "794413472065581060",
+      "name": "H2C / Cool Plate SuperTack Pro",
+      "price": 60.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "768283157437976588",
+      "name": "H2S / Cool Plate SuperTack Pro",
+      "price": 41.99,
+      "compareAt": 59.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "768283157437976595",
+      "name": "H2D / Cool Plate SuperTack Pro",
+      "price": 41.99,
+      "compareAt": 59.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "768283157437976602",
+      "name": "H2D / Cool Plate SuperTack Pro + Mag-Alloy Scraper",
+      "price": 55.99,
+      "compareAt": 79.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "761800756834689069",
+      "name": "A1 / Cool Plate SuperTack",
+      "price": 24.49,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762103916736376856",
+      "name": "A1 / Cool Plate SuperTack + Mag-Alloy Scraper",
+      "price": 38.49,
+      "compareAt": 54.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "688547596859219969",
+      "name": "P1 Series / Cool Plate SuperTack",
+      "price": 24.49,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762103916736376864",
+      "name": "P1 Series / Cool Plate SuperTack + Mag-Alloy Scraper",
+      "price": 38.49,
+      "compareAt": 54.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "761800756834689075",
+      "name": "X1 Series / Cool Plate SuperTack",
+      "price": 24.49,
+      "compareAt": 34.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762103916736376872",
+      "name": "X1 Series / Cool Plate SuperTack + Mag-Alloy Scraper",
+      "price": 38.49,
+      "compareAt": 54.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/bambu-cool-plate-supertack",
+    "checkedAt": "2026-11-17T18:55:59.536Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "bambu-engineering-plate": {
+   "eu": {
+    "name": "Bambu Engineering Plate",
+    "url": "https://eu.store.bambulab.com/products/bambu-engineering-plate",
+    "image": "https://store.bblcdn.eu/s8/default/8bc3f5e50dfb4b439ad8b6d0101e1064/FAP046.jpg",
+    "currency": "EUR",
+    "from": 24.79,
+    "to": 64.78,
+    "variants": [
+     {
+      "sku": "794151807050883074",
+      "name": "Bambu Lab H3C / Engineering Plate",
+      "price": 54.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888424130273288",
+      "name": "A2L / Engineering Plate",
+      "price": 44.79,
+      "compareAt": 55.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762145159537319941",
+      "name": "A2L / Engineering Plate + Glues",
+      "price": 61.58,
+      "compareAt": 76.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720473992368685058",
+      "name": "X2D / Engineering Plate",
+      "price": 24.79,
+      "compareAt": 30.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762145159537319949",
+      "name": "X2D / Engineering Plate + Glues",
+      "price": 41.58,
+      "compareAt": 51.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "657381173900972035",
+      "name": "P2S / Engineering Plate",
+      "price": 24.79,
+      "compareAt": 30.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762145159537319957",
+      "name": "P2S / Engineering Plate + Glues",
+      "price": 41.58,
+      "compareAt": 51.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888424130273282",
+      "name": "H2C / Engineering Plate",
+      "price": 44.79,
+      "compareAt": 55.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762145159537319965",
+      "name": "H2C / Engineering Plate + Glues",
+      "price": 61.58,
+      "compareAt": 76.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "657381173900972039",
+      "name": "H2S / Engineering Plate",
+      "price": 47.99,
+      "compareAt": 59.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762145159537319973",
+      "name": "H2S / Engineering Plate + Glues",
+      "price": 64.78,
+      "compareAt": 80.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "657381173900972043",
+      "name": "H2D / Engineering Plate",
+      "price": 47.99,
+      "compareAt": 59.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762145159537319981",
+      "name": "H2D / Engineering Plate + Glues",
+      "price": 64.78,
+      "compareAt": 80.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "657434238752768001",
+      "name": "A1 / Engineering Plate",
+      "price": 24.79,
+      "compareAt": 30.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762145159537319989",
+      "name": "A1 / Engineering Plate + Glues",
+      "price": 41.58,
+      "compareAt": 51.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "657434238748573700",
+      "name": "P1 Series / Engineering Plate",
+      "price": 24.79,
+      "compareAt": 30.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762145159537319997",
+      "name": "P1 Series / Engineering Plate + Glues",
+      "price": 41.58,
+      "compareAt": 51.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "657434238752768005",
+      "name": "X1C / Engineering Plate",
+      "price": 24.79,
+      "compareAt": 30.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "762145159537320005",
+      "name": "X1C / Engineering Plate + Glues",
+      "price": 41.58,
+      "compareAt": 51.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/bambu-engineering-plate",
+    "checkedAt": "2026-11-17T18:56:02.848Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "bambu-3d-effect-plate": {
+   "eu": {
+    "name": "Bambu 3D Effect Plate",
+    "url": "https://eu.store.bambulab.com/products/bambu-3d-effect-plate",
+    "image": "https://store.bblcdn.eu/s8/default/f7e08e8143a44ff795f5f4822ce78b8a/4a8772f1c05cacb28341f4afcfcfd28c.png",
+    "currency": "EUR",
+    "from": 11.99,
+    "to": 19.99,
+    "variants": [
+     {
+      "sku": "603505655763009536",
+      "name": "X1/P1/A1/P2/X2 / Carbon Fiber",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "626174790256418817",
+      "name": "X1/P1/A1/P2/X2 / Starry",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "649134970893262849",
+      "name": "X1/P1/A1/P2/X2 / Galaxy",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "618957837781147650",
+      "name": "X1/P1/A1/P2/X2 / Diamond",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "603363712553787392",
+      "name": "A1 mini / Carbon Fiber",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "649134970893262854",
+      "name": "A1 mini / Starry",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "637142417155244032",
+      "name": "A1 mini / Galaxy",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "618957837781147655",
+      "name": "A1 mini / Diamond",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/bambu-3d-effect-plate",
+    "checkedAt": "2026-11-17T18:56:09.475Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "bambu-dual-texture-pei-plate": {
+   "eu": {
+    "name": "Bambu Dual-Texture PEI Plate",
+    "url": "https://eu.store.bambulab.com/products/bambu-dual-texture-pei-plate",
+    "image": "https://store.bblcdn.eu/s8/default/ec43602ae55a4c9099b3208d6d3519bf/Dual_Texture_PEI_6c6e2271-d6a3-41a5-b708-952f86cac212.png",
+    "currency": "EUR",
+    "from": 18.19,
+    "to": 26.59,
+    "variants": [
+     {
+      "sku": "763541856918269957",
+      "name": "X2D",
+      "price": 26.59,
+      "compareAt": 37.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "763541856918269963",
+      "name": "P2S",
+      "price": 26.59,
+      "compareAt": 37.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "763541856918269969",
+      "name": "A1",
+      "price": 26.59,
+      "compareAt": 37.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "48790440345948",
+      "name": "A1 mini",
+      "price": 18.19,
+      "compareAt": 25.99,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "48055814259036",
+      "name": "P1 Series",
+      "price": 26.59,
+      "compareAt": 37.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "763541856918269975",
+      "name": "X1 Series",
+      "price": 26.59,
+      "compareAt": 37.99,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/bambu-dual-texture-pei-plate",
+    "checkedAt": "2026-11-17T18:56:06.122Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "bambu-hotend-a1-a2": {
+   "eu": {
+    "name": "Bambu Hotend - A1/A2",
+    "url": "https://eu.store.bambulab.com/products/bambu-hotend-a1-a2",
+    "image": "https://store.bblcdn.eu/s8/default/11c2628a0cee4a53acb7d4ef3e95bc95/0.4_8e3295ff-94cb-46bb-a43b-e7a8ac5fe910.png",
+    "currency": "EUR",
+    "from": 9.99,
+    "to": 11.99,
+    "variants": [
+     {
+      "sku": "737888419389595653",
+      "name": "A1 / 0.4mm Hardened Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595660",
+      "name": "A1 / 0.6mm Hardened Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595667",
+      "name": "A1 / 0.8mm Hardened Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595674",
+      "name": "A1 / 0.2mm Stainless Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595681",
+      "name": "A1 / 0.4mm Stainless Steel",
+      "price": 9.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595688",
+      "name": "A1 mini / 0.4mm Hardened Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595695",
+      "name": "A1 mini / 0.6mm Hardened Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595702",
+      "name": "A1 mini / 0.8mm Hardened Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595709",
+      "name": "A1 mini / 0.2mm Stainless Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595716",
+      "name": "A1 mini / 0.4mm Stainless Steel",
+      "price": 9.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595723",
+      "name": "A2L / 0.4mm Hardened Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595730",
+      "name": "A2L / 0.6mm Hardened Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595737",
+      "name": "A2L / 0.8mm Hardened Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595744",
+      "name": "A2L / 0.2mm Stainless Steel",
+      "price": 11.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737888419389595751",
+      "name": "A2L / 0.4mm Stainless Steel",
+      "price": 9.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/bambu-hotend-a1-a2",
+    "checkedAt": "2026-11-17T18:56:12.739Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "bambu-hotend-h2-p2s": {
+   "eu": {
+    "name": "Bambu Hotend - H2/P2S/X2D",
+    "url": "https://eu.store.bambulab.com/products/bambu-hotend-h2-p2s",
+    "image": "https://store.bblcdn.eu/s8/default/8eb61ceb5a2f41c5864046362a3c3d1a/FAH059.jpg",
+    "currency": "EUR",
+    "from": 19.99,
+    "to": 50.99,
+    "variants": [
+     {
+      "sku": "720473995212587021",
+      "name": "Standard Flow / X2D / 0.2mm Stainless Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776244314400358401",
+      "name": "Standard Flow / X2D / 0.4mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720473995212587009",
+      "name": "Standard Flow / X2D / 0.6mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720473995212587015",
+      "name": "Standard Flow / X2D / 0.8mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "689606417971142674",
+      "name": "Standard Flow / P2S / 0.2mm Stainless Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242252423168",
+      "name": "Standard Flow / P2S / 0.4mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242252423176",
+      "name": "Standard Flow / P2S / 0.6mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242252423184",
+      "name": "Standard Flow / P2S / 0.8mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "689606417971142668",
+      "name": "Standard Flow / H2C (Left) / 0.2mm Stainless Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242252423192",
+      "name": "Standard Flow / H2C (Left) / 0.4mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242252423200",
+      "name": "Standard Flow / H2C (Left) / 0.6mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242252423208",
+      "name": "Standard Flow / H2C (Left) / 0.8mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "689606417971142662",
+      "name": "Standard Flow / H2S / 0.2mm Stainless Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242256617472",
+      "name": "Standard Flow / H2S / 0.4mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242256617480",
+      "name": "Standard Flow / H2S / 0.6mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242256617488",
+      "name": "Standard Flow / H2S / 0.8mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "689606417971142656",
+      "name": "Standard Flow / H2D / 0.2mm Stainless Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242256617496",
+      "name": "Standard Flow / H2D / 0.4mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242256617504",
+      "name": "Standard Flow / H2D / 0.6mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242256617512",
+      "name": "Standard Flow / H2D / 0.8mm Hardened Steel",
+      "price": 19.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "720473995212587027",
+      "name": "High Flow / X2D / 0.4mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720473995212587033",
+      "name": "High Flow / X2D / 0.6mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "720473995216781317",
+      "name": "High Flow / X2D / 0.8mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242260811776",
+      "name": "High Flow / P2S / 0.4mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242260811784",
+      "name": "High Flow / P2S / 0.6mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242260811792",
+      "name": "High Flow / P2S / 0.8mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242260811800",
+      "name": "High Flow / H2C (Left) / 0.4mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243613821566976",
+      "name": "High Flow / H2C (Left) / 0.6mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243613821566984",
+      "name": "High Flow / H2C (Left) / 0.8mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242260811808",
+      "name": "High Flow / H2S / 0.4mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242260811816",
+      "name": "High Flow / H2S / 0.6mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242260811824",
+      "name": "High Flow / H2S / 0.8mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242260811832",
+      "name": "High Flow / H2D / 0.4mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242265006087",
+      "name": "High Flow / H2D / 0.6mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "776243242265006095",
+      "name": "High Flow / H2D / 0.8mm Hardened Steel",
+      "price": 50.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/bambu-hotend-h2-p2s",
+    "checkedAt": "2026-11-17T18:56:16.052Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "multi-size-hotends-kit": {
+   "eu": {
+    "name": "Multi-Size Hotends Kit",
+    "url": "https://eu.store.bambulab.com/products/multi-size-hotends-kit",
+    "image": "https://store.bblcdn.eu/s8/default/dc3d4de4e31347af83f72ede7d881882/MSHK4-A2.jpg",
+    "currency": "EUR",
+    "from": 21.58,
+    "to": 119.97,
+    "variants": [
+     {
+      "sku": "759208974321975321",
+      "name": "A2L / 0.2mm + 0.4mm + 0.6mm + 0.8mm",
+      "price": 35.97,
+      "compareAt": 47.96,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975314",
+      "name": "A2L / 0.2mm + 0.6mm + 0.8mm",
+      "price": 30.57,
+      "compareAt": 35.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975307",
+      "name": "A2L / 0.2mm + 0.6mm",
+      "price": 21.58,
+      "compareAt": 23.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975342",
+      "name": "X2D/P2S / 0.2mm + 0.4mm + 0.6mm + 0.8mm",
+      "price": 59.97,
+      "compareAt": 79.96,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "759208974321975335",
+      "name": "X2D/P2S / 0.2mm + 0.6mm + 0.8mm",
+      "price": 50.97,
+      "compareAt": 59.97,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "759208974321975328",
+      "name": "X2D/P2S / 0.2mm + 0.6mm",
+      "price": 35.98,
+      "compareAt": 39.98,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "759208974321975363",
+      "name": "H2C (Right Hotend) / 0.2mm + 0.4mm + 0.6mm + 0.8mm",
+      "price": 119.97,
+      "compareAt": 159.96,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975356",
+      "name": "H2C (Right Hotend) / 0.2mm + 0.6mm + 0.8mm",
+      "price": 101.97,
+      "compareAt": 119.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975349",
+      "name": "H2C (Right Hotend) / 0.2mm + 0.6mm",
+      "price": 71.98,
+      "compareAt": 79.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975384",
+      "name": "H2D/H2S/H2C (Left Hotend) / 0.2mm + 0.4mm + 0.6mm + 0.8mm",
+      "price": 59.97,
+      "compareAt": 79.96,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "759208974321975377",
+      "name": "H2D/H2S/H2C (Left Hotend) / 0.2mm + 0.6mm + 0.8mm",
+      "price": 50.97,
+      "compareAt": 59.97,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "759208974321975370",
+      "name": "H2D/H2S/H2C (Left Hotend) / 0.2mm + 0.6mm",
+      "price": 35.98,
+      "compareAt": 39.98,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "759208974321975405",
+      "name": "A1 Series / 0.2mm + 0.4mm + 0.6mm + 0.8mm",
+      "price": 35.97,
+      "compareAt": 47.96,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975398",
+      "name": "A1 Series / 0.2mm + 0.6mm + 0.8mm",
+      "price": 30.57,
+      "compareAt": 35.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975391",
+      "name": "A1 Series / 0.2mm + 0.6mm",
+      "price": 21.58,
+      "compareAt": 23.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975426",
+      "name": "X1/P1 Series / 0.2mm + 0.4mm + 0.6mm + 0.8mm",
+      "price": 47.97,
+      "compareAt": 63.96,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975419",
+      "name": "X1/P1 Series / 0.2mm + 0.6mm + 0.8mm",
+      "price": 40.77,
+      "compareAt": 47.97,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "759208974321975412",
+      "name": "X1/P1 Series / 0.2mm + 0.6mm",
+      "price": 28.78,
+      "compareAt": 31.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/multi-size-hotends-kit",
+    "checkedAt": "2026-11-17T18:56:19.317Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "hardened-steel-upgrade-combo": {
+   "eu": {
+    "name": "Hardened Steel Upgrade Combo",
+    "url": "https://eu.store.bambulab.com/products/hardened-steel-upgrade-combo",
+    "image": "https://store.bblcdn.eu/s8/default/77904144716d4dd88cada4fa57b0179d/HardenedSteelUpgradeKit-P.jpg",
+    "currency": "EUR",
+    "from": 18.38,
+    "to": 45.58,
+    "variants": [
+     {
+      "sku": "54252566348124",
+      "name": "P1 Series",
+      "price": 45.58,
+      "compareAt": 57.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "54252566380892",
+      "name": "A1 Series",
+      "price": 18.38,
+      "compareAt": 23.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/hardened-steel-upgrade-combo",
+    "checkedAt": "2026-11-17T18:56:22.540Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "laser-module": {
+   "eu": {
+    "name": "Laser Module",
+    "url": "https://eu.store.bambulab.com/products/laser-module",
+    "image": "https://store.bblcdn.eu/s8/default/65fd2f8a9969475cbbc504722e74fc88/10w.jpg",
+    "currency": "EUR",
+    "from": 269,
+    "to": 819,
+    "variants": [
+     {
+      "sku": "686086595038453766",
+      "name": "H2D/H2C / 10 W",
+      "price": 269,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "686086595042648067",
+      "name": "H2D/H2C / 40 W",
+      "price": 819,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "686086595042648072",
+      "name": "H2S / 10 W",
+      "price": 269,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/laser-module",
+    "checkedAt": "2026-11-17T18:56:25.789Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "laser-upgrade-kit": {
+   "eu": {
+    "name": "Laser Upgrade Kit",
+    "url": "https://eu.store.bambulab.com/products/laser-upgrade-kit",
+    "image": "https://store.bblcdn.eu/s8/default/1faa4ef58b3943529ddb94ab8ab09aae/H2D_10W_-_1_(1).png",
+    "currency": "EUR",
+    "from": 646,
+    "to": 1218,
+    "variants": [
+     {
+      "sku": "673359474211557380",
+      "name": "For H2D/H2C / Laser Upgrade Kit (Laser Module Included) / 10 W",
+      "price": 668,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "673359474211557386",
+      "name": "For H2D/H2C / Laser Upgrade Kit (Laser Module Included) / 40 W",
+      "price": 1218,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "673359474211557410",
+      "name": "For H2S / Laser Upgrade Kit (Laser Module Included) / 10 W",
+      "price": 646,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/laser-upgrade-kit",
+    "checkedAt": "2026-11-17T18:56:29.027Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "cutting-upgrade-kit-h2-series-a2l": {
+   "eu": {
+    "name": "Cutting Upgrade Kit - H2 Series/A2L",
+    "url": "https://eu.store.bambulab.com/products/cutting-upgrade-kit-h2-series-a2l",
+    "image": "https://store.bblcdn.eu/s8/default/ed51b61f6e6d4d10b36b1f8f115661c0/a.jpg",
+    "currency": "EUR",
+    "from": 69.99,
+    "to": 114.28,
+    "variants": [
+     {
+      "sku": "660363131453194242",
+      "name": "H2 Series/A2L / Cutting Upgrade Kit",
+      "price": 69.99,
+      "compareAt": null,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "737803340941385730",
+      "name": "H2 Series/A2L / Cutting Upgrade Kit with Material Pack",
+      "price": 114.28,
+      "compareAt": 126.98,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/cutting-upgrade-kit-h2-series-a2l",
+    "checkedAt": "2026-11-17T18:56:32.318Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  },
+  "printer-maintenance-kit": {
+   "eu": {
+    "name": "Printer Maintenance Kit",
+    "url": "https://eu.store.bambulab.com/products/printer-maintenance-kit",
+    "image": "https://store.bblcdn.eu/s8/default/c539b1e36be64d5ba8d3b9ceaf26cbb8/A2_NEW.jpg",
+    "currency": "EUR",
+    "from": 29.54,
+    "to": 60.71,
+    "variants": [
+     {
+      "sku": "774491038050942986",
+      "name": "A2L",
+      "price": 29.54,
+      "compareAt": 36.93,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "774491038050942992",
+      "name": "X2D",
+      "price": 53.51,
+      "compareAt": 66.89,
+      "currency": "EUR",
+      "inStock": false,
+      "availability": "OutOfStock"
+     },
+     {
+      "sku": "774491038050942998",
+      "name": "P2S",
+      "price": 51.92,
+      "compareAt": 64.9,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "774491038050943004",
+      "name": "H2C",
+      "price": 60.71,
+      "compareAt": 75.89,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "774491038050943010",
+      "name": "H2S",
+      "price": 55.92,
+      "compareAt": 69.9,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "774491038050943016",
+      "name": "H2D",
+      "price": 58.32,
+      "compareAt": 72.9,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "774491038050943022",
+      "name": "A1",
+      "price": 35.14,
+      "compareAt": 43.92,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "774491038050943028",
+      "name": "A1 mini",
+      "price": 37.54,
+      "compareAt": 46.92,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     },
+     {
+      "sku": "774491038050943034",
+      "name": "X1/P1 Series",
+      "price": 49.51,
+      "compareAt": 61.89,
+      "currency": "EUR",
+      "inStock": true,
+      "availability": "InStock"
+     }
+    ],
+    "usUrl": "https://us.store.bambulab.com/products/printer-maintenance-kit",
+    "checkedAt": "2026-11-17T18:56:35.606Z",
+    "checkedFrom": "Spark, Denmark"
+   }
+  }
+ }
+}

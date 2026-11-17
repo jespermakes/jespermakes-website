@@ -26,7 +26,7 @@ const nextConfig = {
       // Old Beacons link-in-bio URLs
       { source: "/jespermakes/tools", destination: "/tools", permanent: true },
       { source: "/jespermakes/jespermakes.com", destination: "/", permanent: true },
-      { source: "/jespermakes/bambulab", destination: "/tools/bambu-lab-h2d", permanent: true },
+      { source: "/jespermakes/bambulab", destination: "/bambulab", permanent: true },
       { source: "/jespermakes/xtool", destination: "/tools", permanent: true },
       { source: "/jespermakes/youtubegear", destination: "/tools/category/office-youtube-gear", permanent: true },
       // Was pointing at /tools/rubio-monocoat-oil-plus-2c, which is now hidden.
@@ -45,7 +45,11 @@ const nextConfig = {
       { source: "/tools/rubio-monocoat-care-kit", destination: "/rubio", permanent: true },
       // Every entry in this category was Rubio, so the category is the shop now.
       { source: "/tools/category/finishing", destination: "/rubio", permanent: true },
-      { source: "/bambulab", destination: "/tools/bambu-lab-h2d", permanent: true },
+      // /bambulab was a redirect to the H2D tool page (825aa0a). It is the Bambu
+      // section itself now (src/app/bambulab), so the redirect is gone and the
+      // H2D tool page keeps its own URL. Browsers that cached the old 308 still
+      // land on the H2D page, which still carries the affiliate link.
+      { source: "/bambu", destination: "/bambulab", permanent: false },
       // The printed lamps page became the lamp generator at the URL the H2D film links to.
       { source: "/printed-lamps", destination: "/lamp-designer", permanent: true },
       { source: "/youtubegear", destination: "/tools/category/office-youtube-gear", permanent: true },
