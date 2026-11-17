@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import {
   PRINTED_LAMPS,
+  fileUrl,
   defaultVariant,
   findVariant,
   hasVariant,
@@ -55,4 +56,11 @@ describe("printed lamps data", () => {
       });
     });
   }
+});
+
+describe("download links", () => {
+  it("point at the Blob store and ask for an attachment", () => {
+    const url = fileUrl(PRINTED_LAMPS[0].variants[0].files.project3mf);
+    expect(url).toMatch(/^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\/printed-lamps\/.+\.3mf\?download=1$/);
+  });
 });

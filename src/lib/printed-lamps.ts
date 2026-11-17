@@ -77,10 +77,20 @@ export interface PrintedLampsData {
 
 export const PRINTED_LAMPS = (data as PrintedLampsData).lamps;
 
-/** Where the download files live: Vercel Blob in production, a local folder on the Spark for review. */
+/**
+ * Where the download files live: the site's Vercel Blob store, uploaded by
+ * scripts/upload-printed-lamps.mjs. NEXT_PUBLIC_PRINTED_LAMPS_FILES overrides it
+ * for a local review on the Spark.
+ */
+export const PRINTED_LAMPS_FILES =
+  "https://fgrwwf1ctwchpvxd.public.blob.vercel-storage.com/printed-lamps";
+
 export function fileUrl(path: string): string {
-  const base = (process.env.NEXT_PUBLIC_PRINTED_LAMPS_FILES ?? "").replace(/\/$/, "");
-  return `${base}/${path}`;
+  const base = (process.env.NEXT_PUBLIC_PRINTED_LAMPS_FILES || PRINTED_LAMPS_FILES).replace(/\/$/, "");
+  // A link to another host ignores the download attribute, so ask Blob to send
+  // the file as an attachment.
+  const attachment = base.includes(".blob.vercel-storage.com") ? "?download=1" : "";
+  return `${base}/${path}${attachment}`;
 }
 
 /** 0.218 -> "218 KB", 119.1 -> "119 MB" */
