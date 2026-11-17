@@ -92,7 +92,7 @@ describe("sitemap", () => {
     for (const path of [
       "/cone-lamp",
       "/box-joint-jig",
-      "/printed-lamps",
+      "/lamp-designer",
       "/title-lab",
       "/storyteller",
       "/marketplace",
@@ -255,11 +255,11 @@ describe("social profiles", () => {
 });
 
 describe("lamp designer headings", () => {
-  // /lamp-designer renders one of two branches. "start" is the initial state,
+  // /lamp-designer/classic renders one of two branches. "start" is the initial state,
   // so that branch is what SSR emits and what a crawler sees — putting the h1
   // only on the other one looked correct in the editor and shipped a page with
   // no heading at all.
-  const source = read("lamp-designer", "page.tsx");
+  const source = read("lamp-designer", "classic", "page.tsx");
   const startBranch = source.slice(
     source.indexOf('if (currentStep === "start")'),
     source.lastIndexOf("  return ("),

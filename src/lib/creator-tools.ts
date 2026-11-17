@@ -65,11 +65,13 @@ export const CREATOR_TOOL_REGISTRY: Record<string, CreatorToolEntry> = {
     glyph: "\u25CD",
     tint: "amber",
   },
-  "printed-lamps": {
-    slug: "printed-lamps",
-    name: "Printed Lamps",
-    description: "Lamps I've printed on the H2D, as checked 3MF and STL files.",
-    url: "/printed-lamps",
+  // Same slug as the August designer, so the homepage card that was already
+  // switched on now leads to the generator. The URL is the one the film links.
+  "lamp-designer": {
+    slug: "lamp-designer",
+    name: "Lamp Generator",
+    description: "Lamps I've printed on the H2D. Pick a size and a pattern, download a file that prints.",
+    url: "/lamp-designer",
     glyph: "\u25CB",
     tint: "green",
   },

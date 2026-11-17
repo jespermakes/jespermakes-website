@@ -13,7 +13,11 @@ describe("lamp-designer layout", () => {
   });
 
   it("exports metadata with canonical URL", () => {
-    expect(source).toContain('canonical: "/lamp-designer"');
+    expect(source).toContain('canonical: "/lamp-designer/classic"');
+  });
+
+  it("is kept out of search engines", () => {
+    expect(source).toContain("robots: { index: false, follow: false }");
   });
 
   it("exports a default layout function", () => {

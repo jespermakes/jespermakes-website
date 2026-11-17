@@ -46,6 +46,8 @@ const nextConfig = {
       // Every entry in this category was Rubio, so the category is the shop now.
       { source: "/tools/category/finishing", destination: "/rubio", permanent: true },
       { source: "/bambulab", destination: "/tools/bambu-lab-h2d", permanent: true },
+      // The printed lamps page became the lamp generator at the URL the H2D film links to.
+      { source: "/printed-lamps", destination: "/lamp-designer", permanent: true },
       { source: "/youtubegear", destination: "/tools/category/office-youtube-gear", permanent: true },
       // Old Beacons versioned URLs
       { source: "/jespermakes/tools\\?__v\\=:v", destination: "/tools", permanent: true },

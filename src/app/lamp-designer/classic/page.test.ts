@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "fs";
 import { resolve } from "path";
-import { STEP_IDS } from "../../lib/lamp-designer/types";
-import type { LampDesignerState, LampParameters, LampContext, TemplateId, LightParameters, PatternId } from "../../lib/lamp-designer/types";
-import { getTemplate } from "../../lib/lamp-designer/templates";
+import { STEP_IDS } from "../../../lib/lamp-designer/types";
+import type { LampDesignerState, LampParameters, LampContext, TemplateId, LightParameters, PatternId } from "../../../lib/lamp-designer/types";
+import { getTemplate } from "../../../lib/lamp-designer/templates";
 
 const source = readFileSync(resolve(__dirname, "page.tsx"), "utf-8");
 
