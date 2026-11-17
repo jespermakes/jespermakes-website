@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-02T09:50:57Z",
+ "generated": "2026-11-17T15:53:34Z",
  "lamps": [
   {
    "id": "flower",
@@ -23,12 +23,18 @@
      "values": [
       3,
       7,
-      11
+      11,
+      13,
+      17,
+      23
      ],
      "labels": [
       "1",
       "2",
-      "3"
+      "3",
+      "4",
+      "5",
+      "6"
      ]
     }
    ],
@@ -91,6 +97,108 @@
      },
      "image": "/printed-lamps/flower/h240-s11.webp",
      "imageLit": "/printed-lamps/flower/h240-s11-lit.webp"
+    },
+    {
+     "id": "h240-s13",
+     "params": {
+      "H": 240,
+      "seed": 13
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 166,
+     "printHeightMm": 240,
+     "printTime": "12h 56m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 281,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 65,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h240-s13/flower-h240-s13.3mf",
+      "project3mfMb": 83.437,
+      "stlZip": "flower/h240-s13/flower-h240-s13-stl.zip",
+      "stlZipMb": 128.915
+     },
+     "image": "/printed-lamps/flower/h240-s13.webp",
+     "imageLit": "/printed-lamps/flower/h240-s13-lit.webp"
+    },
+    {
+     "id": "h240-s17",
+     "params": {
+      "H": 240,
+      "seed": 17
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 166,
+     "printHeightMm": 240,
+     "printTime": "12h 52m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 281,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 66,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h240-s17/flower-h240-s17.3mf",
+      "project3mfMb": 83.722,
+      "stlZip": "flower/h240-s17/flower-h240-s17-stl.zip",
+      "stlZipMb": 129.393
+     },
+     "image": "/printed-lamps/flower/h240-s17.webp",
+     "imageLit": "/printed-lamps/flower/h240-s17-lit.webp"
+    },
+    {
+     "id": "h240-s23",
+     "params": {
+      "H": 240,
+      "seed": 23
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 166,
+     "printHeightMm": 240,
+     "printTime": "12h 57m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 282,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 66,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h240-s23/flower-h240-s23.3mf",
+      "project3mfMb": 84.499,
+      "stlZip": "flower/h240-s23/flower-h240-s23-stl.zip",
+      "stlZipMb": 130.718
+     },
+     "image": "/printed-lamps/flower/h240-s23.webp",
+     "imageLit": "/printed-lamps/flower/h240-s23-lit.webp"
     },
     {
      "id": "h240-s3",
@@ -195,6 +303,108 @@
      "imageLit": "/printed-lamps/flower/h280-s11-lit.webp"
     },
     {
+     "id": "h280-s13",
+     "params": {
+      "H": 280,
+      "seed": 13
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 166,
+     "printHeightMm": 280,
+     "printTime": "15h 02m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 317,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 77,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h280-s13/flower-h280-s13.3mf",
+      "project3mfMb": 97.998,
+      "stlZip": "flower/h280-s13/flower-h280-s13-stl.zip",
+      "stlZipMb": 149.912
+     },
+     "image": "/printed-lamps/flower/h280-s13.webp",
+     "imageLit": "/printed-lamps/flower/h280-s13-lit.webp"
+    },
+    {
+     "id": "h280-s17",
+     "params": {
+      "H": 280,
+      "seed": 17
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 166,
+     "printHeightMm": 280,
+     "printTime": "15h 12m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 317,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 80,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h280-s17/flower-h280-s17.3mf",
+      "project3mfMb": 98.044,
+      "stlZip": "flower/h280-s17/flower-h280-s17-stl.zip",
+      "stlZipMb": 149.998
+     },
+     "image": "/printed-lamps/flower/h280-s17.webp",
+     "imageLit": "/printed-lamps/flower/h280-s17-lit.webp"
+    },
+    {
+     "id": "h280-s23",
+     "params": {
+      "H": 280,
+      "seed": 23
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 166,
+     "printHeightMm": 280,
+     "printTime": "15h 46m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 314,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 85,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h280-s23/flower-h280-s23.3mf",
+      "project3mfMb": 103.043,
+      "stlZip": "flower/h280-s23/flower-h280-s23-stl.zip",
+      "stlZipMb": 158.512
+     },
+     "image": "/printed-lamps/flower/h280-s23.webp",
+     "imageLit": "/printed-lamps/flower/h280-s23-lit.webp"
+    },
+    {
      "id": "h280-s3",
      "params": {
       "H": 280,
@@ -297,6 +507,108 @@
      "imageLit": "/printed-lamps/flower/h320-s11-lit.webp"
     },
     {
+     "id": "h320-s13",
+     "params": {
+      "H": 320,
+      "seed": 13
+     },
+     "printed": false,
+     "heightMm": 334,
+     "widthMm": 166,
+     "printHeightMm": 320,
+     "printTime": "18h 02m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 351,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 95,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h320-s13/flower-h320-s13.3mf",
+      "project3mfMb": 118.168,
+      "stlZip": "flower/h320-s13/flower-h320-s13-stl.zip",
+      "stlZipMb": 180.617
+     },
+     "image": "/printed-lamps/flower/h320-s13.webp",
+     "imageLit": "/printed-lamps/flower/h320-s13-lit.webp"
+    },
+    {
+     "id": "h320-s17",
+     "params": {
+      "H": 320,
+      "seed": 17
+     },
+     "printed": false,
+     "heightMm": 334,
+     "widthMm": 166,
+     "printHeightMm": 320,
+     "printTime": "18h 08m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 354,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 95,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h320-s17/flower-h320-s17.3mf",
+      "project3mfMb": 116.61,
+      "stlZip": "flower/h320-s17/flower-h320-s17-stl.zip",
+      "stlZipMb": 178.014
+     },
+     "image": "/printed-lamps/flower/h320-s17.webp",
+     "imageLit": "/printed-lamps/flower/h320-s17-lit.webp"
+    },
+    {
+     "id": "h320-s23",
+     "params": {
+      "H": 320,
+      "seed": 23
+     },
+     "printed": false,
+     "heightMm": 334,
+     "widthMm": 166,
+     "printHeightMm": 320,
+     "printTime": "18h 09m",
+     "filaments": [
+      {
+       "name": "PLA Matte Ivory White",
+       "colour": "#F1EADB",
+       "grams": 354,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 95,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "flower/h320-s23/flower-h320-s23.3mf",
+      "project3mfMb": 119.069,
+      "stlZip": "flower/h320-s23/flower-h320-s23-stl.zip",
+      "stlZipMb": 182.155
+     },
+     "image": "/printed-lamps/flower/h320-s23.webp",
+     "imageLit": "/printed-lamps/flower/h320-s23-lit.webp"
+    },
+    {
      "id": "h320-s3",
      "params": {
       "H": 320,
@@ -388,12 +700,18 @@
      "values": [
       3,
       7,
-      11
+      11,
+      13,
+      17,
+      23
      ],
      "labels": [
       "1",
       "2",
-      "3"
+      "3",
+      "4",
+      "5",
+      "6"
      ]
     }
    ],
@@ -456,6 +774,108 @@
      },
      "image": "/printed-lamps/poppy/h240-s11.webp",
      "imageLit": "/printed-lamps/poppy/h240-s11-lit.webp"
+    },
+    {
+     "id": "h240-s13",
+     "params": {
+      "H": 240,
+      "seed": 13
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 157,
+     "printHeightMm": 240,
+     "printTime": "14h 46m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 299,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 54,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h240-s13/poppy-h240-s13.3mf",
+      "project3mfMb": 96.978,
+      "stlZip": "poppy/h240-s13/poppy-h240-s13-stl.zip",
+      "stlZipMb": 152.201
+     },
+     "image": "/printed-lamps/poppy/h240-s13.webp",
+     "imageLit": "/printed-lamps/poppy/h240-s13-lit.webp"
+    },
+    {
+     "id": "h240-s17",
+     "params": {
+      "H": 240,
+      "seed": 17
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 157,
+     "printHeightMm": 240,
+     "printTime": "14h 16m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 298,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 52,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h240-s17/poppy-h240-s17.3mf",
+      "project3mfMb": 94.126,
+      "stlZip": "poppy/h240-s17/poppy-h240-s17-stl.zip",
+      "stlZipMb": 147.144
+     },
+     "image": "/printed-lamps/poppy/h240-s17.webp",
+     "imageLit": "/printed-lamps/poppy/h240-s17-lit.webp"
+    },
+    {
+     "id": "h240-s23",
+     "params": {
+      "H": 240,
+      "seed": 23
+     },
+     "printed": false,
+     "heightMm": 254,
+     "widthMm": 157,
+     "printHeightMm": 240,
+     "printTime": "14h 41m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 299,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 55,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h240-s23/poppy-h240-s23.3mf",
+      "project3mfMb": 96.928,
+      "stlZip": "poppy/h240-s23/poppy-h240-s23-stl.zip",
+      "stlZipMb": 152.214
+     },
+     "image": "/printed-lamps/poppy/h240-s23.webp",
+     "imageLit": "/printed-lamps/poppy/h240-s23-lit.webp"
     },
     {
      "id": "h240-s3",
@@ -560,6 +980,108 @@
      "imageLit": "/printed-lamps/poppy/h280-s11-lit.webp"
     },
     {
+     "id": "h280-s13",
+     "params": {
+      "H": 280,
+      "seed": 13
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 157,
+     "printHeightMm": 280,
+     "printTime": "16h 12m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 339,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 61,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h280-s13/poppy-h280-s13.3mf",
+      "project3mfMb": 106.16,
+      "stlZip": "poppy/h280-s13/poppy-h280-s13-stl.zip",
+      "stlZipMb": 164.145
+     },
+     "image": "/printed-lamps/poppy/h280-s13.webp",
+     "imageLit": "/printed-lamps/poppy/h280-s13-lit.webp"
+    },
+    {
+     "id": "h280-s17",
+     "params": {
+      "H": 280,
+      "seed": 17
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 157,
+     "printHeightMm": 280,
+     "printTime": "16h 59m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 339,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 63,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h280-s17/poppy-h280-s17.3mf",
+      "project3mfMb": 111.603,
+      "stlZip": "poppy/h280-s17/poppy-h280-s17-stl.zip",
+      "stlZipMb": 173.845
+     },
+     "image": "/printed-lamps/poppy/h280-s17.webp",
+     "imageLit": "/printed-lamps/poppy/h280-s17-lit.webp"
+    },
+    {
+     "id": "h280-s23",
+     "params": {
+      "H": 280,
+      "seed": 23
+     },
+     "printed": false,
+     "heightMm": 294,
+     "widthMm": 157,
+     "printHeightMm": 280,
+     "printTime": "16h 38m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 340,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 63,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h280-s23/poppy-h280-s23.3mf",
+      "project3mfMb": 108.18,
+      "stlZip": "poppy/h280-s23/poppy-h280-s23-stl.zip",
+      "stlZipMb": 167.77
+     },
+     "image": "/printed-lamps/poppy/h280-s23.webp",
+     "imageLit": "/printed-lamps/poppy/h280-s23-lit.webp"
+    },
+    {
      "id": "h280-s3",
      "params": {
       "H": 280,
@@ -660,6 +1182,108 @@
      },
      "image": "/printed-lamps/poppy/h320-s11.webp",
      "imageLit": "/printed-lamps/poppy/h320-s11-lit.webp"
+    },
+    {
+     "id": "h320-s13",
+     "params": {
+      "H": 320,
+      "seed": 13
+     },
+     "printed": false,
+     "heightMm": 334,
+     "widthMm": 157,
+     "printHeightMm": 320,
+     "printTime": "19h 35m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 373,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 77,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h320-s13/poppy-h320-s13.3mf",
+      "project3mfMb": 138.337,
+      "stlZip": "poppy/h320-s13/poppy-h320-s13-stl.zip",
+      "stlZipMb": 216.872
+     },
+     "image": "/printed-lamps/poppy/h320-s13.webp",
+     "imageLit": "/printed-lamps/poppy/h320-s13-lit.webp"
+    },
+    {
+     "id": "h320-s17",
+     "params": {
+      "H": 320,
+      "seed": 17
+     },
+     "printed": false,
+     "heightMm": 334,
+     "widthMm": 157,
+     "printHeightMm": 320,
+     "printTime": "20h 32m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 376,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 77,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h320-s17/poppy-h320-s17.3mf",
+      "project3mfMb": 134.219,
+      "stlZip": "poppy/h320-s17/poppy-h320-s17-stl.zip",
+      "stlZipMb": 209.821
+     },
+     "image": "/printed-lamps/poppy/h320-s17.webp",
+     "imageLit": "/printed-lamps/poppy/h320-s17-lit.webp"
+    },
+    {
+     "id": "h320-s23",
+     "params": {
+      "H": 320,
+      "seed": 23
+     },
+     "printed": false,
+     "heightMm": 334,
+     "widthMm": 157,
+     "printHeightMm": 320,
+     "printTime": "19h 43m",
+     "filaments": [
+      {
+       "name": "PLA Matte (blue)",
+       "colour": "#2A3F6E",
+       "grams": 369,
+       "nozzle": "left"
+      },
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 74,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "poppy/h320-s23/poppy-h320-s23.3mf",
+      "project3mfMb": 136.707,
+      "stlZip": "poppy/h320-s23/poppy-h320-s23-stl.zip",
+      "stlZipMb": 214.146
+     },
+     "image": "/printed-lamps/poppy/h320-s23.webp",
+     "imageLit": "/printed-lamps/poppy/h320-s23-lit.webp"
     },
     {
      "id": "h320-s3",
