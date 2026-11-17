@@ -209,7 +209,7 @@ export default function LampDesignerPage() {
     <div className="flex h-[calc(100vh-64px)] bg-parchment">
       {/* The three panes fill the viewport, so there is nowhere to put a
           visible page heading. Screen readers and crawlers both still need
-          one — this is the same text as the title, not hidden keywords. */}
+          one, this is the same text as the title, not hidden keywords. */}
       <h1 className="sr-only">3D Lamp Designer</h1>
 
       {/* Left: Step Navigation */}
