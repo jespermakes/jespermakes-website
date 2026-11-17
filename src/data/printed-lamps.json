@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-17T15:53:34Z",
+ "generated": "2026-11-17T17:34:26Z",
  "lamps": [
   {
    "id": "flower",
@@ -63,6 +63,10 @@
      }
     }
    ],
+   "photo": {
+    "wide": "/printed-lamps/photos/flower-wide.webp",
+    "tall": "/printed-lamps/photos/flower-tall.webp"
+   },
    "variants": [
     {
      "id": "h240-s11",
@@ -640,7 +644,8 @@
       "stlZipMb": 182.256
      },
      "image": "/printed-lamps/flower/h320-s3.webp",
-     "imageLit": "/printed-lamps/flower/h320-s3-lit.webp"
+     "imageLit": "/printed-lamps/flower/h320-s3-lit.webp",
+     "photo": "/printed-lamps/photos/flower-tall.webp"
     },
     {
      "id": "h320-s7",
@@ -740,6 +745,10 @@
      }
     }
    ],
+   "photo": {
+    "wide": "/printed-lamps/photos/poppy-wide.webp",
+    "tall": "/printed-lamps/photos/poppy-tall.webp"
+   },
    "variants": [
     {
      "id": "h240-s11",
@@ -1317,7 +1326,8 @@
       "stlZipMb": 202.688
      },
      "image": "/printed-lamps/poppy/h320-s3.webp",
-     "imageLit": "/printed-lamps/poppy/h320-s3-lit.webp"
+     "imageLit": "/printed-lamps/poppy/h320-s3-lit.webp",
+     "photo": "/printed-lamps/photos/poppy-tall.webp"
     },
     {
      "id": "h320-s7",
@@ -1352,6 +1362,1205 @@
      },
      "image": "/printed-lamps/poppy/h320-s7.webp",
      "imageLit": "/printed-lamps/poppy/h320-s7-lit.webp"
+    }
+   ]
+  },
+  {
+   "id": "fluff",
+   "name": "Cloudy Fluff",
+   "blurb": "The lamp my daughter Julie drew, a tall shade with soft folds that twist up it like a dress in the wind. It stands on a wooden base, and you can print it for a normal E27 bulb or for the Bambu LED kit.",
+   "printedNote": "I printed it twice at 320 mm in September 2026, in white PLA Basic for an E27 bulb and in PLA Translucent Mellow Yellow for the Bambu LED kit.",
+   "knobs": [
+    {
+     "key": "mount",
+     "label": "Light",
+     "labels": [
+      "E27 bulb",
+      "Bambu LED kit"
+     ],
+     "values": [
+      1,
+      2
+     ]
+    },
+    {
+     "key": "H",
+     "label": "Height of the shade",
+     "unit": "mm",
+     "values": [
+      240,
+      280,
+      320
+     ]
+    },
+    {
+     "key": "seed",
+     "label": "Fold pattern",
+     "values": [
+      3,
+      7,
+      11
+     ],
+     "labels": [
+      "1",
+      "2",
+      "3"
+     ]
+    }
+   ],
+   "hardware": [
+    "Bambu Lab LED Lamp Kit 001 (USB, 5 V) and the 2 screws that come with it",
+    "A wooden base, 150 mm wide and 15 mm thick, and 3 wood screws of 16 mm (drawing in the STL zip)"
+   ],
+   "parts": [
+    {
+     "name": "Base",
+     "note": "The base is wood, so it isn't in the print files, but the drawing for it is in the STL zip."
+    }
+   ],
+   "photo": {
+    "wide": "/printed-lamps/photos/fluff-wide.webp",
+    "tall": "/printed-lamps/photos/fluff-tall.webp"
+   },
+   "variants": [
+    {
+     "id": "e27-h240-s11",
+     "params": {
+      "mount": 1,
+      "H": 240,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 270,
+     "widthMm": 153,
+     "printHeightMm": 240,
+     "printTime": "4h 42m",
+     "filaments": [
+      {
+       "name": "PLA Basic white",
+       "colour": "#FFFFFF",
+       "grams": 206,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/e27-h240-s11/fluff-e27-h240-s11.3mf",
+      "project3mfMb": 29.05,
+      "stlZip": "fluff/e27-h240-s11/fluff-e27-h240-s11-stl.zip",
+      "stlZipMb": 48.349
+     },
+     "image": "/printed-lamps/fluff/e27-h240-s11.webp",
+     "imageLit": "/printed-lamps/fluff/e27-h240-s11-lit.webp",
+     "hardware": [
+      "E27 lamp holder on an M10 tube, with a washer on the shade floor and a nut under the base",
+      "E27 LED bulb, 4 to 8 W. LED only: never a hot bulb inside PLA",
+      "A wooden base, 180 mm wide and 32 mm thick (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "e27-h240-s3",
+     "params": {
+      "mount": 1,
+      "H": 240,
+      "seed": 3
+     },
+     "printed": false,
+     "heightMm": 270,
+     "widthMm": 153,
+     "printHeightMm": 240,
+     "printTime": "4h 46m",
+     "filaments": [
+      {
+       "name": "PLA Basic white",
+       "colour": "#FFFFFF",
+       "grams": 209,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/e27-h240-s3/fluff-e27-h240-s3.3mf",
+      "project3mfMb": 29.078,
+      "stlZip": "fluff/e27-h240-s3/fluff-e27-h240-s3-stl.zip",
+      "stlZipMb": 48.372
+     },
+     "image": "/printed-lamps/fluff/e27-h240-s3.webp",
+     "imageLit": "/printed-lamps/fluff/e27-h240-s3-lit.webp",
+     "hardware": [
+      "E27 lamp holder on an M10 tube, with a washer on the shade floor and a nut under the base",
+      "E27 LED bulb, 4 to 8 W. LED only: never a hot bulb inside PLA",
+      "A wooden base, 180 mm wide and 32 mm thick (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "e27-h240-s7",
+     "params": {
+      "mount": 1,
+      "H": 240,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 270,
+     "widthMm": 152,
+     "printHeightMm": 240,
+     "printTime": "4h 53m",
+     "filaments": [
+      {
+       "name": "PLA Basic white",
+       "colour": "#FFFFFF",
+       "grams": 207,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/e27-h240-s7/fluff-e27-h240-s7.3mf",
+      "project3mfMb": 29.069,
+      "stlZip": "fluff/e27-h240-s7/fluff-e27-h240-s7-stl.zip",
+      "stlZipMb": 48.415
+     },
+     "image": "/printed-lamps/fluff/e27-h240-s7.webp",
+     "imageLit": "/printed-lamps/fluff/e27-h240-s7-lit.webp",
+     "hardware": [
+      "E27 lamp holder on an M10 tube, with a washer on the shade floor and a nut under the base",
+      "E27 LED bulb, 4 to 8 W. LED only: never a hot bulb inside PLA",
+      "A wooden base, 180 mm wide and 32 mm thick (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "e27-h280-s11",
+     "params": {
+      "mount": 1,
+      "H": 280,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 310,
+     "widthMm": 153,
+     "printHeightMm": 280,
+     "printTime": "5h 19m",
+     "filaments": [
+      {
+       "name": "PLA Basic white",
+       "colour": "#FFFFFF",
+       "grams": 234,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/e27-h280-s11/fluff-e27-h280-s11.3mf",
+      "project3mfMb": 29.128,
+      "stlZip": "fluff/e27-h280-s11/fluff-e27-h280-s11-stl.zip",
+      "stlZipMb": 48.521
+     },
+     "image": "/printed-lamps/fluff/e27-h280-s11.webp",
+     "imageLit": "/printed-lamps/fluff/e27-h280-s11-lit.webp",
+     "hardware": [
+      "E27 lamp holder on an M10 tube, with a washer on the shade floor and a nut under the base",
+      "E27 LED bulb, 4 to 8 W. LED only: never a hot bulb inside PLA",
+      "A wooden base, 180 mm wide and 32 mm thick (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "e27-h280-s3",
+     "params": {
+      "mount": 1,
+      "H": 280,
+      "seed": 3
+     },
+     "printed": false,
+     "heightMm": 310,
+     "widthMm": 153,
+     "printHeightMm": 280,
+     "printTime": "5h 26m",
+     "filaments": [
+      {
+       "name": "PLA Basic white",
+       "colour": "#FFFFFF",
+       "grams": 237,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/e27-h280-s3/fluff-e27-h280-s3.3mf",
+      "project3mfMb": 29.154,
+      "stlZip": "fluff/e27-h280-s3/fluff-e27-h280-s3-stl.zip",
+      "stlZipMb": 48.542
+     },
+     "image": "/printed-lamps/fluff/e27-h280-s3.webp",
+     "imageLit": "/printed-lamps/fluff/e27-h280-s3-lit.webp",
+     "hardware": [
+      "E27 lamp holder on an M10 tube, with a washer on the shade floor and a nut under the base",
+      "E27 LED bulb, 4 to 8 W. LED only: never a hot bulb inside PLA",
+      "A wooden base, 180 mm wide and 32 mm thick (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "e27-h280-s7",
+     "params": {
+      "mount": 1,
+      "H": 280,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 310,
+     "widthMm": 152,
+     "printHeightMm": 280,
+     "printTime": "5h 31m",
+     "filaments": [
+      {
+       "name": "PLA Basic white",
+       "colour": "#FFFFFF",
+       "grams": 235,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/e27-h280-s7/fluff-e27-h280-s7.3mf",
+      "project3mfMb": 29.147,
+      "stlZip": "fluff/e27-h280-s7/fluff-e27-h280-s7-stl.zip",
+      "stlZipMb": 48.587
+     },
+     "image": "/printed-lamps/fluff/e27-h280-s7.webp",
+     "imageLit": "/printed-lamps/fluff/e27-h280-s7-lit.webp",
+     "hardware": [
+      "E27 lamp holder on an M10 tube, with a washer on the shade floor and a nut under the base",
+      "E27 LED bulb, 4 to 8 W. LED only: never a hot bulb inside PLA",
+      "A wooden base, 180 mm wide and 32 mm thick (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "e27-h320-s11",
+     "params": {
+      "mount": 1,
+      "H": 320,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 350,
+     "widthMm": 153,
+     "printHeightMm": 320,
+     "printTime": "5h 59m",
+     "filaments": [
+      {
+       "name": "PLA Basic white",
+       "colour": "#FFFFFF",
+       "grams": 262,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/e27-h320-s11/fluff-e27-h320-s11.3mf",
+      "project3mfMb": 29.192,
+      "stlZip": "fluff/e27-h320-s11/fluff-e27-h320-s11-stl.zip",
+      "stlZipMb": 48.664
+     },
+     "image": "/printed-lamps/fluff/e27-h320-s11.webp",
+     "imageLit": "/printed-lamps/fluff/e27-h320-s11-lit.webp",
+     "hardware": [
+      "E27 lamp holder on an M10 tube, with a washer on the shade floor and a nut under the base",
+      "E27 LED bulb, 4 to 8 W. LED only: never a hot bulb inside PLA",
+      "A wooden base, 180 mm wide and 32 mm thick (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "e27-h320-s3",
+     "params": {
+      "mount": 1,
+      "H": 320,
+      "seed": 3
+     },
+     "printed": true,
+     "heightMm": 350,
+     "widthMm": 153,
+     "printHeightMm": 320,
+     "printTime": "6h 06m",
+     "filaments": [
+      {
+       "name": "PLA Basic white",
+       "colour": "#FFFFFF",
+       "grams": 265,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/e27-h320-s3/fluff-e27-h320-s3.3mf",
+      "project3mfMb": 29.222,
+      "stlZip": "fluff/e27-h320-s3/fluff-e27-h320-s3-stl.zip",
+      "stlZipMb": 48.682
+     },
+     "image": "/printed-lamps/fluff/e27-h320-s3.webp",
+     "imageLit": "/printed-lamps/fluff/e27-h320-s3-lit.webp",
+     "hardware": [
+      "E27 lamp holder on an M10 tube, with a washer on the shade floor and a nut under the base",
+      "E27 LED bulb, 4 to 8 W. LED only: never a hot bulb inside PLA",
+      "A wooden base, 180 mm wide and 32 mm thick (drawing in the STL zip)"
+     ],
+     "photo": "/printed-lamps/photos/fluff-tall.webp"
+    },
+    {
+     "id": "e27-h320-s7",
+     "params": {
+      "mount": 1,
+      "H": 320,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 350,
+     "widthMm": 152,
+     "printHeightMm": 320,
+     "printTime": "6h 11m",
+     "filaments": [
+      {
+       "name": "PLA Basic white",
+       "colour": "#FFFFFF",
+       "grams": 263,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/e27-h320-s7/fluff-e27-h320-s7.3mf",
+      "project3mfMb": 29.209,
+      "stlZip": "fluff/e27-h320-s7/fluff-e27-h320-s7-stl.zip",
+      "stlZipMb": 48.732
+     },
+     "image": "/printed-lamps/fluff/e27-h320-s7.webp",
+     "imageLit": "/printed-lamps/fluff/e27-h320-s7-lit.webp",
+     "hardware": [
+      "E27 lamp holder on an M10 tube, with a washer on the shade floor and a nut under the base",
+      "E27 LED bulb, 4 to 8 W. LED only: never a hot bulb inside PLA",
+      "A wooden base, 180 mm wide and 32 mm thick (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "led-h240-s11",
+     "params": {
+      "mount": 2,
+      "H": 240,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 255,
+     "widthMm": 153,
+     "printHeightMm": 240,
+     "printTime": "6h 17m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 235,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/led-h240-s11/fluff-led-h240-s11.3mf",
+      "project3mfMb": 28.98,
+      "stlZip": "fluff/led-h240-s11/fluff-led-h240-s11-stl.zip",
+      "stlZipMb": 48.317
+     },
+     "image": "/printed-lamps/fluff/led-h240-s11.webp",
+     "imageLit": "/printed-lamps/fluff/led-h240-s11-lit.webp",
+     "hardware": [
+      "Bambu Lab LED Lamp Kit 001 (USB, 5 V) and the 2 screws that come with it",
+      "A wooden base, 150 mm wide and 15 mm thick, and 3 wood screws of 16 mm (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "led-h240-s3",
+     "params": {
+      "mount": 2,
+      "H": 240,
+      "seed": 3
+     },
+     "printed": false,
+     "heightMm": 255,
+     "widthMm": 153,
+     "printHeightMm": 240,
+     "printTime": "6h 21m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 238,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/led-h240-s3/fluff-led-h240-s3.3mf",
+      "project3mfMb": 29.011,
+      "stlZip": "fluff/led-h240-s3/fluff-led-h240-s3-stl.zip",
+      "stlZipMb": 48.342
+     },
+     "image": "/printed-lamps/fluff/led-h240-s3.webp",
+     "imageLit": "/printed-lamps/fluff/led-h240-s3-lit.webp",
+     "hardware": [
+      "Bambu Lab LED Lamp Kit 001 (USB, 5 V) and the 2 screws that come with it",
+      "A wooden base, 150 mm wide and 15 mm thick, and 3 wood screws of 16 mm (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "led-h240-s7",
+     "params": {
+      "mount": 2,
+      "H": 240,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 255,
+     "widthMm": 152,
+     "printHeightMm": 240,
+     "printTime": "6h 26m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 236,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/led-h240-s7/fluff-led-h240-s7.3mf",
+      "project3mfMb": 29.001,
+      "stlZip": "fluff/led-h240-s7/fluff-led-h240-s7-stl.zip",
+      "stlZipMb": 48.386
+     },
+     "image": "/printed-lamps/fluff/led-h240-s7.webp",
+     "imageLit": "/printed-lamps/fluff/led-h240-s7-lit.webp",
+     "hardware": [
+      "Bambu Lab LED Lamp Kit 001 (USB, 5 V) and the 2 screws that come with it",
+      "A wooden base, 150 mm wide and 15 mm thick, and 3 wood screws of 16 mm (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "led-h280-s11",
+     "params": {
+      "mount": 2,
+      "H": 280,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 295,
+     "widthMm": 153,
+     "printHeightMm": 280,
+     "printTime": "6h 59m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 262,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/led-h280-s11/fluff-led-h280-s11.3mf",
+      "project3mfMb": 29.072,
+      "stlZip": "fluff/led-h280-s11/fluff-led-h280-s11-stl.zip",
+      "stlZipMb": 48.5
+     },
+     "image": "/printed-lamps/fluff/led-h280-s11.webp",
+     "imageLit": "/printed-lamps/fluff/led-h280-s11-lit.webp",
+     "hardware": [
+      "Bambu Lab LED Lamp Kit 001 (USB, 5 V) and the 2 screws that come with it",
+      "A wooden base, 150 mm wide and 15 mm thick, and 3 wood screws of 16 mm (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "led-h280-s3",
+     "params": {
+      "mount": 2,
+      "H": 280,
+      "seed": 3
+     },
+     "printed": false,
+     "heightMm": 295,
+     "widthMm": 153,
+     "printHeightMm": 280,
+     "printTime": "7h 07m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 265,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/led-h280-s3/fluff-led-h280-s3.3mf",
+      "project3mfMb": 29.102,
+      "stlZip": "fluff/led-h280-s3/fluff-led-h280-s3-stl.zip",
+      "stlZipMb": 48.52
+     },
+     "image": "/printed-lamps/fluff/led-h280-s3.webp",
+     "imageLit": "/printed-lamps/fluff/led-h280-s3-lit.webp",
+     "hardware": [
+      "Bambu Lab LED Lamp Kit 001 (USB, 5 V) and the 2 screws that come with it",
+      "A wooden base, 150 mm wide and 15 mm thick, and 3 wood screws of 16 mm (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "led-h280-s7",
+     "params": {
+      "mount": 2,
+      "H": 280,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 295,
+     "widthMm": 152,
+     "printHeightMm": 280,
+     "printTime": "7h 11m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 263,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/led-h280-s7/fluff-led-h280-s7.3mf",
+      "project3mfMb": 29.094,
+      "stlZip": "fluff/led-h280-s7/fluff-led-h280-s7-stl.zip",
+      "stlZipMb": 48.566
+     },
+     "image": "/printed-lamps/fluff/led-h280-s7.webp",
+     "imageLit": "/printed-lamps/fluff/led-h280-s7-lit.webp",
+     "hardware": [
+      "Bambu Lab LED Lamp Kit 001 (USB, 5 V) and the 2 screws that come with it",
+      "A wooden base, 150 mm wide and 15 mm thick, and 3 wood screws of 16 mm (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "led-h320-s11",
+     "params": {
+      "mount": 2,
+      "H": 320,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 335,
+     "widthMm": 153,
+     "printHeightMm": 320,
+     "printTime": "7h 46m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 289,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/led-h320-s11/fluff-led-h320-s11.3mf",
+      "project3mfMb": 29.151,
+      "stlZip": "fluff/led-h320-s11/fluff-led-h320-s11-stl.zip",
+      "stlZipMb": 48.658
+     },
+     "image": "/printed-lamps/fluff/led-h320-s11.webp",
+     "imageLit": "/printed-lamps/fluff/led-h320-s11-lit.webp",
+     "hardware": [
+      "Bambu Lab LED Lamp Kit 001 (USB, 5 V) and the 2 screws that come with it",
+      "A wooden base, 150 mm wide and 15 mm thick, and 3 wood screws of 16 mm (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "led-h320-s3",
+     "params": {
+      "mount": 2,
+      "H": 320,
+      "seed": 3
+     },
+     "printed": true,
+     "heightMm": 335,
+     "widthMm": 153,
+     "printHeightMm": 320,
+     "printTime": "7h 56m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 292,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/led-h320-s3/fluff-led-h320-s3.3mf",
+      "project3mfMb": 29.18,
+      "stlZip": "fluff/led-h320-s3/fluff-led-h320-s3-stl.zip",
+      "stlZipMb": 48.675
+     },
+     "image": "/printed-lamps/fluff/led-h320-s3.webp",
+     "imageLit": "/printed-lamps/fluff/led-h320-s3-lit.webp",
+     "hardware": [
+      "Bambu Lab LED Lamp Kit 001 (USB, 5 V) and the 2 screws that come with it",
+      "A wooden base, 150 mm wide and 15 mm thick, and 3 wood screws of 16 mm (drawing in the STL zip)"
+     ]
+    },
+    {
+     "id": "led-h320-s7",
+     "params": {
+      "mount": 2,
+      "H": 320,
+      "seed": 7
+     },
+     "printed": false,
+     "heightMm": 335,
+     "widthMm": 152,
+     "printHeightMm": 320,
+     "printTime": "7h 57m",
+     "filaments": [
+      {
+       "name": "PLA Translucent Mellow Yellow",
+       "colour": "#F5DBAB",
+       "grams": 290,
+       "nozzle": "right"
+      }
+     ],
+     "files": {
+      "project3mf": "fluff/led-h320-s7/fluff-led-h320-s7.3mf",
+      "project3mfMb": 29.17,
+      "stlZip": "fluff/led-h320-s7/fluff-led-h320-s7-stl.zip",
+      "stlZipMb": 48.723
+     },
+     "image": "/printed-lamps/fluff/led-h320-s7.webp",
+     "imageLit": "/printed-lamps/fluff/led-h320-s7-lit.webp",
+     "hardware": [
+      "Bambu Lab LED Lamp Kit 001 (USB, 5 V) and the 2 screws that come with it",
+      "A wooden base, 150 mm wide and 15 mm thick, and 3 wood screws of 16 mm (drawing in the STL zip)"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ruff",
+   "name": "Twisted Ruff",
+   "blurb": "A cone shade with twisted folds that clicks onto its base with a short turn. There are 2 LED pucks inside, one lights the shade and the other one lights the base from the floor up.",
+   "printedNote": "The one I printed is the widest one, in beige PLA Basic and before that in matte white, in October 2026. It only just fits on the H2D.",
+   "knobs": [
+    {
+     "key": "R",
+     "label": "Width of the shade",
+     "unit": "mm",
+     "labels": [
+      "249",
+      "275",
+      "302"
+     ],
+     "values": [
+      120.0,
+      133.0,
+      146.0
+     ]
+    },
+    {
+     "key": "seed",
+     "label": "Fold pattern",
+     "values": [
+      11,
+      13,
+      17
+     ],
+     "labels": [
+      "1",
+      "2",
+      "3"
+     ]
+    }
+   ],
+   "hardware": [
+    "2 x Bambu LED Lamp Kit 001: one puck on the base floor facing up, one on the cassette",
+    "the 2 x BT3x12 screws per puck that come with the kit"
+   ],
+   "parts": [],
+   "photo": {
+    "wide": "/printed-lamps/photos/ruff-wide.webp",
+    "tall": "/printed-lamps/photos/ruff-tall.webp"
+   },
+   "variants": [
+    {
+     "id": "r120-s11",
+     "params": {
+      "R": 120.0,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 266,
+     "widthMm": 249,
+     "printHeightMm": 170,
+     "printTime": "6h 59m",
+     "filaments": [
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 168,
+       "nozzle": "right"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 132,
+       "nozzle": "right",
+       "part": "base"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 14,
+       "nozzle": "right",
+       "part": "cassette"
+      }
+     ],
+     "files": {
+      "project3mf": "ruff/r120-s11/ruff-r120-s11.3mf",
+      "project3mfMb": 35.216,
+      "stlZip": "ruff/r120-s11/ruff-r120-s11-stl.zip",
+      "stlZipMb": 78.353,
+      "extra": [
+       {
+        "label": "Base",
+        "path": "ruff/r120-s11/ruff-r120-s11-base.3mf",
+        "mb": 12.566
+       },
+       {
+        "label": "Cassette",
+        "path": "ruff/r120-s11/ruff-r120-s11-cassette.3mf",
+        "mb": 0.044
+       }
+      ]
+     },
+     "image": "/printed-lamps/ruff/r120-s11.webp",
+     "imageLit": "/printed-lamps/ruff/r120-s11-lit.webp"
+    },
+    {
+     "id": "r120-s13",
+     "params": {
+      "R": 120.0,
+      "seed": 13
+     },
+     "printed": false,
+     "heightMm": 266,
+     "widthMm": 249,
+     "printHeightMm": 170,
+     "printTime": "7h 01m",
+     "filaments": [
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 168,
+       "nozzle": "right"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 132,
+       "nozzle": "right",
+       "part": "base"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 14,
+       "nozzle": "right",
+       "part": "cassette"
+      }
+     ],
+     "files": {
+      "project3mf": "ruff/r120-s13/ruff-r120-s13.3mf",
+      "project3mfMb": 35.218,
+      "stlZip": "ruff/r120-s13/ruff-r120-s13-stl.zip",
+      "stlZipMb": 78.313,
+      "extra": [
+       {
+        "label": "Base",
+        "path": "ruff/r120-s13/ruff-r120-s13-base.3mf",
+        "mb": 12.566
+       },
+       {
+        "label": "Cassette",
+        "path": "ruff/r120-s13/ruff-r120-s13-cassette.3mf",
+        "mb": 0.044
+       }
+      ]
+     },
+     "image": "/printed-lamps/ruff/r120-s13.webp",
+     "imageLit": "/printed-lamps/ruff/r120-s13-lit.webp"
+    },
+    {
+     "id": "r120-s17",
+     "params": {
+      "R": 120.0,
+      "seed": 17
+     },
+     "printed": false,
+     "heightMm": 266,
+     "widthMm": 248,
+     "printHeightMm": 170,
+     "printTime": "6h 58m",
+     "filaments": [
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 168,
+       "nozzle": "right"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 132,
+       "nozzle": "right",
+       "part": "base"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 14,
+       "nozzle": "right",
+       "part": "cassette"
+      }
+     ],
+     "files": {
+      "project3mf": "ruff/r120-s17/ruff-r120-s17.3mf",
+      "project3mfMb": 35.213,
+      "stlZip": "ruff/r120-s17/ruff-r120-s17-stl.zip",
+      "stlZipMb": 78.322,
+      "extra": [
+       {
+        "label": "Base",
+        "path": "ruff/r120-s17/ruff-r120-s17-base.3mf",
+        "mb": 12.566
+       },
+       {
+        "label": "Cassette",
+        "path": "ruff/r120-s17/ruff-r120-s17-cassette.3mf",
+        "mb": 0.044
+       }
+      ]
+     },
+     "image": "/printed-lamps/ruff/r120-s17.webp",
+     "imageLit": "/printed-lamps/ruff/r120-s17-lit.webp"
+    },
+    {
+     "id": "r133-s11",
+     "params": {
+      "R": 133.0,
+      "seed": 11
+     },
+     "printed": false,
+     "heightMm": 279,
+     "widthMm": 276,
+     "printHeightMm": 170,
+     "printTime": "7h 50m",
+     "filaments": [
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 208,
+       "nozzle": "right"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 132,
+       "nozzle": "right",
+       "part": "base"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 14,
+       "nozzle": "right",
+       "part": "cassette"
+      }
+     ],
+     "files": {
+      "project3mf": "ruff/r133-s11/ruff-r133-s11.3mf",
+      "project3mfMb": 35.239,
+      "stlZip": "ruff/r133-s11/ruff-r133-s11-stl.zip",
+      "stlZipMb": 78.357,
+      "extra": [
+       {
+        "label": "Base",
+        "path": "ruff/r133-s11/ruff-r133-s11-base.3mf",
+        "mb": 12.566
+       },
+       {
+        "label": "Cassette",
+        "path": "ruff/r133-s11/ruff-r133-s11-cassette.3mf",
+        "mb": 0.044
+       }
+      ]
+     },
+     "image": "/printed-lamps/ruff/r133-s11.webp",
+     "imageLit": "/printed-lamps/ruff/r133-s11-lit.webp"
+    },
+    {
+     "id": "r133-s13",
+     "params": {
+      "R": 133.0,
+      "seed": 13
+     },
+     "printed": false,
+     "heightMm": 279,
+     "widthMm": 276,
+     "printHeightMm": 170,
+     "printTime": "7h 53m",
+     "filaments": [
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 208,
+       "nozzle": "right"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 132,
+       "nozzle": "right",
+       "part": "base"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 14,
+       "nozzle": "right",
+       "part": "cassette"
+      }
+     ],
+     "files": {
+      "project3mf": "ruff/r133-s13/ruff-r133-s13.3mf",
+      "project3mfMb": 35.242,
+      "stlZip": "ruff/r133-s13/ruff-r133-s13-stl.zip",
+      "stlZipMb": 78.323,
+      "extra": [
+       {
+        "label": "Base",
+        "path": "ruff/r133-s13/ruff-r133-s13-base.3mf",
+        "mb": 12.566
+       },
+       {
+        "label": "Cassette",
+        "path": "ruff/r133-s13/ruff-r133-s13-cassette.3mf",
+        "mb": 0.044
+       }
+      ]
+     },
+     "image": "/printed-lamps/ruff/r133-s13.webp",
+     "imageLit": "/printed-lamps/ruff/r133-s13-lit.webp"
+    },
+    {
+     "id": "r133-s17",
+     "params": {
+      "R": 133.0,
+      "seed": 17
+     },
+     "printed": false,
+     "heightMm": 279,
+     "widthMm": 275,
+     "printHeightMm": 170,
+     "printTime": "7h 51m",
+     "filaments": [
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 208,
+       "nozzle": "right"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 132,
+       "nozzle": "right",
+       "part": "base"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 14,
+       "nozzle": "right",
+       "part": "cassette"
+      }
+     ],
+     "files": {
+      "project3mf": "ruff/r133-s17/ruff-r133-s17.3mf",
+      "project3mfMb": 35.243,
+      "stlZip": "ruff/r133-s17/ruff-r133-s17-stl.zip",
+      "stlZipMb": 78.337,
+      "extra": [
+       {
+        "label": "Base",
+        "path": "ruff/r133-s17/ruff-r133-s17-base.3mf",
+        "mb": 12.566
+       },
+       {
+        "label": "Cassette",
+        "path": "ruff/r133-s17/ruff-r133-s17-cassette.3mf",
+        "mb": 0.044
+       }
+      ]
+     },
+     "image": "/printed-lamps/ruff/r133-s17.webp",
+     "imageLit": "/printed-lamps/ruff/r133-s17-lit.webp"
+    },
+    {
+     "id": "r146-s11",
+     "params": {
+      "R": 146.0,
+      "seed": 11
+     },
+     "printed": true,
+     "heightMm": 292,
+     "widthMm": 302,
+     "printHeightMm": 170,
+     "printTime": "8h 48m",
+     "filaments": [
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 253,
+       "nozzle": "right"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 132,
+       "nozzle": "right",
+       "part": "base"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 14,
+       "nozzle": "right",
+       "part": "cassette"
+      }
+     ],
+     "files": {
+      "project3mf": "ruff/r146-s11/ruff-r146-s11.3mf",
+      "project3mfMb": 35.305,
+      "stlZip": "ruff/r146-s11/ruff-r146-s11-stl.zip",
+      "stlZipMb": 78.429,
+      "extra": [
+       {
+        "label": "Base",
+        "path": "ruff/r146-s11/ruff-r146-s11-base.3mf",
+        "mb": 12.566
+       },
+       {
+        "label": "Cassette",
+        "path": "ruff/r146-s11/ruff-r146-s11-cassette.3mf",
+        "mb": 0.044
+       }
+      ]
+     },
+     "image": "/printed-lamps/ruff/r146-s11.webp",
+     "imageLit": "/printed-lamps/ruff/r146-s11-lit.webp",
+     "photo": "/printed-lamps/photos/ruff-tall.webp"
+    },
+    {
+     "id": "r146-s13",
+     "params": {
+      "R": 146.0,
+      "seed": 13
+     },
+     "printed": false,
+     "heightMm": 292,
+     "widthMm": 303,
+     "printHeightMm": 170,
+     "printTime": "8h 48m",
+     "filaments": [
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 253,
+       "nozzle": "right"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 132,
+       "nozzle": "right",
+       "part": "base"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 14,
+       "nozzle": "right",
+       "part": "cassette"
+      }
+     ],
+     "files": {
+      "project3mf": "ruff/r146-s13/ruff-r146-s13.3mf",
+      "project3mfMb": 35.302,
+      "stlZip": "ruff/r146-s13/ruff-r146-s13-stl.zip",
+      "stlZipMb": 78.405,
+      "extra": [
+       {
+        "label": "Base",
+        "path": "ruff/r146-s13/ruff-r146-s13-base.3mf",
+        "mb": 12.566
+       },
+       {
+        "label": "Cassette",
+        "path": "ruff/r146-s13/ruff-r146-s13-cassette.3mf",
+        "mb": 0.044
+       }
+      ]
+     },
+     "image": "/printed-lamps/ruff/r146-s13.webp",
+     "imageLit": "/printed-lamps/ruff/r146-s13-lit.webp"
+    },
+    {
+     "id": "r146-s17",
+     "params": {
+      "R": 146.0,
+      "seed": 17
+     },
+     "printed": false,
+     "heightMm": 292,
+     "widthMm": 302,
+     "printHeightMm": 170,
+     "printTime": "8h 45m",
+     "filaments": [
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 253,
+       "nozzle": "right"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 132,
+       "nozzle": "right",
+       "part": "base"
+      },
+      {
+       "name": "PLA Basic beige",
+       "colour": "#F7E6DE",
+       "grams": 14,
+       "nozzle": "right",
+       "part": "cassette"
+      }
+     ],
+     "files": {
+      "project3mf": "ruff/r146-s17/ruff-r146-s17.3mf",
+      "project3mfMb": 35.303,
+      "stlZip": "ruff/r146-s17/ruff-r146-s17-stl.zip",
+      "stlZipMb": 78.427,
+      "extra": [
+       {
+        "label": "Base",
+        "path": "ruff/r146-s17/ruff-r146-s17-base.3mf",
+        "mb": 12.566
+       },
+       {
+        "label": "Cassette",
+        "path": "ruff/r146-s17/ruff-r146-s17-cassette.3mf",
+        "mb": 0.044
+       }
+      ]
+     },
+     "image": "/printed-lamps/ruff/r146-s17.webp",
+     "imageLit": "/printed-lamps/ruff/r146-s17-lit.webp"
     }
    ]
   },
@@ -1397,6 +2606,10 @@
      }
     }
    ],
+   "photo": {
+    "wide": "/printed-lamps/photos/beehive-wide.webp",
+    "tall": "/printed-lamps/photos/beehive-tall.webp"
+   },
    "variants": [
     {
      "id": "h160",
@@ -1450,7 +2663,8 @@
       "stlZipMb": 3.81
      },
      "image": "/printed-lamps/beehive/h200.webp",
-     "imageLit": "/printed-lamps/beehive/h200-lit.webp"
+     "imageLit": "/printed-lamps/beehive/h200-lit.webp",
+     "photo": "/printed-lamps/photos/beehive-tall.webp"
     },
     {
      "id": "h240",

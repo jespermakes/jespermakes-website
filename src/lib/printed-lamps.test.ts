@@ -20,8 +20,10 @@ describe("printed lamps data", () => {
 
   for (const lamp of PRINTED_LAMPS) {
     describe(lamp.name, () => {
-      it("has exactly one variant marked as the one that was printed", () => {
-        expect(lamp.variants.filter((v) => v.printed)).toHaveLength(1);
+      it("marks the variant that was printed (Cloudy Fluff was printed in 2 versions)", () => {
+        const printed = lamp.variants.filter((v) => v.printed).length;
+        expect(printed).toBeGreaterThanOrEqual(1);
+        expect(printed).toBeLessThanOrEqual(lamp.id === "fluff" ? 2 : 1);
       });
 
       it("opens on the printed variant", () => {
@@ -48,10 +50,10 @@ describe("printed lamps data", () => {
         }
       });
 
-      it("every print fits the H2D (325 mm tall, 300 mm round on the plate)", () => {
+      it("every print fits the H2D (325 mm tall, 320 mm deep; the widest Twisted Ruff shade is 302 mm and printed)", () => {
         for (const v of lamp.variants) {
           expect(v.printHeightMm).toBeLessThanOrEqual(325);
-          expect(v.widthMm).toBeLessThanOrEqual(300);
+          expect(v.widthMm).toBeLessThanOrEqual(320);
         }
       });
     });

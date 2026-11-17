@@ -40,6 +40,10 @@ export interface PrintedVariant {
   files: PrintedFiles;
   image: string;
   imageLit?: string;
+  /** set when what you also need depends on the version (Cloudy Fluff: E27 bulb or LED kit) */
+  hardware?: string[];
+  /** a real photo of exactly this version (only the one that was printed has it) */
+  photo?: string;
 }
 
 export interface PrintedKnob {
@@ -67,6 +71,8 @@ export interface PrintedLamp {
   knobs: PrintedKnob[];
   hardware: string[];
   parts: PrintedPart[];
+  /** real photos of the printed lamp: wide for the picker, tall for the stage */
+  photo?: { wide: string; tall: string };
   variants: PrintedVariant[];
 }
 
@@ -108,7 +114,7 @@ export function findVariant(
   );
 }
 
-/** The variant a lamp opens on: the one that was printed, else the first. */
+/** The variant a lamp opens on: the first one that was printed, else the first. */
 export function defaultVariant(lamp: PrintedLamp): PrintedVariant {
   return lamp.variants.find((v) => v.printed) ?? lamp.variants[0];
 }

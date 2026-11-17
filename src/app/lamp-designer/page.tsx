@@ -13,23 +13,10 @@ import {
 } from "@/lib/printed-lamps";
 
 const INTRO =
-  "Every lamp on this page has been printed on my H2D in the workshop, and you can change it a little: the height, and on the Flower and Poppy lamps the way the flowers land on the shade. Each version you can pick here went through the slicer and my print checks before it got a download button. The one I printed is marked, the other versions passed the same checks but I haven't printed them myself.";
+  "Every lamp on this page has been printed on my H2D in the workshop, and you can change it a little: the size, and on most of them the pattern, like where the flowers land on the shade or how the folds fall. Each version you can pick here went through the slicer and my print checks before it got a download button. The one I printed is marked, the other versions passed the same checks but I haven't printed them myself.";
 
-// The two film lamps that have no checked variants here: MakerWorld has them exactly as printed.
-const ALSO_FROM_THE_FILM = [
-  {
-    name: "Cloudy Fluff",
-    note: "The lamp my daughter Julie drew.",
-    href: "https://makerworld.com/en/models/3531319",
-    image: "/printed-lamps/film/cloudy-fluff.webp",
-  },
-  {
-    name: "Twisted Ruff",
-    note: "A twisted shade that clicks onto its base.",
-    href: "https://makerworld.com/en/models/3530308",
-    image: "/printed-lamps/film/twisted-ruff.webp",
-  },
-];
+const TIFFANY =
+  "The Tiffany lamp my daughter Karoline designed is the last one in the film, and it's 812 pieces. The files for it aren't ready yet, so there's nothing to download here for now.";
 
 function FilamentLine({ name, colour, grams, nozzle, part }: PrintedVariant["filaments"][number]) {
   return (
@@ -86,8 +73,13 @@ function DownloadButtons({ project3mf, project3mfMb, stlZip, stlZipMb, extra }: 
 function LampCard({ lamp }: { lamp: PrintedLamp }) {
   const [params, setParams] = useState<Record<string, number>>(defaultVariant(lamp).params);
   const [lit, setLit] = useState(false);
+  const [showPhoto, setShowPhoto] = useState(true);
   const variant = findVariant(lamp, params) ?? defaultVariant(lamp);
-  const image = lit && variant.imageLit ? variant.imageLit : variant.image;
+  // The version I printed opens on its real photo; every other version is a render.
+  const photo = showPhoto ? variant.photo : undefined;
+  const image = photo ?? (lit && variant.imageLit ? variant.imageLit : variant.image);
+  // Cloudy Fluff needs other parts for an E27 bulb than for the LED kit
+  const hardware = variant.hardware ?? lamp.hardware;
 
   function pick(key: string, value: number) {
     const exact = findVariant(lamp, { ...params, [key]: value });
@@ -102,10 +94,10 @@ function LampCard({ lamp }: { lamp: PrintedLamp }) {
         <div className="relative bg-[#ebe8e2] aspect-[11/15] md:sticky md:top-6 md:self-start">
           <Image
             src={image}
-            alt={`${lamp.name}, ${variant.heightMm} mm${lit ? ", lit" : ""}`}
+            alt={`${lamp.name}, ${variant.heightMm} mm${photo ? ", photo" : lit ? ", lit" : ""}`}
             fill
             sizes="(min-width: 768px) 512px, 100vw"
-            className="object-contain"
+            className={photo ? "object-cover" : "object-contain"}
           />
           <div
             className={`absolute left-4 top-4 rounded-full px-3 py-1 text-[11px] font-bold tracking-[0.08em] uppercase ${
@@ -114,17 +106,31 @@ function LampCard({ lamp }: { lamp: PrintedLamp }) {
           >
             {variant.printed ? "The one I printed" : "Checked, not printed by me"}
           </div>
-          {variant.imageLit && (
-            <button
-              type="button"
-              onClick={() => setLit((v) => !v)}
-              aria-pressed={lit}
-              className="absolute right-4 top-4 rounded-full bg-white/85 px-3 py-1 text-[11px] font-bold tracking-[0.08em] uppercase text-wood/70 hover:bg-white transition-colors"
-            >
-              {lit ? "Light off" : "Light on"}
-            </button>
-          )}
-          <div className="absolute bottom-3 left-4 text-[11px] text-wood/45">Render, not a photo</div>
+          <div className="absolute right-4 top-4 flex flex-col items-end gap-1.5">
+            {variant.photo && (
+              <button
+                type="button"
+                onClick={() => setShowPhoto((v) => !v)}
+                aria-pressed={!photo}
+                className="rounded-full bg-white/85 px-3 py-1 text-[11px] font-bold tracking-[0.08em] uppercase text-wood/70 hover:bg-white transition-colors"
+              >
+                {photo ? "Show render" : "Show photo"}
+              </button>
+            )}
+            {!photo && variant.imageLit && (
+              <button
+                type="button"
+                onClick={() => setLit((v) => !v)}
+                aria-pressed={lit}
+                className="rounded-full bg-white/85 px-3 py-1 text-[11px] font-bold tracking-[0.08em] uppercase text-wood/70 hover:bg-white transition-colors"
+              >
+                {lit ? "Light off" : "Light on"}
+              </button>
+            )}
+          </div>
+          <div className={`absolute bottom-3 left-4 text-[11px] ${photo ? "text-white/80" : "text-wood/45"}`}>
+            {photo ? "Photo of the one I printed" : "Render, not a photo"}
+          </div>
         </div>
 
         <div className="p-6 md:p-8 flex flex-col gap-6">
@@ -251,13 +257,13 @@ function LampCard({ lamp }: { lamp: PrintedLamp }) {
             </div>
           )}
 
-          {lamp.hardware.length > 0 && (
+          {hardware.length > 0 && (
             <div>
               <div className="text-[10px] font-bold tracking-[0.15em] text-wood-light/45 uppercase mb-1.5">
                 You also need
               </div>
               <ul className="list-disc list-inside text-sm text-wood/75">
-                {lamp.hardware.map((h) => (
+                {hardware.map((h) => (
                   <li key={h}>{h}</li>
                 ))}
               </ul>
@@ -299,7 +305,7 @@ export default function LampGeneratorPage() {
           <p className="text-wood-light/70 text-[15px] md:text-[17px] max-w-[680px] leading-relaxed m-0">{INTRO}</p>
         </div>
 
-        <div role="tablist" aria-label="Pick a lamp" className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-6">
+        <div role="tablist" aria-label="Pick a lamp" className="grid grid-cols-3 lg:grid-cols-6 gap-2.5 mb-6">
           {PRINTED_LAMPS.map((l) => {
             const selected = l.id === lamp.id;
             const cover = defaultVariant(l);
@@ -311,14 +317,20 @@ export default function LampGeneratorPage() {
                 aria-selected={selected}
                 onClick={() => choose(l.id)}
                 className={[
-                  "flex items-center gap-3 rounded-xl border-2 p-2 text-left transition-colors",
+                  "overflow-hidden rounded-xl border-2 text-left transition-colors",
                   selected ? "border-forest bg-forest/5" : "border-wood/10 bg-white/60 hover:border-wood/25",
                 ].join(" ")}
               >
-                <span className="relative h-14 w-11 shrink-0 overflow-hidden rounded-md bg-[#ebe8e2]">
-                  <Image src={cover.imageLit ?? cover.image} alt="" fill sizes="44px" className="object-cover" />
+                <span className="relative block aspect-[4/3] bg-[#ebe8e2]">
+                  <Image
+                    src={l.photo?.wide ?? cover.imageLit ?? cover.image}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 160px, 33vw"
+                    className="object-cover"
+                  />
                 </span>
-                <span>
+                <span className="block px-2.5 py-2">
                   <span className="block text-sm font-semibold text-wood leading-tight">{l.name}</span>
                   <span className="block text-xs text-wood/50">
                     {l.variants.length} {l.variants.length === 1 ? "version" : "versions"}
@@ -331,32 +343,19 @@ export default function LampGeneratorPage() {
 
         <LampCard key={lamp.id} lamp={lamp} />
 
-        <div className="mt-12">
-          <h2 className="font-serif text-2xl text-wood mb-1">2 more from the film</h2>
-          <p className="text-sm text-wood/65 max-w-[680px] mb-4">
-            These 2 are on MakerWorld just the way I printed them, so for now there&apos;s only the one size of each.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {ALSO_FROM_THE_FILM.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-4 rounded-2xl border border-wood/[0.08] bg-white/60 p-3 hover:border-forest/30 transition-colors"
-              >
-                <span className="relative h-24 w-32 shrink-0 overflow-hidden rounded-xl bg-[#ebe8e2]">
-                  <Image src={item.image} alt={`${item.name}, lit`} fill sizes="128px" className="object-cover" />
-                </span>
-                <span>
-                  <span className="block font-serif text-xl text-wood">{item.name}</span>
-                  <span className="block text-sm text-wood/65">{item.note}</span>
-                  <span className="block text-xs font-medium text-forest mt-1 group-hover:underline">
-                    Free on MakerWorld
-                  </span>
-                </span>
-              </a>
-            ))}
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-[minmax(0,300px)_1fr] items-center overflow-hidden rounded-2xl border border-wood/[0.08] bg-white/60">
+          <div className="relative aspect-[4/3]">
+            <Image
+              src="/printed-lamps/photos/tiffany-wide.webp"
+              alt="The Tiffany lamp, lit"
+              fill
+              sizes="(min-width: 640px) 300px, 100vw"
+              className="object-cover"
+            />
+          </div>
+          <div className="p-5 md:p-6">
+            <h2 className="font-serif text-2xl text-wood mb-1.5">Tiffany Lamp</h2>
+            <p className="text-sm leading-relaxed text-wood/70 max-w-[520px]">{TIFFANY}</p>
           </div>
         </div>
 
