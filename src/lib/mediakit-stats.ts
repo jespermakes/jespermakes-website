@@ -63,3 +63,75 @@ export function measuredOn(): string {
     day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
   });
 }
+
+/* ------------------------------------------------------------------ */
+/*  YouTube windows: where the watching happens                         */
+/* ------------------------------------------------------------------ */
+
+/* The geography leads on share of WATCH TIME, never views, and every window
+ * says which days it covers. Views by country follow whichever Short is
+ * travelling: on 9 Sept 2026 the 90-day window by views read Denmark 42.1
+ * percent, by watch time 3.3 percent. A sponsor landing on that would see a
+ * Danish channel. Watch time is also untouched by YouTube's 24 Aug 2026 change
+ * to what counts as a view, so the three windows compare honestly.
+ *
+ * The share is of ALL watch time in the window, including the few percent
+ * YouTube cannot place in a country, so it never overstates a country. Raw
+ * minutes come from the Brain job (YouTube Analytics API, daily); Brain keeps
+ * every country, the JSON carries the top ten. */
+
+export type WindowKey = "28d" | "12mo" | "all";
+
+export interface CountryShare {
+  code: string;
+  pct: number;
+}
+
+export interface YouTubeWindow {
+  key: WindowKey;
+  /** Tab text. */
+  tab: string;
+  /** Which days, as it reads after "Share of watch time":
+   *  "over the last 28 days (21 Oct to 17 Nov 2026)". */
+  range: string;
+  /** "46.9K" */
+  hoursWatched: string;
+  countries: CountryShare[];
+}
+
+const TABS: Record<WindowKey, string> = {
+  "28d": "28 days",
+  "12mo": "12 months",
+  all: "All time",
+};
+
+function day(iso: string, withYear: boolean): string {
+  return new Date(iso + "T00:00:00Z").toLocaleDateString("en-GB", {
+    day: "numeric", month: "short", timeZone: "UTC",
+    ...(withYear ? { year: "numeric" } : {}),
+  });
+}
+
+function rangeLabel(key: WindowKey, start: string, end: string): string {
+  if (key === "all") return `since the channel started, up to ${day(end, true)}`;
+  const sameYear = start.slice(0, 4) === end.slice(0, 4);
+  const span = key === "28d" ? "the last 28 days" : "the last 12 months";
+  return `over ${span} (${day(start, !sameYear)} to ${day(end, true)})`;
+}
+
+/** The three windows, ready to render: 28 days, 12 months, all time. */
+export function youtubeWindows(): YouTubeWindow[] {
+  return raw.youtube_windows.map((w) => {
+    const key = w.key as WindowKey;
+    return {
+      key,
+      tab: TABS[key],
+      range: rangeLabel(key, w.start, w.end),
+      hoursWatched: compact(Math.round(w.watch_minutes / 60)),
+      countries: w.countries.map((c) => ({
+        code: c.code,
+        pct: Math.round((c.watch_minutes / w.watch_minutes) * 1000) / 10,
+      })),
+    };
+  });
+}

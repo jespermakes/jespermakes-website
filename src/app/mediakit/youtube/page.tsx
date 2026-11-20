@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { stats as mk, compact, youtubeWindows } from "@/lib/mediakit-stats";
+import { WatchTimeGeography } from "@/components/mediakit/watch-time-geography";
 
+// Subscribers, views and videos are generated (src/data/mediakit-stats.json,
+// the Brain job, daily). They were typed here and had drifted to 360K, 44.1M
+// and 132 while the main media kit page said 365K, 45.7M and 137.
 export const metadata: Metadata = {
   title: "YouTube stats | Jesper Makes media kit",
-  description:
-    "YouTube channel stats for Jesper Makes. 360K subscribers, 44.1M views, 132 videos.",
+  description: `YouTube channel stats for Jesper Makes. ${compact(mk.youtube.subscribers)} subscribers, ${compact(mk.youtube.views)} views, ${mk.youtube.videos} videos.`,
   alternates: { canonical: "/mediakit/youtube" },
 };
 
@@ -19,9 +23,9 @@ const topVideos = [
 ];
 
 const stats = [
-  { label: "Subscribers", value: "360K" },
-  { label: "Total Views", value: "44.1M" },
-  { label: "Total Videos", value: "132" },
+  { label: "Subscribers", value: compact(mk.youtube.subscribers) },
+  { label: "Total Views", value: compact(mk.youtube.views) },
+  { label: "Total Videos", value: String(mk.youtube.videos) },
   { label: "Engagement Rate", value: "6.1%" },
   { label: "Avg Watch Time", value: "8:54" },
   { label: "Male Audience", value: "88.6%" },
@@ -32,17 +36,6 @@ const ageData = [
   { label: "35-44", pct: 25.6 },
   { label: "45-54", pct: 21.3 },
   { label: "55-64", pct: 16.2 },
-];
-
-const countryData = [
-  { label: "US", pct: 21.4 },
-  { label: "DE", pct: 11.1 },
-  { label: "GB", pct: 9.7 },
-  { label: "FR", pct: 4.7 },
-  { label: "NL", pct: 4.1 },
-  { label: "CA", pct: 4.0 },
-  { label: "AU", pct: 3.6 },
-  { label: "DK", pct: 2.7 },
 ];
 
 function Bar({ label, pct }: { label: string; pct: number }) {
@@ -97,10 +90,8 @@ export default function YouTubePage() {
             </div>
           </div>
           <div className="bg-[#1a1a1a] rounded-xl p-6">
-            <p className="text-white/40 text-xs uppercase tracking-wider mb-4">Top Countries</p>
-            <div className="space-y-3">
-              {countryData.map((c) => <Bar key={c.label} label={c.label} pct={c.pct} />)}
-            </div>
+            <p className="text-white/40 text-xs uppercase tracking-wider mb-4">Top Countries by Watch Time</p>
+            <WatchTimeGeography windows={youtubeWindows()} rows={10} />
           </div>
         </div>
 

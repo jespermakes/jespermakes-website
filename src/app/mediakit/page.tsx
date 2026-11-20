@@ -9,7 +9,9 @@ import {
   followerHeadline,
   viewsHeadline,
   measuredOn,
+  youtubeWindows,
 } from "@/lib/mediakit-stats";
+import { WatchTimeGeography } from "@/components/mediakit/watch-time-geography";
 
 export const metadata: Metadata = {
   title: "Media kit | Jesper Makes",
@@ -185,16 +187,9 @@ const ageData = [
   { label: "55-64", pct: 16.2 },
 ];
 
-const countryData = [
-  { label: "US", pct: 21.4 },
-  { label: "DE", pct: 11.1 },
-  { label: "GB", pct: 9.7 },
-  { label: "FR", pct: 4.7 },
-  { label: "NL", pct: 4.1 },
-  { label: "CA", pct: 4.0 },
-  { label: "AU", pct: 3.6 },
-  { label: "DK", pct: 2.7 },
-];
+// Countries are generated, not typed: youtubeWindows() in the lib, from the
+// Brain job's YouTube Analytics pull. The old table here (US 21.4 percent) was
+// lifetime VIEWS from June 2026 and undersold the US by half.
 
 /* ------------------------------------------------------------------ */
 /*  Reusable components                                                 */
@@ -328,7 +323,9 @@ export default function MediaKit() {
         </h1>
 
         {/* Every clause is measured, not asserted: male 88.6% (donut below),
-            25-54 = 67.0% (ageData), US 21.4% + listed Europe 32.3% (countryData). */}
+            25-54 = 67.0% (ageData), US and Europe lead the watch time in every
+            window (youtubeWindows: US 35 to 49 percent, then GB, DE, NL, DK,
+            SE as of Nov 2026). */}
         <p className="text-white/60 text-base md:text-lg max-w-2xl mx-auto">
           Core audience: male, 25 to 54, predominantly US and Europe.
         </p>
@@ -539,13 +536,9 @@ export default function MediaKit() {
           {/* Countries */}
           <div className="bg-[#1a1a1a] rounded-xl p-6 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(232,96,76,0.08)] transition-all duration-300">
             <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
-              Top Countries
+              Top Countries by Watch Time
             </p>
-            <div className="space-y-3">
-              {countryData.map((c) => (
-                <Bar key={c.label} label={c.label} pct={c.pct} />
-              ))}
-            </div>
+            <WatchTimeGeography windows={youtubeWindows()} />
           </div>
         </div>
       </section>

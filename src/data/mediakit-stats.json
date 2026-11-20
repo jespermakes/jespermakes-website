@@ -30,5 +30,184 @@
     "followers": 44000,
     "videos": 132,
     "engagement_pct": 2.6
-  }
+  },
+  "youtube_windows": [
+    {
+      "key": "28d",
+      "start": "2026-10-21",
+      "end": "2026-11-17",
+      "views": 413199,
+      "watch_minutes": 2815884,
+      "countries": [
+        {
+          "code": "US",
+          "views": 113147,
+          "watch_minutes": 976330
+        },
+        {
+          "code": "GB",
+          "views": 49281,
+          "watch_minutes": 260430
+        },
+        {
+          "code": "DE",
+          "views": 36248,
+          "watch_minutes": 197903
+        },
+        {
+          "code": "CA",
+          "views": 19340,
+          "watch_minutes": 136570
+        },
+        {
+          "code": "AU",
+          "views": 16353,
+          "watch_minutes": 115985
+        },
+        {
+          "code": "NL",
+          "views": 16163,
+          "watch_minutes": 94995
+        },
+        {
+          "code": "DK",
+          "views": 12276,
+          "watch_minutes": 88452
+        },
+        {
+          "code": "SE",
+          "views": 10920,
+          "watch_minutes": 73129
+        },
+        {
+          "code": "NO",
+          "views": 7841,
+          "watch_minutes": 52653
+        },
+        {
+          "code": "ZA",
+          "views": 5044,
+          "watch_minutes": 51427
+        }
+      ]
+    },
+    {
+      "key": "12mo",
+      "start": "2025-11-18",
+      "end": "2026-11-17",
+      "views": 9836737,
+      "watch_minutes": 47406931,
+      "countries": [
+        {
+          "code": "US",
+          "views": 2038895,
+          "watch_minutes": 16849572
+        },
+        {
+          "code": "GB",
+          "views": 684962,
+          "watch_minutes": 4427522
+        },
+        {
+          "code": "DE",
+          "views": 822768,
+          "watch_minutes": 3015986
+        },
+        {
+          "code": "CA",
+          "views": 335512,
+          "watch_minutes": 2369327
+        },
+        {
+          "code": "AU",
+          "views": 266312,
+          "watch_minutes": 2150579
+        },
+        {
+          "code": "NL",
+          "views": 252750,
+          "watch_minutes": 1329580
+        },
+        {
+          "code": "DK",
+          "views": 770741,
+          "watch_minutes": 1072476
+        },
+        {
+          "code": "SE",
+          "views": 249520,
+          "watch_minutes": 1037907
+        },
+        {
+          "code": "ZA",
+          "views": 81223,
+          "watch_minutes": 796454
+        },
+        {
+          "code": "FR",
+          "views": 348176,
+          "watch_minutes": 761419
+        }
+      ]
+    },
+    {
+      "key": "all",
+      "start": "2006-01-01",
+      "end": "2026-11-17",
+      "views": 46110568,
+      "watch_minutes": 502285172,
+      "countries": [
+        {
+          "code": "US",
+          "views": 12400785,
+          "watch_minutes": 243651820
+        },
+        {
+          "code": "GB",
+          "views": 3683166,
+          "watch_minutes": 43074170
+        },
+        {
+          "code": "CA",
+          "views": 1897360,
+          "watch_minutes": 28154075
+        },
+        {
+          "code": "DE",
+          "views": 3487180,
+          "watch_minutes": 19006331
+        },
+        {
+          "code": "AU",
+          "views": 1393844,
+          "watch_minutes": 18432083
+        },
+        {
+          "code": "NL",
+          "views": 1111796,
+          "watch_minutes": 8593410
+        },
+        {
+          "code": "SE",
+          "views": 787552,
+          "watch_minutes": 8379009
+        },
+        {
+          "code": "ZA",
+          "views": 500301,
+          "watch_minutes": 7777798
+        },
+        {
+          "code": "DK",
+          "views": 1223752,
+          "watch_minutes": 6230237
+        },
+        {
+          "code": "FR",
+          "views": 1651516,
+          "watch_minutes": 5682591
+        }
+      ]
+    }
+  ]
 }
