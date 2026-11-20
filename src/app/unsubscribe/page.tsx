@@ -35,7 +35,7 @@ export default async function UnsubscribePage({
   if (params.done) {
     return (
       <Shell title="You're off the list">
-        <p>No more Workshop Letters. Thanks for reading while you did.</p>
+        <p>You won&apos;t get any more Workshop Letters, and thanks for reading while you did.</p>
         <p>
           Changed your mind? You can sign up again any time on the{" "}
           <Link href="/newsletter" className="text-forest underline underline-offset-4">
@@ -93,7 +93,7 @@ export default async function UnsubscribePage({
           Unsubscribe
         </button>
       </form>
-      <p className="pt-2 text-sm text-wood-light/70">One click and it&apos;s done. No login.</p>
+      <p className="pt-2 text-sm text-wood-light/70">One click and it&apos;s done, no login needed.</p>
     </Shell>
   );
 }
