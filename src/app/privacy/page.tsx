@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Privacy policy | Jesper Makes",
@@ -9,7 +10,7 @@ export default function PrivacyPage() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="font-serif text-4xl text-wood mb-2">Privacy Policy</h1>
-      <p className="text-wood-light/60 text-sm mb-10">Last updated: March 22, 2026</p>
+      <p className="text-wood-light/60 text-sm mb-10">Last updated: November 20, 2026</p>
 
       <div className="prose prose-stone max-w-none space-y-8 font-sans text-wood-light leading-relaxed">
         <section>
@@ -85,12 +86,20 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="font-serif text-2xl text-wood mb-3">9. Changes</h2>
+          <h2 className="font-serif text-2xl text-wood mb-3">9. Messages and Our Social Media Accounts</h2>
+          <p><strong>Messages you send us.</strong> When you send a direct message to @jespermakes on Instagram or to the Jesper Makes Page on Facebook, Meta passes it to us through its official API: your name as it shows on Instagram or Facebook, the account ID Meta gives us for you, the text and anything you attach, and the time it was sent. We use it only to read and answer your message and to keep track of the conversation, so a question or a collaboration request does not get lost. Our legal basis is our legitimate interest in answering the people who write to us, and, when you ask about buying something, taking the steps you asked for before a purchase (GDPR Article 6(1)(f) and 6(1)(b)).</p>
+          <p>Messages are kept on a private server we run ourselves in Denmark. On the way there, Meta&apos;s notifications pass through our website host (Vercel) and database host (Neon), where they are deleted after 14 days at the latest. To sort messages we use an AI model that runs on our own server, and Anthropic&apos;s Claude when that model is unavailable. To help draft replies we also use Claude. Every reply is read and sent by hand by Jesper. We never use your messages for advertising, and we never sell or share them.</p>
+          <p>We keep a conversation as long as we need it to answer you and follow up. You can ask us to delete it at any time, see <Link href="/data-deletion" className="text-forest hover:underline">jespermakes.com/data-deletion</Link>.</p>
+          <p><strong>Figures about our own accounts.</strong> We also read performance data about our own Instagram, Facebook and YouTube accounts through the platforms&apos; official APIs: follower counts, views, reach, likes, comments, shares and saves on content we published ourselves. These figures are totals and do not identify individual viewers or followers. We use them to see which work lands, to plan what to make next, and to report audience figures to sponsors.</p>
+        </section>
+
+        <section>
+          <h2 className="font-serif text-2xl text-wood mb-3">10. Changes</h2>
           <p>We may update this policy from time to time. Changes will be posted on this page with a new &quot;last updated&quot; date. For significant changes, we will notify customers by email.</p>
         </section>
 
         <section>
-          <h2 className="font-serif text-2xl text-wood mb-3">10. Contact</h2>
+          <h2 className="font-serif text-2xl text-wood mb-3">11. Contact</h2>
           <p>Questions about your privacy? Email us at <a href="mailto:hello@jespermakes.com" className="text-forest hover:underline">hello@jespermakes.com</a></p>
         </section>
       </div>

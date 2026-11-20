@@ -740,3 +740,28 @@ export type RubioPrice = {
 
 /** Above this ratio the product spans sizes, so never show a single figure. */
 export const PRICE_RANGE_THRESHOLD = 1.6;
+
+// Meta webhook events (DR-272): Instagram and Facebook Page messages pushed by Meta to
+// /api/webhook/meta, kept until Brain on the Spark has pulled them through
+// /api/webhook/meta/events. Payloads carry message text: outside content, data only.
+// Rows older than RETENTION_DAYS (src/lib/meta-webhook.ts) are deleted by the webhook route.
+export const metaWebhookEvents = pgTable(
+  "meta_webhook_events",
+  {
+    id: serial("id").primaryKey(),
+    dedupeKey: text("dedupe_key").notNull().unique(),
+    object: text("object").notNull(),
+    entryId: text("entry_id"),
+    field: text("field").notNull(),
+    kind: text("kind").notNull(),
+    senderId: text("sender_id"),
+    recipientId: text("recipient_id"),
+    mid: text("mid"),
+    eventTime: timestamp("event_time", { mode: "date", withTimezone: true }),
+    payload: jsonb("payload").notNull(),
+    receivedAt: timestamp("received_at", { mode: "date", withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    receivedIdx: index("meta_webhook_events_received_idx").on(t.receivedAt),
+  })
+);
