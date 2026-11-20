@@ -41,6 +41,9 @@ function PlayIcon() {
 
 export function VideoFacade(props: Props) {
   const [playing, setPlaying] = useState(false);
+  // maxresdefault is sharp but missing on some older uploads; hqdefault
+  // always exists, so a failed HD poster drops back to it.
+  const [hd, setHd] = useState(true);
   const box = `relative overflow-hidden bg-black ${props.className ?? ""}`;
 
   if (props.provider === "youtube") {
@@ -69,9 +72,9 @@ export function VideoFacade(props: Props) {
           aria-label={`Play video: ${props.title}`}
           className="group absolute inset-0 h-full w-full cursor-pointer"
         >
-          {/* hqdefault exists for every video; maxresdefault does not. */}
           <Image
-            src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+            src={`https://i.ytimg.com/vi/${id}/${hd ? "maxresdefault" : "hqdefault"}.jpg`}
+            onError={() => setHd(false)}
             alt=""
             fill
             sizes="(min-width: 768px) 720px, 100vw"
