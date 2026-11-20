@@ -54,7 +54,7 @@ export function WatchTimeGeography({
                 style={{ width: `${c.pct}%` }}
               />
             </div>
-            <span className="w-12 text-right text-white/60 tabular-nums">{c.pct}%</span>
+            <span className="w-12 text-right text-white/60 tabular-nums">{c.pct.toFixed(1)}%</span>
           </div>
         ))}
       </div>
