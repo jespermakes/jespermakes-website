@@ -57,6 +57,13 @@ export function viewsHeadline(): string {
   return `${Math.floor(t / 1_000_000)}M+`;
 }
 
+/** "November 2026", for "Updated ..." lines. */
+export function measuredMonth(): string {
+  return new Date(raw.measured_at + "T00:00:00Z").toLocaleDateString("en-GB", {
+    month: "long", year: "numeric", timeZone: "UTC",
+  });
+}
+
 /** "12 August 2026" */
 export function measuredOn(): string {
   return new Date(raw.measured_at + "T00:00:00Z").toLocaleDateString("en-GB", {

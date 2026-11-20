@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getSubscriberCount } from "@/lib/homepage/fetch";
 import { NotesSignupForm } from "@/components/newsletter/notes-signup-form";
+import { stats as mk, compact, exact } from "@/lib/mediakit-stats";
 
 export const revalidate = 60;
 
@@ -132,13 +133,15 @@ export default async function NewsletterPage() {
               </p>
             </div>
             <div>
-              <p className="font-serif text-4xl md:text-5xl text-cream mb-2">360,000</p>
+              <p className="font-serif text-4xl md:text-5xl text-cream mb-2">{exact(mk.youtube.subscribers)}</p>
               <p className="text-sm text-cream/60 leading-relaxed">
                 Subscribers on YouTube.
               </p>
             </div>
             <div>
-              <p className="font-serif text-4xl md:text-5xl text-cream mb-2">44.1M</p>
+              {/* Both read the media kit's daily file (Brain job); they were typed and
+                  stuck at 360,000 and 44.1M. */}
+              <p className="font-serif text-4xl md:text-5xl text-cream mb-2">{compact(mk.youtube.views)}</p>
               <p className="text-sm text-cream/60 leading-relaxed">
                 Views, all time.
               </p>

@@ -9,14 +9,16 @@ import {
   followerHeadline,
   viewsHeadline,
   measuredOn,
+  measuredMonth,
   youtubeWindows,
 } from "@/lib/mediakit-stats";
 import { WatchTimeGeography } from "@/components/mediakit/watch-time-geography";
 
+// Generated like the page: it was typed and read 545K+, 44.1M, 16.4M and
+// "Updated August 2026" while the page under it said otherwise.
 export const metadata: Metadata = {
   title: "Media kit | Jesper Makes",
-  description:
-    "Audience stats, demographics, and brand partnership info for Jesper Makes. 545K+ followers across YouTube, Instagram, TikTok, and Facebook. 44.1M YouTube views, 16.4M Instagram views. Verified via platform APIs. Updated August 2026.",
+  description: `Audience stats, demographics, and brand partnership info for Jesper Makes. ${followerHeadline()} followers across YouTube, Instagram, TikTok, and Facebook. ${compact(mk.youtube.views)} YouTube views, ${compact(mk.instagram.lifetime_views)} Instagram views. Verified via platform APIs. Updated ${measuredMonth()}.`,
   alternates: { canonical: "/mediakit" },
 };
 
