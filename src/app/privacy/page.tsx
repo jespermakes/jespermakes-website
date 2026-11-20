@@ -9,7 +9,7 @@ export default function PrivacyPage() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-16">
       <h1 className="font-serif text-4xl text-wood mb-2">Privacy Policy</h1>
-      <p className="text-wood-light/60 text-sm mb-10">Last updated: March 22, 2026</p>
+      <p className="text-wood-light/60 text-sm mb-10">Last updated: November 20, 2026</p>
 
       <div className="prose prose-stone max-w-none space-y-8 font-sans text-wood-light leading-relaxed">
         <section>
@@ -57,6 +57,7 @@ export default function PrivacyPage() {
           <h2 className="font-serif text-2xl text-wood mb-3">5. Cookies</h2>
           <p>We use only essential cookies required for the website to function, such as authentication session tokens. We do not use tracking cookies, advertising cookies, or third-party marketing pixels.</p>
           <p>Vercel Web Analytics does not use cookies.</p>
+          <p>Videos on this site stay switched off until you press play. Before that you only see a still picture, served from our own server, and nothing is sent to YouTube, Google or Instagram. When you press play, the video loads from YouTube (its privacy-enhanced mode, youtube-nocookie.com) or from Instagram. From that moment they can see your IP address and may set their own cookies, under their own rules: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-forest hover:underline">policies.google.com/privacy</a> and <a href="https://privacycenter.instagram.com/policy" target="_blank" rel="noopener noreferrer" className="text-forest hover:underline">privacycenter.instagram.com/policy</a>.</p>
         </section>
 
         <section>

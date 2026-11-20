@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getYoutubeVideosForFeed } from "@/lib/homepage/fetch";
 import type { YoutubeData } from "@/lib/homepage/types";
 import { resolveTheme } from "@/lib/homepage/themes";
@@ -36,11 +37,14 @@ export default async function YoutubeModule({ data }: { data: YoutubeData }) {
               className="group block"
             >
               <div className={`relative aspect-video overflow-hidden rounded-2xl ${dark ? "ring-1 ring-cream/10" : "bg-wood/10"}`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={v.thumbnail}
+                {/* Through next/image so the browser fetches it from jespermakes.com,
+                    never from i.ytimg.com: no request to Google before consent. */}
+                <Image
+                  src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`}
                   alt=""
-                  className="h-full w-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                  fill
+                  sizes="(min-width: 768px) 360px, 100vw"
+                  className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
                 />
                 {v.duration && (
                   <div className="absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[10px] font-semibold text-white">

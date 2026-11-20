@@ -9,6 +9,7 @@ import { storeUrl, REGIONS } from "@/lib/rubio-shop";
 import RegionSwitcher from "@/components/rubio/region-switcher";
 import ProductCard, { BuyButton, priceFor } from "@/components/rubio/product-card";
 import { priceLabel } from "@/lib/rubio-shop";
+import { VideoFacade } from "@/components/video-facade";
 
 export const revalidate = 300;
 
@@ -140,12 +141,11 @@ export default async function RubioShopPage() {
 
             <div className="overflow-hidden rounded-3xl border border-white/15 bg-black/25">
               {matcha.videoEmbedUrl ? (
-                <iframe
-                  src={matcha.videoEmbedUrl}
+                <VideoFacade
+                  provider="instagram"
+                  embedUrl={matcha.videoEmbedUrl}
+                  poster={matcha.image}
                   title="Making the Matcha Green colour"
-                  loading="lazy"
-                  scrolling="no"
-                  allowFullScreen
                   className="aspect-[4/5] w-full"
                 />
               ) : matcha.image ? (

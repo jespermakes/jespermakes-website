@@ -9,6 +9,7 @@ import { REGIONS, REGION_ORDER, priceLabel, productUrl } from "@/lib/rubio-shop"
 import RegionSwitcher from "@/components/rubio/region-switcher";
 import ProductCard, { BuyButton, priceFor } from "@/components/rubio/product-card";
 import ColourGrid, { type Swatch } from "@/components/rubio/colour-grid";
+import { VideoFacade } from "@/components/video-facade";
 
 export const revalidate = 300;
 
@@ -90,12 +91,11 @@ export default async function RubioProductPage(props: { params: Promise<{ slug: 
 
             {product.videoEmbedUrl && (
               <div className="overflow-hidden rounded-3xl border border-white/12 bg-black/30">
-                <iframe
-                  src={product.videoEmbedUrl}
+                <VideoFacade
+                  provider="instagram"
+                  embedUrl={product.videoEmbedUrl}
+                  poster={product.image}
                   title={`${product.title} in use`}
-                  loading="lazy"
-                  scrolling="no"
-                  allowFullScreen
                   className="aspect-[4/5] w-full"
                 />
               </div>

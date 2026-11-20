@@ -1,5 +1,10 @@
 import Link from "next/link";
 import type { RubioData } from "@/lib/homepage/types";
+import { VideoFacade } from "@/components/video-facade";
+
+// The band's video is the Matcha Green post; this local shot of the can stands
+// in for it until the visitor clicks, so the homepage never calls Instagram.
+const VIDEO_POSTER = "/images/tools/rubio-monocoat/rubio-monocoat-matcha-green.jpg";
 
 /**
  * The Rubio band on the homepage.
@@ -44,12 +49,11 @@ export default function RubioModule({ data }: { data: RubioData }) {
 
         <div className="overflow-hidden rounded-3xl border border-white/15 bg-black/25">
           {data.videoEmbedUrl ? (
-            <iframe
-              src={data.videoEmbedUrl}
+            <VideoFacade
+              provider="instagram"
+              embedUrl={data.videoEmbedUrl}
+              poster={data.image ?? VIDEO_POSTER}
               title={data.title}
-              loading="lazy"
-              scrolling="no"
-              allowFullScreen
               className="aspect-[4/5] w-full"
             />
           ) : data.image ? (

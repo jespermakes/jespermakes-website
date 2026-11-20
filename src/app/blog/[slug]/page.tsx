@@ -7,6 +7,7 @@ import { pageTitle, ogImages, BRAND } from "@/lib/seo";
 import { blogPosts, images } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { SmartImage } from "@/components/smart-image";
+import { VideoFacade } from "@/components/video-facade";
 import { NotesSignupForm } from "@/components/newsletter/notes-signup-form";
 
 export const revalidate = 60;
@@ -160,15 +161,12 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
 
         {/* Featured video */}
         {post.featuredVideo && (
-          <div className="mb-10 aspect-video rounded-xl overflow-hidden">
-            <iframe
-              src={`https://www.youtube.com/embed/${post.featuredVideo}`}
-              title={post.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full"
-            />
-          </div>
+          <VideoFacade
+            provider="youtube"
+            video={post.featuredVideo}
+            title={post.title}
+            className="mb-10 aspect-video w-full rounded-xl"
+          />
         )}
 
         {/* Content */}

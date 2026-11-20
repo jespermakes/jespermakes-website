@@ -7,6 +7,7 @@ import { toolItems, images } from "@/lib/db/schema";
 import type { BuyLink, ColorSwatch, Spec } from "@/lib/db/schema";
 import { eq, and, asc } from "drizzle-orm";
 import ImageGallery from "@/components/image-gallery";
+import { VideoFacade } from "@/components/video-facade";
 
 export const revalidate = 60;
 
@@ -406,18 +407,13 @@ export default async function ToolPage(props: { params: Promise<{ slug: string }
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {youtubeVideos.map((videoId) => (
-              <div
+              <VideoFacade
                 key={videoId}
-                className="aspect-video rounded-xl overflow-hidden"
-              >
-                <iframe
-                  src={`https://www.youtube.com/embed/${videoId}`}
-                  title="YouTube video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
-              </div>
+                provider="youtube"
+                video={videoId}
+                title={`${tool.name} on the Jesper Makes channel`}
+                className="aspect-video w-full rounded-xl"
+              />
             ))}
           </div>
         </section>
