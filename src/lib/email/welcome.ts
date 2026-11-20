@@ -5,7 +5,12 @@
 // hello@ so replies land in the monitored inbox. Copy lives on the Brain
 // writing desk (piece: "Welcome email: The Starter Kit"); keep in sync.
 
-import { renderWorkshopLetter } from "@/lib/email/letter-template";
+import { renderWorkshopLetter } from "./letter-template";
+import {
+  UNSUBSCRIBE_MAILTO,
+  listUnsubscribeHeaders,
+  unsubscribePageUrl,
+} from "../unsubscribe-token";
 
 const AMBER = "#B26E2E";
 const A = (href: string, text: string) =>
@@ -64,6 +69,27 @@ export function renderWelcomeEmail(firstName?: string | null): {
 }
 
 /**
+ * The welcome email as it goes to one person. It is a transactional send, so
+ * Resend's broadcast unsubscribe merge tag does not resolve here: the footer
+ * gets this person's signed /unsubscribe link instead, and the headers carry
+ * List-Unsubscribe plus RFC 8058 one-click so mail apps show their own
+ * unsubscribe button. Without UNSUBSCRIBE_SECRET it falls back to the
+ * monitored inbox (mailto), as before.
+ */
+export function welcomeEmailFor(
+  email: string,
+  firstName?: string | null
+): { subject: string; html: string; headers: Record<string, string> } {
+  const { subject, html } = renderWelcomeEmail(firstName);
+  const footerLink = unsubscribePageUrl(email) ?? UNSUBSCRIBE_MAILTO;
+  return {
+    subject,
+    html: html.replaceAll("{{{RESEND_UNSUBSCRIBE_URL}}}", footerLink),
+    headers: listUnsubscribeHeaders(email),
+  };
+}
+
+/**
  * Send the welcome email as a Resend transactional send. Never throws into
  * the signup path: callers fire-and-forget; failures are logged, a signup
  * must never fail because a welcome email could not be sent.
@@ -77,14 +103,7 @@ export async function sendWelcomeEmail(
     console.error("welcome email skipped: RESEND_API_KEY not set");
     return;
   }
-  const { subject, html } = renderWelcomeEmail(firstName);
-  // Transactional send: the broadcast unsubscribe merge tag does not resolve
-  // here. Until the tokenized one-click unsubscribe page exists, route
-  // unsubscribes through the monitored inbox (handled same-day).
-  const resolvedHtml = html.replaceAll(
-    "{{{RESEND_UNSUBSCRIBE_URL}}}",
-    "mailto:hello@jespermakes.com?subject=unsubscribe"
-  );
+  const { subject, html: resolvedHtml, headers } = welcomeEmailFor(email, firstName);
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -96,6 +115,7 @@ export async function sendWelcomeEmail(
       to: [email],
       subject,
       html: resolvedHtml,
+      headers,
     }),
   });
   if (!res.ok) {

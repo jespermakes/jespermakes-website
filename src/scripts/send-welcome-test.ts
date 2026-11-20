@@ -3,13 +3,10 @@
 // Run: npx tsx src/scripts/send-welcome-test.ts [--send]
 
 import { writeFileSync } from "fs";
-import { renderWelcomeEmail } from "@/lib/email/welcome";
+import { welcomeEmailFor } from "@/lib/email/welcome";
 
-const { subject, html } = renderWelcomeEmail("Jesper");
-const resolved = html.replaceAll(
-  "{{{RESEND_UNSUBSCRIBE_URL}}}",
-  "mailto:hello@jespermakes.com?subject=unsubscribe"
-);
+const { subject, html: resolved, headers } = welcomeEmailFor("jespermakes@gmail.com", "Jesper");
+console.log("headers:", JSON.stringify(headers));
 writeFileSync("docs/newsletter/welcome-preview.html", resolved);
 console.log("Wrote docs/newsletter/welcome-preview.html", resolved.length, "bytes");
 
@@ -25,6 +22,7 @@ if (process.argv.includes("--send")) {
       to: ["jespermakes@gmail.com"],
       subject: `${subject} [test]`,
       html: resolved,
+      headers,
     }),
   }).then(async (r) => {
     const body = await r.json().catch(() => ({}));

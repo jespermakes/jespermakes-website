@@ -116,3 +116,42 @@ export async function unsubscribeFromNewsletter(input: { email: string; userId?:
 
   return { email, subscribed: false };
 }
+
+/**
+ * Unsubscribe an address that arrived through a signed link (the /unsubscribe
+ * page or a mail app's one-click button), so there is no session to lean on.
+ * Idempotent, and it never tells the caller whether the address was on the
+ * list: a valid link always ends in "you're off the list".
+ */
+export async function unsubscribeVerifiedEmail(rawEmail: string): Promise<void> {
+  const email = rawEmail.toLowerCase().trim();
+  const [row] = await db
+    .select({ email: newsletterSubscribers.email })
+    .from(newsletterSubscribers)
+    .where(eq(newsletterSubscribers.email, email));
+  const [user] = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.email, email));
+
+  if (row) {
+    await unsubscribeFromNewsletter({ email, userId: user?.id });
+    return;
+  }
+
+  // Not in the mirror. Resend is the source of truth, so still make sure it
+  // is not subscribed there; a contact Resend has never heard of is fine.
+  if (process.env.RESEND_API_KEY && process.env.RESEND_NEWSLETTER_AUDIENCE_ID) {
+    try {
+      await updateContactBy({ email }, { unsubscribed: true });
+    } catch (e) {
+      if (!(e instanceof ResendError && e.status === 404)) throw e;
+    }
+  }
+  if (user) {
+    await db
+      .update(users)
+      .set({ newsletterSubscribed: false, updatedAt: new Date() })
+      .where(eq(users.id, user.id));
+  }
+}
