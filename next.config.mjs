@@ -61,6 +61,17 @@ const nextConfig = {
       // Old Beacons shop product UUIDs — send to shop
       { source: "/shop/51018455-b7e0-439c-a9f9-9a906e73de3b", destination: "/shop", permanent: true },
       { source: "/shop/bfca615e-ccca-4e1c-8582-0c8ee9437621", destination: "/shop", permanent: true },
+      // The Beacons cone lamp plans product. "This Video Will Change How You See
+      // Wood" (McK0kbPZNoU, 6.6M views) still links it as "Download the Cone Lamp
+      // plans for free", and it 404ed. The free laser plans live here now.
+      { source: "/shop/f5150ab7-5bf7-4468-846a-117442bacff8", destination: "/shop/cone-lamp-laser", permanent: true },
+      // More Beacons links still in video descriptions that 404ed: the
+      // creator shout-outs (to their channels, as the descriptions intend)
+      // and the old Etsy shop (the shop here replaced it).
+      { source: "/diyforknuckleheads", destination: "https://www.youtube.com/@diyforknuckleheads", permanent: false },
+      { source: "/dainermade", destination: "https://www.youtube.com/@dainermade", permanent: false },
+      { source: "/turgworks", destination: "https://www.youtube.com/@turgworks4138", permanent: false },
+      { source: "/etsy", destination: "/shop", permanent: true },
       // Old Squarespace URLs. Both still surface in Google results and were
       // 404ing, throwing away whatever link equity they had accumulated.
       { source: "/tools-i-use", destination: "/tools", permanent: true },

@@ -163,6 +163,25 @@ describe("recovered legacy URLs", () => {
     }
   });
 
+  it("keeps the links still printed in YouTube descriptions alive", () => {
+    // Each of these sits in a video description that cannot be re-edited in
+    // one go (trim.videos, 2026-11-20). Dropping one 404s real viewers again.
+    for (const source of [
+      "/shop/f5150ab7-5bf7-4468-846a-117442bacff8",
+      "/diyforknuckleheads",
+      "/dainermade",
+      "/turgworks",
+      "/etsy",
+    ]) {
+      expect(config, `no redirect for ${source}`).toContain(
+        `source: "${source}"`,
+      );
+    }
+    expect(config).toContain(
+      'source: "/shop/f5150ab7-5bf7-4468-846a-117442bacff8", destination: "/shop/cone-lamp-laser"',
+    );
+  });
+
   it("does not redirect anything to a category slug that 404s", () => {
     const targets = (
       config.match(/destination: "\/tools\/category\/[^"]+"/g) ?? []
