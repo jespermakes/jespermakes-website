@@ -15,6 +15,14 @@
 
 export const SPECS_CHECKED = "2026-11-17";
 
+/**
+ * The nozzle line was read off the same specsUrl pages on this date, for the
+ * picker's fibre question. Only a printer whose page says the nozzle it ships
+ * with is hardened steel counts, so a printer that needs a nozzle swap first
+ * (the A2L says so on its page) is false.
+ */
+export const NOZZLES_CHECKED = "2026-11-21";
+
 /** What a printer can realistically print, in the order people grow into it. */
 export type MaterialTier = "basic" | "enclosed" | "engineering";
 
@@ -26,6 +34,13 @@ export interface PrinterSpecs {
   enclosed: boolean;
   /** Active chamber heating, max chamber temperature in °C, or null. */
   chamberHeatC: number | null;
+  /** Nozzle it ships with, as the spec page names it. */
+  nozzle: "Stainless Steel" | "Hardened Steel";
+  /**
+   * Ships with a hardened steel nozzle, so carbon and glass fibre filament
+   * does not wear it out. Must agree with `nozzle`; a test checks it.
+   */
+  hardenedNozzle: boolean;
   maxNozzleC: number;
   maxBedC: number;
   maxSpeed: number;
@@ -70,6 +85,9 @@ export const PRINTERS: Printer[] = [
       build: [180, 180, 180],
       enclosed: false,
       chamberHeatC: null,
+      // specsUrl, 21 Nov 2026: "Nozzle: Stainless Steel", and carbon or glass fibre is "Not Recommended"
+      nozzle: "Stainless Steel",
+      hardenedNozzle: false,
       maxNozzleC: 300,
       maxBedC: 80,
       maxSpeed: 500,
@@ -96,6 +114,9 @@ export const PRINTERS: Printer[] = [
       build: [256, 256, 256],
       enclosed: false,
       chamberHeatC: null,
+      // specsUrl, 21 Nov 2026: "Nozzle: Stainless Steel", and carbon or glass fibre is "Not Recommended"
+      nozzle: "Stainless Steel",
+      hardenedNozzle: false,
       maxNozzleC: 300,
       maxBedC: 100,
       maxSpeed: 500,
@@ -122,6 +143,9 @@ export const PRINTERS: Printer[] = [
       build: [330, 320, 325],
       enclosed: false,
       chamberHeatC: null,
+      // specsUrl, 21 Nov 2026: "Nozzle: Stainless Steel"; PLA-CF and PETG-CF only after "Replace with Hardened Steel Nozzle"
+      nozzle: "Stainless Steel",
+      hardenedNozzle: false,
       maxNozzleC: 300,
       maxBedC: 80,
       maxSpeed: 500,
@@ -148,6 +172,9 @@ export const PRINTERS: Printer[] = [
       build: [256, 256, 256],
       enclosed: true,
       chamberHeatC: null,
+      // specsUrl (the spec table on the store page), 21 Nov 2026: "Nozzle: 0.4 mm Stainless Steel Included"
+      nozzle: "Stainless Steel",
+      hardenedNozzle: false,
       maxNozzleC: 300,
       maxBedC: 100,
       maxSpeed: 500,
@@ -174,6 +201,9 @@ export const PRINTERS: Printer[] = [
       build: [256, 256, 256],
       enclosed: true,
       chamberHeatC: null,
+      // specsUrl, 21 Nov 2026: "Nozzle: Hardened Steel"
+      nozzle: "Hardened Steel",
+      hardenedNozzle: true,
       maxNozzleC: 300,
       maxBedC: 110,
       maxSpeed: 600,
@@ -202,6 +232,9 @@ export const PRINTERS: Printer[] = [
       buildNote: "Two nozzles, 235.5 × 256 × 256 mm when both print",
       enclosed: true,
       chamberHeatC: 65,
+      // specsUrl, 21 Nov 2026: "Nozzle: Hardened Steel"
+      nozzle: "Hardened Steel",
+      hardenedNozzle: true,
       maxNozzleC: 300,
       maxBedC: 120,
       maxSpeed: 1000,
@@ -229,6 +262,9 @@ export const PRINTERS: Printer[] = [
       build: [340, 320, 340],
       enclosed: true,
       chamberHeatC: 65,
+      // specsUrl, 21 Nov 2026: "Nozzle: Hardened Steel"
+      nozzle: "Hardened Steel",
+      hardenedNozzle: true,
       maxNozzleC: 350,
       maxBedC: 120,
       maxSpeed: 1000,
@@ -257,6 +293,9 @@ export const PRINTERS: Printer[] = [
       buildNote: "350 × 320 × 320 mm across both nozzles",
       enclosed: true,
       chamberHeatC: 65,
+      // specsUrl, 21 Nov 2026: "Nozzle: Hardened Steel"
+      nozzle: "Hardened Steel",
+      hardenedNozzle: true,
       maxNozzleC: 350,
       maxBedC: 120,
       maxSpeed: 1000,
@@ -286,6 +325,9 @@ export const PRINTERS: Printer[] = [
       buildNote: "330 × 320 × 320 mm across both nozzles",
       enclosed: true,
       chamberHeatC: 65,
+      // specsUrl, 21 Nov 2026: "Nozzle: Hardened Steel"
+      nozzle: "Hardened Steel",
+      hardenedNozzle: true,
       maxNozzleC: 350,
       maxBedC: 120,
       maxSpeed: 1000,
@@ -310,6 +352,9 @@ export const PRINTERS: Printer[] = [
       build: [330, 320, 325],
       enclosed: true,
       chamberHeatC: 65,
+      // specsUrl, 21 Nov 2026: "Included Nozzle Material: Hardened Steel"
+      nozzle: "Hardened Steel",
+      hardenedNozzle: true,
       maxNozzleC: 350,
       maxBedC: 120,
       maxSpeed: 1400,

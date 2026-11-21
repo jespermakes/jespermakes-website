@@ -261,7 +261,7 @@ export default async function BambuLabPage() {
             <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[#00AE42]">The picker</p>
             <h3 className="font-serif text-2xl font-medium">Which one is mine?</h3>
             <p className="mt-3 text-sm leading-relaxed text-white/60">
-              7 questions about what you want to make, how big, in which material and for how much, and you get one
+              8 questions about what you want to make, how big, in which material and for how much, and you get one
               printer back with the reasons, and the next one up if you can stretch.
             </p>
             <span className="mt-5 inline-block text-sm font-semibold text-[#00AE42]">

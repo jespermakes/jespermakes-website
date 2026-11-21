@@ -19,6 +19,7 @@ const base: PickerAnswers = {
   size: "medium",
   colour: "one",
   material: "pla",
+  fibre: "no",
   extra: "none",
   enclosure: "either",
   budget: "any",
@@ -78,6 +79,14 @@ describe("data", () => {
     }
   });
 
+  it("hardenedNozzle agrees with the nozzle named on the spec page", () => {
+    for (const p of PRINTERS) expect(p.specs.hardenedNozzle, p.handle).toBe(p.specs.nozzle === "Hardened Steel");
+  });
+
+  it("the printers that ship with a hardened nozzle, as Bambu's pages said on 21 Nov 2026", () => {
+    expect(PRINTERS.filter((p) => p.specs.hardenedNozzle).map((p) => p.handle)).toEqual(["p2s", "x2d", "h2s", "h2d", "h2c", "h3c"]);
+  });
+
   it("the lineup runs cheapest first", () => {
     const prices = PRINTERS.map((p) => eur(p.handle, p.baseVariant)!);
     expect([...prices].sort((a, b) => a - b)).toEqual(prices);
@@ -133,6 +142,52 @@ describe("picker", () => {
     expect(pick({ material: "engineering" }).printer.handle).toBe("x2d");
   });
 
+  it("carbon or glass fibre filament is the P2S, the cheapest with a hardened nozzle", () => {
+    for (const a of [{}, { material: "abs" }, { enclosure: "yes" }, { colour: "few" }] as Partial<PickerAnswers>[]) {
+      const r = pick({ ...a, fibre: "yes" });
+      expect(r.printer.handle, JSON.stringify(a)).toBe("p2s");
+      expect(r.reasons.some((x) => x.includes("hardened steel nozzle"))).toBe(true);
+    }
+    expect(pick({ fibre: "yes", colour: "few" }).variant).toBe("P2S Combo");
+    expect(pick({ fibre: "yes", budget: "entry" }).overBudget).toBe(true);
+  });
+
+  it("fibre and a heated chamber is still the X2D", () => {
+    expect(pick({ fibre: "yes", material: "engineering" }).printer.handle).toBe("x2d");
+  });
+
+  it("fibre on a big bed skips the A2L, which needs a nozzle swap first", () => {
+    expect(pick({ size: "large" }).printer.handle).toBe("a2l");
+    expect(pick({ size: "large", fibre: "yes" }).printer.handle).toBe("h2s");
+  });
+
+  it("the step up from the P1S is the P2S, for the nozzle", () => {
+    const r = pick({ material: "abs" });
+    expect(r.printer.handle).toBe("p1s");
+    expect(r.stepUp?.printer.handle).toBe("p2s");
+    expect(r.stepUp?.why).toContain("hardened steel nozzle");
+  });
+
+  it("fibre only ever picks a hardened nozzle, and changes nothing when the pick already had one", () => {
+    for (const size of ["small", "medium", "large"] as const)
+      for (const colour of ["one", "few", "many"] as const)
+        for (const material of ["pla", "abs", "engineering"] as const)
+          for (const extra of ["none", "laser", "cutter"] as const)
+            for (const enclosure of ["yes", "either"] as const)
+              for (const budget of ["entry", "mid", "high", "any"] as const)
+                for (const level of ["beginner", "some", "pro"] as const) {
+                  const a: PickerAnswers = { size, colour, material, extra, enclosure, budget, level, fibre: "no" };
+                  const no = pickPrinter(a, eur);
+                  const yes = pickPrinter({ ...a, fibre: "yes" }, eur);
+                  const k = JSON.stringify(a);
+                  if (!yes.unmet.includes("fibre filament")) expect(yes.printer.specs.hardenedNozzle, k).toBe(true);
+                  if (no.printer.specs.hardenedNozzle && no.unmet.length === 0) {
+                    expect(yes.printer.handle, k).toBe(no.printer.handle);
+                    expect(yes.overBudget, k).toBe(no.overBudget);
+                  }
+                }
+  });
+
   it("a laser means an H2 machine, the H2S first", () => {
     expect(pick({ extra: "laser" }).printer.handle).toBe("h2s");
   });
@@ -155,17 +210,18 @@ describe("picker", () => {
 
   it("always gives reasons, and a step up below the top", () => {
     for (const size of ["small", "medium", "large"] as const)
-      for (const material of ["pla", "abs", "engineering"] as const) {
-        const r = pick({ size, material });
-        expect(r.reasons.length).toBeGreaterThan(1);
-        expect(r.unmet).toEqual([]);
-      }
+      for (const material of ["pla", "abs", "engineering"] as const)
+        for (const fibre of ["no", "yes"] as const) {
+          const r = pick({ size, material, fibre });
+          expect(r.reasons.length).toBeGreaterThan(1);
+          expect(r.unmet).toEqual([]);
+        }
     expect(pick({}).stepUp).not.toBeNull();
   });
 
   it("no reason text has a long dash", () => {
     for (const p of PRINTERS) {
-      const r = pickPrinter({ ...base, colour: "many", extra: p.laser ? "laser" : "none", material: "engineering", enclosure: "yes", level: "beginner" }, eur, [p]);
+      const r = pickPrinter({ ...base, colour: "many", extra: p.laser ? "laser" : "none", material: "engineering", fibre: "yes", enclosure: "yes", level: "beginner" }, eur, [p]);
       for (const reason of r.reasons) expect(/[\u2013\u2014]/.test(reason)).toBe(false);
     }
   });
