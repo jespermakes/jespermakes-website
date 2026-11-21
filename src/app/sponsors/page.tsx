@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { stats as mk, shortDate } from "@/lib/mediakit-stats";
 
 export const metadata: Metadata = {
   title: "Work with me | Jesper Makes",
@@ -39,8 +40,12 @@ export default function Sponsors() {
               Deep engagement
             </h3>
             <p className="text-wood-light/70 leading-relaxed">
-              6.1% engagement rate. Average video watched for over 12 hours
-              total. People stay, watch, and come back.
+              {/* Generated (DR-372). Was a typed 6.1% and "Average video
+                  watched for over 12 hours total", neither of them sourced. */}
+              {mk.youtube.engagement_median_pct.toFixed(1)} likes and comments
+              for every 100 views on the median long-form video (12 months to{" "}
+              {shortDate(mk.youtube.engagement_window.end)}). People stay, watch,
+              and come back.
             </p>
           </div>
           <div className="bg-white/60 rounded-xl p-8 shadow-sm">
@@ -48,7 +53,7 @@ export default function Sponsors() {
               Premium brand alignment
             </h3>
             <p className="text-wood-light/70 leading-relaxed">
-              Current partners: Festool, Carhartt, Rubio Monocoat, Bambu Lab.
+              Current partners: Festool, Rubio Monocoat, Bambu Lab.
               Your brand in trusted company.
             </p>
           </div>

@@ -35,6 +35,20 @@ export function exact(n: number): string {
   return n.toLocaleString("en-US");
 }
 
+/** 3.8 -> "3.8%", 2 -> "2.0%". The JSON holds 2.0 as the number 2, and a rate
+ *  printed without its decimal reads rounder than it was measured. */
+export function pct(n: number): string {
+  return `${n.toFixed(1)}%`;
+}
+
+/** "2026-08-23" -> "Aug 2026", or "23 Aug 2026" with the day. */
+export function shortDate(iso: string, withDay = false): string {
+  return new Date(iso + "T00:00:00Z").toLocaleDateString("en-GB", {
+    ...(withDay ? { day: "numeric" as const } : {}),
+    month: "short", year: "numeric", timeZone: "UTC",
+  });
+}
+
 /** Followers across all five channels, rounded DOWN to the nearest 1K.
  *  Rounding down keeps the headline true between refreshes: the number only
  *  ever understates, never overstates. */
