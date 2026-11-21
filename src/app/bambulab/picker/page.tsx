@@ -10,7 +10,7 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Which Bambu Lab printer should I buy?",
   description:
-    "7 questions about what you want to print, how big, in what material and for how much, and you get the Bambu Lab printer that fits, with the reasons and today's store price.",
+    "8 questions about what you want to print, how big, in what material and for how much, and you get the Bambu Lab printer that fits, with the reasons and today's store price.",
   alternates: { canonical: "https://jespermakes.com/bambulab/picker" },
 };
 
@@ -53,7 +53,7 @@ export default async function PickerPage() {
         <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#00AE42]">The printer picker</p>
         <h1 className="font-serif text-3xl font-medium leading-tight md:text-5xl">Which Bambu Lab printer is yours?</h1>
         <p className="mt-4 text-white/65 leading-relaxed">
-          7 quick questions, and at the end you get one printer with the reasons it fits, because the cheapest printer
+          8 quick questions, and at the end you get one printer with the reasons it fits, because the cheapest printer
           that can do your job is nearly always the right one and you can spend the rest on filament.
         </p>
         <PickerClient

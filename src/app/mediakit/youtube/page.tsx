@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { stats as mk, compact, youtubeWindows } from "@/lib/mediakit-stats";
+import { stats as mk, compact, pct, shortDate, youtubeWindows } from "@/lib/mediakit-stats";
 import { WatchTimeGeography } from "@/components/mediakit/watch-time-geography";
 
 // Subscribers, views and videos are generated (src/data/mediakit-stats.json,
@@ -26,7 +26,9 @@ const stats = [
   { label: "Subscribers", value: compact(mk.youtube.subscribers) },
   { label: "Total Views", value: compact(mk.youtube.views) },
   { label: "Total Videos", value: String(mk.youtube.videos) },
-  { label: "Engagement Rate", value: "6.1%" },
+  // Generated (DR-372): median long-form video, likes + comments over views,
+  // the 12 months before YouTube's 24 Aug 2026 view change. Was a typed 6.1%.
+  { label: "Engagement, median long-form", value: pct(mk.youtube.engagement_median_pct) },
   { label: "Avg Watch Time", value: "8:54" },
   { label: "Male Audience", value: "88.6%" },
 ];
@@ -77,6 +79,12 @@ export default function YouTubePage() {
             </div>
           ))}
         </div>
+        <p className="text-white/40 text-xs -mt-8 mb-12">
+          Engagement is likes and comments per view on the median long-form video, 12 months
+          to {shortDate(mk.youtube.engagement_window.end)}. YouTube changed how it counts views
+          on {shortDate(mk.youtube.engagement_window.view_change, true)}, and per-view rates fell
+          with it: the same median since then is {pct(mk.youtube.engagement_since_change_pct)}.
+        </p>
 
         {/* Demographics */}
         <h2 className="text-xl font-bold mb-6">Audience Demographics</h2>

@@ -12,6 +12,7 @@ import {
   measuredMonth,
   youtubeWindows,
 } from "@/lib/mediakit-stats";
+import { pct, shortDate } from "@/lib/mediakit-stats";
 import { WatchTimeGeography } from "@/components/mediakit/watch-time-geography";
 
 // Generated like the page: it was typed and read 545K+, 44.1M, 16.4M and
@@ -108,8 +109,12 @@ const platforms = [
       { label: "Total Videos", value: String(mk.youtube.videos) },
       { label: "Total Views", value: compact(mk.youtube.views) },
       { label: "Median Video", value: compact(mk.youtube.median_views_12mo), sub: "12mo" },
-      { label: "Engagement", value: "6.1%" },
+      // Median long-form video, likes + comments over views, for the 12 months
+      // before YouTube's 24 Aug 2026 change to what a view is (DR-372). The
+      // 6.1% typed here in March came from an outside tool nobody could name.
+      { label: "Engagement", value: pct(mk.youtube.engagement_median_pct), sub: `median long-form, 12 mo to ${shortDate(mk.youtube.engagement_window.end)}` },
     ],
+    note: `Likes and comments per view. YouTube changed how it counts views on ${shortDate(mk.youtube.engagement_window.view_change, true)}, and per-view rates fell with it: the same median since then is ${pct(mk.youtube.engagement_since_change_pct)}.`,
   },
   {
     name: "YouTube In The Rough",
@@ -119,9 +124,10 @@ const platforms = [
       { label: "Subscribers", value: compact(mk.in_the_rough.subscribers) },
       { label: "Total Videos", value: String(mk.in_the_rough.videos) },
       { label: "Total Views", value: compact(mk.in_the_rough.views) },
-      { label: "Engagement", value: "8.0%" },
+      // Median public video, likes + comments over views, lifetime public
+      // counts (DR-372). Replaces a typed 8.0% and "Top 5%" nobody could source.
+      { label: "Engagement", value: pct(mk.in_the_rough.engagement_median_pct), sub: "median video, all uploads" },
     ],
-    note: "Top 5% engagement rate",
   },
   {
     name: "Instagram @jespermakes",
@@ -152,6 +158,7 @@ const platforms = [
       { label: "Videos", value: String(mk.tiktok.videos) },
       { label: "Engagement", value: `${mk.tiktok.engagement_pct}%` },
     ],
+    note: "Typed by hand. TikTok has no API behind these yet.",
   },
   {
     name: "Facebook Page",

@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { stats as mk, compact, pct } from "@/lib/mediakit-stats";
 
 export const metadata: Metadata = {
   title: "In The Rough stats | Jesper Makes media kit",
-  description:
-    "In The Rough channel stats. 9.5K subscribers, top 5% engagement rate. Raw, unfiltered maker content.",
+  description: `In The Rough channel stats. ${compact(mk.in_the_rough.subscribers)} subscribers, ${pct(mk.in_the_rough.engagement_median_pct)} engagement on the median video. Raw, unfiltered maker content.`,
   alternates: { canonical: "/mediakit/in-the-rough" },
 };
 
+// Subscribers, videos and engagement are generated (src/data/mediakit-stats.json,
+// the Brain job, daily). They were typed in March: 9.5K, 24, and an 8.0% plus
+// "top 5%" from an outside tool nobody could name (DR-372). Engagement is the
+// median public video's likes + comments over views, lifetime public counts.
 const stats = [
-  { label: "Subscribers", value: "9.5K" },
-  { label: "Total Videos", value: "24" },
-  { label: "Engagement Rate", value: "8.0%" },
+  { label: "Subscribers", value: compact(mk.in_the_rough.subscribers) },
+  { label: "Total Videos", value: String(mk.in_the_rough.videos) },
+  { label: "Engagement, median video", value: pct(mk.in_the_rough.engagement_median_pct) },
   { label: "Growth (28d)", value: "+994 subs" },
 ];
 
@@ -49,8 +53,9 @@ export default function InTheRoughPage() {
           <p className="text-white/70 leading-relaxed">
             In The Rough is the unpolished companion to the main Jesper Makes channel.
             Longer formats, workshop vlogs, real-time problem solving, and honest conversations
-            about the maker journey. The audience here is deeply engaged - top 5% engagement rate
-            across YouTube - making it ideal for brands that want authentic, trusted integration
+            about the maker journey. The median video gets{" "}
+            {mk.in_the_rough.engagement_median_pct.toFixed(1)} likes and comments for every 100
+            views, which makes it a good fit for brands that want authentic, trusted integration
             with a dedicated community.
           </p>
         </div>

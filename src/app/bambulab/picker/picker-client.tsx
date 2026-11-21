@@ -51,7 +51,16 @@ const QUESTIONS: Question[] = [
     options: [
       { value: "pla", label: "Normal life indoors", note: "PLA, PETG and TPU, which covers most projects" },
       { value: "abs", label: "Heat, sun and weather", note: "ABS and ASA, for outdoor parts and things that get warm" },
-      { value: "engineering", label: "Real load and real heat", note: "Nylon, PC and the carbon fibre filaments" },
+      { value: "engineering", label: "Real load and real heat", note: "Nylon and PC" },
+    ],
+  },
+  {
+    key: "fibre",
+    title: "Do you want to print carbon or glass fibre filament?",
+    hint: "PLA-CF, PETG-CF, ASA-CF and the like have chopped fibre in them, which makes the parts stiffer but wears a normal nozzle out, so they need a hardened steel one.",
+    options: [
+      { value: "no", label: "No, normal filament is fine" },
+      { value: "yes", label: "Yes, carbon or glass fibre", note: "For stiff brackets, jigs and parts that have to keep their shape" },
     ],
   },
   {
